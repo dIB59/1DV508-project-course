@@ -19,6 +19,7 @@ public class App extends Application {
         Label title = new Label("JavaFX");
         Label mysql;
 
+
         try {
             Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/LordOfTheRings?user=python&password=$tarWar$&useSSL=false&allowPublicKeyRetrieval=true");
             mysql = new Label("Driver found and connected");
