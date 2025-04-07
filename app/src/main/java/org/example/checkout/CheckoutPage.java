@@ -1,10 +1,11 @@
 package org.example.checkout;
 
-import java.awt.Button;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.example.Item;
 
@@ -13,35 +14,42 @@ public class CheckoutPage {
   private final CheckoutService checkoutService;
   private final List<Item> items;
   private Stage stage;
+  private VBox root;
 
-  public CheckoutPage(CheckoutService checkoutService, List<Item> items, Stage stage) {
+  public CheckoutPage(CheckoutService checkoutService, List<Item> items, Stage stage, VBox root) {
     this.checkoutService = checkoutService;
     this.items = items;
     this.stage = stage;
+    this.root = root;
   }
 
   public void show() {
-    stage.setTitle("Checkout");
     Pane pane = new Pane();
     Button checkoutButton = new Button("Checkout");
 
-    checkoutButton.addActionListener(event -> {
+    checkoutButton.setOnAction(event -> {
       checkoutService.printReceipt(items);
-      stage.close();
+      stage.setScene(root.getScene());
     });
-    stage.setScene(new Scene(pane, 300, 200));
-    stage.show();
-  }
-  
-  public void addCheckoutButton(Stage s) {
-    javafx.scene.control.Button goToCheckout = new javafx.scene.control.Button("Go to Checkout");
 
-    goToCheckout.setOnAction(event -> {
-      CheckoutService checkoutService = new CheckoutService();
-      ArrayList<Item> items = new ArrayList<>();
-      CheckoutPage checkoutPage = new CheckoutPage(checkoutService, items, s);
-      checkoutPage.show();
+    var checkoutStage = checkoutStage();
+    checkoutStage.show();
+  }
+
+  private Stage checkoutStage() {
+    Stage checkoutStage = new Stage();
+    checkoutStage.setTitle("Checkout");
+    Pane pane = new Pane();
+    Button checkoutButton = new Button("Checkout");
+
+    checkoutButton.setOnAction(event -> {
+      checkoutService.printReceipt(items);
+      stage.setScene(root.getScene());
     });
+
+    pane.getChildren().add(checkoutButton);
+    checkoutStage.setScene(new Scene(pane, 300, 200));
+    return checkoutStage;
   }
   
   

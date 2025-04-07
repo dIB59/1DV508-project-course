@@ -19,12 +19,11 @@ import org.example.checkout.CheckoutService;
 public class App extends Application {
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
         VBox root = new VBox();
         root.setPadding(new Insets(5));
         Label title = new Label("JavaFX");
         Label mysql;
-
 
         try {
             Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/kioske?user=main&password=root&useSSL=false&allowPublicKeyRetrieval=true");
@@ -45,7 +44,7 @@ public class App extends Application {
         goToCheckout.setOnAction(event -> {
             CheckoutService checkoutService = new CheckoutService();
             List<Item> items = new ArrayList<>();
-            CheckoutPage checkoutPage = new CheckoutPage(checkoutService, items, primaryStage);
+            CheckoutPage checkoutPage = new CheckoutPage(checkoutService, items, primaryStage, root);
             checkoutPage.show();
         });
 
