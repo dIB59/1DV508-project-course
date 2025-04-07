@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 public class App extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
+
         VBox root = new VBox();
         root.setPadding(new Insets(5));
         Label title = new Label("JavaFX");
@@ -33,5 +34,5 @@ public class App extends Application {
         primaryStage.setScene(new Scene(root, 400, 200));
         primaryStage.setTitle("JavaFX");
         primaryStage.show();
-    }
+
 }

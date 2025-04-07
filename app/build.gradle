@@ -13,7 +13,7 @@ plugins {
 
 javafx {
     version = "23"
-    modules = [ 'javafx.controls' ]
+    modules = [ 'javafx.controls', 'javafx.fxml' ]
 }
 
 repositories {
@@ -26,6 +26,10 @@ dependencies {
     testImplementation libs.junit.jupiter
 
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    // JavaFX modules
+    implementation 'org.openjfx:javafx-controls:21'
+    implementation 'org.openjfx:javafx-fxml:21'
 
     // This dependency is used by the application.
     implementation libs.guava
