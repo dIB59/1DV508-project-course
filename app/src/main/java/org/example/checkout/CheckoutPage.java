@@ -1,6 +1,5 @@
 package org.example.checkout;
 
-import java.util.ArrayList;
 import java.util.List;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -13,8 +12,8 @@ public class CheckoutPage {
 
   private final CheckoutService checkoutService;
   private final List<Item> items;
-  private Stage stage;
-  private VBox root;
+  private final Stage stage;
+  private final VBox root;
 
   public CheckoutPage(CheckoutService checkoutService, List<Item> items, Stage stage, VBox root) {
     this.checkoutService = checkoutService;
@@ -51,7 +50,6 @@ public class CheckoutPage {
     checkoutStage.setScene(new Scene(pane, 300, 200));
     return checkoutStage;
   }
-  
-  
+
 
 }
