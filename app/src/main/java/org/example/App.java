@@ -3,17 +3,11 @@ package org.example;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 import javafx.application.Application;
 import javafx.geometry.Insets;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import org.example.checkout.CheckoutPage;
-import org.example.checkout.CheckoutService;
 
 public class App extends Application {
 
@@ -36,20 +30,6 @@ public class App extends Application {
 
     root.getChildren().addAll(title, mysql);
 
-    primaryStage.setScene(new Scene(root, 400, 200));
-    primaryStage.setTitle("JavaFX");
-    primaryStage.show();
-
-    Button goToCheckout = new Button("Go to Checkout");
-
-    goToCheckout.setOnAction(event -> {
-      CheckoutService checkoutService = new CheckoutService();
-      List<Item> items = new ArrayList<>();
-      CheckoutPage checkoutPage = new CheckoutPage(checkoutService, items, primaryStage, root);
-      checkoutPage.show();
-    });
-
-    root.getChildren().add(goToCheckout);
 
 
   }
