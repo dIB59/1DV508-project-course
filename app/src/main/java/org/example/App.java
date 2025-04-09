@@ -13,7 +13,7 @@ import javafx.stage.Stage;
 import org.example.router.SceneRouter;
 
 public class App extends Application {
-
+  
   @Override
   public void start(Stage primaryStage) {
     VBox root = new VBox();
