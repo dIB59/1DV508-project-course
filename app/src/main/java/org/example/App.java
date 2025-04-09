@@ -5,6 +5,8 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import javafx.application.Application;
 import javafx.geometry.Insets;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -17,25 +19,30 @@ public class App extends Application {
     VBox root = new VBox();
     root.setPadding(new Insets(5));
     Label title = new Label("JavaFX");
-    Label mysql;
+    Button goToHomeButton = new Button("Go to Home");
+
+    goToHomeButton.setOnAction(event -> SceneRouter.goToHomePage());
 
     try {
       Connection conn = DriverManager.getConnection(
           "jdbc:mysql://localhost/"
               + "kioske?user=main&password=root&useSSL=false&allowPublicKeyRetrieval=true");
-      mysql = new Label("Driver found and connected");
 
     } catch (SQLException e) {
-      mysql = new Label("An error has occurred: " + e.getMessage());
+      System.err.println("Connection failed: " + e.getMessage());
     }
 
-    root.getChildren().addAll(title, mysql);
+    root.getChildren().addAll(title);
 
     SceneRouter.setStage(primaryStage);
     SceneRouter.goTo(SceneRouter.KioskPage.HOME);
 
     primaryStage.setTitle("JavaFX with MySQL");
-    primaryStage.setScene(new javafx.scene.Scene(root, 300, 250));
+    root.getChildren().add(goToHomeButton);
+    Scene scene = new Scene(root, 300, 250);
+
+    primaryStage.setScene(scene);
+
     primaryStage.show();
 
   }

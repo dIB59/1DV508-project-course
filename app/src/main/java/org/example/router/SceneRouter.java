@@ -23,15 +23,34 @@ public class SceneRouter {
       currentPage = screen;
       Scene scene = new Scene(loader.load());
       stage.setScene(scene);
-      stage.setFullScreen(true);
       stage.show();
     } catch (IOException e) {
       System.err.println("Error loading scene: " + e.getMessage());
     }
   }
 
+  public static void refreshPage() {
+    stage.show();
+  }
+
   public static KioskPage getCurrentPage() {
     return currentPage;
+  }
+
+  public static void goToHomePage() {
+    goTo(KioskPage.HOME);
+  }
+
+  public static void goToOrderPage() {
+    goTo(KioskPage.ORDER);
+  }
+
+  public static void goToDashboardPage() {
+    goTo(KioskPage.DASHBOARD);
+  }
+
+  public static void goToCheckoutPage() {
+    goTo(KioskPage.CHECKOUT);
   }
 
 

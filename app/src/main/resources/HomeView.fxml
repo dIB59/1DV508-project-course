@@ -9,27 +9,26 @@
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="org.example.features.home.HomeController"
-            prefWidth="600.0" prefHeight="400.0">
+            prefWidth="600.0" prefHeight="600.0">
 
     <VBox spacing="20" alignment="CENTER" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0"
           AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" style="-fx-padding: 100; -fx-margin: 10">
 
         <!-- Header -->
         <Label text="Welcome Home"
+                fx:id="welcomeLabel"
                style="-fx-font-size: 24px; -fx-font-weight: bold;" />
 
-        <!-- Get Username -->
-        <Label text="Hello, ${userName}!"
+        <Label fx:id="itemCountLabel"
+               text="You have 0 items in your cart."
                style="-fx-font-size: 18px;" />
-        <Label text="You have ${itemCount} items in your cart."
-               style="-fx-font-size: 18px;" />
-
         <!-- Body -->
         <Label text="This is your home screen."
                style="-fx-font-size: 16px;" />
 
         <!-- Button -->
         <Button text="Go to Checkout"
+                fx:id="checkoutButton"
                 style="-fx-padding: 10 20; -fx-font-size: 14px; -fx-background-color: #4CAF50; -fx-text-fill: white;"
                 onAction="#goToCheckoutPage"/>
 
