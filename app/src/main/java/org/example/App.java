@@ -34,5 +34,6 @@ public class App extends Application {
         primaryStage.setScene(new Scene(root, 400, 200));
         primaryStage.setTitle("JavaFX");
         primaryStage.show();
+    }
 
 }
