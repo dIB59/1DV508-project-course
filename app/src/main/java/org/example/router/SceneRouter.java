@@ -9,6 +9,7 @@ import java.io.IOException;
 
 public class SceneRouter {
   private static Stage stage;
+  private static KioskPage currentPage;
 
   public static void setStage(Stage primaryStage) {
     stage = primaryStage;
@@ -19,6 +20,7 @@ public class SceneRouter {
       URL url = SceneRouter.class.getResource("/" + screen.getValue());
       System.out.println("Loading scene from: " + url);
       FXMLLoader loader = new FXMLLoader(url);
+      currentPage = screen;
       Scene scene = new Scene(loader.load());
       stage.setScene(scene);
       stage.setFullScreen(true);
@@ -26,6 +28,10 @@ public class SceneRouter {
     } catch (IOException e) {
       System.err.println("Error loading scene: " + e.getMessage());
     }
+  }
+
+  public static KioskPage getCurrentPage() {
+    return currentPage;
   }
 
 

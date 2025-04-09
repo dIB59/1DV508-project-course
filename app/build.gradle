@@ -58,7 +58,6 @@ tasks.named('test') {
 }
 
 run {
-    // Set JavaFX module path
     doFirst {
         jvmArgs = [
                 '--module-path', '/path/to/javafx-sdk-21/lib',
