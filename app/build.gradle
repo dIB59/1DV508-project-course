@@ -22,8 +22,14 @@ repositories {
 }
 
 dependencies {
+
+    implementation 'org.openjfx:javafx-controls:21'
+    implementation 'org.openjfx:javafx-fxml:21'
+
+
     // Use JUnit Jupiter for testing.
     testImplementation libs.junit.jupiter
+
 
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
@@ -47,10 +53,19 @@ java {
 
 application {
     // Define the main class for the application.
-    mainClass = 'org.example.App'
+    mainClass = 'org.example.Main'
 }
 
 tasks.named('test') {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()
+}
+
+run {
+    doFirst {
+        jvmArgs = [
+                '--module-path', '/path/to/javafx-sdk-21/lib',
+                '--add-modules', 'javafx.controls,javafx.fxml'
+        ]
+    }
 }
