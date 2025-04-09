@@ -49,10 +49,20 @@ java {
 
 application {
     // Define the main class for the application.
-    mainClass = 'org.example.App'
+    mainClass = 'org.example.Main'
 }
 
 tasks.named('test') {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()
+}
+
+run {
+    // Set JavaFX module path
+    doFirst {
+        jvmArgs = [
+                '--module-path', '/path/to/javafx-sdk-21/lib',
+                '--add-modules', 'javafx.controls,javafx.fxml'
+        ]
+    }
 }
