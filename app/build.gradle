@@ -22,8 +22,14 @@ repositories {
 }
 
 dependencies {
+
+    implementation 'org.openjfx:javafx-controls:21'
+    implementation 'org.openjfx:javafx-fxml:21'
+
+
     // Use JUnit Jupiter for testing.
     testImplementation libs.junit.jupiter
+
 
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 

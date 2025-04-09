@@ -8,6 +8,7 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import org.example.router.SceneRouter;
 
 public class App extends Application {
 
@@ -30,7 +31,12 @@ public class App extends Application {
 
     root.getChildren().addAll(title, mysql);
 
+    SceneRouter.setStage(primaryStage);
+    SceneRouter.goTo(SceneRouter.KioskPage.HOME);
 
+    primaryStage.setTitle("JavaFX with MySQL");
+    primaryStage.setScene(new javafx.scene.Scene(root, 300, 250));
+    primaryStage.show();
 
   }
 }
