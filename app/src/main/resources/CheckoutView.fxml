@@ -14,20 +14,26 @@
     <VBox spacing="20" alignment="CENTER" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0"
             AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" style="-fx-padding: 100; -fx-margin: 10">
 
-            <!-- Header -->
-            <Label text="Checkout Page"
-                    fx:id="itemCountLabel"
-                 style="-fx-font-size: 24px; -fx-font-weight: bold;" />
+        <!-- Header -->
+        <Label text="Checkout Page"
+                fx:id="itemCountLabel"
+             style="-fx-font-size: 24px; -fx-font-weight: bold;" />
 
-            <!-- Body -->
-            <Label text="This is your checkout screen."
-                 style="-fx-font-size: 16px;" />
+        <!-- Body -->
+        <Label text="This is your checkout screen."
+             style="-fx-font-size: 16px;" />
 
-            <!-- Button -->
-            <Button text="Go to Home"
-                    fx:id="homeButton"
-                    style="-fx-padding: 10 20; -fx-font-size: 14px; -fx-background-color: #4CAF50; -fx-text-fill: white;"
-                    onAction="#goToHomePage"/>
+        <!-- Add inside VBox -->
+        <ListView fx:id="itemListView"
+                  prefHeight="300" prefWidth="400"
+                  style="-fx-background-color: #f5f5f5; -fx-border-color: #ccc;" />
+
+
+        <!-- Button -->
+        <Button text="Go to Home"
+                fx:id="homeButton"
+                style="-fx-padding: 10 20; -fx-font-size: 14px; -fx-background-color: #4CAF50; -fx-text-fill: white;"
+                onAction="#goToHomePage"/>
 
     </VBox>
 </AnchorPane>

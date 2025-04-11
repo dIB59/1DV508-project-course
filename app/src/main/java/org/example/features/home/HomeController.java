@@ -1,5 +1,6 @@
 package org.example.features.home;
 
+import java.util.ArrayList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -25,7 +26,7 @@ public class HomeController {
 
     checkoutButton.setStyle(
         "-fx-background-color: #FF0000; -fx-text-fill: #FFFFFF; -fx-font-size: 16px;");
-    SceneRouter.goToCheckoutPage();
+    SceneRouter.goToCheckoutPage(new ArrayList<>());
   }
 
 }
