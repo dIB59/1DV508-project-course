@@ -1,17 +1,59 @@
 package org.example.features.checkout;
 
+import java.net.URL;
+import java.util.List;
+import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
-import org.example.router.SceneRouter;
+import javafx.scene.control.ListView;
+import org.example.features.menu.Product;
+import org.example.features.order.OrderService;
+import org.example.shared.SceneRouter;
 
-public class CheckoutController {
+public class CheckoutController implements Initializable {
 
   @FXML private Label itemCountLabel;
-  @FXML private Button homeButton;
+  @FXML private Label totalPriceLabel;
+  @FXML private ListView<String> itemListView ;
+  private final OrderService orderService;
+  private final SceneRouter router;
+
+  public CheckoutController(OrderService orderService, SceneRouter sceneRouter) {
+    this.orderService = orderService;
+    this.router = sceneRouter;
+  }
+
 
   public void goToHomePage(ActionEvent actionEvent) {
-    SceneRouter.goToHomePage();
+    orderService.clearItems();
+    router.goToHomePage();
+  }
+
+
+  public List<Product> getItems() {
+    return orderService.getItems();
+  }
+
+
+  @Override
+  public void initialize(URL url, ResourceBundle resourceBundle) {
+    int itemCount = orderService.getItems().size();
+    itemCountLabel.setText("Items in cart: " + itemCount);
+
+    // Populate ListView
+    ObservableList<String> items = FXCollections.observableArrayList();
+    for (Product item : orderService.getItems()) {
+      items.add(item.getName() + " - $" + item.getPrice());
+    }
+    itemListView.setItems(items);
+    // Calculate total price
+    double totalPrice = orderService.getItems().stream()
+        .mapToDouble(Product::getPrice)
+        .sum();
+    totalPriceLabel.setText("Total Price: $" + String.format("%.2f", totalPrice));
   }
 }
