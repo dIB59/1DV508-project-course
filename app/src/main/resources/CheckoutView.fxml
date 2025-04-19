@@ -19,6 +19,8 @@
                     fx:id="itemCountLabel"
                  style="-fx-font-size: 24px; -fx-font-weight: bold;" />
 
+            <ListView fx:id="itemListView" prefHeight="200.0" />
+
             <!-- Body -->
             <Label text="This is your checkout screen."
                  style="-fx-font-size: 16px;" />
@@ -28,6 +30,11 @@
                     fx:id="homeButton"
                     style="-fx-padding: 10 20; -fx-font-size: 14px; -fx-background-color: #4CAF50; -fx-text-fill: white;"
                     onAction="#goToHomePage"/>
+        <Label
+            fx:id="totalPriceLabel"
+            text="Total Price: $0.00"
+            style="-fx-font-size: 18px; -fx-font-weight: bold;" />
+
 
     </VBox>
 </AnchorPane>
