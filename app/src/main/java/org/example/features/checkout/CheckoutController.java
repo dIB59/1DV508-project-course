@@ -31,7 +31,7 @@ public class CheckoutController implements Initializable {
   }
 
 
-  public void goToHomePage(ActionEvent actionEvent) {
+  public void goToHomePage() {
     orderService.clearItems();
     router.goToHomePage();
   }
