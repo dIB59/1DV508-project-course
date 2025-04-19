@@ -4,28 +4,27 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import org.example.router.SceneRouter;
+import org.example.shared.SceneRouter;
 
 public class HomeController {
 
-  @FXML private Label welcomeLabel;
+  @FXML private Label welcomeLabel = new Label("Welcome to the Kiosk!");
   @FXML public Label itemCountLabel;
   @FXML private Button checkoutButton;
 
-  private final HomeModel model = new HomeModel();
+  private final SceneRouter sceneRouter;
+  private final HomeModel homeModel;
 
-  @FXML
-  public void initialize() {
-    welcomeLabel.setText(model.getWelcomeMessage());
+
+  public HomeController(HomeModel homeModel, SceneRouter sceneRouter) {
+    this.homeModel = homeModel;
+    this.sceneRouter = sceneRouter;
   }
 
   @FXML
-  public void goToCheckoutPage(ActionEvent actionEvent) {
-    System.out.println("Checkout button clicked");
+  public void gotToMenuPage(ActionEvent actionEvent) {
 
-    checkoutButton.setStyle(
-        "-fx-background-color: #FF0000; -fx-text-fill: #FFFFFF; -fx-font-size: 16px;");
-    SceneRouter.goToCheckoutPage();
+    sceneRouter.goToMenuPage();
   }
 
 }
