@@ -13,8 +13,10 @@ public class MenuController {
   private final MenuModel model;
   private final SceneRouter sceneRouter;
   private final OrderService orderService;
-  @FXML private Button checkoutButton;
-  @FXML private VBox menuList;
+  @FXML
+  private Button checkoutButton;
+  @FXML
+  private VBox menuList;
 
   public MenuController(MenuModel model, SceneRouter sceneRouter, OrderService orderService) {
     this.model = model;

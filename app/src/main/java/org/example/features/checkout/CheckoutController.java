@@ -16,11 +16,14 @@ import org.example.shared.SceneRouter;
 
 public class CheckoutController implements Initializable {
 
-  @FXML private Label itemCountLabel;
-  @FXML private Label totalPriceLabel;
-  @FXML private ListView<String> itemListView ;
   private final OrderService orderService;
   private final SceneRouter router;
+  @FXML
+  private Label itemCountLabel;
+  @FXML
+  private Label totalPriceLabel;
+  @FXML
+  private ListView<String> itemListView;
 
   public CheckoutController(OrderService orderService, SceneRouter sceneRouter) {
     this.orderService = orderService;

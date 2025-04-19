@@ -5,14 +5,14 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import javafx.application.Application;
 import javafx.stage.Stage;
-import org.example.shared.AppControllerFactory;
 import org.example.features.order.OrderService;
+import org.example.shared.AppControllerFactory;
 import org.example.shared.SceneRouter;
 
 public class App extends Application {
 
   private final OrderService orderService = new OrderService();
-  
+
   @Override
   public void start(Stage primaryStage) {
 

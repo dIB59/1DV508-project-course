@@ -31,7 +31,7 @@ public class AppControllerFactory implements Callback<Class<?>, Object> {
               .getDeclaredConstructor(OrderService.class, SceneRouter.class)
               .newInstance(orderService, sceneRouter);
         } catch (NoSuchMethodException | InstantiationException | IllegalAccessException
-            | InvocationTargetException e) {
+                 | InvocationTargetException e) {
           throw new RuntimeException(
               "Failed to create controller instance for " + controllerClass.getName(), e);
         }
