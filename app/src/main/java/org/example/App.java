@@ -6,7 +6,6 @@ import java.sql.SQLException;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import org.example.features.order.OrderService;
-import org.example.shared.AppControllerFactory;
 import org.example.shared.SceneRouter;
 
 public class App extends Application {
@@ -16,10 +15,7 @@ public class App extends Application {
   @Override
   public void start(Stage primaryStage) {
 
-
     SceneRouter router = new SceneRouter(primaryStage, orderService);
-    AppControllerFactory controllerFactory = new AppControllerFactory(orderService, router);
-    router.setControllerFactory(controllerFactory);
 
     try {
       Connection conn = DriverManager.getConnection(

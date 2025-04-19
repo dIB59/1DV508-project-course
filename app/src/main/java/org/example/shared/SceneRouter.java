@@ -59,10 +59,6 @@ public class SceneRouter {
     goTo(KioskPage.CHECKOUT);
   }
 
-  public void setControllerFactory(AppControllerFactory controllerFactory) {
-
-  }
-
   public enum KioskPage {
     HOME("HomeView.fxml"),
     MENU("MenuView.fxml"),
