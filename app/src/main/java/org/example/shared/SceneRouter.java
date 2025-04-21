@@ -8,17 +8,31 @@ import javafx.stage.Stage;
 import javafx.util.Callback;
 import org.example.features.order.OrderService;
 
+/**
+ * The type Scene router.
+ */
 public class SceneRouter {
 
   private final Stage stage;
   private final Callback<Class<?>, Object> controllerFactory;
   private KioskPage currentPage;
 
+  /**
+   * Instantiates a new Scene router.
+   *
+   * @param stage        the stage
+   * @param orderService the order service
+   */
   public SceneRouter(Stage stage, OrderService orderService) {
     this.stage = stage;
     this.controllerFactory = new AppControllerFactory(orderService, this);
   }
 
+  /**
+   * Sets the stage for the application.
+   *
+   * @param page The primary stage to be set.
+   */
   public void goTo(KioskPage page) {
     try {
       URL url = getClass().getResource("/" + page.getValue());
@@ -35,34 +49,72 @@ public class SceneRouter {
     }
   }
 
+  /**
+   * Refresh page.
+   */
   public void refreshPage() {
     goTo(currentPage);
   }
 
+  /**
+   * Gets current page.
+   *
+   * @return the current page
+   */
   public KioskPage getCurrentPage() {
     return currentPage;
   }
 
+  /**
+   * Go to home page.
+   */
   public void goToHomePage() {
     goTo(KioskPage.HOME);
   }
 
+  /**
+   * Go to menu page.
+   */
   public void goToMenuPage() {
     goTo(KioskPage.MENU);
   }
 
+  /**
+   * Go to dashboard page.
+   */
   public void goToDashboardPage() {
     goTo(KioskPage.DASHBOARD);
   }
 
+  /**
+   * Go to checkout page.
+   */
   public void goToCheckoutPage() {
     goTo(KioskPage.CHECKOUT);
   }
 
+  /**
+   * Enum representing the different pages in the kiosk application.
+   * Each enum constant corresponds to a specific FXML file.
+   * <p>
+   * If you add a new page, make sure to update this enum and the corresponding FXML file.
+   */
   public enum KioskPage {
+    /**
+     * Home kiosk page.
+     */
     HOME("HomeView.fxml"),
+    /**
+     * Menu kiosk page.
+     */
     MENU("MenuView.fxml"),
+    /**
+     * Checkout kiosk page.
+     */
     CHECKOUT("CheckoutView.fxml"),
+    /**
+     * Dashboard kiosk page.
+     */
     DASHBOARD("DashboardView.fxml");
 
     private final String value;
@@ -71,6 +123,11 @@ public class SceneRouter {
       this.value = value;
     }
 
+    /**
+     * Gets value.
+     *
+     * @return the value
+     */
     public String getValue() {
       return value;
     }
