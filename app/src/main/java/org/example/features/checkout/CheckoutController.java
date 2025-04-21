@@ -13,6 +13,9 @@ import org.example.features.order.OrderService;
 import org.example.features.order.ProductQuantity;
 import org.example.shared.SceneRouter;
 
+/**
+ * The type Checkout controller.
+ */
 public class CheckoutController implements Initializable {
 
   private final OrderService orderService;
@@ -24,17 +27,31 @@ public class CheckoutController implements Initializable {
   @FXML
   private ListView<String> itemListView;
 
+  /**
+   * Instantiates a new Checkout controller.
+   *
+   * @param orderService the order service
+   * @param sceneRouter  the scene router
+   */
   public CheckoutController(OrderService orderService, SceneRouter sceneRouter) {
     this.orderService = orderService;
     this.router = sceneRouter;
   }
 
+  /**
+   * Go to home page.
+   */
   public void goToHomePage() {
     orderService.saveOrder();
     orderService.clearItems();
     router.goToHomePage();
   }
 
+  /**
+   * Gets items.
+   *
+   * @return the items
+   */
   public List<ProductQuantity> getItems() {
     return orderService.getItems();
   }
