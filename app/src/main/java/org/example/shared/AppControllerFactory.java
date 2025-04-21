@@ -8,19 +8,40 @@ import org.example.features.home.HomeModel;
 import org.example.features.menu.MenuController;
 import org.example.features.menu.MenuModel;
 import org.example.features.order.OrderService;
+import org.example.features.product.Product;
 import org.example.features.product.ProductMapper;
 import org.example.features.product.ProductRepository;
 
+
+/**
+ * AppControllerFactory is a factory class that creates instances of controllers based on the
+ * controller class name. It implements the Callback interface to provide a way to create
+ * controller instances dynamically.
+ */
 public class AppControllerFactory implements Callback<Class<?>, Object> {
 
   private final OrderService orderService;
   private final SceneRouter sceneRouter;
 
+  /**
+   * Instantiates a new App controller factory.
+   *
+   * @param orderService the order service
+   * @param sceneRouter  the scene router
+   */
   public AppControllerFactory(OrderService orderService, SceneRouter sceneRouter) {
     this.orderService = orderService;
     this.sceneRouter = sceneRouter;
   }
 
+  /**
+   * Creates a controller instance based on the provided class.
+   *
+   * @param controllerClass The class of the controller to be created.
+   * @return An instance of the specified controller class.
+   * <p>
+   * If you add a new controller, you need to add a case for it in this method.
+   */
   @Override
   public Object call(Class<?> controllerClass) {
     return switch (controllerClass.getSimpleName()) {
