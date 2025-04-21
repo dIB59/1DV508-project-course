@@ -42,7 +42,7 @@ public class AppControllerFactory implements Callback<Class<?>, Object> {
     };
   }
 
-  private ProductRepository getProductRepository() {
+  private CrudRepository<Product> getProductRepository() {
     return new ProductRepository(
         Database.getInstance().getConnection(),
         "Product",
