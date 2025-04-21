@@ -11,6 +11,7 @@ public class OrderService {
   private final CrudRepository<Order> repository;
 
   public OrderService(OrderRepository orderRepository) {
+  public OrderService(CrudRepository<Order> orderRepository) {
     this.order = new Order();
     this.repository = orderRepository;
   }
