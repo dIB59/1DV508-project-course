@@ -13,11 +13,20 @@ import org.example.shared.CrudRepository;
 import org.example.shared.EntityMapper;
 
 
+/**
+ * The type Order repository.
+ */
 public class OrderRepository implements CrudRepository<Order> {
 
   private final Connection connection;
   private final EntityMapper<Order> orderMapper;
 
+  /**
+   * Instantiates a new Order repository.
+   *
+   * @param connection  the connection
+   * @param orderMapper the order mapper
+   */
   public OrderRepository(Connection connection, EntityMapper<Order> orderMapper) {
     this.connection = connection;
     this.orderMapper = orderMapper;
