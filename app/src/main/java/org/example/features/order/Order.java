@@ -6,8 +6,8 @@ import org.example.features.product.Product;
 
 public class Order {
 
-  private int id;
   private final List<ProductQuantity> productQuantity;
+  private int id;
 
   public Order(int id, List<ProductQuantity> productQuantity) {
     this.id = id;
@@ -49,12 +49,12 @@ public class Order {
     return this.id;
   }
 
-  public List<ProductQuantity> getProductQuantity() {
-    return this.productQuantity;
-  }
-
   public void setId(int id) {
     this.id = id;
+  }
+
+  public List<ProductQuantity> getProductQuantity() {
+    return this.productQuantity;
   }
 }
 

@@ -25,14 +25,16 @@ public class OrderRepository implements CrudRepository<Order> {
 
   public void save(Order order) throws SQLException {
     String insertOrderSQL = "INSERT INTO Orders () VALUES ()";
-    try (PreparedStatement orderStmt = connection.prepareStatement(insertOrderSQL, Statement.RETURN_GENERATED_KEYS)) {
+    try (PreparedStatement orderStmt = connection.prepareStatement(insertOrderSQL,
+        Statement.RETURN_GENERATED_KEYS)) {
       orderStmt.executeUpdate();
       ResultSet rs = orderStmt.getGeneratedKeys();
       if (rs.next()) {
         int orderId = rs.getInt(1);
         order.setId(orderId);
 
-        String insertProductSQL = "INSERT INTO Order_ProductQuantity (order_id, product_id, quantity) VALUES (?, ?, ?)";
+        String insertProductSQL =
+            "INSERT INTO Order_ProductQuantity (order_id, product_id, quantity) VALUES (?, ?, ?)";
         try (PreparedStatement productStmt = connection.prepareStatement(insertProductSQL)) {
           for (ProductQuantity pq : order.getProductQuantity()) {
             productStmt.setInt(1, orderId);
@@ -47,10 +49,11 @@ public class OrderRepository implements CrudRepository<Order> {
   }
 
   public Optional<Order> findById(int id) throws SQLException {
-    String sql = "SELECT opq.product_id, opq.quantity, p.name, p.description, p.price, p.image_url " +
-        "FROM Order_ProductQuantity opq " +
-        "JOIN Product p ON opq.product_id = p.id " +
-        "WHERE opq.order_id = ?";
+    String sql =
+        "SELECT opq.product_id, opq.quantity, p.name, p.description, p.price, p.image_url " +
+            "FROM Order_ProductQuantity opq " +
+            "JOIN Product p ON opq.product_id = p.id " +
+            "WHERE opq.order_id = ?";
 
     try (PreparedStatement stmt = connection.prepareStatement(sql)) {
       stmt.setInt(1, id);
@@ -101,7 +104,8 @@ public class OrderRepository implements CrudRepository<Order> {
     }
 
     // Re-insert updated product quantities
-    String insertSQL = "INSERT INTO Order_ProductQuantity (order_id, product_id, quantity) VALUES (?, ?, ?)";
+    String insertSQL =
+        "INSERT INTO Order_ProductQuantity (order_id, product_id, quantity) VALUES (?, ?, ?)";
     try (PreparedStatement stmt = connection.prepareStatement(insertSQL)) {
       for (ProductQuantity pq : order.getProductQuantity()) {
         stmt.setInt(1, order.getId());
@@ -114,7 +118,8 @@ public class OrderRepository implements CrudRepository<Order> {
   }
 
   public void delete(int id) throws SQLException {
-    try (PreparedStatement stmt = connection.prepareStatement("DELETE FROM Order_ProductQuantity WHERE order_id = ?")) {
+    try (PreparedStatement stmt = connection.prepareStatement(
+        "DELETE FROM Order_ProductQuantity WHERE order_id = ?")) {
       stmt.setInt(1, id);
       stmt.executeUpdate();
     }

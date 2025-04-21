@@ -19,7 +19,8 @@ public class MenuController {
   @FXML
   private VBox menuList;
 
-  public MenuController(MenuModel model, ProductRepository productRepository, SceneRouter sceneRouter, OrderService orderService) {
+  public MenuController(MenuModel model, ProductRepository productRepository,
+                        SceneRouter sceneRouter, OrderService orderService) {
     this.model = model;
     this.productRepository = productRepository;
     this.sceneRouter = sceneRouter;

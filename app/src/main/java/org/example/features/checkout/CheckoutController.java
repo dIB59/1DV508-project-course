@@ -9,8 +9,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import org.example.features.order.ProductQuantity;
 import org.example.features.order.OrderService;
+import org.example.features.order.ProductQuantity;
 import org.example.shared.SceneRouter;
 
 public class CheckoutController implements Initializable {
@@ -47,7 +47,8 @@ public class CheckoutController implements Initializable {
     // Populate ListView
     ObservableList<String> items = FXCollections.observableArrayList();
     for (ProductQuantity item : orderService.getItems()) {
-      items.add(item.getProduct().name() + " - $" + item.getProduct().getPrice() + " x " + item.getQuantity());
+      items.add(item.getProduct().name() + " - $" + item.getProduct().getPrice() + " x "
+          + item.getQuantity());
     }
     itemListView.setItems(items);
     double totalPrice = orderService.getItems().stream()

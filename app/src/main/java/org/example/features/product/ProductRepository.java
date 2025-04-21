@@ -1,7 +1,12 @@
 package org.example.features.product;
 
-import java.sql.*;
-import java.util.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import org.example.shared.CrudRepository;
 import org.example.shared.EntityMapper;
 
@@ -44,7 +49,7 @@ public class ProductRepository implements CrudRepository<Product> {
   public void save(Product entity) throws SQLException {
     String sql =
         "INSERT INTO " + tableName + " (name, price, description, image_url) " +
-        "VALUES (?, ?, ?, ?)";
+            "VALUES (?, ?, ?, ?)";
     try (PreparedStatement stmt = connection.prepareStatement(sql)) {
       stmt.setString(1, entity.getName());
       stmt.setDouble(2, entity.getPrice());
@@ -57,7 +62,7 @@ public class ProductRepository implements CrudRepository<Product> {
   public void update(Product entity) throws SQLException {
     String sql =
         "UPDATE " + tableName + " SET name = ?, price = ?, description = ?, image_url = ? " +
-        "WHERE id = ?";
+            "WHERE id = ?";
     try (PreparedStatement stmt = connection.prepareStatement(sql)) {
       stmt.setString(1, entity.getName());
       stmt.setDouble(2, entity.getPrice());

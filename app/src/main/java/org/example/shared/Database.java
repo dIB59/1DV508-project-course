@@ -8,15 +8,16 @@ import java.sql.SQLException;
 public class Database {
 
   private static Database instance;
-  private Connection connection;
-
-  private final String URL = "jdbc:mysql://localhost/kioske?useSSL=false&allowPublicKeyRetrieval=true";
+  private final String URL =
+      "jdbc:mysql://localhost/kioske?useSSL=false&allowPublicKeyRetrieval=true";
   private final String USER = "main";
   private final String PASSWORD = "root";
+  private Connection connection;
 
   private Database() {
     try {
-      this.connection = DriverManager.getConnection(URL + "&user=" + USER + "&password=" + PASSWORD);
+      this.connection =
+          DriverManager.getConnection(URL + "&user=" + USER + "&password=" + PASSWORD);
     } catch (SQLException e) {
       System.err.println("Connection failed: " + e.getMessage());
     }

@@ -1,6 +1,6 @@
 package org.example.features.product;
 
-public record Product (
+public record Product(
     int id,
     String name,
     String description,
@@ -35,9 +35,11 @@ public record Product (
   public int getId() {
     return id;
   }
+
   public String getDescription() {
     return description;
   }
+
   public String getImageUrl() {
     return imageUrl;
   }
