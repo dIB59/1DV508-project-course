@@ -12,6 +12,9 @@ import org.example.shared.CrudRepository;
 import org.example.shared.Database;
 import org.example.shared.SceneRouter;
 
+/**
+ * The type App.
+ */
 public class App extends Application {
 
 
