@@ -8,6 +8,8 @@ import org.example.features.home.HomeModel;
 import org.example.features.menu.MenuController;
 import org.example.features.menu.MenuModel;
 import org.example.features.order.OrderService;
+import org.example.features.product.ProductMapper;
+import org.example.features.product.ProductRepository;
 
 public class AppControllerFactory implements Callback<Class<?>, Object> {
 
@@ -23,7 +25,7 @@ public class AppControllerFactory implements Callback<Class<?>, Object> {
   public Object call(Class<?> controllerClass) {
     return switch (controllerClass.getSimpleName()) {
       case "HomeController" -> new HomeController(new HomeModel(), sceneRouter);
-      case "MenuController" -> new MenuController(new MenuModel(), sceneRouter, orderService);
+      case "MenuController" -> new MenuController(new MenuModel(), getProductRepository(), sceneRouter, orderService);
       case "CheckoutController" -> new CheckoutController(orderService, sceneRouter);
       default -> {
         try {
@@ -39,6 +41,13 @@ public class AppControllerFactory implements Callback<Class<?>, Object> {
     };
   }
 
+  private ProductRepository getProductRepository() {
+    return new ProductRepository(
+        Database.getInstance().getConnection(),
+        "Product",
+        new ProductMapper()
+    );
+  }
 
 }
 
