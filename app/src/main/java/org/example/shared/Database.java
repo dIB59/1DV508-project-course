@@ -5,6 +5,17 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 
+/**
+ * Singleton class to manage the database connection.
+ *
+ * <p>This class provides a method to get a single instance of the database connection.
+ *
+ * <p>Example usage:
+ *
+ * <pre>
+ * Connection conn = Database.getInstance().getConnection();
+ * </pre>
+ */
 public class Database {
 
   private static Database instance;
@@ -23,6 +34,11 @@ public class Database {
     }
   }
 
+  /**
+   * Gets instance.
+   *
+   * @return the instance
+   */
   public static synchronized Database getInstance() {
     if (instance == null) {
       instance = new Database();
@@ -30,6 +46,11 @@ public class Database {
     return instance;
   }
 
+  /**
+   * Gets connection.
+   *
+   * @return the connection
+   */
   public Connection getConnection() {
     try {
       if (connection == null || connection.isClosed()) {
