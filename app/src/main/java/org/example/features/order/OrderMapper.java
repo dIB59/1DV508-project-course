@@ -5,6 +5,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import org.example.shared.EntityMapper;
 
+/**
+ * The type Order mapper.
+ */
 public class OrderMapper implements EntityMapper<Order> {
 
   @Override
