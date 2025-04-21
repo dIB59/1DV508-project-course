@@ -1,30 +1,28 @@
 package org.example;
 
+
 import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import javafx.application.Application;
 import javafx.stage.Stage;
+import org.example.features.order.OrderMapper;
+import org.example.features.order.OrderRepository;
 import org.example.features.order.OrderService;
+import org.example.shared.Database;
 import org.example.shared.SceneRouter;
 
 public class App extends Application {
 
-  private final OrderService orderService = new OrderService();
 
   @Override
   public void start(Stage primaryStage) {
+    
+    Connection conn = Database.getInstance().getConnection();
+
+    var orderMapper = new OrderMapper();
+    var orderRepository = new OrderRepository(conn, orderMapper);
+    var orderService = new OrderService(orderRepository);
 
     SceneRouter router = new SceneRouter(primaryStage, orderService);
-
-    try {
-      Connection conn = DriverManager.getConnection(
-          "jdbc:mysql://localhost/"
-              + "kioske?user=main&password=root&useSSL=false&allowPublicKeyRetrieval=true");
-
-    } catch (SQLException e) {
-      System.err.println("Connection failed: " + e.getMessage());
-    }
 
     router.goTo(SceneRouter.KioskPage.HOME);
     primaryStage.setTitle("JavaFX with MySQL");
