@@ -10,12 +10,22 @@ import java.util.Optional;
 import org.example.shared.CrudRepository;
 import org.example.shared.EntityMapper;
 
+/**
+ * The type Product repository.
+ */
 public class ProductRepository implements CrudRepository<Product> {
 
   private final Connection connection;
   private final String tableName;
   private final EntityMapper<Product> mapper;
 
+  /**
+   * Instantiates a new Product repository.
+   *
+   * @param connection the connection
+   * @param tableName  the table name
+   * @param mapper     the mapper
+   */
   public ProductRepository(Connection connection, String tableName, EntityMapper<Product> mapper) {
     this.connection = connection;
     this.tableName = tableName;
