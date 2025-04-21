@@ -1,6 +1,7 @@
-package org.example.features.menu;
+package org.example.features.product;
 
-public record Product(
+public record Product (
+    int id,
     String name,
     String description,
     double price,
@@ -29,5 +30,15 @@ public record Product(
 
   public double getPrice() {
     return price;
+  }
+
+  public int getId() {
+    return id;
+  }
+  public String getDescription() {
+    return description;
+  }
+  public String getImageUrl() {
+    return imageUrl;
   }
 }
