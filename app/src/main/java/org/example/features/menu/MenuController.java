@@ -6,25 +6,28 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import org.example.features.order.OrderService;
+import org.example.features.product.Product;
+import org.example.features.product.ProductRepository;
 import org.example.shared.SceneRouter;
 
 public class MenuController {
 
   private final MenuModel model;
+  private final ProductRepository productRepository;
   private final SceneRouter sceneRouter;
   private final OrderService orderService;
   @FXML
   private VBox menuList;
 
-  public MenuController(MenuModel model, SceneRouter sceneRouter, OrderService orderService) {
+  public MenuController(MenuModel model, ProductRepository productRepository, SceneRouter sceneRouter, OrderService orderService) {
     this.model = model;
+    this.productRepository = productRepository;
     this.sceneRouter = sceneRouter;
     this.orderService = orderService;
   }
 
-  @FXML
   public void initialize() {
-    for (Product product : model.getMenuItems()) {
+    for (Product product : getMenuItems()) {
       Button addButton = new Button("Add to Order");
 
       Label name = new Label(product.getName());
@@ -40,7 +43,6 @@ public class MenuController {
     }
   }
 
-
   public void goToCheckoutPage() {
     sceneRouter.goToCheckoutPage();
   }
@@ -50,7 +52,11 @@ public class MenuController {
   }
 
   public List<Product> getMenuItems() {
-    return List.of(model.getMenuItems());
+    try {
+      return productRepository.findAll();
+    } catch (Exception e) {
+      System.err.println("Error loading menu items: " + e.getMessage());
+      return List.of();
+    }
   }
-
 }
