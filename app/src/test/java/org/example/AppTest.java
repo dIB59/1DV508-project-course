@@ -12,12 +12,20 @@ import org.example.database.TestDatabase;
 import org.example.features.product.Product;
 import org.example.features.product.ProductMapper;
 import org.example.features.product.ProductRepository;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class AppTest {
 
+  @AfterEach
+  void tearDown() throws Exception {
+    TestDatabase database = (TestDatabase) TestDatabase.getInstance();
+    database.resetDatabase();
+  }
+
   @Test
-  void appHasAGreeting() throws Exception {
+  void productRepoTest() throws Exception {
     Database database = TestDatabase.getInstance();
     CrudRepository<Product> productRepository =
         new ProductRepository(database.getConnection(), "Product", new ProductMapper());
