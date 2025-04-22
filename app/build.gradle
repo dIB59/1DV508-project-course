@@ -64,7 +64,7 @@ tasks.named('test') {
 run {
     doFirst {
         jvmArgs = [
-                '--module-path', '/path/to/javafx-sdk-21/lib',
+                '--module-path', classpath.asPath,
                 '--add-modules', 'javafx.controls,javafx.fxml'
         ]
     }
