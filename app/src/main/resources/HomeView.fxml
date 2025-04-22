@@ -28,7 +28,7 @@
         <Button text="Go to Menu"
                 fx:id="checkoutButton"
                 style="-fx-padding: 10 20; -fx-font-size: 14px; -fx-background-color: #4CAF50; -fx-text-fill: white;"
-                onAction="#gotToMenuPage"/>
+                onAction="#goToMenuPage"/>
 
     </VBox>
 
