@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<AnchorPane xmlns:fx="http://javafx.com/fxml"
+            xmlns="http://javafx.com/javafx"
             fx:controller="org.example.features.home.HomeController"
             prefWidth="600.0" prefHeight="600.0">
 
@@ -16,18 +14,18 @@
 
         <!-- Header -->
         <Label text="Welcome Home"
-                fx:id="welcomeLabel"
-               style="-fx-font-size: 24px; -fx-font-weight: bold;" />
+               fx:id="welcomeLabel"
+               style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
 
         <Label fx:id="itemCountLabel"
                text="You have 0 items in your cart."
-               style="-fx-font-size: 18px;" />
+               style="-fx-font-size: 18px;"/>
         <!-- Body -->
         <Label text="This is your home screen."
-               style="-fx-font-size: 16px;" />
+               style="-fx-font-size: 16px;"/>
 
         <!-- Button -->
-        <Button text="Go to Checkout"
+        <Button text="Go to Menu"
                 fx:id="checkoutButton"
                 style="-fx-padding: 10 20; -fx-font-size: 14px; -fx-background-color: #4CAF50; -fx-text-fill: white;"
                 onAction="#goToMenuPage"/>

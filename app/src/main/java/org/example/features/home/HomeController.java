@@ -1,39 +1,36 @@
 package org.example.features.home;
 
-import java.util.ArrayList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import org.example.router.SceneRouter;
+import org.example.shared.SceneRouter;
 
+/** The type Home controller. */
 public class HomeController {
 
-  @FXML private Label welcomeLabel;
+  private final SceneRouter sceneRouter;
+  private final HomeModel homeModel;
+
+  /** The Item count label. */
   @FXML public Label itemCountLabel;
+
+  @FXML private Label welcomeLabel = new Label("Welcome to the Kiosk!");
   @FXML private Button checkoutButton;
 
-  private final HomeModel model = new HomeModel();
+  /**
+   * Instantiates a new Home controller.
+   *
+   * @param homeModel the home model
+   * @param sceneRouter the scene router
+   */
+  public HomeController(HomeModel homeModel, SceneRouter sceneRouter) {
+    this.homeModel = homeModel;
+    this.sceneRouter = sceneRouter;
+  }
 
+  /** Got to menu page. */
   @FXML
-  public void initialize() {
-    welcomeLabel.setText(model.getWelcomeMessage());
+  public void gotToMenuPage() {
+    sceneRouter.goToMenuPage();
   }
-
-  /*@FXML
-  public void goToCheckoutPage(ActionEvent actionEvent) {
-    System.out.println("Checkout button clicked");
-
-    checkoutButton.setStyle(
-        "-fx-background-color: #FF0000; -fx-text-fill: #FFFFFF; -fx-font-size: 16px;");
-    SceneRouter.goToCheckoutPage(new ArrayList<>());
-  } */
-
-  @FXML 
-  public void goToMenuPage(ActionEvent actionEvent) {
-    System.out.println("Menu triggered");
-    SceneRouter.goToMenuPage();
-    
-  }
-
 }

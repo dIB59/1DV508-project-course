@@ -1,39 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<AnchorPane xmlns:fx="http://javafx.com/fxml"
+            xmlns="http://javafx.com/javafx"
             fx:controller="org.example.features.checkout.CheckoutController"
             prefHeight="600.0" prefWidth="600.0">
 
     <VBox spacing="20" alignment="CENTER" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0"
-            AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" style="-fx-padding: 100; -fx-margin: 10">
+          AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" style="-fx-padding: 100; -fx-margin: 10">
 
         <!-- Header -->
         <Label text="Checkout Page"
-                fx:id="itemCountLabel"
-             style="-fx-font-size: 24px; -fx-font-weight: bold;" />
+               fx:id="itemCountLabel"
+               style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+
+        <ListView fx:id="itemListView" prefHeight="200.0"/>
 
         <!-- Body -->
         <Label text="This is your checkout screen."
-             style="-fx-font-size: 16px;" />
-
-        <!-- Add inside VBox -->
-        <ListView fx:id="itemListView"
-                  prefHeight="300" prefWidth="400"
-                  style="-fx-background-color: #f5f5f5; -fx-border-color: #ccc;" />
-
+               style="-fx-font-size: 16px;"/>
 
         <!-- Button -->
         <Button text="Go to Home"
-                fx:id="homeButton"
                 style="-fx-padding: 10 20; -fx-font-size: 14px; -fx-background-color: #4CAF50; -fx-text-fill: white;"
                 onAction="#goToHomePage"/>
+        <Label
+                fx:id="totalPriceLabel"
+                text="Total Price: $0.00"
+                style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+
 
     </VBox>
 </AnchorPane>

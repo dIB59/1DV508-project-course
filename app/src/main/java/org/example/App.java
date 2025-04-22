@@ -1,49 +1,37 @@
 package org.example;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import javafx.application.Application;
-import javafx.geometry.Insets;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import org.example.router.SceneRouter;
+import org.example.database.CrudRepository;
+import org.example.database.Database;
+import org.example.features.order.Order;
+import org.example.features.order.OrderMapper;
+import org.example.features.order.OrderRepository;
+import org.example.features.order.OrderService;
+import org.example.shared.SceneRouter;
 
+/** The type App. */
 public class App extends Application {
-  
+
+  private final Database database;
+
+  public App() {
+    this.database = Database.getInstance();
+  }
+
   @Override
   public void start(Stage primaryStage) {
-    VBox root = new VBox();
-    root.setPadding(new Insets(5));
-    Label title = new Label("JavaFX");
-    Button goToHomeButton = new Button("Go to Home");
 
-    goToHomeButton.setOnAction(event -> SceneRouter.goToHomePage());
+    Connection conn = this.database.getConnection();
+    var orderMapper = new OrderMapper();
+    CrudRepository<Order> orderRepository = new OrderRepository(conn, orderMapper);
+    var orderService = new OrderService(orderRepository);
 
-    try {
-      Connection conn = DriverManager.getConnection(
-          "jdbc:mysql://localhost/"
-              + "kioske?user=main&password=root&useSSL=false&allowPublicKeyRetrieval=true");
+    SceneRouter router = new SceneRouter(primaryStage, orderService);
 
-    } catch (SQLException e) {
-      System.err.println("Connection failed: " + e.getMessage());
-    }
-
-    root.getChildren().addAll(title);
-
-    SceneRouter.setStage(primaryStage);
-    SceneRouter.goTo(SceneRouter.KioskPage.HOME);
-
+    router.goTo(SceneRouter.KioskPage.HOME);
     primaryStage.setTitle("JavaFX with MySQL");
-    root.getChildren().add(goToHomeButton);
-    Scene scene = new Scene(root, 300, 250);
-
-    primaryStage.setScene(scene);
-
     primaryStage.show();
-
   }
 }
