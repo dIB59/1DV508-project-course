@@ -4,9 +4,30 @@
 
 package org.example;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import org.example.database.CrudRepository;
+import org.example.database.Database;
+import org.example.database.TestDatabase;
+import org.example.features.product.Product;
+import org.example.features.product.ProductMapper;
+import org.example.features.product.ProductRepository;
+import org.junit.jupiter.api.Test;
+
 class AppTest {
-  /* @Test void appHasAGreeting() {
-      App classUnderTest = new App();
-      assertNotNull(classUnderTest.getGreeting(), "app should have a greeting");
-  } */
+
+  @Test
+  void appHasAGreeting() throws Exception {
+    Database database = TestDatabase.getInstance();
+    CrudRepository<Product> productRepository =
+        new ProductRepository(database.getConnection(), "Product", new ProductMapper());
+
+    productRepository.save(new Product(0, "Test Product", "Test Description", 10.0, "1"));
+
+    assertEquals(
+        1,
+        productRepository.findAll().stream()
+            .filter(product -> product.getName().equals("Test Product"))
+            .count());
+  }
 }
