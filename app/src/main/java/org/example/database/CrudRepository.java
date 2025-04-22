@@ -1,4 +1,4 @@
-package org.example.shared;
+package org.example.database;
 
 import java.sql.SQLException;
 import java.util.List;

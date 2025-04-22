@@ -1,4 +1,4 @@
-package org.example.shared;
+package org.example.database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -15,7 +15,7 @@ import java.sql.SQLException;
  * Connection conn = Database.getInstance().getConnection();
  * </pre>
  */
-public class Database {
+public sealed class Database permits TestDatabase {
 
   private static Database instance;
   private final String URL =
@@ -24,13 +24,7 @@ public class Database {
   private final String PASSWORD = "root";
   private Connection connection;
 
-  private Database() {
-    try {
-      this.connection =
-          DriverManager.getConnection(URL + "&user=" + USER + "&password=" + PASSWORD);
-    } catch (SQLException e) {
-      System.err.println("Connection failed: " + e.getMessage());
-    }
+  protected Database() {
   }
 
   /**
@@ -38,7 +32,7 @@ public class Database {
    *
    * @return the instance
    */
-  public static synchronized Database getInstance() {
+  public static Database getInstance() {
     if (instance == null) {
       instance = new Database();
     }
