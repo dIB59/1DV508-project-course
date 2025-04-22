@@ -5,8 +5,8 @@ import java.util.List;
 import org.example.features.product.Product;
 
 /**
- * Order class represents a customer's order in the system.
- * It contains a list of ProductQuantity objects, each representing a product and its quantity.
+ * Order class represents a customer's order in the system. It contains a list of ProductQuantity
+ * objects, each representing a product and its quantity.
  */
 public class Order {
 
@@ -16,7 +16,7 @@ public class Order {
   /**
    * Instantiates a new Order.
    *
-   * @param id              the id
+   * @param id the id
    * @param productQuantity the product quantity
    */
   public Order(int id, List<ProductQuantity> productQuantity) {
@@ -24,17 +24,15 @@ public class Order {
     this.productQuantity = productQuantity;
   }
 
-  /**
-   * Instantiates a new Order.
-   */
+  /** Instantiates a new Order. */
   public Order() {
     this.id = 0;
     this.productQuantity = new ArrayList<>();
   }
 
   /**
-   * Adds a product to the order. If the product already exists in the order,
-   * it increments the quantity by 1.
+   * Adds a product to the order. If the product already exists in the order, it increments the
+   * quantity by 1.
    *
    * @param product The product to be added.
    */
@@ -49,8 +47,8 @@ public class Order {
   }
 
   /**
-   * Removes a product from the order. If the quantity of the product becomes
-   * zero or less, it removes the product from the order.
+   * Removes a product from the order. If the quantity of the product becomes zero or less, it
+   * removes the product from the order.
    *
    * @param product The product to be removed.
    */
@@ -66,9 +64,7 @@ public class Order {
     }
   }
 
-  /**
-   * Clears all items from the order.
-   */
+  /** Clears all items from the order. */
   public void clearItems() {
     productQuantity.clear();
   }
@@ -100,5 +96,3 @@ public class Order {
     return this.productQuantity;
   }
 }
-
-

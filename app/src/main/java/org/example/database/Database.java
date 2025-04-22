@@ -24,8 +24,7 @@ public sealed class Database permits TestDatabase {
   private final String PASSWORD = "root";
   private Connection connection;
 
-  protected Database() {
-  }
+  protected Database() {}
 
   /**
    * Gets instance.
