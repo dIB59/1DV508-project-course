@@ -5,9 +5,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import org.example.database.CrudRepository;
 import org.example.features.order.OrderService;
 import org.example.features.product.Product;
-import org.example.shared.CrudRepository;
 import org.example.shared.SceneRouter;
 
 /** The type Menu controller. */

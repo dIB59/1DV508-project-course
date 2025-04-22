@@ -1,8 +1,8 @@
 package org.example.features.order;
 
 import java.util.List;
+import org.example.database.CrudRepository;
 import org.example.features.product.Product;
-import org.example.shared.CrudRepository;
 
 /**
  * OrderService class is responsible for managing the order. It provides methods to add, remove, and

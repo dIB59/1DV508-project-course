@@ -7,8 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import org.example.shared.CrudRepository;
-import org.example.shared.EntityMapper;
+import org.example.database.CrudRepository;
+import org.example.database.EntityMapper;
 
 /** The type Product repository. */
 public class ProductRepository implements CrudRepository<Product> {

@@ -8,13 +8,10 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import org.example.features.product.Product;
-import org.example.shared.CrudRepository;
-import org.example.shared.EntityMapper;
+import org.example.database.CrudRepository;
+import org.example.database.EntityMapper;
 
-/**
- * The type Order repository.
- */
+/** The type Order repository. */
 public class OrderRepository implements CrudRepository<Order> {
 
   private final Connection connection;
@@ -23,7 +20,7 @@ public class OrderRepository implements CrudRepository<Order> {
   /**
    * Instantiates a new Order repository.
    *
-   * @param connection  the connection
+   * @param connection the connection
    * @param orderMapper the order mapper
    */
   public OrderRepository(Connection connection, EntityMapper<Order> orderMapper) {
@@ -33,8 +30,8 @@ public class OrderRepository implements CrudRepository<Order> {
 
   public void save(Order order) throws SQLException {
     String insertOrderSql = "INSERT INTO Orders () VALUES ()";
-    try (PreparedStatement orderStmt = connection.prepareStatement(insertOrderSql,
-        Statement.RETURN_GENERATED_KEYS)) {
+    try (PreparedStatement orderStmt =
+        connection.prepareStatement(insertOrderSql, Statement.RETURN_GENERATED_KEYS)) {
       orderStmt.executeUpdate();
       ResultSet rs = orderStmt.getGeneratedKeys();
       if (rs.next()) {
@@ -66,25 +63,8 @@ public class OrderRepository implements CrudRepository<Order> {
     try (PreparedStatement stmt = connection.prepareStatement(sql)) {
       stmt.setInt(1, id);
       ResultSet rs = stmt.executeQuery();
-
-      List<ProductQuantity> productQuantities = new ArrayList<>();
-      while (rs.next()) {
-        Product product = new Product(
-            rs.getInt("product_id"),
-            rs.getString("name"),
-            rs.getString("description"),
-            rs.getDouble("price"),
-            rs.getString("imageUrl")
-        );
-        int quantity = rs.getInt("quantity");
-        productQuantities.add(new ProductQuantity(product, quantity));
-      }
-
-      if (productQuantities.isEmpty()) {
-        return Optional.empty();
-      }
-      Order order = new Order(id, productQuantities);
-      return Optional.of(order);
+      Order order = orderMapper.map(rs);
+      return Optional.ofNullable(order);
     }
   }
 
@@ -126,8 +106,8 @@ public class OrderRepository implements CrudRepository<Order> {
   }
 
   public void delete(int id) throws SQLException {
-    try (PreparedStatement stmt = connection.prepareStatement(
-        "DELETE FROM Order_ProductQuantity WHERE order_id = ?")) {
+    try (PreparedStatement stmt =
+        connection.prepareStatement("DELETE FROM Order_ProductQuantity WHERE order_id = ?")) {
       stmt.setInt(1, id);
       stmt.executeUpdate();
     }
@@ -138,4 +118,3 @@ public class OrderRepository implements CrudRepository<Order> {
     }
   }
 }
-

@@ -2,6 +2,8 @@ package org.example.shared;
 
 import java.lang.reflect.InvocationTargetException;
 import javafx.util.Callback;
+import org.example.database.CrudRepository;
+import org.example.database.Database;
 import org.example.features.checkout.CheckoutController;
 import org.example.features.home.HomeController;
 import org.example.features.home.HomeModel;
@@ -14,8 +16,8 @@ import org.example.features.product.ProductRepository;
 
 /**
  * AppControllerFactory is a factory class that creates instances of controllers based on the
- * controller class name. It implements the Callback interface to provide a way to create
- * controller instances dynamically.
+ * controller class name. It implements the Callback interface to provide a way to create controller
+ * instances dynamically.
  */
 public class AppControllerFactory implements Callback<Class<?>, Object> {
 
@@ -26,7 +28,7 @@ public class AppControllerFactory implements Callback<Class<?>, Object> {
    * Instantiates a new App controller factory.
    *
    * @param orderService the order service
-   * @param sceneRouter  the scene router
+   * @param sceneRouter the scene router
    */
   public AppControllerFactory(OrderService orderService, SceneRouter sceneRouter) {
     this.orderService = orderService;
@@ -34,8 +36,8 @@ public class AppControllerFactory implements Callback<Class<?>, Object> {
   }
 
   /**
-   * Creates a controller instance based on the provided class.
-   * If you add a new controller, you need to add a case for it in this method.
+   * Creates a controller instance based on the provided class. If you add a new controller, you
+   * need to add a case for it in this method.
    *
    * @param controllerClass The class of the controller to be created.
    * @return An instance of the specified controller class.
@@ -52,8 +54,10 @@ public class AppControllerFactory implements Callback<Class<?>, Object> {
           yield controllerClass
               .getDeclaredConstructor(OrderService.class, SceneRouter.class)
               .newInstance(orderService, sceneRouter);
-        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException
-                 | InvocationTargetException e) {
+        } catch (NoSuchMethodException
+            | InstantiationException
+            | IllegalAccessException
+            | InvocationTargetException e) {
           throw new RuntimeException(
               "Failed to create controller instance for " + controllerClass.getName(), e);
         }
@@ -63,11 +67,6 @@ public class AppControllerFactory implements Callback<Class<?>, Object> {
 
   private CrudRepository<Product> getProductRepository() {
     return new ProductRepository(
-        Database.getInstance().getConnection(),
-        "Product",
-        new ProductMapper()
-    );
+        Database.getInstance().getConnection(), "Product", new ProductMapper());
   }
-
 }
-

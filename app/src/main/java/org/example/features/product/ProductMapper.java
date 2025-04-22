@@ -2,7 +2,7 @@ package org.example.features.product;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import org.example.shared.EntityMapper;
+import org.example.database.EntityMapper;
 
 /** The type Product mapper. */
 public class ProductMapper implements EntityMapper<Product> {
