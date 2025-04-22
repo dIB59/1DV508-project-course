@@ -27,7 +27,7 @@ class AppTest {
   void productRepoTest() throws Exception {
     Database database = TestDatabase.getInstance();
     CrudRepository<Product> productRepository =
-        new ProductRepository(database.getConnection(), "Product", new ProductMapper());
+        new ProductRepository(database.getConnection(), new ProductMapper());
 
     productRepository.save(new Product("Test Product", "Test Description", 10.0, "1"));
 

@@ -67,6 +67,6 @@ public class AppControllerFactory implements Callback<Class<?>, Object> {
 
   private CrudRepository<Product> getProductRepository() {
     return new ProductRepository(
-        Database.getInstance().getConnection(), "Product", new ProductMapper());
+        Database.getInstance().getConnection(), new ProductMapper());
   }
 }

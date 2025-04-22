@@ -14,19 +14,17 @@ import org.example.database.EntityMapper;
 public class ProductRepository implements CrudRepository<Product> {
 
   private final Connection connection;
-  private final String tableName;
+  private final String tableName = "Product";
   private final EntityMapper<Product> mapper;
 
   /**
    * Instantiates a new Product repository.
    *
    * @param connection the connection
-   * @param tableName the table name
    * @param mapper the mapper
    */
-  public ProductRepository(Connection connection, String tableName, EntityMapper<Product> mapper) {
+  public ProductRepository(Connection connection, EntityMapper<Product> mapper) {
     this.connection = connection;
-    this.tableName = tableName;
     this.mapper = mapper;
   }
 
