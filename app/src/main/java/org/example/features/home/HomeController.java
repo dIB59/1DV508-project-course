@@ -20,13 +20,20 @@ public class HomeController {
     welcomeLabel.setText(model.getWelcomeMessage());
   }
 
-  @FXML
+  /*@FXML
   public void goToCheckoutPage(ActionEvent actionEvent) {
     System.out.println("Checkout button clicked");
 
     checkoutButton.setStyle(
         "-fx-background-color: #FF0000; -fx-text-fill: #FFFFFF; -fx-font-size: 16px;");
     SceneRouter.goToCheckoutPage(new ArrayList<>());
+  } */
+
+  @FXML 
+  public void goToMenuPage(ActionEvent actionEvent) {
+    System.out.println("Menu triggered");
+    SceneRouter.goToMenuPage();
+    
   }
 
 }

@@ -3,6 +3,7 @@ package org.example.router;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -51,6 +52,21 @@ public class SceneRouter {
     goTo(KioskPage.HOME);
   }
 
+  public static void goToMenuPage() {
+    try {
+      System.out.println("Menu page triggered");
+      URL url = SceneRouter.class.getResource('/' + KioskPage.MENU.getValue());
+      FXMLLoader loader = new FXMLLoader(url);
+      
+      currentPage = KioskPage.MENU;
+      Scene scene = new Scene(loader.load());
+      stage.setScene(scene);
+      stage.show();
+    } catch (IOException e) {
+      System.err.println(e);
+    }
+  }
+
   public static void goToOrderPage() {
     goTo(KioskPage.ORDER);
   }
@@ -88,9 +104,11 @@ public class SceneRouter {
 
   public enum KioskPage {
     HOME("HomeView.fxml"),
+    MENU("MenuView.fxml"),
     ORDER("OrderView.fxml"),
     CHECKOUT("CheckoutView.fxml"),
     DASHBOARD("DashboardView.fxml");
+
 
     private final String value;
 
