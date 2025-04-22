@@ -13,13 +13,12 @@ import org.example.features.product.Product;
 import org.example.features.product.ProductMapper;
 import org.example.features.product.ProductRepository;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class AppTest {
 
   @AfterEach
-  void tearDown() throws Exception {
+  void tearDown() {
     TestDatabase database = (TestDatabase) TestDatabase.getInstance();
     database.resetDatabase();
   }
@@ -30,7 +29,7 @@ class AppTest {
     CrudRepository<Product> productRepository =
         new ProductRepository(database.getConnection(), "Product", new ProductMapper());
 
-    productRepository.save(new Product(0, "Test Product", "Test Description", 10.0, "1"));
+    productRepository.save(new Product("Test Product", "Test Description", 10.0, "1"));
 
     assertEquals(
         1,

@@ -35,6 +35,10 @@ public record Product(int id, String name, String description, double price, Str
     }
   }
 
+  public Product(String name, String description, double price, String imageUrl) {
+    this(0, name, description, price, imageUrl);
+  }
+
   @Override
   public String toString() {
     return String.format("%s, Price: %.2f", name, price);
