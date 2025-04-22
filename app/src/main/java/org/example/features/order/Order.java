@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import org.example.features.product.Product;
 
-
 /**
  * Order class represents a customer's order in the system.
  * It contains a list of ProductQuantity objects, each representing a product and its quantity.

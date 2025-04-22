@@ -4,9 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import org.example.shared.EntityMapper;
 
-/**
- * The type Product mapper.
- */
+/** The type Product mapper. */
 public class ProductMapper implements EntityMapper<Product> {
 
   @Override

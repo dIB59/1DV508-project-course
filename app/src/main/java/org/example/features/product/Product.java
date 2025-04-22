@@ -2,32 +2,26 @@ package org.example.features.product;
 
 /**
  * Represents a product in the system.
- * <p>
- * This class is a record that encapsulates the properties of a product, including its ID, name,
+ *
+ * <p>This class is a record that encapsulates the properties of a product, including its ID, name,
  * description, price, and image URL. It provides validation for the name, description, and price
  * fields to ensure they are not null or empty and that the price is not negative.
  *
- * @param id          The unique identifier for the product.
- * @param name        The name of the product.
+ * @param id The unique identifier for the product.
+ * @param name The name of the product.
  * @param description A brief description of the product.
- * @param price       The price of the product.
- * @param imageUrl    The URL of the product's image.
+ * @param price The price of the product.
+ * @param imageUrl The URL of the product's image.
  */
-public record Product(
-    int id,
-    String name,
-    String description,
-    double price,
-    String imageUrl
-) {
+public record Product(int id, String name, String description, double price, String imageUrl) {
   /**
    * Instantiates a new Product.
    *
-   * @param id          the id
-   * @param name        the name
+   * @param id the id
+   * @param name the name
    * @param description the description
-   * @param price       the price
-   * @param imageUrl    the image url
+   * @param price the price
+   * @param imageUrl the image url
    */
   public Product {
     if (name == null || name.isBlank()) {

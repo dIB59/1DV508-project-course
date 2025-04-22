@@ -12,7 +12,6 @@ import org.example.features.product.Product;
 import org.example.features.product.ProductMapper;
 import org.example.features.product.ProductRepository;
 
-
 /**
  * AppControllerFactory is a factory class that creates instances of controllers based on the
  * controller class name. It implements the Callback interface to provide a way to create
@@ -36,11 +35,10 @@ public class AppControllerFactory implements Callback<Class<?>, Object> {
 
   /**
    * Creates a controller instance based on the provided class.
+   * If you add a new controller, you need to add a case for it in this method.
    *
    * @param controllerClass The class of the controller to be created.
    * @return An instance of the specified controller class.
-   * <p>
-   * If you add a new controller, you need to add a case for it in this method.
    */
   @Override
   public Object call(Class<?> controllerClass) {

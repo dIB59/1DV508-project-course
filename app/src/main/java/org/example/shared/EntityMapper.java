@@ -15,9 +15,11 @@ public interface EntityMapper<T> {
    *
    * @param rs the ResultSet to map
    * @return the mapped entity
-   * @throws SQLException if an SQL error occurs <p> Example usage: <p> OrderMapper orderMapper = new OrderMapper(); <p> ResultSet rs = statement.executeQuery("SELECT * FROM orders WHERE id = 1"); <p> Order order = orderMapper.map(rs);
+   * @throws SQLException if an SQL error occurs
+   *     <p>Example usage:
+   *     <p>OrderMapper orderMapper = new OrderMapper();
+   *     <p>ResultSet rs = statement.executeQuery("SELECT * FROM orders WHERE id = 1");
+   *     <p>Order order = orderMapper.map(rs);
    */
   T map(ResultSet rs) throws SQLException;
-
 }
-

@@ -1,8 +1,6 @@
 package org.example.features.home;
 
-/**
- * The type Home model.
- */
+/** The type Home model. */
 public class HomeModel {
   /**
    * Gets welcome message.

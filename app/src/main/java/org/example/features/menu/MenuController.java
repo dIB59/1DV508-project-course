@@ -10,37 +10,35 @@ import org.example.features.product.Product;
 import org.example.shared.CrudRepository;
 import org.example.shared.SceneRouter;
 
-/**
- * The type Menu controller.
- */
+/** The type Menu controller. */
 public class MenuController {
 
   private final MenuModel model;
   private final CrudRepository<Product> productRepository;
   private final SceneRouter sceneRouter;
   private final OrderService orderService;
-  @FXML
-  private VBox menuList;
+  @FXML private VBox menuList;
 
   /**
    * Instantiates a new Menu controller.
    *
-   * @param model             the model
+   * @param model the model
    * @param productRepository the product repository
-   * @param sceneRouter       the scene router
-   * @param orderService      the order service
+   * @param sceneRouter the scene router
+   * @param orderService the order service
    */
-  public MenuController(MenuModel model, CrudRepository<Product> productRepository,
-                        SceneRouter sceneRouter, OrderService orderService) {
+  public MenuController(
+      MenuModel model,
+      CrudRepository<Product> productRepository,
+      SceneRouter sceneRouter,
+      OrderService orderService) {
     this.model = model;
     this.productRepository = productRepository;
     this.sceneRouter = sceneRouter;
     this.orderService = orderService;
   }
 
-  /**
-   * Initialize.
-   */
+  /** Initialize. */
   public void initialize() {
     for (Product product : getMenuItems()) {
       Button addButton = new Button("Add to Order");
@@ -58,16 +56,12 @@ public class MenuController {
     }
   }
 
-  /**
-   * Go to checkout page.
-   */
+  /** Go to checkout page. */
   public void goToCheckoutPage() {
     sceneRouter.goToCheckoutPage();
   }
 
-  /**
-   * Go to home page.
-   */
+  /** Go to home page. */
   public void goToHomePage() {
     sceneRouter.goToHomePage();
   }

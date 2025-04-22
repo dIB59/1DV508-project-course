@@ -8,10 +8,8 @@ import java.util.Optional;
  * A generic interface for CRUD operations on a repository for a specific type.
  *
  * @param <T> the type of the entity
- *
- *            <p>Example usage:</p>
- *
- *            <pre>
+ *     <p>Example usage:
+ *     <pre>
  *            class ProductRepository implements CrudRepository&lt;Product&gt; {
  *            <p></p>
  *                &#64;Override
@@ -23,7 +21,6 @@ import java.util.Optional;
  *            </pre>
  */
 public interface CrudRepository<T> {
-
 
   /**
    * Saves the given entity to the repository.
@@ -65,5 +62,4 @@ public interface CrudRepository<T> {
    * @throws SQLException if an SQL error occurs
    */
   List<T> findAll() throws SQLException;
-
 }

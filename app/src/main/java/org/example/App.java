@@ -1,6 +1,5 @@
 package org.example;
 
-
 import java.sql.Connection;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -12,11 +11,8 @@ import org.example.shared.CrudRepository;
 import org.example.shared.Database;
 import org.example.shared.SceneRouter;
 
-/**
- * The type App.
- */
+/** The type App. */
 public class App extends Application {
-
 
   @Override
   public void start(Stage primaryStage) {
@@ -32,6 +28,5 @@ public class App extends Application {
     router.goTo(SceneRouter.KioskPage.HOME);
     primaryStage.setTitle("JavaFX with MySQL");
     primaryStage.show();
-
   }
 }

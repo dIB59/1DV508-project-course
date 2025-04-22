@@ -2,9 +2,7 @@ package org.example;
 
 import javafx.application.Application;
 
-/**
- * The type Main.
- */
+/** The type Main. */
 public class Main {
 
   /**

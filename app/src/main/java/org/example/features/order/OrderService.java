@@ -5,9 +5,8 @@ import org.example.features.product.Product;
 import org.example.shared.CrudRepository;
 
 /**
- * OrderService class is responsible for managing the order.
- * It provides methods to add, remove, and clear items in the order,
- * as well as saving the order to the database.
+ * OrderService class is responsible for managing the order. It provides methods to add, remove, and
+ * clear items in the order, as well as saving the order to the database.
  */
 public class OrderService {
 
@@ -51,16 +50,13 @@ public class OrderService {
     return order.getProductQuantity();
   }
 
-  /**
-   * Clear items.
-   */
+  /** Clear items. */
   public void clearItems() {
     this.order.clearItems();
   }
 
   /**
-   * Saves the order to the database.
-   * If an error occurs during saving, it prints an error message.
+   * Saves the order to the database. If an error occurs during saving, it prints an error message.
    */
   public void saveOrder() {
     try {
@@ -69,5 +65,4 @@ public class OrderService {
       System.err.println("Error saving order: " + e.getLocalizedMessage());
     }
   }
-
 }

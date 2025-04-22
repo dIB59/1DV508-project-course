@@ -13,34 +13,27 @@ import org.example.features.order.OrderService;
 import org.example.features.order.ProductQuantity;
 import org.example.shared.SceneRouter;
 
-/**
- * The type Checkout controller.
- */
+/** The type Checkout controller. */
 public class CheckoutController implements Initializable {
 
   private final OrderService orderService;
   private final SceneRouter router;
-  @FXML
-  private Label itemCountLabel;
-  @FXML
-  private Label totalPriceLabel;
-  @FXML
-  private ListView<String> itemListView;
+  @FXML private Label itemCountLabel;
+  @FXML private Label totalPriceLabel;
+  @FXML private ListView<String> itemListView;
 
   /**
    * Instantiates a new Checkout controller.
    *
    * @param orderService the order service
-   * @param sceneRouter  the scene router
+   * @param sceneRouter the scene router
    */
   public CheckoutController(OrderService orderService, SceneRouter sceneRouter) {
     this.orderService = orderService;
     this.router = sceneRouter;
   }
 
-  /**
-   * Go to home page.
-   */
+  /** Go to home page. */
   public void goToHomePage() {
     orderService.saveOrder();
     orderService.clearItems();
@@ -64,13 +57,16 @@ public class CheckoutController implements Initializable {
     // Populate ListView
     ObservableList<String> items = FXCollections.observableArrayList();
     for (ProductQuantity item : orderService.getItems()) {
-      items.add(item.getProduct().name() + " - $" + item.getProduct().getPrice() + " x "
-          + item.getQuantity());
+      items.add(
+          item.getProduct().name()
+              + " - $"
+              + item.getProduct().getPrice()
+              + " x "
+              + item.getQuantity());
     }
     itemListView.setItems(items);
-    double totalPrice = orderService.getItems().stream()
-        .mapToDouble(ProductQuantity::getPrice)
-        .sum();
+    double totalPrice =
+        orderService.getItems().stream().mapToDouble(ProductQuantity::getPrice).sum();
     totalPriceLabel.setText("Total Price: $" + String.format("%.2f", totalPrice));
   }
 }
