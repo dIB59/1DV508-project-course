@@ -20,13 +20,13 @@ public class OrderMapper implements EntityMapper<Order> {
         orderId = rs.getInt("order_id");
       }
 
-      Product product = new Product(
-          rs.getInt("product_id"),
-          rs.getString("name"),
-          rs.getString("description"),
-          rs.getDouble("price"),
-          rs.getString("image_url")
-      );
+      Product product =
+          new Product(
+              rs.getInt("product_id"),
+              rs.getString("name"),
+              rs.getString("description"),
+              rs.getDouble("price"),
+              rs.getString("image_url"));
       int quantity = rs.getInt("quantity");
       productQuantities.add(new ProductQuantity(product, quantity));
     }

@@ -47,13 +47,12 @@ public final class TestDatabase extends Database {
     return connection;
   }
 
-  /**
-   * Resets all tables in the database by truncating them.
-   */
+  /** Resets all tables in the database by truncating them. */
   public void resetDatabase() {
     List<String> tableNames = getAllTableNames();
 
-    try (Connection conn = getConnection(); Statement stmt = conn.createStatement()) {
+    try (Connection conn = getConnection();
+        Statement stmt = conn.createStatement()) {
 
       stmt.execute("SET FOREIGN_KEY_CHECKS = 0"); // Disable FK checks
 
@@ -72,36 +71,36 @@ public final class TestDatabase extends Database {
     }
   }
 
-    /**
-     * Retrieves a list of all table names in the current database.
-     *
-     * @return A list of table names.
-     */
-    private List<String> getAllTableNames() {
-      List<String> tableNames = new ArrayList<>();
-      try (Connection conn = getConnection();
-           Statement stmt = conn.createStatement();
-           ResultSet rs = stmt.executeQuery("SHOW TABLES")) {
-        while (rs.next()) {
-          tableNames.add(rs.getString(1)); // The first column contains the table name
-        }
-      } catch (SQLException e) {
-        System.err.println("Error retrieving table names: " + e.getMessage());
+  /**
+   * Retrieves a list of all table names in the current database.
+   *
+   * @return A list of table names.
+   */
+  private List<String> getAllTableNames() {
+    List<String> tableNames = new ArrayList<>();
+    try (Connection conn = getConnection();
+        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery("SHOW TABLES")) {
+      while (rs.next()) {
+        tableNames.add(rs.getString(1)); // The first column contains the table name
       }
-      return tableNames;
+    } catch (SQLException e) {
+      System.err.println("Error retrieving table names: " + e.getMessage());
     }
+    return tableNames;
+  }
 
-    /**
-     * Simple check to identify and exclude common system tables (you might need to adjust this
-     * based on your specific database system).
-     *
-     * @param tableName The name of the table.
-     * @return True if the table name suggests it's a system table, false otherwise.
-     */
-    private boolean isSystemTable(String tableName) {
-      return tableName.startsWith("sys") || tableName.startsWith("information_schema") || tableName.startsWith("performance_schema");
-      // Add other prefixes or specific table names if needed
-    }
-
-
+  /**
+   * Simple check to identify and exclude common system tables (you might need to adjust this based
+   * on your specific database system).
+   *
+   * @param tableName The name of the table.
+   * @return True if the table name suggests it's a system table, false otherwise.
+   */
+  private boolean isSystemTable(String tableName) {
+    return tableName.startsWith("sys")
+        || tableName.startsWith("information_schema")
+        || tableName.startsWith("performance_schema");
+    // Add other prefixes or specific table names if needed
+  }
 }
