@@ -69,7 +69,6 @@ public class ReceiptController {
   }
 
   public void goToHomePage() {
-    order.clearItems();
     sceneRouter.goToHomePage();
   }
 
