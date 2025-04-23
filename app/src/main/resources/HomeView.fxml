@@ -13,22 +13,24 @@
           AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" style="-fx-padding: 100; -fx-margin: 10">
 
         <!-- Header -->
-        <Label text="Welcome Home"
+        <Label text="Welcome!"
                fx:id="welcomeLabel"
                style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
 
-        <Label fx:id="itemCountLabel"
-               text="You have 0 items in your cart."
-               style="-fx-font-size: 18px;"/>
         <!-- Body -->
-        <Label text="This is your home screen."
+        <Label text="Please choose one of the options below:"
                style="-fx-font-size: 16px;"/>
 
         <!-- Button -->
-        <Button text="Go to Menu"
-                fx:id="checkoutButton"
-                style="-fx-padding: 10 20; -fx-font-size: 14px; -fx-background-color: #4CAF50; -fx-text-fill: white;"
-                onAction="#goToMenuPage"/>
+        <Button text="Eat-in"
+                fx:id="eatInButton"
+                style="-fx-padding: 10 20; -fx-font-size: 14px; -fx-background-color: green; -fx-text-fill: white;"
+                onAction="#goToMenuPageEatIn"/>
+
+        <Button text="Takeout"
+                fx:id="takeOutButton"
+                style="-fx-padding: 10 20; -fx-font-size: 14px; -fx-background-color: green; -fx-text-fill: white;"
+                onAction="#goToMenuPageTakeout"/>
 
     </VBox>
 

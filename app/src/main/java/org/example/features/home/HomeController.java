@@ -3,6 +3,7 @@ package org.example.features.home;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.VBox;
 import org.example.shared.SceneRouter;
 
 /** The type Home controller. */
@@ -10,12 +11,12 @@ public class HomeController {
 
   private final SceneRouter sceneRouter;
   private final HomeModel homeModel;
+  public boolean takeout = false;
 
-  /** The Item count label. */
-  @FXML public Label itemCountLabel;
 
   @FXML private Label welcomeLabel = new Label("Welcome to the Kiosk!");
-  @FXML private Button checkoutButton;
+  @FXML private Button eatInButton;
+  @FXML private Button takeOutButton;
 
   /**
    * Instantiates a new Home controller.
@@ -30,7 +31,13 @@ public class HomeController {
 
   /** Got to menu page. */
   @FXML
-  public void goToMenuPage() {
+  public void goToMenuPageTakeout() {
     sceneRouter.goToMenuPage();
+    takeout = true;
+  }
+  @FXML
+  public void goToMenuPageEatIn() {
+    sceneRouter.goToMenuPage();
+    takeout = false;
   }
 }
