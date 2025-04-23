@@ -17,7 +17,8 @@ public class MenuController {
   private final CrudRepository<Product> productRepository;
   private final SceneRouter sceneRouter;
   private final OrderService orderService;
-  @FXML private VBox menuList;
+  @FXML
+  private VBox menuList;
 
   /**
    * Instantiates a new Menu controller.
