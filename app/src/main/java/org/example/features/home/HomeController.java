@@ -30,7 +30,7 @@ public class HomeController {
 
   /** Got to menu page. */
   @FXML
-  public void gotToMenuPage() {
+  public void goToMenuPage() {
     sceneRouter.goToMenuPage();
   }
 }
