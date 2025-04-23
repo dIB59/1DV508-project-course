@@ -51,8 +51,8 @@ public class MenuController {
       productCard.setSpacing(5);
       productCard.setStyle("-fx-padding: 10; -fx-border-color: #ccc; -fx-border-radius: 5;");
 
-      addButton.setOnAction(event -> orderService.addItem(product));
-
+      //addButton.setOnAction(event -> orderService.addItem(product));
+      addButton.setOnAction(event -> sceneRouter.goToProductDetailsPage(product));
       menuList.getChildren().add(productCard);
     }
   }

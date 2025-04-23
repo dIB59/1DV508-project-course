@@ -11,6 +11,7 @@ import org.example.features.menu.MenuController;
 import org.example.features.menu.MenuModel;
 import org.example.features.order.OrderService;
 import org.example.features.product.Product;
+import org.example.features.product.ProductDetailsController;
 import org.example.features.product.ProductMapper;
 import org.example.features.product.ProductRepository;
 
@@ -49,6 +50,7 @@ public class AppControllerFactory implements Callback<Class<?>, Object> {
       case "MenuController" ->
           new MenuController(new MenuModel(), getProductRepository(), sceneRouter, orderService);
       case "CheckoutController" -> new CheckoutController(orderService, sceneRouter);
+      case "ProductDetailsController" -> new ProductDetailsController(orderService, sceneRouter);
       default -> {
         try {
           yield controllerClass
