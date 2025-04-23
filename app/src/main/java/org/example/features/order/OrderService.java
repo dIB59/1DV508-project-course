@@ -68,7 +68,7 @@ public class OrderService {
       return s;
     } catch (Exception e) {
       System.err.println("Error saving order: " + e.getLocalizedMessage());
+      throw new RuntimeException("Failed to save order");
     }
-    throw new RuntimeException("Failed to save order");
   }
 }
