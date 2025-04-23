@@ -25,9 +25,9 @@
                style="-fx-font-size: 16px;"/>
 
         <!-- Button -->
-        <Button text="Go to Home"
+        <Button text="Pay and get receipt"
                 style="-fx-padding: 10 20; -fx-font-size: 14px; -fx-background-color: #4CAF50; -fx-text-fill: white;"
-                onAction="#goToHomePage"/>
+                onAction="#goToReceiptPage"/>
         <Label
                 fx:id="totalPriceLabel"
                 text="Total Price: $0.00"

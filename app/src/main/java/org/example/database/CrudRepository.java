@@ -28,7 +28,7 @@ public interface CrudRepository<T> {
    * @param entity the entity to save
    * @throws SQLException if an SQL error occurs
    */
-  void save(T entity) throws SQLException;
+  Optional<T> save(T entity) throws SQLException;
 
   /**
    * Finds an entity by its ID.

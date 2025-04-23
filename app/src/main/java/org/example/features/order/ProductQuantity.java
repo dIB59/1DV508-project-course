@@ -77,4 +77,9 @@ public class ProductQuantity {
   public Product getProduct() {
     return product;
   }
+
+  @Override
+  public String toString() {
+    return "ProductQuantity{" + "product=" + product + ", quantity=" + quantity + '}';
+  }
 }
