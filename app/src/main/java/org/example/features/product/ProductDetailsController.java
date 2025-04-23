@@ -9,7 +9,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 
-
 public class ProductDetailsController {
     private Product product;
     private final OrderService orderService;
@@ -33,20 +32,24 @@ public class ProductDetailsController {
 
     public void setProduct(Product product) {
         this.product = product;
-    
+
         if (productName != null && productPrice != null && quantitySpinner != null) {
             // Update product details
             productName.setText(product.getName());
             productPrice.setText(String.format("$%.2f", product.getPrice()));
-    
+
             // Set a SpinnerValueFactory to manage the Spinner's value
-            SpinnerValueFactory<Integer> valueFactory = 
-                new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 100, 1); // Min: 1, Max: 100, Initial: 1
+            SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 100, 1); // Min:
+                                                                                                                       // 1,
+                                                                                                                       // Max:
+                                                                                                                       // 100,
+                                                                                                                       // Initial:
+                                                                                                                       // 1
             quantitySpinner.setValueFactory(valueFactory);
-    
+
             // Ensure the Spinner is editable
             quantitySpinner.setEditable(true);
-    
+
             // Add listener to validate input
             quantitySpinner.getEditor().textProperty().addListener((observable, oldValue, newValue) -> {
                 try {
@@ -65,7 +68,7 @@ public class ProductDetailsController {
 
     @FXML
     public void addToOrder() {
-    Integer quantity = quantitySpinner.getValue(); // Get the current value from the Spinner
+        Integer quantity = quantitySpinner.getValue(); // Get the current value from the Spinner
         if (quantity == null) {
             System.err.println("Spinner value is null. Ensure SpinnerValueFactory is set.");
             return;
@@ -76,5 +79,5 @@ public class ProductDetailsController {
         }
 
         sceneRouter.goToMenuPage(); // reroute back to menu page once done
-}
+    }
 }
