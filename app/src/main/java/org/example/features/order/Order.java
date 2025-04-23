@@ -95,4 +95,14 @@ public class Order {
   public List<ProductQuantity> getProductQuantity() {
     return this.productQuantity;
   }
+
+  @Override
+  public String toString() {
+    StringBuilder sb = new StringBuilder();
+    sb.append("Order ID: ").append(id).append("\n");
+    for (ProductQuantity pq : productQuantity) {
+      sb.append(pq.toString());
+    }
+    return sb.toString();
+  }
 }

@@ -10,7 +10,7 @@ import org.example.features.product.Product;
  */
 public class OrderService {
 
-  private final Order order;
+  private Order order;
   private final CrudRepository<Order> repository;
 
   /**
@@ -51,18 +51,24 @@ public class OrderService {
   }
 
   /** Clear items. */
-  public void clearItems() {
-    this.order.clearItems();
+  public void clear() {
+    this.order = new Order();
   }
 
   /**
    * Saves the order to the database. If an error occurs during saving, it prints an error message.
    */
-  public void saveOrder() {
+  public Order saveOrderAndClear() {
     try {
-      this.repository.save(order);
+      System.out.println("Order Unsaved: " + order);
+      var s = this.repository.save(order).orElseThrow();
+      this.clear();
+      System.out.println("Order saved successfully: " + s);
+
+      return s;
     } catch (Exception e) {
       System.err.println("Error saving order: " + e.getLocalizedMessage());
     }
+    throw new RuntimeException("Failed to save order");
   }
 }

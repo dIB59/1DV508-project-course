@@ -33,10 +33,13 @@ public class CheckoutController implements Initializable {
     this.router = sceneRouter;
   }
 
+  /** Go to receipt page. */
+  public void goToReceiptPage() {
+    router.goToReceiptPage();
+  }
+
   /** Go to home page. */
   public void goToHomePage() {
-    orderService.saveOrder();
-    orderService.clearItems();
     router.goToHomePage();
   }
 
