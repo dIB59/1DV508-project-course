@@ -52,7 +52,7 @@ public class ProductRepository implements CrudRepository<Product> {
     return results;
   }
 
-  public void save(Product entity) throws SQLException {
+  public Optional<Product> save(Product entity) throws SQLException {
     String sql =
         "INSERT INTO "
             + tableName
@@ -65,6 +65,17 @@ public class ProductRepository implements CrudRepository<Product> {
       stmt.setString(4, entity.getImageUrl());
       stmt.executeUpdate();
     }
+    String sql2 = "SELECT LAST_INSERT_ID()";
+    try (PreparedStatement stmt = connection.prepareStatement(sql2);
+        ResultSet rs = stmt.executeQuery()) {
+      if (rs.next()) {
+        int id = rs.getInt(1);
+        return Optional.of(
+            new Product(id, entity.getName(), entity.getDescription(), entity.getPrice(),
+                entity.getImageUrl()));
+      }
+    }
+    return Optional.empty();
   }
 
   public void update(Product entity) throws SQLException {

@@ -14,6 +14,7 @@ import org.example.features.product.Product;
 import org.example.features.product.ProductDetailsController;
 import org.example.features.product.ProductMapper;
 import org.example.features.product.ProductRepository;
+import org.example.features.receipt.ReceiptController;
 
 /**
  * AppControllerFactory is a factory class that creates instances of controllers based on the
@@ -51,6 +52,8 @@ public class AppControllerFactory implements Callback<Class<?>, Object> {
           new MenuController(new MenuModel(), getProductRepository(), sceneRouter, orderService);
       case "CheckoutController" -> new CheckoutController(orderService, sceneRouter);
       case "ProductDetailsController" -> new ProductDetailsController(orderService, sceneRouter);
+      case "ReceiptController" ->
+          new ReceiptController(orderService.saveOrderAndClear(), sceneRouter);
       default -> {
         try {
           yield controllerClass
