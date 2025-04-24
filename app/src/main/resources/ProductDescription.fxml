@@ -17,6 +17,9 @@
         
         <!-- Product Price -->
         <Label fx:id="productPrice" style="-fx-font-size: 16px;" text="Product Price"/>
+
+        <!-- Product Description -->
+        <Label fx:id="productDescription" style = "-fx-font-size: 16px;" text="Product Description"/>
         
         <!-- Quantity Spinner -->
         <Spinner fx:id="quantitySpinner" prefWidth="150.0"/>

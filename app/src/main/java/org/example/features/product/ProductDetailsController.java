@@ -19,6 +19,9 @@ public class ProductDetailsController {
     @FXML
     private Label productPrice;
 
+    @FXML 
+    private Label productDescription;
+
     @FXML
     private Spinner<Integer> quantitySpinner;
 
@@ -37,6 +40,8 @@ public class ProductDetailsController {
             // Update product details
             productName.setText(product.getName());
             productPrice.setText(String.format("$%.2f", product.getPrice()));
+            System.err.println(product.getDescription());
+            productDescription.setText(product.getDescription());
 
             // Set a SpinnerValueFactory to manage the Spinner's value
             SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 100, 1); // Min:
