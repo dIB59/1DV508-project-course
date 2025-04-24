@@ -7,6 +7,8 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import org.example.features.order.OrderService;
+import org.example.features.product.Product;
+import org.example.features.product.ProductDetailsController;
 
 /** The type Scene router. */
 public class SceneRouter {
@@ -81,10 +83,29 @@ public class SceneRouter {
     goTo(KioskPage.CHECKOUT);
   }
 
+
+  public void goToProductDetailsPage(Product product) {
+    try {
+        URL url = getClass().getResource("/" + KioskPage.PRODUCTDESCRIPTION.getValue());
+        FXMLLoader loader = new FXMLLoader(url);
+        loader.setControllerFactory(controllerFactory);
+
+        Scene scene = new Scene(loader.load());
+        ProductDetailsController controller = loader.getController();
+        controller.setProduct(product); // Set the product after loading the FXML
+
+        currentPage = KioskPage.PRODUCTDESCRIPTION;
+        stage.setScene(scene);
+        stage.show();
+    } catch (IOException e) {
+        System.err.println("Failed to load Product Details page: " + e.getLocalizedMessage());
+        e.printStackTrace();
+    }
+}
+
   public void goToReceiptPage() {
     goTo(KioskPage.RECEIPT);
   }
-
   /**
    * Enum representing the different pages in the kiosk application. Each enum constant corresponds
    * to a specific FXML file.
@@ -101,7 +122,9 @@ public class SceneRouter {
     /** Receipt kiosk page. */
     RECEIPT("ReceiptView.fxml"),
     /** Dashboard kiosk page. */
-    DASHBOARD("DashboardView.fxml");
+    DASHBOARD("DashboardView.fxml"),
+    // Product description page
+    PRODUCTDESCRIPTION("ProductDescription.fxml");
 
     private final String value;
 
