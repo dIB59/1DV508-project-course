@@ -61,7 +61,7 @@ public class OrderService {
   public Order saveOrderAndClear() {
     try {
       System.out.println("Order Unsaved: " + order);
-      var s = this.repository.save(order).orElseThrow();
+      var s = this.repository.save(order);
       this.clear();
       System.out.println("Order saved successfully: " + s);
 
