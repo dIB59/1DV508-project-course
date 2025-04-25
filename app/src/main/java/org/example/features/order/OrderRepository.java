@@ -28,7 +28,7 @@ public class OrderRepository implements CrudRepository<Order> {
     this.orderMapper = orderMapper;
   }
 
-  public Optional<Order> save(Order order) throws SQLException {
+  public Order save(Order order) throws SQLException {
     String insertOrderSql = "INSERT INTO Orders () VALUES ()";
     try (PreparedStatement orderStmt =
         connection.prepareStatement(insertOrderSql, Statement.RETURN_GENERATED_KEYS)) {
@@ -49,11 +49,10 @@ public class OrderRepository implements CrudRepository<Order> {
           }
           productStmt.executeBatch();
         }
-        System.out.println(order.getProductQuantity());
-        return Optional.of(new Order(orderId, order.getProductQuantity()));
+        return new Order(orderId, order.getProductQuantity());
       }
     }
-    return Optional.empty();
+    throw new SQLException("Failed to save order, no ID obtained.");
   }
 
   public Optional<Order> findById(int id) throws SQLException {

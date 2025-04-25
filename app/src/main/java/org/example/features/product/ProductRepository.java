@@ -52,7 +52,7 @@ public class ProductRepository implements CrudRepository<Product> {
     return results;
   }
 
-  public Optional<Product> save(Product entity) throws SQLException {
+  public Product save(Product entity) throws SQLException {
     String sql =
         "INSERT INTO "
             + tableName
@@ -70,12 +70,12 @@ public class ProductRepository implements CrudRepository<Product> {
         ResultSet rs = stmt.executeQuery()) {
       if (rs.next()) {
         int id = rs.getInt(1);
-        return Optional.of(
+        return
             new Product(id, entity.getName(), entity.getDescription(), entity.getPrice(),
-                entity.getImageUrl()));
+                entity.getImageUrl());
       }
     }
-    return Optional.empty();
+    throw new SQLException("Failed to save product, no ID obtained.");
   }
 
   public void update(Product entity) throws SQLException {
