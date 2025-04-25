@@ -22,4 +22,5 @@ public interface EntityMapper<T> {
    *     <p>Order order = orderMapper.map(rs);
    */
   T map(ResultSet rs) throws SQLException;
+
 }
