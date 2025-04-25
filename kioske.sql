@@ -1,5 +1,5 @@
 -- Table for Product
-CREATE TABLE Product
+CREATE TABLE IF NOT EXISTS Product
 (
     id          INT AUTO_INCREMENT PRIMARY KEY,
     name        VARCHAR(255)   NOT NULL,
@@ -9,13 +9,13 @@ CREATE TABLE Product
 );
 
 -- Table for Order
-CREATE TABLE Orders
+CREATE TABLE IF NOT EXISTS Orders
 (
     id INT AUTO_INCREMENT PRIMARY KEY
 );
 
 -- Table for ProductQuantity (associates products with orders and quantities)
-CREATE TABLE Order_ProductQuantity
+CREATE TABLE IF NOT EXISTS Order_ProductQuantity
 (
     order_id   INT NOT NULL,
     product_id INT NOT NULL,
@@ -37,3 +37,14 @@ VALUES ('Burger', 'A delicious beef burger', 5.99, 'burger.jpg'),
        ('Coffee', 'A hot cup of coffee', 2.49, 'coffee.jpg'),
        ('Tea', 'A soothing cup of tea', 1.49, 'tea.jpg'),
        ('Cake', 'A slice of chocolate cake', 3.49, 'cake.jpg');
+
+CREATE TABLE IF NOT EXISTS Admin
+(
+    id       INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL
+);
+
+INSERT INTO Admin (username, password) VALUES
+('root', 'root'),
+('manager', 'manager');

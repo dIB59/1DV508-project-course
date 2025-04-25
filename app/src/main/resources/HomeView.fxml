@@ -34,4 +34,10 @@
 
     </VBox>
 
+    <Button text="Admin"
+            fx:id="adminButton"
+            style="-fx-padding: 8 16; -fx-font-size: 13px; -fx-background-color: darkblue; -fx-text-fill: white;"
+            onAction="#goToAdminPage"
+            AnchorPane.bottomAnchor="20" AnchorPane.rightAnchor="20"/>
+
 </AnchorPane>

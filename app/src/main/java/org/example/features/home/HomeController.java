@@ -39,4 +39,8 @@ public class HomeController {
     sceneRouter.goToMenuPage();
     takeout = false;
   }
+
+  public void goToAdminPage() {
+    sceneRouter.goToAdminLoginPage();
+  }
 }

@@ -57,8 +57,8 @@ public class AppControllerFactory implements Callback<Class<?>, Object> {
       default -> {
         try {
           yield controllerClass
-              .getDeclaredConstructor(OrderService.class, SceneRouter.class)
-              .newInstance(orderService, sceneRouter);
+              .getDeclaredConstructor(SceneRouter.class)
+              .newInstance(sceneRouter);
         } catch (NoSuchMethodException
             | InstantiationException
             | IllegalAccessException
