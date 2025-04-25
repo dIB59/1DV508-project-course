@@ -83,29 +83,29 @@ public class SceneRouter {
     goTo(KioskPage.CHECKOUT);
   }
 
-
   public void goToProductDetailsPage(Product product) {
     try {
-        URL url = getClass().getResource("/" + KioskPage.PRODUCTDESCRIPTION.getValue());
-        FXMLLoader loader = new FXMLLoader(url);
-        loader.setControllerFactory(controllerFactory);
+      URL url = getClass().getResource("/" + KioskPage.PRODUCTDESCRIPTION.getValue());
+      FXMLLoader loader = new FXMLLoader(url);
+      loader.setControllerFactory(controllerFactory);
 
-        Scene scene = new Scene(loader.load());
-        ProductDetailsController controller = loader.getController();
-        controller.setProduct(product); // Set the product after loading the FXML
+      Scene scene = new Scene(loader.load());
+      ProductDetailsController controller = loader.getController();
+      controller.setProduct(product); // Set the product after loading the FXML
 
-        currentPage = KioskPage.PRODUCTDESCRIPTION;
-        stage.setScene(scene);
-        stage.show();
+      currentPage = KioskPage.PRODUCTDESCRIPTION;
+      stage.setScene(scene);
+      stage.show();
     } catch (IOException e) {
-        System.err.println("Failed to load Product Details page: " + e.getLocalizedMessage());
-        e.printStackTrace();
+      System.err.println("Failed to load Product Details page: " + e.getLocalizedMessage());
+      e.printStackTrace();
     }
-}
+  }
 
   public void goToReceiptPage() {
     goTo(KioskPage.RECEIPT);
   }
+
   /**
    * Enum representing the different pages in the kiosk application. Each enum constant corresponds
    * to a specific FXML file.

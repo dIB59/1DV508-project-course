@@ -2,27 +2,28 @@ package org.example.features.receipt;
 
 import java.util.List;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
-import org.example.features.order.Order;
-
-import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
-
+import org.example.features.order.Order;
 import org.example.features.order.ProductQuantity;
 import org.example.features.product.Product;
 import org.example.shared.SceneRouter;
 
 public class ReceiptController {
 
-  @FXML public Label orderIdLabel;
-  @FXML private VBox itemsContainer;
-
-  @FXML
-  private Label titleLabel, totalLabel, thankYouLabel, restaurantNameLabel, addressLabel, contactLabel;
-
   private final Order order;
   private final SceneRouter sceneRouter;
+  @FXML public Label orderIdLabel;
+  @FXML private VBox itemsContainer;
+  @FXML
+  private Label titleLabel,
+      totalLabel,
+      thankYouLabel,
+      restaurantNameLabel,
+      addressLabel,
+      contactLabel;
 
   public ReceiptController(Order order, SceneRouter sceneRouter) {
     this.order = order;
@@ -71,5 +72,4 @@ public class ReceiptController {
   public void goToHomePage() {
     sceneRouter.goToHomePage();
   }
-
 }

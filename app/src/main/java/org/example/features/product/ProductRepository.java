@@ -70,9 +70,8 @@ public class ProductRepository implements CrudRepository<Product> {
         ResultSet rs = stmt.executeQuery()) {
       if (rs.next()) {
         int id = rs.getInt(1);
-        return
-            new Product(id, entity.getName(), entity.getDescription(), entity.getPrice(),
-                entity.getImageUrl());
+        return new Product(
+            id, entity.getName(), entity.getDescription(), entity.getPrice(), entity.getImageUrl());
       }
     }
     throw new SQLException("Failed to save product, no ID obtained.");
