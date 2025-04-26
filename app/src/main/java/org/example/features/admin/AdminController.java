@@ -2,7 +2,6 @@ package org.example.features.admin;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import org.example.shared.SceneRouter;
@@ -35,21 +34,20 @@ public class AdminController {
     if (username.isEmpty() || password.isEmpty()) {
       usernameField.setText("Username or Password cannot be empty");
       passwordField.setText("");
+      return;
+      }
+    if (validateCredentials(username, password)) {
+      goToDashboard();
     } else {
-      validateCredentials(username, password);
+      usernameField.setText("Invalid credentials");
+      passwordField.setText("");
     }
+
   }
 
-  private void validateCredentials(String username, String password) {
-    this.adminRepository.findByUsername(username)
-        .ifPresentOrElse(admin -> {
-              if (admin.getPassword().equals(password)) {
-                goToDashboard();
-              }
-            },
-            () -> {
-              usernameField.setText("Invalid username or password");
-              passwordField.setText("");
-            });
+  private boolean validateCredentials(String username, String password) {
+    return adminRepository.findByUsername(username)
+        .map(admin -> admin.getPassword().equals(password))
+        .orElse(false);
   }
 }
