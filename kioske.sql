@@ -48,3 +48,28 @@ CREATE TABLE IF NOT EXISTS Admin
 INSERT INTO Admin (username, password) VALUES
 ('root', 'root'),
 ('manager', 'manager');
+
+-- Table for ProductCategory (associates products with categories)
+CREATE TABLE Category
+(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(50) UNIQUE NOT NULL
+);
+
+-- Table for Product_Tag (associates products with tags)
+CREATE TABLE Product_Category
+(
+    product_id INT NOT NULL,
+    tag_id     INT NOT NULL,
+    PRIMARY KEY (product_id, tag_id),
+    FOREIGN KEY (product_id) REFERENCES Product (id) ON DELETE CASCADE,
+    FOREIGN KEY (tag_id) REFERENCES Category (id) ON DELETE CASCADE
+);
+
+-- Sample data for Product_Tag
+INSERT INTO Category (name) VALUES
+('Starters'),
+('Main Course'),
+('Desserts'),
+('Beverages'),
+('Snacks');
