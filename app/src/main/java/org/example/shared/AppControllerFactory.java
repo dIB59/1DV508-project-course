@@ -4,6 +4,10 @@ import java.lang.reflect.InvocationTargetException;
 import javafx.util.Callback;
 import org.example.database.CrudRepository;
 import org.example.database.Database;
+import org.example.features.admin.Admin;
+import org.example.features.admin.AdminController;
+import org.example.features.admin.AdminMapper;
+import org.example.features.admin.AdminRepository;
 import org.example.features.checkout.CheckoutController;
 import org.example.features.home.HomeController;
 import org.example.features.home.HomeModel;
@@ -54,6 +58,7 @@ public class AppControllerFactory implements Callback<Class<?>, Object> {
       case "ProductDetailsController" -> new ProductDetailsController(orderService, sceneRouter);
       case "ReceiptController" ->
           new ReceiptController(orderService.saveOrderAndClear(), sceneRouter);
+      case "AdminController" -> new AdminController(sceneRouter, getAdminRepository());
       default -> {
         try {
           yield controllerClass
@@ -72,5 +77,9 @@ public class AppControllerFactory implements Callback<Class<?>, Object> {
 
   private CrudRepository<Product> getProductRepository() {
     return new ProductRepository(Database.getInstance().getConnection(), new ProductMapper());
+  }
+
+  private AdminRepository getAdminRepository() {
+    return new AdminRepository(Database.getInstance().getConnection(), new AdminMapper());
   }
 }

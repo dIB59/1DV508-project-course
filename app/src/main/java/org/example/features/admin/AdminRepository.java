@@ -82,4 +82,18 @@ public class AdminRepository implements CrudRepository<Admin> {
       return admins;
     }
   }
+
+  public Optional<Admin> findByUsername(String username) {
+    String sql = "SELECT * FROM Admin WHERE username = ?";
+    try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+      stmt.setString(1, username);
+      ResultSet rs = stmt.executeQuery();
+      if (rs.next()) {
+        return Optional.of(adminMapper.map(rs));
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    return Optional.empty();
+  }
 }
