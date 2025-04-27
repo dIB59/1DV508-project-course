@@ -1,5 +1,7 @@
 package org.example.features.product;
 
+import java.util.List;
+
 /**
  * Represents a product in the system.
  *
@@ -13,7 +15,7 @@ package org.example.features.product;
  * @param price The price of the product.
  * @param imageUrl The URL of the product's image.
  */
-public record Product(int id, String name, String description, double price, String imageUrl) {
+public record Product(int id, String name, String description, double price, String imageUrl, List<Tag> tags) {
   /**
    * Instantiates a new Product.
    *
@@ -22,6 +24,7 @@ public record Product(int id, String name, String description, double price, Str
    * @param description the description
    * @param price the price
    * @param imageUrl the image url
+   * @param tags the tags
    */
   public Product {
     if (name == null || name.isBlank()) {
@@ -36,12 +39,18 @@ public record Product(int id, String name, String description, double price, Str
   }
 
   public Product(String name, String description, double price, String imageUrl) {
-    this(0, name, description, price, imageUrl);
+    this(0, name, description, price, imageUrl, List.of());
+  }
+
+  public Product(String name, String description, double price, String imageUrl, List<Tag> tags) {
+    this(0, name, description, price, imageUrl, tags);
   }
 
   @Override
   public String toString() {
-    return String.format("%s, Price: %.2f", name, price);
+    return String.format(
+        "Product{id=%d, name='%s', description='%s', price=%.2f, imageUrl='%s', tags=%s}",
+        id, name, description, price, imageUrl, tags);
   }
 
   /**
@@ -87,5 +96,22 @@ public record Product(int id, String name, String description, double price, Str
    */
   public String getImageUrl() {
     return imageUrl;
+  }
+
+  /**
+   * Gets tags.
+   *
+   * @return the tags
+   */
+  public List<Tag> getTags() {
+    return tags;
+  }
+
+  public List<Integer> tagIds() {
+    List<Integer> tagIds = new java.util.ArrayList<>();
+    for (Tag tag : tags) {
+      tagIds.add(tag.getId());
+    }
+    return tagIds;
   }
 }
