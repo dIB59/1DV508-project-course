@@ -2,7 +2,6 @@ package org.example.shared;
 
 import java.lang.reflect.InvocationTargetException;
 import javafx.util.Callback;
-import org.example.database.CrudRepository;
 import org.example.database.Database;
 import org.example.features.admin.AdminController;
 import org.example.features.admin.AdminMapper;
@@ -15,7 +14,6 @@ import org.example.features.home.HomeModel;
 import org.example.features.menu.MenuController;
 import org.example.features.menu.MenuModel;
 import org.example.features.order.OrderService;
-import org.example.features.product.Product;
 import org.example.features.product.ProductDetailsController;
 import org.example.features.product.ProductMapper;
 import org.example.features.product.ProductRepository;
@@ -78,7 +76,7 @@ public class AppControllerFactory implements Callback<Class<?>, Object> {
     };
   }
 
-  private CrudRepository<Product> getProductRepository() {
+  private ProductRepository getProductRepository() {
     return new ProductRepository(Database.getInstance().getConnection(), new ProductMapper());
   }
 
