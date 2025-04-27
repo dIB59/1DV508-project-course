@@ -10,7 +10,7 @@ import java.util.List;
 
 public final class TestDatabase extends Database {
 
-  private static Database instance;
+  private static TestDatabase instance;
   private final String URL =
       "jdbc:mysql://localhost/kioske_test?useSSL=false&allowPublicKeyRetrieval=true";
   private final String USER = "root";
@@ -24,7 +24,7 @@ public final class TestDatabase extends Database {
    *
    * @return the instance
    */
-  public static Database getInstance() {
+  public static TestDatabase getInstance() {
     if (instance == null) {
       instance = new TestDatabase();
     }
