@@ -5,7 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import org.example.database.CrudRepository;
 import org.example.database.EntityMapper;
@@ -29,7 +31,14 @@ public class ProductRepository implements CrudRepository<Product> {
   }
 
   public Optional<Product> findById(int id) throws SQLException {
-    String sql = "SELECT * FROM " + tableName + " WHERE id = ?";
+    String sql = "SELECT Product.id, Product.name, Product.description, Product.price, Product.image_url, GROUP_CONCAT(T.name) AS tags, GROUP_CONCAT(T.id) AS tags_ids "
+        + "FROM Product "
+        + "LEFT JOIN kioske.Product_Tags PT ON Product.id = PT.product_id "
+        + "LEFT JOIN kioske.Tags T ON PT.tag_id = T.id "
+        + "WHERE Product.id = ? "
+        + "GROUP BY Product.id";
+
+
     try (PreparedStatement stmt = connection.prepareStatement(sql)) {
       stmt.setInt(1, id);
       ResultSet rs = stmt.executeQuery();
@@ -41,7 +50,11 @@ public class ProductRepository implements CrudRepository<Product> {
   }
 
   public List<Product> findAll() throws SQLException {
-    String sql = "SELECT * FROM " + tableName;
+    String sql = "SELECT Product.id, Product.name, Product.description, Product.price, Product.image_url, GROUP_CONCAT(T.name) AS tags, GROUP_CONCAT(T.id) AS tags_ids "
+        + "FROM Product "
+        + "LEFT JOIN kioske.Product_Tags PT ON Product.id = PT.product_id "
+        + "LEFT JOIN kioske.Tags T ON PT.tag_id = T.id "
+        + "GROUP BY Product.id";
     List<Product> results = new ArrayList<>();
     try (PreparedStatement stmt = connection.prepareStatement(sql);
         ResultSet rs = stmt.executeQuery()) {
@@ -63,6 +76,7 @@ public class ProductRepository implements CrudRepository<Product> {
       stmt.setDouble(2, entity.getPrice());
       stmt.setString(3, entity.getDescription());
       stmt.setString(4, entity.getImageUrl());
+
       stmt.executeUpdate();
     }
     String sql2 = "SELECT LAST_INSERT_ID()";
@@ -71,10 +85,12 @@ public class ProductRepository implements CrudRepository<Product> {
       if (rs.next()) {
         int id = rs.getInt(1);
         return new Product(
-            id, entity.getName(), entity.getDescription(), entity.getPrice(), entity.getImageUrl());
+            id, entity.getName(), entity.getDescription(), entity.getPrice(), entity.getImageUrl(), entity.getTags());
       }
     }
     throw new SQLException("Failed to save product, no ID obtained.");
+
+
   }
 
   public void update(Product entity) throws SQLException {
@@ -91,6 +107,37 @@ public class ProductRepository implements CrudRepository<Product> {
       stmt.setInt(5, entity.getId());
       stmt.executeUpdate();
     }
+
+    // Delete old tags
+    String deleteTagsSql = "DELETE FROM kioske.Product_Tags WHERE product_id = ?";
+    try (PreparedStatement stmt = connection.prepareStatement(deleteTagsSql)) {
+      stmt.setInt(1, entity.getId());
+      stmt.executeUpdate();
+    }
+
+    // Load all tags from database
+    Map<String, Integer> tagNameToId = new HashMap<>();
+    for (Tag tag : findAllTags()) {
+      tagNameToId.put(tag.getName(), tag.getId());
+    }
+
+
+    if (entity.getTags() != null && !entity.getTags().isEmpty()) {
+      String insertTagSql = "INSERT INTO kioske.Product_Tags (product_id, tag_id) VALUES (?, ?)";
+      try (PreparedStatement stmt = connection.prepareStatement(insertTagSql)) {
+        for (Tag tag : entity.getTags()) {
+          String tagName = tag.getName();
+          Integer tagId = tagNameToId.get(tagName);
+          if (tagId == null) {
+            throw new SQLException("Tag name not found: " + tagName);
+          }
+          stmt.setInt(1, entity.getId());
+          stmt.setInt(2, tagId);
+          stmt.addBatch();
+        }
+        stmt.executeBatch();
+      }
+    }
   }
 
   public void delete(int id) throws SQLException {
@@ -99,5 +146,59 @@ public class ProductRepository implements CrudRepository<Product> {
       stmt.setInt(1, id);
       stmt.executeUpdate();
     }
+  }
+
+  public List<Tag> findAllTags() throws SQLException {
+    List<Tag> tags = new ArrayList<>();
+    String sql = "SELECT id, name FROM kioske.Tags";
+
+    try (PreparedStatement stmt = connection.prepareStatement(sql);
+         ResultSet rs = stmt.executeQuery()) {
+      while (rs.next()) {
+        tags.add(new Tag(rs.getInt("id"), rs.getString("name")));
+      }
+    }
+    return tags;
+  }
+
+
+  public void addTagToProduct(int productId, int tagId) throws SQLException {
+    String sql = "INSERT INTO kioske.Product_Tags (product_id, tag_id) VALUES (?, ?)";
+
+    try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+      stmt.setInt(1, productId);
+      stmt.setInt(2, tagId);
+      stmt.executeUpdate();
+    }
+  }
+
+  public void removeTagFromProduct(int productId, int tagId) throws SQLException {
+    String sql = "DELETE FROM kioske.Product_Tags WHERE product_id = ? AND tag_id = ?";
+
+    try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+      stmt.setInt(1, productId);
+      stmt.setInt(2, tagId);
+      stmt.executeUpdate();
+    }
+  }
+
+  /**
+   *
+   * @param tagName name if the tag you want to create
+   * @return the id of the tag created
+   * @throws SQLException if tag is not created properly
+   */
+  public int createTag(String tagName) throws SQLException {
+    String sql = "INSERT INTO kioske.Tags (name) VALUES (?)";
+    PreparedStatement stmt = connection.prepareStatement(sql);
+    stmt.setString(1, tagName);
+    stmt.executeUpdate();
+    String sql2 = "SELECT LAST_INSERT_ID()";
+    PreparedStatement stmt2 = connection.prepareStatement(sql2);
+    ResultSet rs = stmt2.executeQuery();
+    if (rs.next()) {
+      return rs.getInt(1);
+    }
+    throw new SQLException("Failed to create tag, no ID obtained.");
   }
 }
