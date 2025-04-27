@@ -50,26 +50,30 @@ INSERT INTO Admin (username, password) VALUES
 ('manager', 'manager');
 
 -- Table for ProductCategory (associates products with categories)
-CREATE TABLE Category
+CREATE TABLE IF NOT EXISTS Tags
 (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(50) UNIQUE NOT NULL
 );
 
 -- Table for Product_Tag (associates products with tags)
-CREATE TABLE Product_Category
+CREATE TABLE IF NOT EXISTS Product_Tags
 (
     product_id INT NOT NULL,
     tag_id     INT NOT NULL,
     PRIMARY KEY (product_id, tag_id),
     FOREIGN KEY (product_id) REFERENCES Product (id) ON DELETE CASCADE,
-    FOREIGN KEY (tag_id) REFERENCES Category (id) ON DELETE CASCADE
+    FOREIGN KEY (tag_id) REFERENCES Tags (id) ON DELETE CASCADE
 );
 
 -- Sample data for Product_Tag
-INSERT INTO Category (name) VALUES
+INSERT INTO Tags (name) VALUES
 ('Starters'),
 ('Main Course'),
 ('Desserts'),
 ('Beverages'),
 ('Snacks');
+
+INSERT INTO Product_Tags (product_id, tag_id) VALUES
+(1, 1), -- Burger
+(2, 2) -- Pizza
