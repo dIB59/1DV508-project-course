@@ -27,8 +27,9 @@
                         style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14px; -fx-cursor: hand;"
                         prefWidth="120.0"/>
 
-                <Button text="Orders"
+                <Button text="Coupons"
                         style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14px; -fx-cursor: hand;"
+                        onAction="#goToCouponsPage"
                         prefWidth="120.0"/>
 
                 <Button text="Settings"

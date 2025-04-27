@@ -50,6 +50,10 @@ public class DashboardController {
     sceneRouter.goToHomePage();
   }
 
+  public void goToCouponsPage() {
+    sceneRouter.goToCouponsPage();
+  }
+
   private void loadProducts() {
 
     List<Product> products;
