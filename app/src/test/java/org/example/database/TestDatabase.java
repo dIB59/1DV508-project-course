@@ -10,9 +10,7 @@ import java.util.List;
 
 public final class TestDatabase extends Database {
 
-  private static Database instance;
-  private final String URL =
-      "jdbc:mysql://localhost/kioske_test?useSSL=false&allowPublicKeyRetrieval=true";
+  private static TestDatabase instance;
   private final String USER = "root";
   private final String PASSWORD = "root";
   private Connection connection;
@@ -24,7 +22,7 @@ public final class TestDatabase extends Database {
    *
    * @return the instance
    */
-  public static Database getInstance() {
+  public static TestDatabase getInstance() {
     if (instance == null) {
       instance = new TestDatabase();
     }
@@ -39,6 +37,7 @@ public final class TestDatabase extends Database {
   public Connection getConnection() {
     try {
       if (connection == null || connection.isClosed()) {
+        String URL = "jdbc:mysql://localhost/kioske_test?useSSL=false&allowPublicKeyRetrieval=true";
         connection = DriverManager.getConnection(URL + "&user=" + USER + "&password=" + PASSWORD);
       }
     } catch (SQLException e) {

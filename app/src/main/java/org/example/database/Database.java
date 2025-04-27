@@ -15,7 +15,7 @@ import java.sql.SQLException;
  * Connection conn = Database.getInstance().getConnection();
  * </pre>
  */
-public sealed class Database permits TestDatabase {
+public class Database {
 
   private static Database instance;
   private final String URL =

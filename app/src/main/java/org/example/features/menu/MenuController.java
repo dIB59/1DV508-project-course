@@ -17,16 +17,15 @@ public class MenuController {
   private final CrudRepository<Product> productRepository;
   private final SceneRouter sceneRouter;
   private final OrderService orderService;
-  @FXML
-  private VBox menuList;
+  @FXML private VBox menuList;
 
   /**
    * Instantiates a new Menu controller.
    *
-   * @param model             the model
+   * @param model the model
    * @param productRepository the product repository
-   * @param sceneRouter       the scene router
-   * @param orderService      the order service
+   * @param sceneRouter the scene router
+   * @param orderService the order service
    */
   public MenuController(
       MenuModel model,

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.example.database.EntityMapper;
 import org.example.features.product.Product;
+import org.example.features.product.Tag;
 
 /** The type Order mapper. */
 public class OrderMapper implements EntityMapper<Order> {
@@ -20,13 +21,24 @@ public class OrderMapper implements EntityMapper<Order> {
         orderId = rs.getInt("order_id");
       }
 
+      List<Tag> tags = new ArrayList<>();
+      if (rs.getArray("tags") != null && rs.getArray("tag_ids") != null) {
+        String[] tagNames = (String[]) rs.getArray("tags").getArray();
+        Integer[] tagIds = (Integer[]) rs.getArray("tag_ids").getArray();
+
+        for (int i = 0; i < tagNames.length; i++) {
+          tags.add(new Tag(tagIds[i], tagNames[i]));
+        }
+      }
+
       Product product =
           new Product(
               rs.getInt("product_id"),
               rs.getString("name"),
               rs.getString("description"),
               rs.getDouble("price"),
-              rs.getString("image_url"));
+              rs.getString("image_url"),
+              tags);
       int quantity = rs.getInt("quantity");
       productQuantities.add(new ProductQuantity(product, quantity));
     }

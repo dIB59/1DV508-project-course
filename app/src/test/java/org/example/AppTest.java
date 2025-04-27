@@ -6,27 +6,26 @@ package org.example;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.example.database.CrudRepository;
-import org.example.database.Database;
 import org.example.database.TestDatabase;
 import org.example.features.product.Product;
 import org.example.features.product.ProductMapper;
 import org.example.features.product.ProductRepository;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class AppTest {
 
+  private final TestDatabase database = TestDatabase.getInstance();
+
   @AfterEach
   void tearDown() {
-    TestDatabase database = (TestDatabase) TestDatabase.getInstance();
     database.resetDatabase();
   }
 
   @Test
   void productRepoTest() throws Exception {
-    Database database = TestDatabase.getInstance();
-    CrudRepository<Product> productRepository =
+    ProductRepository productRepository =
         new ProductRepository(database.getConnection(), new ProductMapper());
 
     productRepository.save(new Product("Test Product", "Test Description", 10.0, "1"));
@@ -36,5 +35,24 @@ class AppTest {
         productRepository.findAll().stream()
             .filter(product -> product.getName().equals("Test Product"))
             .count());
+  }
+
+  @Test
+  void productTagsTest() throws Exception {
+    ProductRepository productRepository =
+        new ProductRepository(database.getConnection(), new ProductMapper());
+
+    var product = productRepository.save(new Product("Test Product", "Test Description", 10.0, "1"));
+    productRepository.createTag("Tag4");
+    productRepository.createTag("Tag5");
+
+    var tags = productRepository.findAllTags();
+
+    Product updatedProduct = new Product(
+        product.id(), product.getName(), product.getDescription(), product.getPrice(),
+        product.getImageUrl(), tags);
+
+    assertEquals(2, updatedProduct.getTags().size());
+
   }
 }

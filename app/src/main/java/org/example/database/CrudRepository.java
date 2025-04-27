@@ -1,5 +1,7 @@
 package org.example.database;
 
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
@@ -62,4 +64,21 @@ public interface CrudRepository<T> {
    * @throws SQLException if an SQL error occurs
    */
   List<T> findAll() throws SQLException;
+
+  default void printResultSet(ResultSet rs) throws SQLException {
+    // Get metadata to retrieve column names
+    ResultSetMetaData rsMetaData = rs.getMetaData();
+    int columnCount = rsMetaData.getColumnCount();
+
+    // Loop through each row in the ResultSet
+    while (rs.next()) {
+      // For each row, print column name and value
+      for (int i = 1; i <= columnCount; i++) {
+        String columnName = rsMetaData.getColumnName(i); // Get column name
+        Object value = rs.getObject(i);  // Get column value (handles all types)
+        System.out.println(columnName + ": " + value);
+      }
+      System.out.println("------ End of Row ------");
+    }
+  }
 }

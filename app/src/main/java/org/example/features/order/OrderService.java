@@ -10,8 +10,8 @@ import org.example.features.product.Product;
  */
 public class OrderService {
 
-  private Order order;
   private final CrudRepository<Order> repository;
+  private Order order;
 
   /**
    * Instantiates a new Order service.

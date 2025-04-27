@@ -2,15 +2,18 @@ package org.example.shared;
 
 import java.lang.reflect.InvocationTargetException;
 import javafx.util.Callback;
-import org.example.database.CrudRepository;
 import org.example.database.Database;
+import org.example.features.admin.AdminController;
+import org.example.features.admin.AdminMapper;
+import org.example.features.admin.AdminRepository;
 import org.example.features.checkout.CheckoutController;
+import org.example.features.dashboard.DashboardController;
+import org.example.features.dashboard.DashboardModel;
 import org.example.features.home.HomeController;
 import org.example.features.home.HomeModel;
 import org.example.features.menu.MenuController;
 import org.example.features.menu.MenuModel;
 import org.example.features.order.OrderService;
-import org.example.features.product.Product;
 import org.example.features.product.ProductDetailsController;
 import org.example.features.product.ProductMapper;
 import org.example.features.product.ProductRepository;
@@ -54,11 +57,14 @@ public class AppControllerFactory implements Callback<Class<?>, Object> {
       case "ProductDetailsController" -> new ProductDetailsController(orderService, sceneRouter);
       case "ReceiptController" ->
           new ReceiptController(orderService.saveOrderAndClear(), sceneRouter);
+      case "AdminController" -> new AdminController(sceneRouter, getAdminRepository());
+      case "DashboardController" ->
+          new DashboardController(new DashboardModel(), sceneRouter, getProductRepository());
       default -> {
         try {
           yield controllerClass
-              .getDeclaredConstructor(OrderService.class, SceneRouter.class)
-              .newInstance(orderService, sceneRouter);
+              .getDeclaredConstructor(SceneRouter.class)
+              .newInstance(sceneRouter);
         } catch (NoSuchMethodException
             | InstantiationException
             | IllegalAccessException
@@ -70,7 +76,11 @@ public class AppControllerFactory implements Callback<Class<?>, Object> {
     };
   }
 
-  private CrudRepository<Product> getProductRepository() {
+  private ProductRepository getProductRepository() {
     return new ProductRepository(Database.getInstance().getConnection(), new ProductMapper());
+  }
+
+  private AdminRepository getAdminRepository() {
+    return new AdminRepository(Database.getInstance().getConnection(), new AdminMapper());
   }
 }

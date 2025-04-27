@@ -1,4 +1,3 @@
 package org.example.features.menu;
 
-public class MenuModel {
-}
+public class MenuModel {}
