@@ -4,11 +4,12 @@ import java.lang.reflect.InvocationTargetException;
 import javafx.util.Callback;
 import org.example.database.CrudRepository;
 import org.example.database.Database;
-import org.example.features.admin.Admin;
 import org.example.features.admin.AdminController;
 import org.example.features.admin.AdminMapper;
 import org.example.features.admin.AdminRepository;
 import org.example.features.checkout.CheckoutController;
+import org.example.features.dashboard.DashboardController;
+import org.example.features.dashboard.DashboardModel;
 import org.example.features.home.HomeController;
 import org.example.features.home.HomeModel;
 import org.example.features.menu.MenuController;
@@ -59,6 +60,8 @@ public class AppControllerFactory implements Callback<Class<?>, Object> {
       case "ReceiptController" ->
           new ReceiptController(orderService.saveOrderAndClear(), sceneRouter);
       case "AdminController" -> new AdminController(sceneRouter, getAdminRepository());
+      case "DashboardController" ->
+          new DashboardController(new DashboardModel(), sceneRouter, getProductRepository());
       default -> {
         try {
           yield controllerClass
