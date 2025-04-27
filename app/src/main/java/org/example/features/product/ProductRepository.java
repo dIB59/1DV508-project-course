@@ -88,6 +88,7 @@ public class ProductRepository implements CrudRepository<Product> {
       stmt.setDouble(2, entity.getPrice());
       stmt.setString(3, entity.getDescription());
       stmt.setString(4, entity.getImageUrl());
+      stmt.setInt(5, entity.getId());
       stmt.executeUpdate();
     }
   }
