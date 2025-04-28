@@ -34,7 +34,6 @@ public class DashboardController {
   private final DashboardModel dashboardModel;
   private final SceneRouter sceneRouter;
   private final ProductRepository repository;
-
   @FXML private VBox productList; // The VBox inside the ScrollPane
 
   public DashboardController(DashboardModel dashboardModel,
