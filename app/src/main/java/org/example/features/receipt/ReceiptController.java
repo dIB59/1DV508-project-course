@@ -9,6 +9,7 @@ import javafx.scene.layout.VBox;
 import org.example.features.order.Order;
 import org.example.features.order.ProductQuantity;
 import org.example.features.product.Product;
+import org.example.features.coupons.Coupons;
 import org.example.shared.SceneRouter;
 
 public class ReceiptController {
@@ -20,6 +21,7 @@ public class ReceiptController {
   @FXML
   private Label titleLabel,
       totalLabel,
+      couponsLabel,
       thankYouLabel,
       restaurantNameLabel,
       addressLabel,
@@ -63,6 +65,7 @@ public class ReceiptController {
     }
     orderIdLabel.setText("Order ID: " + order.getId());
     totalLabel.setText(String.format("Total: $%.2f", total));
+    couponsLabel.setText(String.format("Coupons: $%.2f", total));
     thankYouLabel.setText("Thank you for dining with us!");
     restaurantNameLabel.setText("Restaurant Name: Gourmet Bistro");
     addressLabel.setText("Address: 123 Food St, Tasty Town");

@@ -17,6 +17,7 @@ import javafx.scene.text.Font;
 import org.example.features.order.OrderService;
 import org.example.features.order.ProductQuantity;
 import org.example.shared.SceneRouter;
+import org.example.features.coupons.Coupons;
 
 /** The type Checkout controller. */
 public class CheckoutController implements Initializable {
@@ -149,14 +150,22 @@ public class CheckoutController implements Initializable {
 
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
-    // Modernize fonts and colors
-    itemCountLabel.setFont(Font.font("Arial", 16));
-    itemCountLabel.setTextFill(Color.valueOf("#2c3e50"));
+    int itemCount = orderService.getItems().size();
+    itemCountLabel.setText("Items in cart: " + itemCount);
 
-    totalPriceLabel.setFont(Font.font("Arial", 20));
-    totalPriceLabel.setTextFill(Color.valueOf("#16a085"));
-
-    // Initial update of the cart display
-    updateCartDisplay();
+    // Populate ListView
+    ObservableList<String> items = FXCollections.observableArrayList();
+    for (ProductQuantity item : orderService.getItems()) {
+      items.add(
+          item.getProduct().name()
+              + " - $"
+              + item.getProduct().getPrice()
+              + " x "
+              + item.getQuantity());
+    }
+    itemListView.setItems(items);
+    double totalPrice =
+        orderService.getItems().stream().mapToDouble(ProductQuantity::getPrice).sum() - new Coupons("code5", 5).getDiscount();
+    totalPriceLabel.setText("Total Price: $" + String.format("%.2f", totalPrice));
   }
 }
