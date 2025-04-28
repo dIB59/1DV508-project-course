@@ -1,14 +1,19 @@
 package org.example.features.checkout;
 
 import java.net.URL;
-import java.util.List;
 import java.util.ResourceBundle;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import org.example.features.order.OrderService;
 import org.example.features.order.ProductQuantity;
 import org.example.shared.SceneRouter;
@@ -20,7 +25,7 @@ public class CheckoutController implements Initializable {
   private final SceneRouter router;
   @FXML private Label itemCountLabel;
   @FXML private Label totalPriceLabel;
-  @FXML private ListView<String> itemListView;
+  @FXML private VBox itemListContainer; // Changed from ListView to VBox
 
   /**
    * Instantiates a new Checkout controller.
@@ -33,43 +38,125 @@ public class CheckoutController implements Initializable {
     this.router = sceneRouter;
   }
 
-  /** Go to receipt page. */
+  /** Goes to the receipt page. */
   public void goToReceiptPage() {
+    if (orderService.getItems().isEmpty()) {
+      // Show an alert if the cart is empty
+      Alert alert = new Alert(Alert.AlertType.WARNING);
+      alert.setTitle("Empty Cart");
+      alert.setHeaderText(null);
+      alert.setContentText("Your cart is empty. Please add items before proceeding.");
+      alert.showAndWait();
+      return;
+    }
     router.goToReceiptPage();
   }
 
-  /** Go to home page. */
-  public void goToHomePage() {
-    router.goToHomePage();
+  /** Goes to the home/menu page. */
+  public void goToMenuPage() {
+    router.goToMenuPage();
+  }
+
+  /** Updates the displayed cart information (item count, list, and total price). */
+  private void updateCartDisplay() {
+    int numberOfItems = orderService.getItems().stream()
+        .mapToInt(ProductQuantity::getQuantity)
+        .sum();
+
+    itemCountLabel.setText(String.format("Items: %d", numberOfItems));
+
+    // Clear the existing items before adding new ones
+    itemListContainer.getChildren().clear();
+
+    double totalPrice = 0;
+    for (ProductQuantity item : orderService.getItems()) {
+      HBox itemBox = createItemBox(item);
+      itemListContainer.getChildren().add(itemBox);
+      totalPrice += item.getPrice();
+    }
+
+    totalPriceLabel.setText(String.format("Total: $%.2f", totalPrice));
   }
 
   /**
-   * Gets items.
+   * Creates a VBox for each item with a label, remove button, and styling.
    *
-   * @return the items
+   * @param item the product quantity
+   * @return the HBox representing the item
    */
-  public List<ProductQuantity> getItems() {
-    return orderService.getItems();
+  private HBox createItemBox(ProductQuantity item) {
+    // Create an HBox for each item with padding and spacing
+    HBox hbox = new HBox(20);
+    hbox.setAlignment(Pos.CENTER_LEFT);  // Align content to the left initially
+    hbox.setPadding(new Insets(15, 20, 15, 20));
+    hbox.setStyle("-fx-background-color: white; -fx-border-radius: 8; -fx-border-color: #ddd;");
+
+    // Label for item details with modern black and white styling
+    Label label =
+        new Label(
+            item.getProduct().name()
+                + " - $"
+                + String.format("%.2f", item.getProduct().getPrice())
+                + " x "
+                + item.getQuantity());
+    label.setFont(Font.font("Arial", 16));
+    label.setTextFill(Color.valueOf("#333333"));
+    HBox.setHgrow(label, Priority.ALWAYS); // Allow label to take up remaining space
+
+    // Create the increase button with modern black and white styling
+    Button increaseButton = new Button("+");
+    increaseButton.setStyle(
+        "-fx-background-color: #2d3436; "
+            + "-fx-text-fill: white; "
+            + "-fx-background-radius: 8; "
+            + "-fx-cursor: hand; "
+            + "-fx-padding: 10 15; "
+            + "-fx-font-size: 16px;"
+            + "-fx-font-weight: bold;");
+    increaseButton.setOnAction(
+        event -> {
+          orderService.addItem(item.getProduct());
+          updateCartDisplay();
+        });
+
+    // Create the decrease button with modern black and white styling
+    Button decreaseButton = new Button("-");
+    decreaseButton.setStyle(
+        "-fx-background-color: #2d3436; "
+            + "-fx-text-fill: white; "
+            + "-fx-background-radius: 8; "
+            + "-fx-cursor: hand; "
+            + "-fx-padding: 10 15; "
+            + "-fx-font-size: 16px;"
+            + "-fx-font-weight: bold;");
+    decreaseButton.setOnAction(
+        event -> {
+          orderService.removeItem(item.getProduct());
+          updateCartDisplay();
+        });
+    // Add the buttons in a horizontal layout for quantity control
+    HBox quantityControls = new HBox(15, decreaseButton, label, increaseButton);
+    quantityControls.setAlignment(Pos.CENTER_LEFT);
+
+    // Add the quantity controls to the main HBox
+    hbox.getChildren().addAll(quantityControls);
+
+    return hbox;
   }
+
+
+
 
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
-    int itemCount = orderService.getItems().size();
-    itemCountLabel.setText("Items in cart: " + itemCount);
+    // Modernize fonts and colors
+    itemCountLabel.setFont(Font.font("Arial", 16));
+    itemCountLabel.setTextFill(Color.valueOf("#2c3e50"));
 
-    // Populate ListView
-    ObservableList<String> items = FXCollections.observableArrayList();
-    for (ProductQuantity item : orderService.getItems()) {
-      items.add(
-          item.getProduct().name()
-              + " - $"
-              + item.getProduct().getPrice()
-              + " x "
-              + item.getQuantity());
-    }
-    itemListView.setItems(items);
-    double totalPrice =
-        orderService.getItems().stream().mapToDouble(ProductQuantity::getPrice).sum();
-    totalPriceLabel.setText("Total Price: $" + String.format("%.2f", totalPrice));
+    totalPriceLabel.setFont(Font.font("Arial", 20));
+    totalPriceLabel.setTextFill(Color.valueOf("#16a085"));
+
+    // Initial update of the cart display
+    updateCartDisplay();
   }
 }
