@@ -115,13 +115,14 @@ public class Order {
   }
 
   public double getPrice() {
-    System.out.println("Price before discount" + productQuantity.stream()
-        .mapToDouble(ProductQuantity::getPrice)
-        .sum());
-    var price =  productQuantity.stream()
-        .mapToDouble(ProductQuantity::getPrice)
-        .map(discount::applyDiscount)
-        .sum();
+    System.out.println(
+        "Price before discount"
+            + productQuantity.stream().mapToDouble(ProductQuantity::getPrice).sum());
+    var price =
+        productQuantity.stream()
+            .mapToDouble(ProductQuantity::getPrice)
+            .map(discount::applyDiscount)
+            .sum();
     System.out.println("Price after discount" + price);
     return price;
   }

@@ -18,5 +18,4 @@ public class CouponDiscount implements Discount {
   public double getDiscount() {
     return 0.01 * discountPercentage;
   }
-
 }
