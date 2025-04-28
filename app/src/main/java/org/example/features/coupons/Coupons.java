@@ -1,4 +1,5 @@
 package org.example.features.coupons;
+import org.example.features.product.ProductDetailsController;
 
 public class Coupons {
   private final String code;
@@ -6,6 +7,7 @@ public class Coupons {
   public Coupons(String code, double discount) {
     this.code = code;
     this.discount = discount;
+
   }
 
   public String getCode() {
@@ -14,5 +16,11 @@ public class Coupons {
 
   public double getDiscount() {
     return discount;
+  }
+
+  public void setDiscount(double discount) {
+  }
+
+  public void setCode(String code) {
   }
 }

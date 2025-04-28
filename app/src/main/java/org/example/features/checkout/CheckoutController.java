@@ -12,6 +12,7 @@ import javafx.scene.control.ListView;
 import org.example.features.order.OrderService;
 import org.example.features.order.ProductQuantity;
 import org.example.shared.SceneRouter;
+import org.example.features.coupons.Coupons;
 
 /** The type Checkout controller. */
 public class CheckoutController implements Initializable {
@@ -69,7 +70,7 @@ public class CheckoutController implements Initializable {
     }
     itemListView.setItems(items);
     double totalPrice =
-        orderService.getItems().stream().mapToDouble(ProductQuantity::getPrice).sum();
+        orderService.getItems().stream().mapToDouble(ProductQuantity::getPrice).sum() - new Coupons("code5", 5).getDiscount();
     totalPriceLabel.setText("Total Price: $" + String.format("%.2f", totalPrice));
   }
 }

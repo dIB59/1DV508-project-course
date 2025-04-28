@@ -80,6 +80,6 @@ INSERT INTO Product_Tags (product_id, tag_id) VALUES
 
 CREATE TABLE IF NOT EXISTS Coupons
 (
-    name        VARCHAR(255)   NOT NULL,
+    code        VARCHAR(255)   NOT NULL,
     discount    INT NOT NULL CHECK (discount >= 0)
 );
