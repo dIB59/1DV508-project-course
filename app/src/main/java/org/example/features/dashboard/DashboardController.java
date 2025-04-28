@@ -37,9 +37,8 @@ public class DashboardController {
 
   @FXML private VBox productList; // The VBox inside the ScrollPane
 
-  public DashboardController(DashboardModel dashboardModel,
-                             SceneRouter sceneRouter,
-                             ProductRepository repository) {
+  public DashboardController(
+      DashboardModel dashboardModel, SceneRouter sceneRouter, ProductRepository repository) {
     this.dashboardModel = dashboardModel;
     this.sceneRouter = sceneRouter;
     this.repository = repository;
@@ -68,7 +67,6 @@ public class DashboardController {
       HBox productCard = createProductCard(product);
       productList.getChildren().add(productCard);
     }
-
   }
 
   private HBox createProductCard(Product product) {
@@ -77,10 +75,11 @@ public class DashboardController {
     card.setPadding(new Insets(0));
     card.setSpacing(0);
     card.setPrefHeight(140); // Fixed height
-    card.setStyle("-fx-background-color: #f9f9f9;"
-        + " -fx-background-radius: 12;"
-        + " -fx-border-color: #cccccc;"
-        + " -fx-border-radius: 0 20 20 0;");
+    card.setStyle(
+        "-fx-background-color: #f9f9f9;"
+            + " -fx-background-radius: 12;"
+            + " -fx-border-color: #cccccc;"
+            + " -fx-border-radius: 0 20 20 0;");
 
     // Image setup
     ImageView imageView = new ImageView();
@@ -123,12 +122,13 @@ public class DashboardController {
     editIcon.setFont(Font.font(24)); // Set icon size
     editIcon.setFill(Color.WHITE); // Set icon color
     editButton.setGraphic(editIcon);
-    editButton.setStyle("-fx-background-color: black; -fx-text-fill: white; -fx-background-radius: 0 10 10 0; -fx-cursor: hand;");
+    editButton.setStyle(
+        "-fx-background-color: black; -fx-text-fill: white; -fx-background-radius: 0 10 10 0; -fx-cursor: hand;");
     editButton.setOnAction(e -> editProduct(product));
 
     // Stretch the button vertically and place at the bottom
     VBox.setVgrow(editButton, Priority.ALWAYS);
-    editButton.setMaxHeight(Double.MAX_VALUE);  // Allow it to stretch to max height
+    editButton.setMaxHeight(Double.MAX_VALUE); // Allow it to stretch to max height
 
     HBox spacer = new HBox();
     HBox.setHgrow(spacer, Priority.ALWAYS);
@@ -177,40 +177,45 @@ public class DashboardController {
     HBox tagsLabelBox = new HBox(5);
     Label tagsLabel = new Label("Tags:");
     Button addTagButton = new Button("+");
-    addTagButton.setStyle("-fx-background-color: black; -fx-text-fill: white; -fx-background-radius: 5;");
+    addTagButton.setStyle(
+        "-fx-background-color: black; -fx-text-fill: white; -fx-background-radius: 5;");
 
     tagsLabelBox.getChildren().addAll(tagsLabel, addTagButton);
 
-    addTagButton.setOnAction(e -> {
-      TextInputDialog inputDialog = new TextInputDialog();
-      inputDialog.setTitle("Add New Tag");
-      inputDialog.setHeaderText(null);
-      inputDialog.setContentText("Enter new tag name:");
+    addTagButton.setOnAction(
+        e -> {
+          TextInputDialog inputDialog = new TextInputDialog();
+          inputDialog.setTitle("Add New Tag");
+          inputDialog.setHeaderText(null);
+          inputDialog.setContentText("Enter new tag name:");
 
-      inputDialog.showAndWait().ifPresent(tagName -> {
-        if (!tagName.trim().isEmpty()) {
-          int newTagId;
-          try {
-            newTagId = repository.createTag(tagName.trim());
-          } catch (SQLException ex) {
-            showAlert("Error adding tag: " + ex.getMessage());
-            return;
-          }
+          inputDialog
+              .showAndWait()
+              .ifPresent(
+                  tagName -> {
+                    if (!tagName.trim().isEmpty()) {
+                      int newTagId;
+                      try {
+                        newTagId = repository.createTag(tagName.trim());
+                      } catch (SQLException ex) {
+                        showAlert("Error adding tag: " + ex.getMessage());
+                        return;
+                      }
 
-          Tag newTag = new Tag(newTagId, tagName.trim());
-          allTags.add(newTag);
+                      Tag newTag = new Tag(newTagId, tagName.trim());
+                      allTags.add(newTag);
 
-          CheckBox newCheckBox = new CheckBox(newTag.getName());
-          newCheckBox.setSelected(true);
-          tagCheckboxes.add(newCheckBox);
-          tagsBox.getChildren().add(newCheckBox);
-
-        }
-      });
-    });
+                      CheckBox newCheckBox = new CheckBox(newTag.getName());
+                      newCheckBox.setSelected(true);
+                      tagCheckboxes.add(newCheckBox);
+                      tagsBox.getChildren().add(newCheckBox);
+                    }
+                  });
+        });
 
     Button saveButton = new Button("Save");
-    saveButton.setStyle("-fx-background-color: black; -fx-text-fill: white; -fx-background-radius: 5;");
+    saveButton.setStyle(
+        "-fx-background-color: black; -fx-text-fill: white; -fx-background-radius: 5;");
 
     saveButton.setOnAction(e -> {
       try {
@@ -220,52 +225,54 @@ public class DashboardController {
         String newImageUrl = imageUrlField.getText();
         String specialLabel = specialLabelField.getText();
 
-        List<Integer> selectedTagIds = new ArrayList<>();
-        List<String> selectedTagNames = new ArrayList<>();
-        for (int i = 0; i < tagCheckboxes.size(); i++) {
-          CheckBox checkBox = tagCheckboxes.get(i);
-          if (checkBox.isSelected()) {
-            selectedTagIds.add(allTags.get(i).getId());
-            selectedTagNames.add(allTags.get(i).getName());
-          }
-        }
-        List<Tag> selectedTags = new ArrayList<>();
-        for (int i = 0; i < selectedTagIds.size(); i++) {
-          selectedTags.add(new Tag(selectedTagIds.get(i), selectedTagNames.get(i)));
-        }
+            List<Integer> selectedTagIds = new ArrayList<>();
+            List<String> selectedTagNames = new ArrayList<>();
+            for (int i = 0; i < tagCheckboxes.size(); i++) {
+              CheckBox checkBox = tagCheckboxes.get(i);
+              if (checkBox.isSelected()) {
+                selectedTagIds.add(allTags.get(i).getId());
+                selectedTagNames.add(allTags.get(i).getName());
+              }
+            }
+            List<Tag> selectedTags = new ArrayList<>();
+            for (int i = 0; i < selectedTagIds.size(); i++) {
+              selectedTags.add(new Tag(selectedTagIds.get(i), selectedTagNames.get(i)));
+            }
 
         Product updatedProduct = new Product(
             product.id(), newName, newDescription, newPrice, newImageUrl, specialLabel ,selectedTags
         );
 
-        repository.update(updatedProduct);
-        loadProducts(); // refresh
-        dialog.close();
-      } catch (NumberFormatException ex) {
-        showAlert("Invalid price format.");
-      } catch (IllegalArgumentException ex) {
-        showAlert(ex.getMessage());
-      } catch (SQLException ex) {
-        showAlert("Error updating product: " + ex.getMessage());
-      }
-    });
+            repository.update(updatedProduct);
+            loadProducts(); // refresh
+            dialog.close();
+          } catch (NumberFormatException ex) {
+            showAlert("Invalid price format.");
+          } catch (IllegalArgumentException ex) {
+            showAlert(ex.getMessage());
+          } catch (SQLException ex) {
+            showAlert("Error updating product: " + ex.getMessage());
+          }
+        });
 
-    vbox.getChildren().addAll(
-        new Label("Name:"), nameField,
-        new Label("Description:"), descriptionField,
-        new Label("Price:"), priceField,
-        new Label("Image URL:"), imageUrlField,
-        tagsLabelBox,
-        tagsBox,
-        saveButton
-    );
+    vbox.getChildren()
+        .addAll(
+            new Label("Name:"),
+            nameField,
+            new Label("Description:"),
+            descriptionField,
+            new Label("Price:"),
+            priceField,
+            new Label("Image URL:"),
+            imageUrlField,
+            tagsLabelBox,
+            tagsBox,
+            saveButton);
 
     Scene scene = new Scene(vbox, 400, 600);
     dialog.setScene(scene);
     dialog.showAndWait();
   }
-
-
 
   private void showAlert(String message) {
     Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -277,4 +284,3 @@ public class DashboardController {
     alert.showAndWait();
   }
 }
-

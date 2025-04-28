@@ -68,9 +68,7 @@ public class CheckoutController implements Initializable {
   /** Updates the displayed cart information (item count, list, and total price). */
   private void updateCartDisplay() {
     var items = orderService.getItems();
-    int numberOfItems = items.stream()
-        .mapToInt(ProductQuantity::getQuantity)
-        .sum();
+    int numberOfItems = items.stream().mapToInt(ProductQuantity::getQuantity).sum();
 
     itemCountLabel.setText(String.format("Items: %d", numberOfItems));
 
@@ -93,7 +91,7 @@ public class CheckoutController implements Initializable {
   private HBox createItemBox(ProductQuantity item) {
     // Create an HBox for each item with padding and spacing
     HBox hbox = new HBox(20);
-    hbox.setAlignment(Pos.CENTER_LEFT);  // Align content to the left initially
+    hbox.setAlignment(Pos.CENTER_LEFT); // Align content to the left initially
     hbox.setPadding(new Insets(15, 20, 15, 20));
     hbox.setStyle("-fx-background-color: white; -fx-border-radius: 8; -fx-border-color: #ddd;");
 
@@ -166,7 +164,7 @@ public class CheckoutController implements Initializable {
       alert = createAlert("Failed to apply coupon.");
     }
     alert.showAndWait();
-    updateCartDisplay();
+    totalPriceLabel.setText(String.format("Total: $%.2f", orderService.getPrice()));
   }
 
   private Alert createAlert(String message) {
@@ -197,13 +195,11 @@ public class CheckoutController implements Initializable {
     totalPriceLabel.setText("Total Price: $" + String.format("%.2f", totalPrice));
     totalPriceLabel.setFont(Font.font("Arial", 20));
     totalPriceLabel.setTextFill(Color.valueOf("#16a085"));
-    //display items in the VBox
+    // display items in the VBox
     for (ProductQuantity item : orderService.getItems()) {
       HBox itemBox = createItemBox(item);
       itemListContainer.getChildren().add(itemBox);
     }
     updateCartDisplay();
-
-
   }
 }

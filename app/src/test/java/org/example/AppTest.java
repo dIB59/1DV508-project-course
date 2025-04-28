@@ -52,6 +52,5 @@ class AppTest {
         product.getImageUrl(), product.getSpecialLabel(), tags);
 
     assertEquals(2, updatedProduct.getTags().size());
-
   }
 }
