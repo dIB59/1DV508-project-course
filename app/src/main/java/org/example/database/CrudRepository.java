@@ -75,7 +75,7 @@ public interface CrudRepository<T> {
       // For each row, print column name and value
       for (int i = 1; i <= columnCount; i++) {
         String columnName = rsMetaData.getColumnName(i); // Get column name
-        Object value = rs.getObject(i);  // Get column value (handles all types)
+        Object value = rs.getObject(i); // Get column value (handles all types)
         System.out.println(columnName + ": " + value);
       }
       System.out.println("------ End of Row ------");

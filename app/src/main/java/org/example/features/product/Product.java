@@ -15,7 +15,8 @@ import java.util.List;
  * @param price The price of the product.
  * @param imageUrl The URL of the product's image.
  */
-public record Product(int id, String name, String description, double price, String imageUrl, List<Tag> tags) {
+public record Product(
+    int id, String name, String description, double price, String imageUrl, List<Tag> tags) {
   /**
    * Instantiates a new Product.
    *

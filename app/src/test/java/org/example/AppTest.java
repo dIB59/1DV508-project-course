@@ -11,7 +11,6 @@ import org.example.features.product.Product;
 import org.example.features.product.ProductMapper;
 import org.example.features.product.ProductRepository;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class AppTest {

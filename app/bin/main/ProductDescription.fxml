@@ -14,13 +14,13 @@
 
     <VBox alignment="CENTER" spacing="10.0" layoutX="20.0" layoutY="20.0" prefWidth="560.0">
         <Label fx:id="productName" style="-fx-font-size: 18px;" text="Product Name"/>
-        
+
         <!-- Product Price -->
         <Label fx:id="productPrice" style="-fx-font-size: 16px;" text="Product Price"/>
-        
+
         <!-- Quantity Spinner -->
         <Spinner fx:id="quantitySpinner" prefWidth="150.0"/>
-        
+
         <!-- Add to Order Button -->
         <Button fx:id="addToOrderButton" text="Add to Order" onAction="#addToOrder"/>
     </VBox>
