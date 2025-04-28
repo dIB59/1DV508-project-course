@@ -9,6 +9,7 @@ import org.example.database.CrudRepository;
 import org.example.features.order.OrderService;
 import org.example.features.product.Product;
 import org.example.shared.SceneRouter;
+import javafx.scene.layout.GridPane;
 
 /** The type Menu controller. */
 public class MenuController {
@@ -17,7 +18,7 @@ public class MenuController {
   private final CrudRepository<Product> productRepository;
   private final SceneRouter sceneRouter;
   private final OrderService orderService;
-  @FXML private VBox menuList;
+  @FXML private GridPane menuGrid;
 
   /**
    * Instantiates a new Menu controller.
@@ -40,6 +41,10 @@ public class MenuController {
 
   /** Initialize. */
   public void initialize() {
+
+    int columns = 3;
+    int row = 0;
+    int col = 0;
     for (Product product : getMenuItems()) {
       Button addButton = new Button("Add to Order");
 
@@ -49,10 +54,16 @@ public class MenuController {
       VBox productCard = new VBox(name, price, addButton);
       productCard.setSpacing(5);
       productCard.setStyle("-fx-padding: 10; -fx-border-color: #ccc; -fx-border-radius: 5;");
-
-      // addButton.setOnAction(event -> orderService.addItem(product));
       addButton.setOnAction(event -> sceneRouter.goToProductDetailsPage(product));
-      menuList.getChildren().add(productCard);
+
+      menuGrid.add(productCard, col, row);
+
+      col++;
+      if (col >= columns) {
+        col = 0;
+        row++;
+      }
+
     }
   }
 

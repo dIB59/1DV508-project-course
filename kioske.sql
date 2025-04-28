@@ -5,7 +5,8 @@ CREATE TABLE IF NOT EXISTS Product
     name        VARCHAR(255)   NOT NULL,
     description TEXT           NOT NULL,
     price       DECIMAL(10, 2) NOT NULL CHECK (price >= 0),
-    image_url   VARCHAR(500)
+    image_url   VARCHAR(500),
+    label       VARCHAR(255)
 );
 
 -- Table for Order
@@ -25,18 +26,18 @@ CREATE TABLE IF NOT EXISTS Order_ProductQuantity
     FOREIGN KEY (product_id) REFERENCES Product (id)
 );
 
-INSERT INTO Product (name, description, price, image_url)
-VALUES ('Burger', 'A delicious beef burger', 5.99, 'burger.jpg'),
-       ('Pizza', 'A cheesy pizza with toppings', 8.99, 'pizza.jpg'),
-       ('Salad', 'A fresh garden salad', 4.99, 'salad.jpg'),
-       ('Soda', 'A refreshing soda drink', 1.99, 'soda.jpg'),
-       ('Fries', 'Crispy french fries', 2.99, 'fries.jpg'),
-       ('Ice Cream', 'A scoop of ice cream', 3.99, 'ice_cream.jpg'),
-       ('Pasta', 'Creamy pasta with sauce', 7.99, 'pasta.jpg'),
-       ('Sandwich', 'A tasty sandwich with fillings', 4.49, 'sandwich.jpg'),
-       ('Coffee', 'A hot cup of coffee', 2.49, 'coffee.jpg'),
-       ('Tea', 'A soothing cup of tea', 1.49, 'tea.jpg'),
-       ('Cake', 'A slice of chocolate cake', 3.49, 'cake.jpg');
+INSERT INTO Product (name, description, price, image_url, label)
+VALUES ('Burger', 'A delicious beef burger', 5.99, 'burger.jpg', NULL),
+       ('Pizza', 'A cheesy pizza with toppings', 8.99, 'pizza.jpg', 'Hot'),
+       ('Salad', 'A fresh garden salad', 4.99, 'salad.jpg', NULL),
+       ('Soda', 'A refreshing soda drink', 1.99, 'soda.jpg', NULL),
+       ('Fries', 'Crispy french fries', 2.99, 'fries.jpg', NULL),
+       ('Ice Cream', 'A scoop of ice cream', 3.99, 'ice_cream.jpg', NULL),
+       ('Pasta', 'Creamy pasta with sauce', 7.99, 'pasta.jpg', 'Deal'),
+       ('Sandwich', 'A tasty sandwich with fillings', 4.49, 'sandwich.jpg', NULL),
+       ('Coffee', 'A hot cup of coffee', 2.49, 'coffee.jpg', NULL),
+       ('Tea', 'A soothing cup of tea', 1.49, 'tea.jpg', NULL),
+       ('Cake', 'A slice of chocolate cake', 3.49, 'cake.jpg', NULL);
 
 CREATE TABLE IF NOT EXISTS Admin
 (

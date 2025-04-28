@@ -4,32 +4,35 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
-<AnchorPane xmlns:fx="http://javafx.com/fxml"
-            xmlns="http://javafx.com/javafx"
-            fx:controller="org.example.features.menu.MenuController"
-            prefHeight="600.0" prefWidth="600.0">
+
+<AnchorPane prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.features.menu.MenuController">
 
     <!-- Header (always visible) -->
-    <Label text="Menu Page"
-           layoutX="20" layoutY="20"
-           style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+    <Label layoutX="20" layoutY="20" style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Menu Page" />
 
     <!-- Scrollable Menu Section -->
-    <ScrollPane layoutX="10" layoutY="60" prefHeight="480.0" prefWidth="580.0" fitToWidth="true"
-                AnchorPane.topAnchor="60" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10"
-                AnchorPane.bottomAnchor="60">
-        <VBox fx:id="menuList"
-              spacing="20"
-              alignment="TOP_CENTER"
-              style="-fx-padding: 20;">
-            <!-- Menu items dynamically injected here -->
-        </VBox>
+    <ScrollPane fitToWidth="true" layoutX="10" layoutY="60" prefHeight="480.0" prefWidth="580.0" AnchorPane.bottomAnchor="60" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10" AnchorPane.topAnchor="60">
+        <VBox fx:id="menuList" alignment="TOP_CENTER" spacing="20" style="-fx-padding: 20;">
+         <children>
+            <GridPane fx:id="menuGrid" hgap="5.0" prefHeight="920.0" prefWidth="1860.0" vgap="5.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+            </GridPane>
+         </children></VBox>
     </ScrollPane>
 
     <!-- Checkout Button (bottom right) -->
-    <Button text="Go to Checkout"
-            style="-fx-padding: 10 20; -fx-font-size: 14px; -fx-background-color: #4CAF50; -fx-text-fill: white;"
-            onAction="#goToCheckoutPage"
-            AnchorPane.bottomAnchor="10" AnchorPane.rightAnchor="10"/>
+    <Button onAction="#goToCheckoutPage" style="-fx-padding: 10 20; -fx-font-size: 14px; -fx-background-color: #4CAF50; -fx-text-fill: white;" text="Go to Checkout" AnchorPane.bottomAnchor="10" AnchorPane.rightAnchor="10" />
 </AnchorPane>
