@@ -2,6 +2,8 @@ package org.example.features.checkout;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
@@ -9,6 +11,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
@@ -16,6 +19,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import org.example.features.order.OrderService;
 import org.example.features.order.ProductQuantity;
+import org.example.shared.CouponDiscount;
+import org.example.shared.Discount;
 import org.example.shared.SceneRouter;
 
 /** The type Checkout controller. */
@@ -26,6 +31,7 @@ public class CheckoutController implements Initializable {
   @FXML private Label itemCountLabel;
   @FXML private Label totalPriceLabel;
   @FXML private VBox itemListContainer; // Changed from ListView to VBox
+  @FXML private TextField couponCodeField;
 
   /**
    * Instantiates a new Checkout controller.
@@ -59,7 +65,8 @@ public class CheckoutController implements Initializable {
 
   /** Updates the displayed cart information (item count, list, and total price). */
   private void updateCartDisplay() {
-    int numberOfItems = orderService.getItems().stream()
+    var items = orderService.getItems();
+    int numberOfItems = items.stream()
         .mapToInt(ProductQuantity::getQuantity)
         .sum();
 
@@ -67,15 +74,12 @@ public class CheckoutController implements Initializable {
 
     // Clear the existing items before adding new ones
     itemListContainer.getChildren().clear();
-
-    double totalPrice = 0;
-    for (ProductQuantity item : orderService.getItems()) {
+    for (ProductQuantity item : items) {
       HBox itemBox = createItemBox(item);
       itemListContainer.getChildren().add(itemBox);
-      totalPrice += item.getPrice();
     }
 
-    totalPriceLabel.setText(String.format("Total: $%.2f", totalPrice));
+    totalPriceLabel.setText(String.format("Total: $%.2f", orderService.getPrice()));
   }
 
   /**
@@ -144,19 +148,60 @@ public class CheckoutController implements Initializable {
     return hbox;
   }
 
+  public void applyCoupon() {
+    String coupon = couponCodeField.getText();
+    if (coupon == null || coupon.isEmpty()) {
+      System.out.println("No coupon entered.");
+      return;
+    }
+    Discount discount = new CouponDiscount(coupon, 50);
 
+    var applied = orderService.setDiscount(discount);
+    Alert alert;
+    if (applied) {
+      alert = createAlert("Coupon applied successfully!");
+    } else {
+      alert = createAlert("Failed to apply coupon.");
+    }
+    alert.showAndWait();
+    updateCartDisplay();
+  }
 
+  private Alert createAlert(String message) {
+    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+    alert.setTitle("Coupon");
+    alert.setHeaderText(null);
+    alert.setContentText(message);
+    return alert;
+  }
 
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
-    // Modernize fonts and colors
-    itemCountLabel.setFont(Font.font("Arial", 16));
-    itemCountLabel.setTextFill(Color.valueOf("#2c3e50"));
+    int itemCount = orderService.getItems().size();
+    itemCountLabel.setText("Items in cart: " + itemCount);
 
+    // Populate ListView
+    ObservableList<String> items = FXCollections.observableArrayList();
+    for (ProductQuantity item : orderService.getItems()) {
+      items.add(
+          item.getProduct().name()
+              + " - $"
+              + item.getProduct().getPrice()
+              + " x "
+              + item.getQuantity());
+    }
+    double totalPrice =
+        orderService.getItems().stream().mapToDouble(ProductQuantity::getPrice).sum();
+    totalPriceLabel.setText("Total Price: $" + String.format("%.2f", totalPrice));
     totalPriceLabel.setFont(Font.font("Arial", 20));
     totalPriceLabel.setTextFill(Color.valueOf("#16a085"));
-
-    // Initial update of the cart display
+    //display items in the VBox
+    for (ProductQuantity item : orderService.getItems()) {
+      HBox itemBox = createItemBox(item);
+      itemListContainer.getChildren().add(itemBox);
+    }
     updateCartDisplay();
+
+
   }
 }
