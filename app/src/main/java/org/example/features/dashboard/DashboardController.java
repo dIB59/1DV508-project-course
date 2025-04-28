@@ -19,6 +19,8 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.example.features.product.Product;
@@ -78,8 +80,11 @@ public class DashboardController {
     card.setAlignment(Pos.CENTER_LEFT);
     card.setPadding(new Insets(0));
     card.setSpacing(0);
-    card.setPrefHeight(140); // Strict fixed height
-    card.setStyle("-fx-background-color: #f9f9f9; -fx-background-radius: 12; -fx-border-color: #cccccc; -fx-border-radius: 12;");
+    card.setPrefHeight(140); // Fixed height
+    card.setStyle("-fx-background-color: #f9f9f9;"
+        + " -fx-background-radius: 12;"
+        + " -fx-border-color: #cccccc;"
+        + " -fx-border-radius: 0 20 20 0;");
 
     // Image setup
     ImageView imageView = new ImageView();
@@ -90,23 +95,18 @@ public class DashboardController {
     } catch (Exception e) {
       System.out.println("Could not load product image: " + e.getMessage());
     }
-    imageView.setPreserveRatio(false); // Stretch
+    imageView.setPreserveRatio(false); // Do not preserve aspect ratio, stretch to fit
     imageView.setSmooth(true);
     imageView.setCache(true);
     imageView.setFitWidth(140);
-    imageView.setFitHeight(140); // Match the card height exactly (fixed)
+    imageView.setFitHeight(140);
+    // Removed background and border styles from imageView
 
     // Image Container
     StackPane imageContainer = new StackPane(imageView);
     imageContainer.setPrefSize(140, 140);
     imageContainer.setMaxHeight(140);
     imageContainer.setMaxWidth(140);
-
-    // Clip the corners
-    Rectangle clip = new Rectangle(140, 140);
-    clip.setArcWidth(20);
-    clip.setArcHeight(20);
-    imageContainer.setClip(clip);
 
     // Info Section
     VBox infoBox = new VBox(5);
@@ -121,10 +121,18 @@ public class DashboardController {
 
     infoBox.getChildren().addAll(nameLabel, priceLabel);
 
-    // Edit Button
-    Button editButton = new Button("Edit");
-    editButton.setStyle("-fx-background-color: black; -fx-text-fill: white; -fx-background-radius: 5; -fx-cursor: hand;");
+    // Edit Button with Icon (FontAwesome or any icon font)
+    Button editButton = new Button();
+    Text editIcon = new Text("✎");
+    editIcon.setFont(Font.font(24)); // Set icon size
+    editIcon.setFill(Color.WHITE); // Set icon color
+    editButton.setGraphic(editIcon);
+    editButton.setStyle("-fx-background-color: black; -fx-text-fill: white; -fx-background-radius: 0 10 10 0; -fx-cursor: hand;");
     editButton.setOnAction(e -> editProduct(product));
+
+    // Stretch the button vertically and place at the bottom
+    VBox.setVgrow(editButton, Priority.ALWAYS);
+    editButton.setMaxHeight(Double.MAX_VALUE);  // Allow it to stretch to max height
 
     HBox spacer = new HBox();
     HBox.setHgrow(spacer, Priority.ALWAYS);
@@ -134,9 +142,6 @@ public class DashboardController {
 
     return card;
   }
-
-
-
 
   private void editProduct(Product product) {
     Stage dialog = new Stage();
