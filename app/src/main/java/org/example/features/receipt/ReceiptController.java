@@ -61,7 +61,7 @@ public class ReceiptController {
 
       itemsContainer.getChildren().add(itemRow);
     }
-    orderIdLabel.setText("Order ID: " + order.getId());
+    orderIdLabel.setText("Order Number: " + order.getId());
     totalLabel.setText(String.format("Total: $%.2f", total));
     thankYouLabel.setText("Thank you for dining with us!");
     restaurantNameLabel.setText("Restaurant Name: Gourmet Bistro");
