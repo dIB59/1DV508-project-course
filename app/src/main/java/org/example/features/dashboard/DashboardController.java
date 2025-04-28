@@ -151,6 +151,7 @@ public class DashboardController {
     TextField descriptionField = new TextField(product.description());
     TextField priceField = new TextField(String.valueOf(product.price()));
     TextField imageUrlField = new TextField(product.imageUrl());
+    TextField specialLabelField = new TextField(product.specialLabel());
 
     // Fetch all tags
     List<Tag> allTags;
@@ -217,6 +218,7 @@ public class DashboardController {
         String newDescription = descriptionField.getText();
         double newPrice = Double.parseDouble(priceField.getText());
         String newImageUrl = imageUrlField.getText();
+        String specialLabel = specialLabelField.getText();
 
         List<Integer> selectedTagIds = new ArrayList<>();
         List<String> selectedTagNames = new ArrayList<>();
@@ -233,7 +235,7 @@ public class DashboardController {
         }
 
         Product updatedProduct = new Product(
-            product.id(), newName, newDescription, newPrice, newImageUrl, selectedTags
+            product.id(), newName, newDescription, newPrice, newImageUrl, specialLabel ,selectedTags
         );
 
         repository.update(updatedProduct);

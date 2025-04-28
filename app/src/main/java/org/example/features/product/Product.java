@@ -16,7 +16,7 @@ import java.util.List;
  * @param imageUrl The URL of the product's image.
  */
 public record Product(
-    int id, String name, String description, double price, String imageUrl, List<Tag> tags) {
+    int id, String name, String description, double price, String imageUrl, String specialLabel, List<Tag> tags) {
   /**
    * Instantiates a new Product.
    *
@@ -25,6 +25,7 @@ public record Product(
    * @param description the description
    * @param price the price
    * @param imageUrl the image url
+   * @param specialLabel The special label for the product (e.g., "Hot", "Deal").
    * @param tags the tags
    */
   public Product {
@@ -39,19 +40,19 @@ public record Product(
     }
   }
 
-  public Product(String name, String description, double price, String imageUrl) {
-    this(0, name, description, price, imageUrl, List.of());
+  public Product(String name, String description, double price, String imageUrl, String specialLabel) {
+    this(0, name, description, price, imageUrl, specialLabel, List.of());
   }
 
-  public Product(String name, String description, double price, String imageUrl, List<Tag> tags) {
-    this(0, name, description, price, imageUrl, tags);
+  public Product(String name, String description, double price, String imageUrl, String specialLabel, List<Tag> tags) {
+    this(0, name, description, price, imageUrl, specialLabel, tags);
   }
 
   @Override
   public String toString() {
     return String.format(
         "Product{id=%d, name='%s', description='%s', price=%.2f, imageUrl='%s', tags=%s}",
-        id, name, description, price, imageUrl, tags);
+        id, name, description, price, imageUrl, specialLabel ,tags);
   }
 
   /**
@@ -97,6 +98,15 @@ public record Product(
    */
   public String getImageUrl() {
     return imageUrl;
+  }
+
+   /**
+   * Gets the special label
+   *
+   * @return the special label
+   */
+  public String getSpecialLabel() {
+    return specialLabel;
   }
 
   /**

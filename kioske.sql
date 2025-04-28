@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS Product
     description TEXT           NOT NULL,
     price       DECIMAL(10, 2) NOT NULL CHECK (price >= 0),
     image_url   VARCHAR(500),
-    label       VARCHAR(255)
+    specialLabel       VARCHAR(255)
 );
 
 -- Table for Order
@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS Order_ProductQuantity
     FOREIGN KEY (product_id) REFERENCES Product (id)
 );
 
-INSERT INTO Product (name, description, price, image_url, label)
+INSERT INTO Product (name, description, price, image_url, specialLabel)
 VALUES ('Burger', 'A delicious beef burger', 5.99, 'burger.jpg', NULL),
        ('Pizza', 'A cheesy pizza with toppings', 8.99, 'pizza.jpg', 'Hot'),
        ('Salad', 'A fresh garden salad', 4.99, 'salad.jpg', NULL),

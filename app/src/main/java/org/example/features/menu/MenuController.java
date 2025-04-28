@@ -50,8 +50,10 @@ public class MenuController {
 
       Label name = new Label(product.getName());
       Label price = new Label(String.format("$%.2f", product.price()));
+      //TODO: change special label to be on top of the item. Also change the fxml file to use a stackPane to allow for stacking of objects
+      Label specialLabel = new Label(product.getSpecialLabel());
 
-      VBox productCard = new VBox(name, price, addButton);
+      VBox productCard = new VBox(name, price, addButton, specialLabel);
       productCard.setSpacing(5);
       productCard.setStyle("-fx-padding: 10; -fx-border-color: #ccc; -fx-border-radius: 5;");
       addButton.setOnAction(event -> sceneRouter.goToProductDetailsPage(product));
