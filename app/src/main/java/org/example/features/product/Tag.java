@@ -18,9 +18,6 @@ public class Tag {
   }
 
   public String toString() {
-    return "Tag{" +
-        "id=" + id +
-        ", name='" + name + '\'' +
-        '}';
+    return "Tag{" + "id=" + id + ", name='" + name + '\'' + '}';
   }
 }

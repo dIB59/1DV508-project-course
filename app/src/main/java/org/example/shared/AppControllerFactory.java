@@ -62,9 +62,7 @@ public class AppControllerFactory implements Callback<Class<?>, Object> {
           new DashboardController(new DashboardModel(), sceneRouter, getProductRepository());
       default -> {
         try {
-          yield controllerClass
-              .getDeclaredConstructor(SceneRouter.class)
-              .newInstance(sceneRouter);
+          yield controllerClass.getDeclaredConstructor(SceneRouter.class).newInstance(sceneRouter);
         } catch (NoSuchMethodException
             | InstantiationException
             | IllegalAccessException
