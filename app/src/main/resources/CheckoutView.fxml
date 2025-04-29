@@ -5,6 +5,7 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.TextField?>
 <AnchorPane xmlns:fx="http://javafx.com/fxml"
             xmlns="http://javafx.com/javafx"
             fx:controller="org.example.features.checkout.CheckoutController"
@@ -23,6 +24,11 @@
         <!-- Body -->
         <Label text="This is your checkout screen."
                style="-fx-font-size: 16px;"/>
+
+        <TextField fx:id="CouponsTextField"
+                   promptText="Insert Discount Code"
+                   maxWidth="250"
+                   style="-fx-background-radius: 10; -fx-padding: 10; -fx-text-fill: black;" />
 
         <!-- Button -->
         <Button text="Pay and get receipt"

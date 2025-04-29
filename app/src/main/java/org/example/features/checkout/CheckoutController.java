@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import org.example.features.order.OrderService;
 import org.example.features.order.ProductQuantity;
 import org.example.shared.SceneRouter;
@@ -22,6 +23,7 @@ public class CheckoutController implements Initializable {
   @FXML private Label itemCountLabel;
   @FXML private Label totalPriceLabel;
   @FXML private ListView<String> itemListView;
+  @FXML private TextField CouponsTextField;
 
   /**
    * Instantiates a new Checkout controller.
