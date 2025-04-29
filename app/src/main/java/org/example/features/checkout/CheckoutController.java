@@ -20,6 +20,7 @@ public class CheckoutController implements Initializable {
 
   private final OrderService orderService;
   private final SceneRouter router;
+  private double totalPrice;
   @FXML private Label itemCountLabel;
   @FXML private Label totalPriceLabel;
   @FXML private ListView<String> itemListView;
@@ -71,8 +72,9 @@ public class CheckoutController implements Initializable {
               + item.getQuantity());
     }
     itemListView.setItems(items);
-    double totalPrice =
+    totalPrice =
         orderService.getItems().stream().mapToDouble(ProductQuantity::getPrice).sum() - new CouponsRepository().findByCode(this.CouponsTextField.getText());
+
     totalPriceLabel.setText("Total Price: $" + String.format("%.2f", totalPrice));
   }
 
@@ -84,7 +86,7 @@ public class CheckoutController implements Initializable {
       return;
     }
     this.CouponsTextField.clear();
-    initialize(null, null);
+    totalPrice = totalPrice - new CouponsRepository().findByCode(code);
+    totalPriceLabel.setText("Total Price: $" + String.format("%.2f", totalPrice));
   }
-
 }
