@@ -14,6 +14,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.control.TextField;
 import org.example.features.order.OrderService;
 import org.example.features.order.ProductQuantity;
 import org.example.shared.SceneRouter;
@@ -26,7 +27,8 @@ public class CheckoutController implements Initializable {
   private final SceneRouter router;
   @FXML private Label itemCountLabel;
   @FXML private Label totalPriceLabel;
-  @FXML private VBox itemListContainer; // Changed from ListView to VBox
+  @FXML private ListView<String> itemListView;
+  @FXML private TextField CouponsTextField;
 
   /**
    * Instantiates a new Checkout controller.

@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Priority?>
 <?import javafx.scene.layout.VBox?>
-
+<?import javafx.scene.control.TextField?>
 <AnchorPane xmlns:fx="http://javafx.com/fxml"
             xmlns="http://javafx.com/javafx"
             fx:controller="org.example.features.checkout.CheckoutController"
@@ -28,28 +28,20 @@
                text="Items in cart: 0"
                style="-fx-font-size: 18px; -fx-text-fill: #7f8c8d; -fx-margin-bottom: 20;"/>
 
-        <!-- List of items (dynamically populated) -->
-        <VBox fx:id="itemListContainer" spacing="20" style="-fx-background-color: #ecf0f1; -fx-background-radius: 10; -fx-padding: 15;">
-            <!-- Items will be dynamically added here -->
-        </VBox>
+        <TextField fx:id="CouponsTextField"
+                   promptText="Insert Discount Code"
+                   maxWidth="250"
+                   style="-fx-background-radius: 10; -fx-padding: 10; -fx-text-fill: black;" />
 
-        <!-- Spacer VBox to grow -->
-        <VBox VBox.vgrow="ALWAYS"/>
+        <!-- Button -->
+        <Button text="Pay and get receipt"
+                style="-fx-padding: 10 20; -fx-font-size: 14px; -fx-background-color: #4CAF50; -fx-text-fill: white;"
+                onAction="#goToReceiptPage"/>
+        <Label
+                fx:id="totalPriceLabel"
+                text="Total Price: $0.00"
+                style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
 
-        <!-- Total Price -->
-        <Label fx:id="totalPriceLabel"
-               text="Total Price: $0.00"
-               style="-fx-font-size: 24px; -fx-font-weight: 600; -fx-text-fill: #131519; -fx-margin-bottom: 30;"/>
-
-        <!-- Buttons -->
-        <HBox spacing="30" alignment="CENTER">
-            <Button text="Continue Shopping"
-                    style="-fx-padding: 15 40; -fx-font-size: 18px; -fx-background-color: #34495e; -fx-text-fill: white; -fx-background-radius: 8; -fx-cursor: hand;"
-                    onAction="#goToMenuPage"/>
-            <Button text="Pay and Get Receipt"
-                    style="-fx-padding: 15 40; -fx-font-size: 18px; -fx-background-color: #1a1a2a; -fx-text-fill: white; -fx-background-radius: 8; -fx-cursor: hand;"
-                    onAction="#goToReceiptPage"/>
-        </HBox>
 
     </VBox>
 </AnchorPane>
