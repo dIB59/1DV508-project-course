@@ -31,13 +31,13 @@ public class ProductRepository implements CrudRepository<Product> {
   }
 
   public Optional<Product> findById(int id) throws SQLException {
-    String sql = "SELECT Product.id, Product.name, Product.description, Product.price, Product.image_url, GROUP_CONCAT(T.name) AS tags, GROUP_CONCAT(T.id) AS tags_ids "
-        + "FROM Product "
-        + "LEFT JOIN Product_Tags PT ON Product.id = PT.product_id "
-        + "LEFT JOIN Tags T ON PT.tag_id = T.id "
-        + "WHERE Product.id = ? "
-        + "GROUP BY Product.id";
-
+    String sql =
+        "SELECT Product.id, Product.name, Product.description, Product.price, Product.image_url, GROUP_CONCAT(T.name) AS tags, GROUP_CONCAT(T.id) AS tags_ids "
+            + "FROM Product "
+            + "LEFT JOIN Product_Tags PT ON Product.id = PT.product_id "
+            + "LEFT JOIN Tags T ON PT.tag_id = T.id "
+            + "WHERE Product.id = ? "
+            + "GROUP BY Product.id";
 
     try (PreparedStatement stmt = connection.prepareStatement(sql)) {
       stmt.setInt(1, id);
@@ -50,11 +50,12 @@ public class ProductRepository implements CrudRepository<Product> {
   }
 
   public List<Product> findAll() throws SQLException {
-    String sql = "SELECT Product.id, Product.name, Product.description, Product.price, Product.image_url, GROUP_CONCAT(T.name) AS tags, GROUP_CONCAT(T.id) AS tags_ids "
-        + "FROM Product "
-        + "LEFT JOIN Product_Tags PT ON Product.id = PT.product_id "
-        + "LEFT JOIN Tags T ON PT.tag_id = T.id "
-        + "GROUP BY Product.id";
+    String sql =
+        "SELECT Product.id, Product.name, Product.description, Product.price, Product.image_url, GROUP_CONCAT(T.name) AS tags, GROUP_CONCAT(T.id) AS tags_ids "
+            + "FROM Product "
+            + "LEFT JOIN Product_Tags PT ON Product.id = PT.product_id "
+            + "LEFT JOIN Tags T ON PT.tag_id = T.id "
+            + "GROUP BY Product.id";
     List<Product> results = new ArrayList<>();
     try (PreparedStatement stmt = connection.prepareStatement(sql);
         ResultSet rs = stmt.executeQuery()) {
@@ -85,12 +86,15 @@ public class ProductRepository implements CrudRepository<Product> {
       if (rs.next()) {
         int id = rs.getInt(1);
         return new Product(
-            id, entity.getName(), entity.getDescription(), entity.getPrice(), entity.getImageUrl(), entity.getTags());
+            id,
+            entity.getName(),
+            entity.getDescription(),
+            entity.getPrice(),
+            entity.getImageUrl(),
+            entity.getTags());
       }
     }
     throw new SQLException("Failed to save product, no ID obtained.");
-
-
   }
 
   public void update(Product entity) throws SQLException {
@@ -120,7 +124,6 @@ public class ProductRepository implements CrudRepository<Product> {
     for (Tag tag : findAllTags()) {
       tagNameToId.put(tag.getName(), tag.getId());
     }
-
 
     if (entity.getTags() != null && !entity.getTags().isEmpty()) {
       String insertTagSql = "INSERT INTO Product_Tags (product_id, tag_id) VALUES (?, ?)";
@@ -153,14 +156,13 @@ public class ProductRepository implements CrudRepository<Product> {
     String sql = "SELECT id, name FROM Tags";
 
     try (PreparedStatement stmt = connection.prepareStatement(sql);
-         ResultSet rs = stmt.executeQuery()) {
+        ResultSet rs = stmt.executeQuery()) {
       while (rs.next()) {
         tags.add(new Tag(rs.getInt("id"), rs.getString("name")));
       }
     }
     return tags;
   }
-
 
   public void addTagToProduct(int productId, int tagId) throws SQLException {
     String sql = "INSERT INTO Product_Tags (product_id, tag_id) VALUES (?, ?)";
@@ -183,7 +185,6 @@ public class ProductRepository implements CrudRepository<Product> {
   }
 
   /**
-   *
    * @param tagName name if the tag you want to create
    * @return the id of the tag created
    * @throws SQLException if tag is not created properly

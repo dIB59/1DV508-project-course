@@ -13,6 +13,4 @@ public class AdminMapper implements EntityMapper<Admin> {
     String password = rs.getString("password");
     return new Admin(id, username, password);
   }
-
-
 }

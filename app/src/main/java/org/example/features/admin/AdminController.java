@@ -48,7 +48,8 @@ public class AdminController {
   }
 
   private boolean validateCredentials(String username, String password) {
-    return adminRepository.findByUsername(username)
+    return adminRepository
+        .findByUsername(username)
         .map(admin -> admin.getPassword().equals(password))
         .orElse(false);
   }

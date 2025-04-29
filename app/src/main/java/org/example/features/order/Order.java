@@ -3,6 +3,8 @@ package org.example.features.order;
 import java.util.ArrayList;
 import java.util.List;
 import org.example.features.product.Product;
+import org.example.shared.CouponDiscount;
+import org.example.shared.Discount;
 
 /**
  * Order class represents a customer's order in the system. It contains a list of ProductQuantity
@@ -11,6 +13,7 @@ import org.example.features.product.Product;
 public class Order {
 
   private final List<ProductQuantity> productQuantity;
+  private Discount discount = new CouponDiscount("No Discount", 0);
   private int id;
 
   /**
@@ -104,5 +107,23 @@ public class Order {
       sb.append(pq.toString());
     }
     return sb.toString();
+  }
+
+  public boolean setDiscount(Discount discount) {
+    this.discount = discount;
+    return true;
+  }
+
+  public double getPrice() {
+    System.out.println(
+        "Price before discount"
+            + productQuantity.stream().mapToDouble(ProductQuantity::getPrice).sum());
+    var price =
+        productQuantity.stream()
+            .mapToDouble(ProductQuantity::getPrice)
+            .map(discount::applyDiscount)
+            .sum();
+    System.out.println("Price after discount" + price);
+    return price;
   }
 }

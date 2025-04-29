@@ -3,6 +3,7 @@ package org.example.features.order;
 import java.util.List;
 import org.example.database.CrudRepository;
 import org.example.features.product.Product;
+import org.example.shared.Discount;
 
 /**
  * OrderService class is responsible for managing the order. It provides methods to add, remove, and
@@ -70,5 +71,13 @@ public class OrderService {
       System.err.println("Error saving order: " + e.getLocalizedMessage());
       throw new RuntimeException("Failed to save order");
     }
+  }
+
+  public boolean setDiscount(Discount discount) {
+    return order.setDiscount(discount);
+  }
+
+  public double getPrice() {
+    return order.getPrice();
   }
 }

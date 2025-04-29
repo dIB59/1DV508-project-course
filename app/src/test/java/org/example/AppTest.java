@@ -11,7 +11,6 @@ import org.example.features.product.Product;
 import org.example.features.product.ProductMapper;
 import org.example.features.product.ProductRepository;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class AppTest {
@@ -42,17 +41,22 @@ class AppTest {
     ProductRepository productRepository =
         new ProductRepository(database.getConnection(), new ProductMapper());
 
-    var product = productRepository.save(new Product("Test Product", "Test Description", 10.0, "1"));
+    var product =
+        productRepository.save(new Product("Test Product", "Test Description", 10.0, "1"));
     productRepository.createTag("Tag4");
     productRepository.createTag("Tag5");
 
     var tags = productRepository.findAllTags();
 
-    Product updatedProduct = new Product(
-        product.id(), product.getName(), product.getDescription(), product.getPrice(),
-        product.getImageUrl(), tags);
+    Product updatedProduct =
+        new Product(
+            product.id(),
+            product.getName(),
+            product.getDescription(),
+            product.getPrice(),
+            product.getImageUrl(),
+            tags);
 
     assertEquals(2, updatedProduct.getTags().size());
-
   }
 }

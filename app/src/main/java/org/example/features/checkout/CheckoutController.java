@@ -1,30 +1,37 @@
 package org.example.features.checkout;
 
 import java.net.URL;
-import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import org.example.features.order.OrderService;
 import org.example.features.order.ProductQuantity;
+import org.example.shared.CouponDiscount;
+import org.example.shared.Discount;
 import org.example.shared.SceneRouter;
-import org.example.features.coupons.CouponsRepository;
 
 /** The type Checkout controller. */
 public class CheckoutController implements Initializable {
 
   private final OrderService orderService;
   private final SceneRouter router;
-  private double totalPrice;
   @FXML private Label itemCountLabel;
   @FXML private Label totalPriceLabel;
-  @FXML private ListView<String> itemListView;
-  @FXML private TextField CouponsTextField;
+  @FXML private VBox itemListContainer; // Changed from ListView to VBox
+  @FXML private TextField couponCodeField;
 
   /**
    * Instantiates a new Checkout controller.
@@ -37,23 +44,133 @@ public class CheckoutController implements Initializable {
     this.router = sceneRouter;
   }
 
-  /** Go to receipt page. */
+  /** Goes to the receipt page. */
   public void goToReceiptPage() {
+    if (orderService.getItems().isEmpty()) {
+      // Show an alert if the cart is empty
+      Alert alert = new Alert(Alert.AlertType.WARNING);
+      alert.setTitle("Empty Cart");
+      alert.setHeaderText(null);
+      alert.setContentText("Your cart is empty. Please add items before proceeding.");
+      alert.showAndWait();
+      return;
+    }
     router.goToReceiptPage();
   }
 
-  /** Go to home page. */
-  public void goToHomePage() {
-    router.goToHomePage();
+  /** Goes to the home/menu page. */
+  public void goToMenuPage() {
+    router.goToMenuPage();
+  }
+
+  /** Updates the displayed cart information (item count, list, and total price). */
+  private void updateCartDisplay() {
+    var items = orderService.getItems();
+    int numberOfItems = items.stream().mapToInt(ProductQuantity::getQuantity).sum();
+
+    itemCountLabel.setText(String.format("Items: %d", numberOfItems));
+
+    // Clear the existing items before adding new ones
+    itemListContainer.getChildren().clear();
+    for (ProductQuantity item : items) {
+      HBox itemBox = createItemBox(item);
+      itemListContainer.getChildren().add(itemBox);
+    }
+
+    totalPriceLabel.setText(String.format("Total: $%.2f", orderService.getPrice()));
   }
 
   /**
-   * Gets items.
+   * Creates a VBox for each item with a label, remove button, and styling.
    *
-   * @return the items
+   * @param item the product quantity
+   * @return the HBox representing the item
    */
-  public List<ProductQuantity> getItems() {
-    return orderService.getItems();
+  private HBox createItemBox(ProductQuantity item) {
+    // Create an HBox for each item with padding and spacing
+    HBox hbox = new HBox(20);
+    hbox.setAlignment(Pos.CENTER_LEFT); // Align content to the left initially
+    hbox.setPadding(new Insets(15, 20, 15, 20));
+    hbox.setStyle("-fx-background-color: white; -fx-border-radius: 8; -fx-border-color: #ddd;");
+
+    // Label for item details with modern black and white styling
+    Label label =
+        new Label(
+            item.getProduct().name()
+                + " - $"
+                + String.format("%.2f", item.getProduct().getPrice())
+                + " x "
+                + item.getQuantity());
+    label.setFont(Font.font("Arial", 16));
+    label.setTextFill(Color.valueOf("#333333"));
+    HBox.setHgrow(label, Priority.ALWAYS); // Allow label to take up remaining space
+
+    // Create the increase button with modern black and white styling
+    Button increaseButton = new Button("+");
+    increaseButton.setStyle(
+        "-fx-background-color: #2d3436; "
+            + "-fx-text-fill: white; "
+            + "-fx-background-radius: 8; "
+            + "-fx-cursor: hand; "
+            + "-fx-padding: 10 15; "
+            + "-fx-font-size: 16px;"
+            + "-fx-font-weight: bold;");
+    increaseButton.setOnAction(
+        event -> {
+          orderService.addItem(item.getProduct());
+          updateCartDisplay();
+        });
+
+    // Create the decrease button with modern black and white styling
+    Button decreaseButton = new Button("-");
+    decreaseButton.setStyle(
+        "-fx-background-color: #2d3436; "
+            + "-fx-text-fill: white; "
+            + "-fx-background-radius: 8; "
+            + "-fx-cursor: hand; "
+            + "-fx-padding: 10 15; "
+            + "-fx-font-size: 16px;"
+            + "-fx-font-weight: bold;");
+    decreaseButton.setOnAction(
+        event -> {
+          orderService.removeItem(item.getProduct());
+          updateCartDisplay();
+        });
+    // Add the buttons in a horizontal layout for quantity control
+    HBox quantityControls = new HBox(15, decreaseButton, label, increaseButton);
+    quantityControls.setAlignment(Pos.CENTER_LEFT);
+
+    // Add the quantity controls to the main HBox
+    hbox.getChildren().addAll(quantityControls);
+
+    return hbox;
+  }
+
+  public void applyCoupon() {
+    String coupon = couponCodeField.getText();
+    if (coupon == null || coupon.isEmpty()) {
+      System.out.println("No coupon entered.");
+      return;
+    }
+    Discount discount = new CouponDiscount(coupon, 50);
+
+    var applied = orderService.setDiscount(discount);
+    Alert alert;
+    if (applied) {
+      alert = createAlert("Coupon applied successfully!");
+    } else {
+      alert = createAlert("Failed to apply coupon.");
+    }
+    alert.showAndWait();
+    totalPriceLabel.setText(String.format("Total: $%.2f", orderService.getPrice()));
+  }
+
+  private Alert createAlert(String message) {
+    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+    alert.setTitle("Coupon");
+    alert.setHeaderText(null);
+    alert.setContentText(message);
+    return alert;
   }
 
   @Override
@@ -71,22 +188,16 @@ public class CheckoutController implements Initializable {
               + " x "
               + item.getQuantity());
     }
-    itemListView.setItems(items);
-    totalPrice =
-        orderService.getItems().stream().mapToDouble(ProductQuantity::getPrice).sum() - new CouponsRepository().findByCode(this.CouponsTextField.getText());
-
+    double totalPrice =
+        orderService.getItems().stream().mapToDouble(ProductQuantity::getPrice).sum();
     totalPriceLabel.setText("Total Price: $" + String.format("%.2f", totalPrice));
-  }
-
-  @FXML private void onAddCouponClicked() {
-    String code = CouponsTextField.getText().trim();
-    System.out.println(new CouponsRepository().findByCode(this.CouponsTextField.getText()));
-    if (code.isEmpty()) {
-      System.out.println("No coupon code entered.");
-      return;
+    totalPriceLabel.setFont(Font.font("Arial", 20));
+    totalPriceLabel.setTextFill(Color.valueOf("#16a085"));
+    // display items in the VBox
+    for (ProductQuantity item : orderService.getItems()) {
+      HBox itemBox = createItemBox(item);
+      itemListContainer.getChildren().add(itemBox);
     }
-    this.CouponsTextField.clear();
-    totalPrice = totalPrice - new CouponsRepository().findByCode(code);
-    totalPriceLabel.setText("Total Price: $" + String.format("%.2f", totalPrice));
+    updateCartDisplay();
   }
 }

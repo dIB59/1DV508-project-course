@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<AnchorPane xmlns:fx="http://javafx.com/fxml"
+            xmlns="http://javafx.com/javafx"
             fx:controller="org.example.features.admin.AdminController"
             prefHeight="400.0" prefWidth="600.0"
             style="-fx-background-color: white;">
@@ -22,25 +22,25 @@
           AnchorPane.bottomAnchor="0">
 
         <Label text="Welcome Back"
-               style="-fx-text-fill: black; -fx-font-size: 28px; -fx-font-weight: bold;" />
+               style="-fx-text-fill: black; -fx-font-size: 28px; -fx-font-weight: bold;"/>
 
         <TextField fx:id="usernameField"
                    promptText="Username"
                    maxWidth="250"
-                   style="-fx-background-radius: 10; -fx-padding: 10; -fx-text-fill: black;" />
+                   style="-fx-background-radius: 10; -fx-padding: 10; -fx-text-fill: black;"/>
 
         <PasswordField fx:id="passwordField"
                        promptText="Password"
                        maxWidth="250"
-                       style="-fx-background-radius: 10; -fx-padding: 10; -fx-text-fill: black;" />
+                       style="-fx-background-radius: 10; -fx-padding: 10; -fx-text-fill: black;"/>
 
         <Button text="Login"
                 fx:id="loginButton"
                 onAction="#handleLoginButtonAction"
                 maxWidth="250"
-                style="-fx-background-color: black; -fx-text-fill: white; -fx-background-radius: 10; -fx-font-weight: bold;" />
+                style="-fx-background-color: black; -fx-text-fill: white; -fx-background-radius: 10; -fx-font-weight: bold;"/>
 
         <Label text="Forgot your password?"
-               style="-fx-text-fill: #555555; -fx-underline: true; -fx-cursor: hand;" />
+               style="-fx-text-fill: #555555; -fx-underline: true; -fx-cursor: hand;"/>
     </VBox>
 </AnchorPane>
