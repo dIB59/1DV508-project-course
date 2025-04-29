@@ -1,6 +1,8 @@
 package org.example.features.checkout;
 
 import java.net.URL;
+import java.sql.SQLException;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -21,13 +23,14 @@ import org.example.features.coupons.Coupons;
 import org.example.features.coupons.CouponsRepository;
 import org.example.features.order.OrderService;
 import org.example.features.order.ProductQuantity;
-import org.example.features.coupons.Discount;
 import org.example.shared.SceneRouter;
 
 /** The type Checkout controller. */
 public class CheckoutController implements Initializable {
 
   private final OrderService orderService;
+  private final CouponsRepository couponsRepository;
+
   private final SceneRouter router;
   @FXML private Label itemCountLabel;
   @FXML private Label totalPriceLabel;
@@ -40,8 +43,9 @@ public class CheckoutController implements Initializable {
    * @param orderService the order service
    * @param sceneRouter the scene router
    */
-  public CheckoutController(OrderService orderService, SceneRouter sceneRouter) {
+  public CheckoutController(OrderService orderService, CouponsRepository couponsRepository, SceneRouter sceneRouter) {
     this.orderService = orderService;
+    this.couponsRepository = couponsRepository;
     this.router = sceneRouter;
   }
 
@@ -150,29 +154,27 @@ public class CheckoutController implements Initializable {
   public void applyCoupon() {
     String coupon = couponCodeField.getText();
     if (coupon == null || coupon.isEmpty()) {
-      System.out.println("No coupon entered.");
       return;
     }
+    Optional<Coupons> disc;
 
-    double disc = new CouponsRepository().findByCode(coupon);
-    Discount discount = new Coupons(coupon, disc);
-
-    var applied = orderService.setDiscount(discount);
-    Alert alert;
-    if (applied) {
-      alert = createAlert("Coupon applied successfully!");
-    } else {
-      alert = createAlert("Failed to apply coupon.");
+    try{
+      disc = couponsRepository.findById(coupon);
+    } catch (SQLException e)
+    {
+      throw new RuntimeException("Failed to get coupon from database");
     }
-    alert.showAndWait();
+    disc.ifPresentOrElse(
+        orderService::setDiscount,
+        () -> couponNotFoundAlert().showAndWait()
+    );
     totalPriceLabel.setText(String.format("Total: $%.2f", orderService.getPrice()));
   }
 
-  private Alert createAlert(String message) {
+  private Alert couponNotFoundAlert() {
     Alert alert = new Alert(Alert.AlertType.INFORMATION);
     alert.setTitle("Coupon");
-    alert.setHeaderText(null);
-    alert.setContentText(message);
+    alert.setContentText("Coupon not found");
     return alert;
   }
 
