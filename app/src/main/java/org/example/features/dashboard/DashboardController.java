@@ -84,8 +84,8 @@ public class DashboardController {
     // Image setup
     ImageView imageView = new ImageView();
     try {
-      if (product.imageUrl() != null && !product.imageUrl().isBlank()) {
-        imageView.setImage(new Image(product.imageUrl(), true));
+      if (product.getImageUrl() != null && !product.getImageUrl().isBlank()) {
+        imageView.setImage(new Image(product.getImageUrl(), true));
       }
     } catch (Exception e) {
       System.out.println("Could not load product image: " + e.getMessage());
@@ -108,10 +108,10 @@ public class DashboardController {
     infoBox.setAlignment(Pos.CENTER_LEFT);
     infoBox.setPadding(new Insets(10));
 
-    Label nameLabel = new Label(product.name());
+    Label nameLabel = new Label(product.getName());
     nameLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: black;");
 
-    Label priceLabel = new Label(String.format("$%.2f", product.price()));
+    Label priceLabel = new Label(String.format("$%.2f", product.getPrice()));
     priceLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: #777777;");
 
     infoBox.getChildren().addAll(nameLabel, priceLabel);
