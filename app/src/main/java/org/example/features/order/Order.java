@@ -2,6 +2,7 @@ package org.example.features.order;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.example.database.Identifiable;
 import org.example.features.coupons.Coupons;
 import org.example.features.product.Product;
 import org.example.features.coupons.Discount;
@@ -10,7 +11,7 @@ import org.example.features.coupons.Discount;
  * Order class represents a customer's order in the system. It contains a list of ProductQuantity
  * objects, each representing a product and its quantity.
  */
-public class Order {
+public class Order implements Identifiable<Integer> {
 
   private final List<ProductQuantity> productQuantity;
   private Discount discount = new Coupons("No Discount", 0);
@@ -77,7 +78,7 @@ public class Order {
    *
    * @return the id
    */
-  public int getId() {
+  public Integer getId() {
     return this.id;
   }
 
