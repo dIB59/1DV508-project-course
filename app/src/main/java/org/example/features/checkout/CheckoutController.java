@@ -13,7 +13,7 @@ import javafx.scene.control.TextField;
 import org.example.features.order.OrderService;
 import org.example.features.order.ProductQuantity;
 import org.example.shared.SceneRouter;
-import org.example.features.coupons.Coupons;
+import org.example.features.coupons.CouponsRepository;
 
 /** The type Checkout controller. */
 public class CheckoutController implements Initializable {
@@ -72,7 +72,19 @@ public class CheckoutController implements Initializable {
     }
     itemListView.setItems(items);
     double totalPrice =
-        orderService.getItems().stream().mapToDouble(ProductQuantity::getPrice).sum() - new Coupons("code5", 5).getDiscount();
+        orderService.getItems().stream().mapToDouble(ProductQuantity::getPrice).sum() - new CouponsRepository().findByCode(this.CouponsTextField.getText());
     totalPriceLabel.setText("Total Price: $" + String.format("%.2f", totalPrice));
   }
+
+  @FXML private void onAddCouponClicked() {
+    String code = CouponsTextField.getText().trim();
+    System.out.println(new CouponsRepository().findByCode(this.CouponsTextField.getText()));
+    if (code.isEmpty()) {
+      System.out.println("No coupon code entered.");
+      return;
+    }
+    this.CouponsTextField.clear();
+    initialize(null, null);
+  }
+
 }
