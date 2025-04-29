@@ -2,22 +2,20 @@ package org.example.features.coupons;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import javax.swing.plaf.ScrollBarUI;
 import org.example.database.CrudRepository;
-import org.example.database.Database;
-import org.example.database.EntityMapper;
-import org.example.features.admin.Admin;
 
 public class CouponsRepository implements CrudRepository<Coupons, String> {
 
-  private final Connection connection = Database.getInstance().getConnection();
+  private final Connection connection;
   private final CouponMapper couponMapper = new CouponMapper();
 
-  public double findByCode(String code)  {
+  public CouponsRepository(Connection connection) {
+    this.connection = connection;
+  }
+
+  public double findDiscountByCode(String code)  {
     String sql = "SELECT Coupons.discount FROM Coupons WHERE Coupons.code = ?";
 
     try (PreparedStatement stmt = connection.prepareStatement(sql)) {
@@ -27,7 +25,6 @@ public class CouponsRepository implements CrudRepository<Coupons, String> {
         return rs.getDouble("discount");
       }
     } catch (SQLException e) {
-      // TODO Auto-generated catch block
       System.out.println("Coupons could not be found: " + e.getMessage());;
     }
     return 0;
@@ -52,9 +49,9 @@ public class CouponsRepository implements CrudRepository<Coupons, String> {
       ResultSet rs = stmt.executeQuery();
       if (rs.next()) {
         Coupons coupon = couponMapper.map(rs);
+        return Optional.of(coupon);
       }
     } catch (SQLException e) {
-      // TODO Auto-generated catch block
       System.out.println("Coupons could not be found: " + e.getMessage());;
     }
     return Optional.empty();
