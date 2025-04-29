@@ -12,7 +12,7 @@ import org.example.database.Database;
 import org.example.database.EntityMapper;
 import org.example.features.admin.Admin;
 
-public class CouponsRepository implements CrudRepository<Coupons> {
+public class CouponsRepository {
 
   private final Connection connection = Database.getInstance().getConnection();
   private final CouponMapper couponMapper = new CouponMapper();
@@ -33,27 +33,33 @@ public class CouponsRepository implements CrudRepository<Coupons> {
     return 0;
   }
 
-  @Override
   public Coupons save(Coupons entity) throws SQLException {
-    return null;
+    String sql = "INSERT INTO Coupons (CODE, DISCOUNT) VALUES (?, ?)";
+    try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+      stmt.setString(1, entity.getCode());
+      stmt.setDouble(2, entity.getDiscount());
+      stmt.executeUpdate();
+    }
+    return entity;
   }
 
-  @Override
-  public Optional<Coupons> findById(int id) throws SQLException {
-    return Optional.empty();
-  }
-
-  @Override
   public void update(Coupons entity) throws SQLException {
-
+    String sql = "UPDATE Coupons SET discount = ? WHERE code = ?";
+    try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+      stmt.setString(1, entity.getCode());
+      stmt.setDouble(2, entity.getDiscount());
+      stmt.executeUpdate();
+    }
   }
 
-  @Override
-  public void delete(int id) throws SQLException {
-
+  public void delete(String code) throws SQLException {
+    String sql = "DELETE FROM Coupons WHERE code = ?";
+    try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+      stmt.setString(1, code);
+      stmt.executeUpdate();
+    }
   }
 
-  @Override
   public List<Coupons> findAll() throws SQLException {
     String sql = "SELECT * FROM Coupons";
     try (PreparedStatement stmt = connection.prepareStatement(sql);
