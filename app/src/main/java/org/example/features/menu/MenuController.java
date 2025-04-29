@@ -14,7 +14,7 @@ import org.example.shared.SceneRouter;
 public class MenuController {
 
   private final MenuModel model;
-  private final CrudRepository<Product> productRepository;
+  private final CrudRepository<Product, Integer> productRepository;
   private final SceneRouter sceneRouter;
   private final OrderService orderService;
   @FXML private VBox menuList;
@@ -29,7 +29,7 @@ public class MenuController {
    */
   public MenuController(
       MenuModel model,
-      CrudRepository<Product> productRepository,
+      CrudRepository<Product, Integer> productRepository,
       SceneRouter sceneRouter,
       OrderService orderService) {
     this.model = model;
@@ -44,7 +44,7 @@ public class MenuController {
       Button addButton = new Button("Add to Order");
 
       Label name = new Label(product.getName());
-      Label price = new Label(String.format("$%.2f", product.price()));
+      Label price = new Label(String.format("$%.2f", product.getPrice()));
 
       VBox productCard = new VBox(name, price, addButton);
       productCard.setSpacing(5);
