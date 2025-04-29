@@ -11,7 +11,7 @@ import org.example.features.coupons.Discount;
  */
 public class OrderService {
 
-  private final CrudRepository<Order> repository;
+  private final CrudRepository<Order, Integer> repository;
   private Order order;
 
   /**
@@ -19,7 +19,7 @@ public class OrderService {
    *
    * @param orderRepository the order repository
    */
-  public OrderService(CrudRepository<Order> orderRepository) {
+  public OrderService(CrudRepository<Order, Integer> orderRepository) {
     this.order = new Order();
     this.repository = orderRepository;
   }
