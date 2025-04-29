@@ -12,7 +12,7 @@ import org.example.database.Database;
 import org.example.database.EntityMapper;
 import org.example.features.admin.Admin;
 
-public class CouponsRepository {
+public class CouponsRepository implements CrudRepository<Coupons, String> {
 
   private final Connection connection = Database.getInstance().getConnection();
   private final CouponMapper couponMapper = new CouponMapper();
@@ -43,6 +43,23 @@ public class CouponsRepository {
     return entity;
   }
 
+  @Override
+  public Optional<Coupons> findById(String code) throws SQLException {
+    String sql = "SELECT * FROM Coupons WHERE Coupons.code = ?";
+
+    try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+      stmt.setString(1, code);
+      ResultSet rs = stmt.executeQuery();
+      if (rs.next()) {
+        Coupons coupon = couponMapper.map(rs);
+      }
+    } catch (SQLException e) {
+      // TODO Auto-generated catch block
+      System.out.println("Coupons could not be found: " + e.getMessage());;
+    }
+    return Optional.empty();
+  }
+
   public void update(Coupons entity) throws SQLException {
     String sql = "UPDATE Coupons SET discount = ? WHERE code = ?";
     try (PreparedStatement stmt = connection.prepareStatement(sql)) {
@@ -51,6 +68,7 @@ public class CouponsRepository {
       stmt.executeUpdate();
     }
   }
+
 
   public void delete(String code) throws SQLException {
     String sql = "DELETE FROM Coupons WHERE code = ?";
