@@ -97,7 +97,7 @@ public class CheckoutController implements Initializable {
     // Label for item details with modern black and white styling
     Label label =
         new Label(
-            item.getProduct().name()
+            item.getProduct().getName()
                 + " - $"
                 + String.format("%.2f", item.getProduct().getPrice())
                 + " x "
@@ -185,7 +185,7 @@ public class CheckoutController implements Initializable {
     ObservableList<String> items = FXCollections.observableArrayList();
     for (ProductQuantity item : orderService.getItems()) {
       items.add(
-          item.getProduct().name()
+          item.getProduct().getName()
               + " - $"
               + item.getProduct().getPrice()
               + " x "
