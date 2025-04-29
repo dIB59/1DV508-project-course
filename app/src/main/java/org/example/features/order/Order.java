@@ -102,6 +102,8 @@ public class Order {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
+    sb.append(discount.getCode());
+    sb.append("\n");
     sb.append("Order ID: ").append(id).append("\n");
     for (ProductQuantity pq : productQuantity) {
       sb.append(pq.toString());
@@ -112,6 +114,10 @@ public class Order {
   public boolean setDiscount(Discount discount) {
     this.discount = discount;
     return true;
+  }
+
+  public Discount getDiscount() {
+    return this.discount;
   }
 
   public double getPrice() {

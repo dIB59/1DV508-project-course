@@ -65,7 +65,7 @@ public class ReceiptController {
     }
     orderIdLabel.setText("Order Number: " + order.getId());
     totalLabel.setText(String.format("Total: $%.2f", total));
-    couponsLabel.setText(String.format("Coupons: $%.2f", total));
+    couponsLabel.setText(String.format("Coupons: %s", order.getDiscount().getCode()));
     thankYouLabel.setText("Thank you for dining with us!");
     restaurantNameLabel.setText("Restaurant Name: Gourmet Bistro");
     addressLabel.setText("Address: 123 Food St, Tasty Town");
