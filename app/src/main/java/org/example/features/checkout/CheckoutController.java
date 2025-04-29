@@ -17,10 +17,11 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import org.example.features.coupons.Coupons;
+import org.example.features.coupons.CouponsRepository;
 import org.example.features.order.OrderService;
 import org.example.features.order.ProductQuantity;
-import org.example.shared.CouponDiscount;
-import org.example.shared.Discount;
+import org.example.features.coupons.Discount;
 import org.example.shared.SceneRouter;
 
 /** The type Checkout controller. */
@@ -152,7 +153,9 @@ public class CheckoutController implements Initializable {
       System.out.println("No coupon entered.");
       return;
     }
-    Discount discount = new CouponDiscount(coupon, 50);
+
+    double disc = new CouponsRepository().findByCode(coupon);
+    Discount discount = new Coupons(coupon, disc);
 
     var applied = orderService.setDiscount(discount);
     Alert alert;

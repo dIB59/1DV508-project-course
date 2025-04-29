@@ -1,29 +1,15 @@
 package org.example.features.coupons;
 
 import java.sql.*;
+import org.example.database.Database;
 
 public class CouponsRepository {
 
-  private final String URL =
-      "jdbc:mysql://localhost/kioske?useSSL=false&allowPublicKeyRetrieval=true";
-  private final String USER = "root";
-  private final String PASSWORD = "root";
-  private Connection connection;
-
-  public Connection getConnection() {
-    try {
-      if (connection == null || connection.isClosed()) {
-        connection = DriverManager.getConnection(URL + "&user=" + USER + "&password=" + PASSWORD);
-      }
-    } catch (SQLException e) {
-      System.err.println("Reconnection failed: " + e.getMessage());
-    }
-    return connection;
-  }
+  private final Connection connection = Database.getInstance().getConnection();
   public double findByCode(String code)  {
     String sql = "SELECT Coupons.discount FROM Coupons WHERE Coupons.code = ?";
 
-    try (PreparedStatement stmt = getConnection().prepareStatement(sql)) {
+    try (PreparedStatement stmt = connection.prepareStatement(sql)) {
       stmt.setString(1, code);
       ResultSet rs = stmt.executeQuery();
       if (rs.next()) {
@@ -35,4 +21,4 @@ public class CouponsRepository {
     }
     return 0;
   }
-  }
+}

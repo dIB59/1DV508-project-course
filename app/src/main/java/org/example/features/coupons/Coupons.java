@@ -1,7 +1,7 @@
 package org.example.features.coupons;
 import org.example.features.product.ProductDetailsController;
 
-public class Coupons {
+public class Coupons implements Discount {
   private final String code;
   private final double discount;
   public Coupons(String code, double discount) {
@@ -16,7 +16,7 @@ public class Coupons {
   }
 
   public double getDiscount() {
-    return discount;
+    return 0.01 * discount;
   }
 
   public void setDiscount(double discount) {
