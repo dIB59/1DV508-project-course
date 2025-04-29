@@ -41,11 +41,11 @@ public class ReceiptController {
     for (ProductQuantity pq : productQuantities) {
       Product product = pq.getProduct();
       int quantity = pq.getQuantity();
-      double itemTotal = product.price() * quantity;
+      double itemTotal = product.getPrice() * quantity;
       total += itemTotal;
 
       // Left: Product name with quantity
-      Label nameLabel = new Label(product.name() + " x" + quantity);
+      Label nameLabel = new Label(product.getName() + " x" + quantity);
       nameLabel.getStyleClass().add("item-name");
 
       // Right: Price
