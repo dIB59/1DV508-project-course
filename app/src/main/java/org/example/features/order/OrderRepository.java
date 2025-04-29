@@ -12,7 +12,7 @@ import org.example.database.CrudRepository;
 import org.example.database.EntityMapper;
 
 /** The type Order repository. */
-public class OrderRepository implements CrudRepository<Order> {
+public class OrderRepository implements CrudRepository<Order, Integer> {
 
   private final Connection connection;
   private final EntityMapper<Order> orderMapper;
@@ -55,7 +55,7 @@ public class OrderRepository implements CrudRepository<Order> {
     throw new SQLException("Failed to save order, no ID obtained.");
   }
 
-  public Optional<Order> findById(int id) throws SQLException {
+  public Optional<Order> findById(Integer id) throws SQLException {
     String sql =
         "SELECT opq.product_id, opq.quantity, p.name, p.description, p.price, p.image_url "
             + "FROM Order_ProductQuantity opq "
@@ -107,7 +107,7 @@ public class OrderRepository implements CrudRepository<Order> {
     }
   }
 
-  public void delete(int id) throws SQLException {
+  public void delete(Integer id) throws SQLException {
     try (PreparedStatement stmt =
         connection.prepareStatement("DELETE FROM Order_ProductQuantity WHERE order_id = ?")) {
       stmt.setInt(1, id);

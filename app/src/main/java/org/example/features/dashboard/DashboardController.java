@@ -51,6 +51,10 @@ public class DashboardController {
     sceneRouter.goToHomePage();
   }
 
+  public void goToCouponsPage() {
+    sceneRouter.goToCouponsPage();
+  }
+
   private void loadProducts() {
 
     List<Product> products;
@@ -83,8 +87,8 @@ public class DashboardController {
     // Image setup
     ImageView imageView = new ImageView();
     try {
-      if (product.imageUrl() != null && !product.imageUrl().isBlank()) {
-        imageView.setImage(new Image(product.imageUrl(), true));
+      if (product.getImageUrl() != null && !product.getImageUrl().isBlank()) {
+        imageView.setImage(new Image(product.getImageUrl(), true));
       }
     } catch (Exception e) {
       System.out.println("Could not load product image: " + e.getMessage());
@@ -107,10 +111,10 @@ public class DashboardController {
     infoBox.setAlignment(Pos.CENTER_LEFT);
     infoBox.setPadding(new Insets(10));
 
-    Label nameLabel = new Label(product.name());
+    Label nameLabel = new Label(product.getName());
     nameLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: black;");
 
-    Label priceLabel = new Label(String.format("$%.2f", product.price()));
+    Label priceLabel = new Label(String.format("$%.2f", product.getPrice()));
     priceLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: #777777;");
 
     infoBox.getChildren().addAll(nameLabel, priceLabel);
@@ -146,10 +150,10 @@ public class DashboardController {
     VBox vbox = new VBox(10);
     vbox.setPadding(new Insets(20));
 
-    TextField nameField = new TextField(product.name());
-    TextField descriptionField = new TextField(product.description());
-    TextField priceField = new TextField(String.valueOf(product.price()));
-    TextField imageUrlField = new TextField(product.imageUrl());
+    TextField nameField = new TextField(product.getName());
+    TextField descriptionField = new TextField(product.getDescription());
+    TextField priceField = new TextField(String.valueOf(product.getPrice()));
+    TextField imageUrlField = new TextField(product.getImageUrl());
 
     // Fetch all tags
     List<Tag> allTags;
@@ -239,7 +243,7 @@ public class DashboardController {
 
             Product updatedProduct =
                 new Product(
-                    product.id(), newName, newDescription, newPrice, newImageUrl, selectedTags);
+                    product.getId(), newName, newDescription, newPrice, newImageUrl, selectedTags);
 
             repository.update(updatedProduct);
             loadProducts(); // refresh

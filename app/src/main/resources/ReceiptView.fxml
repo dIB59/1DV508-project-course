@@ -33,6 +33,8 @@
         <!-- Total -->
         <Label fx:id="totalLabel" styleClass="total"/>
 
+        <Label fx:id="couponsLabel" styleClass="total"/>
+
         <!-- Thank You -->
         <Label fx:id="thankYouLabel" styleClass="thank-you"/>
 

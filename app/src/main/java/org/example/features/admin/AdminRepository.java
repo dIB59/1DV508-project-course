@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 import org.example.database.CrudRepository;
 
-public class AdminRepository implements CrudRepository<Admin> {
+public class AdminRepository implements CrudRepository<Admin, Integer> {
 
   private final AdminMapper adminMapper;
   private final Connection connection;
@@ -39,7 +39,7 @@ public class AdminRepository implements CrudRepository<Admin> {
   }
 
   @Override
-  public Optional<Admin> findById(int id) throws SQLException {
+  public Optional<Admin> findById(Integer id) throws SQLException {
     String sql = "SELECT * FROM Admin WHERE id = ?";
     try (PreparedStatement stmt = connection.prepareStatement(sql)) {
       stmt.setInt(1, id);
@@ -62,7 +62,7 @@ public class AdminRepository implements CrudRepository<Admin> {
   }
 
   @Override
-  public void delete(int id) throws SQLException {
+  public void delete(Integer id) throws SQLException {
     String sql = "DELETE FROM Admin WHERE id = ?";
     try (PreparedStatement stmt = connection.prepareStatement(sql)) {
       stmt.setInt(1, id);
