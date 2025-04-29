@@ -13,7 +13,7 @@ import org.example.database.CrudRepository;
 import org.example.database.EntityMapper;
 
 /** The type Product repository. */
-public class ProductRepository implements CrudRepository<Product> {
+public class ProductRepository implements CrudRepository<Product, Integer> {
 
   private final Connection connection;
   private final String tableName = "Product";
@@ -30,7 +30,7 @@ public class ProductRepository implements CrudRepository<Product> {
     this.mapper = mapper;
   }
 
-  public Optional<Product> findById(int id) throws SQLException {
+  public Optional<Product> findById(Integer id) throws SQLException {
     String sql =
         "SELECT Product.id, Product.name, Product.description, Product.price, Product.image_url, GROUP_CONCAT(T.name) AS tags, GROUP_CONCAT(T.id) AS tags_ids "
             + "FROM Product "
@@ -143,7 +143,7 @@ public class ProductRepository implements CrudRepository<Product> {
     }
   }
 
-  public void delete(int id) throws SQLException {
+  public void delete(Integer id) throws SQLException {
     String sql = "DELETE FROM " + tableName + " WHERE id = ?";
     try (PreparedStatement stmt = connection.prepareStatement(sql)) {
       stmt.setInt(1, id);
