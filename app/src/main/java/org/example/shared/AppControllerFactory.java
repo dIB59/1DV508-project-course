@@ -78,8 +78,9 @@ public class AppControllerFactory implements Callback<Class<?>, Object> {
   }
 
   private ProductRepository getProductRepository() {
-    return new ProductRepository(connection, new ProductMapper());
+    return new ProductRepository(Database.getInstance().getConnection(), new ProductMapper());
   }
+
 
   private AdminRepository getAdminRepository() {
     return new AdminRepository(connection, new AdminMapper());
