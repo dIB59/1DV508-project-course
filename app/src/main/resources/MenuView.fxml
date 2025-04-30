@@ -26,6 +26,12 @@
             <!-- Menu items dynamically injected here -->
         </VBox>
     </ScrollPane>
+    <!-- Discount Button (bottom left) -->
+    <Button text="View Discounts"
+            style="-fx-padding: 10 20; -fx-font-size: 14px; -fx-background-color: #2196F3; -fx-text-fill: white;"
+            onAction="#goToDiscountMenu"
+            AnchorPane.bottomAnchor="10" AnchorPane.leftAnchor="10"/>
+
 
     <!-- Checkout Button (bottom right) -->
     <Button text="Go to Checkout"
