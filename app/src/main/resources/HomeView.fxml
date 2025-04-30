@@ -15,21 +15,24 @@
         <!-- Header -->
         <Label text="Welcome!"
                fx:id="welcomeLabel"
-               style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+               style="-fx-font-size: 30px; -fx-font-weight: bold;"/>
 
         <!-- Body -->
         <Label text="Please choose one of the options below:"
                style="-fx-font-size: 16px;"/>
 
         <!-- Button -->
+
         <Button text="Eat-in"
                 fx:id="eatInButton"
-                style="-fx-padding: 10 20; -fx-font-size: 14px; -fx-background-color: green; -fx-text-fill: white;"
+                prefWidth="150"
+                style="-fx-padding: 10 0; -fx-font-size: 14px; -fx-background-color: green; -fx-text-fill: white;"
                 onAction="#goToMenuPageEatIn"/>
 
         <Button text="Takeout"
                 fx:id="takeOutButton"
-                style="-fx-padding: 10 20; -fx-font-size: 14px; -fx-background-color: green; -fx-text-fill: white;"
+                prefWidth="150"
+                style="-fx-padding: 10 0; -fx-font-size: 14px; -fx-background-color: green; -fx-text-fill: white;"
                 onAction="#goToMenuPageTakeout"/>
 
     </VBox>
