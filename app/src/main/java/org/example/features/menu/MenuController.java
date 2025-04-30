@@ -2,6 +2,7 @@ package org.example.features.menu;
 
 import java.util.List;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
@@ -10,6 +11,7 @@ import org.example.features.order.OrderService;
 import org.example.features.product.Product;
 import org.example.shared.SceneRouter;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 
 /** The type Menu controller. */
 public class MenuController {
@@ -47,15 +49,40 @@ public class MenuController {
     int col = 0;
     for (Product product : getMenuItems()) {
       Button addButton = new Button("Add to Order");
+      addButton.setStyle("-fx-background-color: #34495e; -fx-text-fill: white; -fx-background-radius: 5;");
 
       Label name = new Label(product.getName());
+      name.setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;");
       Label price = new Label(String.format("$%.2f", product.price()));
-      //TODO: change special label to be on top of the item. Also change the fxml file to use a stackPane to allow for stacking of objects
       Label specialLabel = new Label(product.getSpecialLabel());
+      if (product.getSpecialLabel() != null && !product.getSpecialLabel().isEmpty()) {
+        specialLabel.setStyle("""
+                -fx-background-color: #e74c3c;
+                -fx-text-fill: white;
+                -fx-padding: 5 10;
+                -fx-background-radius: 5;
+                -fx-font-size: 14px;
+                -fx-font-weight: bold;
+            """);
+      }
 
-      VBox productCard = new VBox(name, price, addButton, specialLabel);
-      productCard.setSpacing(5);
-      productCard.setStyle("-fx-padding: 10; -fx-border-color: #ccc; -fx-border-radius: 5;");
+      VBox productInfo = new VBox(10, name ,price, addButton);
+      productInfo.setStyle("-fx-alignment: center;");
+      StackPane productCard = new StackPane();
+      productCard.setStyle("""
+            -fx-background-color: white;
+            -fx-padding: 20;
+            -fx-border-radius: 10;
+            -fx-background-radius: 10;
+            -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 10, 0, 0, 0);
+        """);
+
+      productCard.getChildren().addAll(productInfo);
+      if (product.getSpecialLabel() != null && !product.getSpecialLabel().isEmpty()) {
+        StackPane.setAlignment(specialLabel, Pos.TOP_RIGHT);
+        productCard.getChildren().add(specialLabel);
+      }
+
       addButton.setOnAction(event -> sceneRouter.goToProductDetailsPage(product));
 
       menuGrid.add(productCard, col, row);
