@@ -19,14 +19,7 @@ public class Coupons implements Discount, Identifiable<String> {
     return code;
   }
 
-
   public double getDiscount() {
     return 0.01 * discount;
-  }
-
-  public void setDiscount(double discount) {
-  }
-
-  public void setCode(String code) {
   }
 }
