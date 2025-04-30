@@ -77,4 +77,15 @@ INSERT INTO Tags (name) VALUES
 
 INSERT INTO Product_Tags (product_id, tag_id) VALUES
 (1, 1), -- Burger
-(2, 2) -- Pizza
+(2, 2); -- Pizza
+
+CREATE TABLE IF NOT EXISTS Coupons
+(
+    code        VARCHAR(255)   NOT NULL,
+    discount    INT NOT NULL CHECK (discount >= 0)
+);
+
+INSERT INTO Coupons (code, discount) VALUES
+('code10', 10),
+('code5', 5),
+('code50', 50);

@@ -2,15 +2,19 @@ package org.example.features.order;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.example.database.Identifiable;
+import org.example.features.coupons.Coupons;
 import org.example.features.product.Product;
+import org.example.features.coupons.Discount;
 
 /**
  * Order class represents a customer's order in the system. It contains a list of ProductQuantity
  * objects, each representing a product and its quantity.
  */
-public class Order {
+public class Order implements Identifiable<Integer> {
 
   private final List<ProductQuantity> productQuantity;
+  private Discount discount = new Coupons("No Discount", 0);
   private int id;
 
   /**
@@ -74,7 +78,7 @@ public class Order {
    *
    * @return the id
    */
-  public int getId() {
+  public Integer getId() {
     return this.id;
   }
 
@@ -99,10 +103,27 @@ public class Order {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
+    sb.append(discount.getCode());
+    sb.append("\n");
     sb.append("Order ID: ").append(id).append("\n");
     for (ProductQuantity pq : productQuantity) {
       sb.append(pq.toString());
     }
     return sb.toString();
+  }
+
+  public void setDiscount(Discount discount) {
+    this.discount = discount;
+  }
+
+  public Discount getDiscount() {
+    return this.discount;
+  }
+
+  public double getPrice() {
+    return productQuantity.stream()
+            .mapToDouble(ProductQuantity::getPrice)
+            .map(discount::applyDiscount)
+            .sum();
   }
 }
