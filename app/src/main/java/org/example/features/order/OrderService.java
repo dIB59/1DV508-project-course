@@ -63,6 +63,7 @@ public class OrderService {
     try {
       var s = this.repository.save(order);
       s.setDiscount(order.getDiscount());
+      s.settype(order.gettype());
       this.clear();
       return s;
     } catch (Exception e) {
@@ -77,5 +78,9 @@ public class OrderService {
 
   public double getPrice() {
     return order.getPrice();
+  }
+
+  public void settype(String ordertype) {
+    order.settype(ordertype);
   }
 }

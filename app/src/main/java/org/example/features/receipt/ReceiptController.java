@@ -24,7 +24,8 @@ public class ReceiptController {
       thankYouLabel,
       restaurantNameLabel,
       addressLabel,
-      contactLabel;
+      contactLabel,
+      EatinEatoutlabel;
 
   public ReceiptController(Order order, SceneRouter sceneRouter) {
     this.order = order;
@@ -59,6 +60,7 @@ public class ReceiptController {
 
       itemsContainer.getChildren().add(itemRow);
     }
+    EatinEatoutlabel.setText(order.gettype());
     orderIdLabel.setText("Order Number: " + order.getId());
     totalLabel.setText(String.format("Total: $%.2f", order.getPrice()));
     couponsLabel.setText(String.format("Coupons: %s", order.getDiscount().getCode()));

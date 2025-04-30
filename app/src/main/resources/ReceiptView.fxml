@@ -27,6 +27,8 @@
         <!-- Order ID -->
         <Label fx:id="orderIdLabel" styleClass="order-id"/>
 
+        <Label fx:id="EatinEatoutlabel" style="-fx-font-size: 15px;" />
+
         <!-- Items Container -->
         <VBox fx:id="itemsContainer" spacing="8"/>
 
