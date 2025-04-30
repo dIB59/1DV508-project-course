@@ -16,7 +16,7 @@ public class Order implements Identifiable<Integer> {
   private final List<ProductQuantity> productQuantity;
   private Discount discount = new Coupons("No Discount", 0);
   private int id;
-
+  private String gettype;
   /**
    * Instantiates a new Order.
    *
@@ -125,5 +125,13 @@ public class Order implements Identifiable<Integer> {
             .mapToDouble(ProductQuantity::getPrice)
             .map(discount::applyDiscount)
             .sum();
+  }
+
+  public String gettype() {
+    return gettype;
+  }
+
+  public void settype(String ordertype) {
+    this.gettype = ordertype;
   }
 }

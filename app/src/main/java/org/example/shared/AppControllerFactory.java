@@ -53,7 +53,7 @@ public class AppControllerFactory implements Callback<Class<?>, Object> {
   @Override
   public Object call(Class<?> controllerClass) {
     return switch (controllerClass.getSimpleName()) {
-      case "HomeController" -> new HomeController(new HomeModel(), sceneRouter);
+      case "HomeController" -> new HomeController(new HomeModel(), sceneRouter, orderService);
       case "MenuController" ->
           new MenuController(new MenuModel(), getProductRepository(), sceneRouter, orderService);
       case "CheckoutController" -> new CheckoutController(orderService, getCouponsRepository(), sceneRouter);
