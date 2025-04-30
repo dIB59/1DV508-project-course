@@ -22,6 +22,8 @@ public class ProductDetailsController {
 
   @FXML private Button addToOrderButton;
 
+  @FXML private Label productIngredients;
+
   public ProductDetailsController(OrderService orderService, SceneRouter sceneRouter) {
     this.orderService = orderService;
     this.sceneRouter = sceneRouter;
@@ -36,6 +38,7 @@ public class ProductDetailsController {
       productPrice.setText(String.format("$%.2f", product.getPrice()));
       System.err.println(product.getDescription());
       productDescription.setText(product.getDescription());
+      productDescription.setText(product.getIngredients());
 
       // Set a SpinnerValueFactory to manage the Spinner's value
       SpinnerValueFactory<Integer> valueFactory =

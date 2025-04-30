@@ -243,7 +243,7 @@ public class DashboardController {
 
             Product updatedProduct =
                 new Product(
-                    product.getId(), newName, newDescription, newPrice, newImageUrl, selectedTags);
+                    product.getId(), newName, newDescription, newPrice, newImageUrl, selectedTags, product.getIngredients());
 
             repository.update(updatedProduct);
             loadProducts(); // refresh

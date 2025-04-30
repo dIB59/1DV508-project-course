@@ -32,7 +32,7 @@ public class ProductRepository implements CrudRepository<Product, Integer> {
 
   public Optional<Product> findById(Integer id) throws SQLException {
     String sql =
-        "SELECT Product.id, Product.name, Product.description, Product.price, Product.image_url, GROUP_CONCAT(T.name) AS tags, GROUP_CONCAT(T.id) AS tags_ids "
+        "SELECT Product.id, Product.name, Product.description, Product.price, Product.image_url, GROUP_CONCAT(T.name) AS tags, GROUP_CONCAT(T.id) AS tags_ids, Product.ingredients "
             + "FROM Product "
             + "LEFT JOIN Product_Tags PT ON Product.id = PT.product_id "
             + "LEFT JOIN Tags T ON PT.tag_id = T.id "
@@ -91,7 +91,8 @@ public class ProductRepository implements CrudRepository<Product, Integer> {
             entity.getDescription(),
             entity.getPrice(),
             entity.getImageUrl(),
-            entity.getTags());
+            entity.getTags(),
+            entity.getIngredients());
       }
     }
     throw new SQLException("Failed to save product, no ID obtained.");

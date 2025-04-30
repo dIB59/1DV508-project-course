@@ -40,6 +40,8 @@ public class ProductMapper implements EntityMapper<Product> {
         rs.getString("description"),
         rs.getDouble("price"),
         rs.getString("image_url"),
-        tags);
+        tags,
+        rs.getString("ingredients")
+        );
   }
 }

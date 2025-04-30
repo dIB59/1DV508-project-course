@@ -19,6 +19,9 @@
         <!-- Product Description -->
         <Label fx:id="productDescription" style="-fx-font-size: 16px;" text="Product Description"/>
 
+        <!-- Product Ingredients -->
+        <Label fx:id="productIngredients" style="-fx-font-size: 16px;" text="Product Ingredient"/>
+
         <!-- Quantity Spinner -->
         <Spinner fx:id="quantitySpinner" prefWidth="150.0"/>
 

@@ -20,6 +20,7 @@ public class Product implements Identifiable<Integer> {
   private double price;
   private String imageUrl;
   private List<Tag> tags;
+  private String ingredients;
 
   /**
    * Instantiates a new Product.
@@ -31,7 +32,7 @@ public class Product implements Identifiable<Integer> {
    * @param imageUrl the image url
    * @param tags the tags
    */
-  public Product(int id, String name, String description, double price, String imageUrl, List<Tag> tags) {
+  public Product(int id, String name, String description, double price, String imageUrl, List<Tag> tags, String ingredients) {
     if (name == null || name.isBlank()) {
       throw new IllegalArgumentException("Name cannot be null or empty");
     }
@@ -47,14 +48,15 @@ public class Product implements Identifiable<Integer> {
     this.price = price;
     this.imageUrl = imageUrl;
     this.tags = tags != null ? tags : new ArrayList<>();
+    this.ingredients = ingredients;
   }
 
-  public Product(String name, String description, double price, String imageUrl) {
-    this(0, name, description, price, imageUrl, List.of());
+  public Product(String name, String description, double price, String imageUrl, String ingredients) {
+    this(0, name, description, price, imageUrl, List.of(),  ingredients);
   }
 
-  public Product(String name, String description, double price, String imageUrl, List<Tag> tags) {
-    this(0, name, description, price, imageUrl, tags);
+  public Product(String name, String description, double price, String imageUrl, List<Tag> tags, String ingredients) {
+    this(0, name, description, price, imageUrl, tags,  ingredients);
   }
 
   public Integer getId() {
@@ -79,6 +81,8 @@ public class Product implements Identifiable<Integer> {
   public String getDescription() {
     return description;
   }
+
+  public String getIngredients(){return ingredients; }
 
   public void setDescription(String description) {
     if (description == null || description.isBlank()) {
