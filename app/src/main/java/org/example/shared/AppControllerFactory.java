@@ -65,7 +65,7 @@ public class AppControllerFactory implements Callback<Class<?>, Object> {
       case "DashboardController" ->
           new DashboardController(new DashboardModel(), sceneRouter, getProductRepository());
       case "CouponsController" ->
-          new CouponsController(new CouponsRepository(), sceneRouter);
+          new CouponsController(getCouponsRepository(), sceneRouter);
       default -> {
         try {
           yield controllerClass.getDeclaredConstructor(SceneRouter.class).newInstance(sceneRouter);
