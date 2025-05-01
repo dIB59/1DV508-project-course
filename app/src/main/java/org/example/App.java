@@ -26,12 +26,12 @@ public class App extends Application {
     Connection conn = this.database.getConnection();
     var orderMapper = new OrderMapper();
     CrudRepository<Order, Integer> orderRepository = new OrderRepository(conn, orderMapper);
+    primaryStage.setMaximized(true);
     var orderService = new OrderService(orderRepository);
 
     SceneRouter router = new SceneRouter(primaryStage, orderService);
 
-    router.goTo(SceneRouter.KioskPage.HOME);
     primaryStage.setTitle("JavaFX with MySQL");
-    primaryStage.show();
+    router.goTo(SceneRouter.KioskPage.HOME);
   }
 }

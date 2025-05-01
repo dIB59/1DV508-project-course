@@ -2,6 +2,7 @@ package org.example.shared;
 
 import java.io.IOException;
 import java.net.URL;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -38,7 +39,6 @@ public class SceneRouter {
       URL url = getClass().getResource("/" + page.getValue());
       FXMLLoader loader = new FXMLLoader(url);
       loader.setControllerFactory(controllerFactory);
-
       currentPage = page;
       Scene scene = new Scene(loader.load());
       stage.setScene(scene);
@@ -48,6 +48,7 @@ public class SceneRouter {
       e.printStackTrace();
     }
   }
+
 
   /** Refresh page. */
   public void refreshPage() {

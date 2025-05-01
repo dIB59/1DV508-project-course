@@ -9,7 +9,7 @@
 <AnchorPane xmlns:fx="http://javafx.com/fxml"
             xmlns="http://javafx.com/javafx"
             fx:controller="org.example.features.admin.AdminController"
-            prefHeight="1000.0" prefWidth="1000.0"
+            prefHeight="400.0" prefWidth="600.0"
             style="-fx-background-color: white;">
 
     <VBox alignment="CENTER"
@@ -41,7 +41,6 @@
                 style="-fx-background-color: black; -fx-text-fill: white; -fx-background-radius: 10; -fx-font-weight: bold;"/>
 
         <Label text="Forgot your password?"
-               onMouseClicked="#handleForgotPassword"
                style="-fx-text-fill: #555555; -fx-underline: true; -fx-cursor: hand;"/>
     </VBox>
 </AnchorPane>
