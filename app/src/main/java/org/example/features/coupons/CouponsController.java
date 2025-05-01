@@ -29,7 +29,7 @@ public class CouponsController {
       Button addButton = new Button("Delete coupon");
 
       Label code = new Label(coupons.getCode());
-      Label discount = new Label(String.format("$%.2f", coupons.getDiscount()));
+      Label discount = new Label(String.format("%.0f", coupons.getDiscount() * 100));
 
       VBox coupon = new VBox(code, discount, addButton);
       coupon.setSpacing(5);
