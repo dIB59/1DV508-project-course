@@ -21,7 +21,6 @@ public class ReceiptController {
   @FXML
   private Label titleLabel,
       totalLabel,
-      couponsLabel,
       thankYouLabel,
       restaurantNameLabel,
       addressLabel,
@@ -30,6 +29,7 @@ public class ReceiptController {
   public ReceiptController(Order order, SceneRouter sceneRouter) {
     this.order = order;
     System.out.println("ReceiptController: " + order);
+    System.out.println("ReceiptController: " + order);
     this.sceneRouter = sceneRouter;
   }
 
@@ -37,14 +37,18 @@ public class ReceiptController {
   public void initialize() {
     List<ProductQuantity> productQuantities = order.getProductQuantity();
     double total = 0.0;
+    double total = 0.0;
 
     for (ProductQuantity pq : productQuantities) {
       Product product = pq.getProduct();
       int quantity = pq.getQuantity();
       double itemTotal = product.price() * quantity;
       total += itemTotal;
+      double itemTotal = product.price() * quantity;
+      total += itemTotal;
 
       // Left: Product name with quantity
+      Label nameLabel = new Label(product.name() + " x" + quantity);
       Label nameLabel = new Label(product.name() + " x" + quantity);
       nameLabel.getStyleClass().add("item-name");
 
@@ -63,6 +67,8 @@ public class ReceiptController {
 
       itemsContainer.getChildren().add(itemRow);
     }
+    orderIdLabel.setText("Order ID: " + order.getId());
+    totalLabel.setText(String.format("Total: $%.2f", total));
     orderIdLabel.setText("Order Number: " + order.getId());
     totalLabel.setText(String.format("Total: $%.2f", total));
     couponsLabel.setText(String.format("Coupons: $%.2f", total));

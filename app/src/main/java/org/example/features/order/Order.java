@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import org.example.features.coupons.Coupons;
 import org.example.features.product.Product;
-import org.example.features.coupons.Discount;
 
 /**
  * Order class represents a customer's order in the system. It contains a list of ProductQuantity
@@ -13,7 +12,6 @@ import org.example.features.coupons.Discount;
 public class Order {
 
   private final List<ProductQuantity> productQuantity;
-  private Discount discount = new Coupons("No Discount", 0);
   private int id;
 
   /**
