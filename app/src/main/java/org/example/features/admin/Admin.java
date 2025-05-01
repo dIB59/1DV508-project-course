@@ -1,8 +1,6 @@
 package org.example.features.admin;
 
-import org.example.database.Identifiable;
-
-public class Admin implements Identifiable<Integer> {
+public class Admin {
   private final int id;
   private String username;
   private String password;
@@ -19,7 +17,7 @@ public class Admin implements Identifiable<Integer> {
     this.password = password;
   }
 
-  public Integer getId() {
+  public int getId() {
     return id;
   }
 

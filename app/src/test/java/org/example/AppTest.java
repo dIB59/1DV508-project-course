@@ -42,23 +42,16 @@ class AppTest {
         new ProductRepository(database.getConnection(), new ProductMapper());
 
     var product = productRepository.save(new Product("Test Product", "Test Description", 10.0, "1", "Test label"));
-
     productRepository.createTag("Tag4");
     productRepository.createTag("Tag5");
 
     var tags = productRepository.findAllTags();
 
-
-    Product updatedProduct =
-        new Product(
-            product.getId(),
-            product.getName(),
-            product.getDescription(),
-            product.getPrice(),
-            product.getImageUrl(),
-            product.getSpecialLabel(),
-            tags);
+    Product updatedProduct = new Product(
+        product.id(), product.getName(), product.getDescription(), product.getPrice(),
+        product.getImageUrl(), product.getSpecialLabel(), tags);
 
     assertEquals(2, updatedProduct.getTags().size());
+
   }
 }

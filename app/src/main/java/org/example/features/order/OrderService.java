@@ -3,7 +3,6 @@ package org.example.features.order;
 import java.util.List;
 import org.example.database.CrudRepository;
 import org.example.features.product.Product;
-import org.example.features.coupons.Discount;
 
 /**
  * OrderService class is responsible for managing the order. It provides methods to add, remove, and
@@ -11,7 +10,7 @@ import org.example.features.coupons.Discount;
  */
 public class OrderService {
 
-  private final CrudRepository<Order, Integer> repository;
+  private final CrudRepository<Order> repository;
   private Order order;
 
   /**
@@ -19,7 +18,7 @@ public class OrderService {
    *
    * @param orderRepository the order repository
    */
-  public OrderService(CrudRepository<Order, Integer> orderRepository) {
+  public OrderService(CrudRepository<Order> orderRepository) {
     this.order = new Order();
     this.repository = orderRepository;
   }
@@ -61,21 +60,15 @@ public class OrderService {
    */
   public Order saveOrderAndClear() {
     try {
+      System.out.println("Order Unsaved: " + order);
       var s = this.repository.save(order);
-      s.setDiscount(order.getDiscount());
       this.clear();
+      System.out.println("Order saved successfully: " + s);
+
       return s;
     } catch (Exception e) {
       System.err.println("Error saving order: " + e.getLocalizedMessage());
       throw new RuntimeException("Failed to save order");
     }
-  }
-
-  public void setDiscount(Discount discount) {
-    order.setDiscount(discount);
-  }
-
-  public double getPrice() {
-    return order.getPrice();
   }
 }

@@ -17,7 +17,7 @@ import javafx.scene.layout.StackPane;
 public class MenuController {
 
   private final MenuModel model;
-  private final CrudRepository<Product, Integer> productRepository;
+  private final CrudRepository<Product> productRepository;
   private final SceneRouter sceneRouter;
   private final OrderService orderService;
   @FXML private GridPane menuGrid;
@@ -32,7 +32,7 @@ public class MenuController {
    */
   public MenuController(
       MenuModel model,
-      CrudRepository<Product, Integer> productRepository,
+      CrudRepository<Product> productRepository,
       SceneRouter sceneRouter,
       OrderService orderService) {
     this.model = model;
