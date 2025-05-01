@@ -73,11 +73,6 @@ public class SceneRouter {
     goTo(KioskPage.MENU);
   }
 
-  /** Go to coupons page. */
-  public void goToCouponsPage() {
-    goTo(KioskPage.COUPONS);
-  }
-
   /** Go to dashboard page. */
   public void goToDashboardPage() {
     goTo(KioskPage.DASHBOARD);
@@ -126,8 +121,6 @@ public class SceneRouter {
     HOME("HomeView.fxml"),
     /** Menu kiosk page. */
     MENU("MenuView.fxml"),
-    /** Coupons kiosk page. */
-    COUPONS("CouponsView.fxml"),
     /** Checkout kiosk page. */
     CHECKOUT("CheckoutView.fxml"),
     /** Receipt kiosk page. */

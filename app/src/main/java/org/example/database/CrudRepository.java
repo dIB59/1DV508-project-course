@@ -22,7 +22,7 @@ import java.util.Optional;
  *            }
  *            </pre>
  */
-public interface CrudRepository<T extends Identifiable<ID>, ID> {
+public interface CrudRepository<T> {
 
   /**
    * Saves the given entity to the repository.
@@ -39,7 +39,7 @@ public interface CrudRepository<T extends Identifiable<ID>, ID> {
    * @return an Optional containing the found entity, or an empty Optional if not found
    * @throws SQLException if an SQL error occurs
    */
-  Optional<T> findById(ID id) throws SQLException;
+  Optional<T> findById(int id) throws SQLException;
 
   /**
    * Updates the given entity in the repository.
@@ -55,7 +55,7 @@ public interface CrudRepository<T extends Identifiable<ID>, ID> {
    * @param id the ID of the entity to delete
    * @throws SQLException if an SQL error occurs
    */
-  void delete(ID id) throws SQLException;
+  void delete(int id) throws SQLException;
 
   /**
    * Finds all entities in the repository.

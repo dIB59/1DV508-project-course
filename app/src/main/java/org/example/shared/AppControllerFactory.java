@@ -1,14 +1,12 @@
 package org.example.shared;
 
 import java.lang.reflect.InvocationTargetException;
-import java.sql.Connection;
 import javafx.util.Callback;
 import org.example.database.Database;
 import org.example.features.admin.AdminController;
 import org.example.features.admin.AdminMapper;
 import org.example.features.admin.AdminRepository;
 import org.example.features.checkout.CheckoutController;
-import org.example.features.coupons.CouponsRepository;
 import org.example.features.dashboard.DashboardController;
 import org.example.features.dashboard.DashboardModel;
 import org.example.features.home.HomeController;
@@ -30,7 +28,6 @@ public class AppControllerFactory implements Callback<Class<?>, Object> {
 
   private final OrderService orderService;
   private final SceneRouter sceneRouter;
-  private final Connection connection = Database.getInstance().getConnection();
 
   /**
    * Instantiates a new App controller factory.
@@ -56,7 +53,7 @@ public class AppControllerFactory implements Callback<Class<?>, Object> {
       case "HomeController" -> new HomeController(new HomeModel(), sceneRouter);
       case "MenuController" ->
           new MenuController(new MenuModel(), getProductRepository(), sceneRouter, orderService);
-      case "CheckoutController" -> new CheckoutController(orderService, getCouponsRepository(), sceneRouter);
+      case "CheckoutController" -> new CheckoutController(orderService, sceneRouter);
       case "ProductDetailsController" -> new ProductDetailsController(orderService, sceneRouter);
       case "ReceiptController" ->
           new ReceiptController(orderService.saveOrderAndClear(), sceneRouter);
@@ -78,14 +75,10 @@ public class AppControllerFactory implements Callback<Class<?>, Object> {
   }
 
   private ProductRepository getProductRepository() {
-    return new ProductRepository(connection, new ProductMapper());
+    return new ProductRepository(Database.getInstance().getConnection(), new ProductMapper());
   }
 
   private AdminRepository getAdminRepository() {
-    return new AdminRepository(connection, new AdminMapper());
+    return new AdminRepository(Database.getInstance().getConnection(), new AdminMapper());
   }
-
-  private CouponsRepository getCouponsRepository() {
-    return new CouponsRepository(connection);
-    }
 }
