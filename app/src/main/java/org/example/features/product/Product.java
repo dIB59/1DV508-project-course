@@ -13,13 +13,16 @@ import org.example.database.Identifiable;
  * description, price, image URL, and associated tags. It provides validation for the name,
  * description, and price fields to ensure they are not null or empty and that the price is not negative.
  */
+
 public class Product implements Identifiable<Integer> {
   private int id;
   private String name;
   private String description;
   private double price;
   private String imageUrl;
+  private String specialLabel;
   private List<Tag> tags;
+
 
   /**
    * Instantiates a new Product.
@@ -29,6 +32,7 @@ public class Product implements Identifiable<Integer> {
    * @param description the description
    * @param price the price
    * @param imageUrl the image url
+   * @param specialLabel The special label for the product (e.g., "Hot", "Deal").
    * @param tags the tags
    */
   public Product(int id, String name, String description, double price, String imageUrl, List<Tag> tags) {
@@ -49,12 +53,12 @@ public class Product implements Identifiable<Integer> {
     this.tags = tags != null ? tags : new ArrayList<>();
   }
 
-  public Product(String name, String description, double price, String imageUrl) {
-    this(0, name, description, price, imageUrl, List.of());
+  public Product(String name, String description, double price, String imageUrl, String specialLabel) {
+    this(0, name, description, price, imageUrl, specialLabel, List.of());
   }
 
-  public Product(String name, String description, double price, String imageUrl, List<Tag> tags) {
-    this(0, name, description, price, imageUrl, tags);
+  public Product(String name, String description, double price, String imageUrl, String specialLabel, List<Tag> tags) {
+    this(0, name, description, price, imageUrl, specialLabel, tags);
   }
 
   public Integer getId() {
@@ -63,6 +67,7 @@ public class Product implements Identifiable<Integer> {
 
   public void setId(int id) {
     this.id = id;
+
   }
 
   public String getName() {
@@ -101,6 +106,22 @@ public class Product implements Identifiable<Integer> {
   public String getImageUrl() {
     return imageUrl;
   }
+
+
+   /**
+   * Gets the special label
+   *
+   * @return the special label
+   */
+  public String getSpecialLabel() {
+    return specialLabel;
+  }
+
+  /**
+   * Gets tags.
+   *
+   * @return the tags
+   */
 
   public void setImageUrl(String imageUrl) {
     this.imageUrl = imageUrl;

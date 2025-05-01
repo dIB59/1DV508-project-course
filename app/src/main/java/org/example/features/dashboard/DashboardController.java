@@ -150,10 +150,11 @@ public class DashboardController {
     VBox vbox = new VBox(10);
     vbox.setPadding(new Insets(20));
 
-    TextField nameField = new TextField(product.getName());
-    TextField descriptionField = new TextField(product.getDescription());
-    TextField priceField = new TextField(String.valueOf(product.getPrice()));
-    TextField imageUrlField = new TextField(product.getImageUrl());
+    TextField nameField = new TextField(product.name());
+    TextField descriptionField = new TextField(product.description());
+    TextField priceField = new TextField(String.valueOf(product.price()));
+    TextField imageUrlField = new TextField(product.imageUrl());
+    TextField specialLabelField = new TextField(product.specialLabel());
 
     // Fetch all tags
     List<Tag> allTags;
@@ -219,13 +220,13 @@ public class DashboardController {
     saveButton.setStyle(
         "-fx-background-color: black; -fx-text-fill: white; -fx-background-radius: 5;");
 
-    saveButton.setOnAction(
-        e -> {
-          try {
-            String newName = nameField.getText();
-            String newDescription = descriptionField.getText();
-            double newPrice = Double.parseDouble(priceField.getText());
-            String newImageUrl = imageUrlField.getText();
+    saveButton.setOnAction(e -> {
+      try {
+        String newName = nameField.getText();
+        String newDescription = descriptionField.getText();
+        double newPrice = Double.parseDouble(priceField.getText());
+        String newImageUrl = imageUrlField.getText();
+        String specialLabel = specialLabelField.getText();
 
             List<Integer> selectedTagIds = new ArrayList<>();
             List<String> selectedTagNames = new ArrayList<>();
@@ -257,19 +258,31 @@ public class DashboardController {
           }
         });
 
-    vbox.getChildren()
-        .addAll(
-            new Label("Name:"),
-            nameField,
-            new Label("Description:"),
-            descriptionField,
-            new Label("Price:"),
-            priceField,
-            new Label("Image URL:"),
-            imageUrlField,
-            tagsLabelBox,
-            tagsBox,
-            saveButton);
+        Product updatedProduct = new Product(
+            product.id(), newName, newDescription, newPrice, newImageUrl, specialLabel ,selectedTags
+        );
+
+        repository.update(updatedProduct);
+        loadProducts(); // refresh
+        dialog.close();
+      } catch (NumberFormatException ex) {
+        showAlert("Invalid price format.");
+      } catch (IllegalArgumentException ex) {
+        showAlert(ex.getMessage());
+      } catch (SQLException ex) {
+        showAlert("Error updating product: " + ex.getMessage());
+      }
+    });
+
+    vbox.getChildren().addAll(
+        new Label("Name:"), nameField,
+        new Label("Description:"), descriptionField,
+        new Label("Price:"), priceField,
+        new Label("Image URL:"), imageUrlField,
+        tagsLabelBox,
+        tagsBox,
+        saveButton
+    );
 
     Scene scene = new Scene(vbox, 400, 600);
     dialog.setScene(scene);
