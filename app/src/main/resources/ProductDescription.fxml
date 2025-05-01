@@ -22,22 +22,7 @@
         <!-- Product Ingredients -->
         <Label fx:id="productIngredients" style="-fx-font-size: 16px;" text="Product Ingredient"/>
 
-        <Label style="-fx-font-size: 16px;" text="Tomato Quantity"/>
-
-        <Spinner fx:id="tomatoSpinner" prefWidth="150.0"/>
-
-        <Label style="-fx-font-size: 16px;" text="Tomato Quantity"/>
-
-        <Spinner fx:id="cheeseSpinner" prefWidth="150.0"/>
-
-        <Label style="-fx-font-size: 16px;" text="Cheese Quantity"/>
-
-        <Spinner fx:id="jalapenoSpinner" prefWidth="150.0"/>
-
-        <Label style="-fx-font-size: 16px;" text="Jalapeno Quantity"/>
-
-        <!-- Quantity Spinner -->
-        <Spinner fx:id="quantitySpinner" prefWidth="150.0"/>
+        <VBox fx:id="ingredientsBox" spacing="10.0" />
 
         <!-- Add to Order Button -->
         <Button fx:id="addToOrderButton" text="Add to Order" onAction="#addToOrder"/>

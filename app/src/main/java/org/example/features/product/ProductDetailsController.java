@@ -8,6 +8,7 @@ import javafx.scene.control.SpinnerValueFactory;
 import org.example.features.order.OrderService;
 import org.example.shared.SceneRouter;
 
+
 public class ProductDetailsController {
   private final OrderService orderService;
   private final SceneRouter sceneRouter;
@@ -23,14 +24,6 @@ public class ProductDetailsController {
   @FXML private Button addToOrderButton;
 
   @FXML private Label productIngredients;
-
-  @FXML private Spinner<Integer> tomatoSpinner;
-
-  @FXML private Spinner<Integer> cheeseSpinner;
-
-  @FXML private Spinner<Integer> jalapenoSpinner;
-
-
 
   public ProductDetailsController(OrderService orderService, SceneRouter sceneRouter) {
     this.orderService = orderService;
@@ -97,14 +90,5 @@ public class ProductDetailsController {
 
     sceneRouter.goToMenuPage(); // reroute back to menu page once done
   }
-
-  public void addIngredientToOrder() {
-    Integer quantity = tomatoSpinner.getValue(); // Get the current value from the Spinner
-    if (quantity == null) {
-      System.err.println("Spinner value is null. Ensure SpinnerValueFactory is set.");
-      return;
-    }
-  }
-
 
 }
