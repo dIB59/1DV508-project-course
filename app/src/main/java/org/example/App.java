@@ -25,7 +25,7 @@ public class App extends Application {
 
     Connection conn = this.database.getConnection();
     var orderMapper = new OrderMapper();
-    CrudRepository<Order> orderRepository = new OrderRepository(conn, orderMapper);
+    CrudRepository<Order, Integer> orderRepository = new OrderRepository(conn, orderMapper);
     var orderService = new OrderService(orderRepository);
 
     SceneRouter router = new SceneRouter(primaryStage, orderService);

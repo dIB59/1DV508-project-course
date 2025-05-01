@@ -1,12 +1,15 @@
 package org.example.shared;
 
 import java.lang.reflect.InvocationTargetException;
+import java.sql.Connection;
 import javafx.util.Callback;
 import org.example.database.Database;
 import org.example.features.admin.AdminController;
 import org.example.features.admin.AdminMapper;
 import org.example.features.admin.AdminRepository;
 import org.example.features.checkout.CheckoutController;
+import org.example.features.coupons.CouponsController;
+import org.example.features.coupons.CouponsRepository;
 import org.example.features.dashboard.DashboardController;
 import org.example.features.dashboard.DashboardModel;
 import org.example.features.home.HomeController;
@@ -28,6 +31,7 @@ public class AppControllerFactory implements Callback<Class<?>, Object> {
 
   private final OrderService orderService;
   private final SceneRouter sceneRouter;
+  private final Connection connection = Database.getInstance().getConnection();
 
   /**
    * Instantiates a new App controller factory.
@@ -50,16 +54,18 @@ public class AppControllerFactory implements Callback<Class<?>, Object> {
   @Override
   public Object call(Class<?> controllerClass) {
     return switch (controllerClass.getSimpleName()) {
-      case "HomeController" -> new HomeController(new HomeModel(), sceneRouter);
+      case "HomeController" -> new HomeController(new HomeModel(), sceneRouter, orderService);
       case "MenuController" ->
           new MenuController(new MenuModel(), getProductRepository(), sceneRouter, orderService);
-      case "CheckoutController" -> new CheckoutController(orderService, sceneRouter);
+      case "CheckoutController" -> new CheckoutController(orderService, getCouponsRepository(), sceneRouter);
       case "ProductDetailsController" -> new ProductDetailsController(orderService, sceneRouter);
       case "ReceiptController" ->
           new ReceiptController(orderService.saveOrderAndClear(), sceneRouter);
       case "AdminController" -> new AdminController(sceneRouter, getAdminRepository());
       case "DashboardController" ->
           new DashboardController(new DashboardModel(), sceneRouter, getProductRepository());
+      case "CouponsController" ->
+          new CouponsController(getCouponsRepository(), sceneRouter);
       default -> {
         try {
           yield controllerClass.getDeclaredConstructor(SceneRouter.class).newInstance(sceneRouter);
@@ -78,7 +84,12 @@ public class AppControllerFactory implements Callback<Class<?>, Object> {
     return new ProductRepository(Database.getInstance().getConnection(), new ProductMapper());
   }
 
+
   private AdminRepository getAdminRepository() {
-    return new AdminRepository(Database.getInstance().getConnection(), new AdminMapper());
+    return new AdminRepository(connection, new AdminMapper());
   }
+
+  private CouponsRepository getCouponsRepository() {
+    return new CouponsRepository(connection);
+    }
 }

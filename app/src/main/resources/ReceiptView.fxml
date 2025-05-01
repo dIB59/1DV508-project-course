@@ -27,11 +27,15 @@
         <!-- Order ID -->
         <Label fx:id="orderIdLabel" styleClass="order-id"/>
 
+        <Label fx:id="EatinEatoutlabel" style="-fx-font-size: 15px;" />
+
         <!-- Items Container -->
         <VBox fx:id="itemsContainer" spacing="8"/>
 
         <!-- Total -->
         <Label fx:id="totalLabel" styleClass="total"/>
+
+        <Label fx:id="couponsLabel" styleClass="total"/>
 
         <!-- Thank You -->
         <Label fx:id="thankYouLabel" styleClass="thank-you"/>
