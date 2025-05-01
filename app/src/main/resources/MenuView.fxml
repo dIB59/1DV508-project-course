@@ -20,10 +20,11 @@
                style="-fx-font-size: 40px; -fx-font-weight: bold; -fx-text-fill: black;" />
 
         <!-- Tag Button Container -->
+        <!-- Tag Button Container -->
         <ScrollPane fitToHeight="true" vbarPolicy="NEVER"
-                    style="-fx-background-color: transparent; -fx-background: transparent;"
-                    prefHeight="70" maxHeight="70">
-            <HBox fx:id="tagButtonContainer" spacing="15" alignment="CENTER_LEFT"
+                    prefHeight="70" maxHeight="70" minHeight="70"
+                    style="-fx-background-color: transparent; -fx-background: transparent;">
+            <HBox fx:id="tagButtonContainer" spacing="15" alignment="CENTER"
                   style="-fx-padding: 10; -fx-background-color: #f0f0f0; -fx-background-radius: 10;" />
         </ScrollPane>
 
@@ -39,6 +40,7 @@
                 </columnConstraints>
             </GridPane>
         </ScrollPane>
+
 
         <!-- Checkout Button -->
         <Button text="Go to Checkout" onAction="#goToCheckoutPage"
