@@ -68,7 +68,7 @@ public class ProductRepository implements CrudRepository<Product, Integer> {
   public List<Product> findProductsByTagName(String tagName) throws SQLException {
     String sql = """
         SELECT Product.id, Product.name, Product.description, Product.price, Product.image_url,
-               GROUP_CONCAT(T.name) AS tags, GROUP_CONCAT(T.id) AS tags_ids
+               GROUP_CONCAT(T.name) AS tags, GROUP_CONCAT(T.id) AS tags_ids, Product.specialLabel
         FROM Product
         JOIN Product_Tags PT ON Product.id = PT.product_id
         JOIN Tags T ON PT.tag_id = T.id
