@@ -50,7 +50,7 @@ class AppTest {
 
     Product updatedProduct =
         new Product(
-            product.id(),
+            product.getId(),
             product.getName(),
             product.getDescription(),
             product.getPrice(),

@@ -9,7 +9,6 @@ import javafx.scene.layout.VBox;
 import org.example.features.order.Order;
 import org.example.features.order.ProductQuantity;
 import org.example.features.product.Product;
-import org.example.features.coupons.Coupons;
 import org.example.shared.SceneRouter;
 
 public class ReceiptController {
@@ -25,24 +24,22 @@ public class ReceiptController {
       thankYouLabel,
       restaurantNameLabel,
       addressLabel,
-      contactLabel;
+      contactLabel,
+      EatinEatoutlabel;
 
   public ReceiptController(Order order, SceneRouter sceneRouter) {
     this.order = order;
-    System.out.println("ReceiptController: " + order);
     this.sceneRouter = sceneRouter;
   }
 
   @FXML
   public void initialize() {
     List<ProductQuantity> productQuantities = order.getProductQuantity();
-    double total = 0.0;
 
     for (ProductQuantity pq : productQuantities) {
       Product product = pq.getProduct();
       int quantity = pq.getQuantity();
       double itemTotal = product.getPrice() * quantity;
-      total += itemTotal;
 
       // Left: Product name with quantity
       Label nameLabel = new Label(product.getName() + " x" + quantity);
@@ -63,8 +60,9 @@ public class ReceiptController {
 
       itemsContainer.getChildren().add(itemRow);
     }
+    EatinEatoutlabel.setText(order.gettype());
     orderIdLabel.setText("Order Number: " + order.getId());
-    totalLabel.setText(String.format("Total: $%.2f", total));
+    totalLabel.setText(String.format("Total: $%.2f", order.getPrice()));
     couponsLabel.setText(String.format("Coupons: %s", order.getDiscount().getCode()));
     thankYouLabel.setText("Thank you for dining with us!");
     restaurantNameLabel.setText("Restaurant Name: Gourmet Bistro");

@@ -1,5 +1,6 @@
 package org.example.features.menu;
 
+import java.sql.SQLException;
 import java.util.List;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -8,13 +9,15 @@ import javafx.scene.layout.VBox;
 import org.example.database.CrudRepository;
 import org.example.features.order.OrderService;
 import org.example.features.product.Product;
+import org.example.features.product.ProductRepository;
 import org.example.shared.SceneRouter;
+
 
 /** The type Menu controller. */
 public class MenuController {
 
   private final MenuModel model;
-  private final CrudRepository<Product, Integer> productRepository;
+  private final ProductRepository productRepository;
   private final SceneRouter sceneRouter;
   private final OrderService orderService;
   @FXML private VBox menuList;
@@ -29,7 +32,7 @@ public class MenuController {
    */
   public MenuController(
       MenuModel model,
-      CrudRepository<Product, Integer> productRepository,
+      ProductRepository productRepository,
       SceneRouter sceneRouter,
       OrderService orderService) {
     this.model = model;
@@ -61,6 +64,15 @@ public class MenuController {
     sceneRouter.goToCheckoutPage();
   }
 
+  public void goToDiscountMenu() {
+    try {
+      List<Product> deals = productRepository.findProductsByTagName("Deals");
+      displayProductCards(deals); // this reuses your existing layout
+    } catch (SQLException e) {
+      System.err.println("Failed to load discounted products: " + e.getMessage());
+    }
+  }
+
   /** Go to home page. */
   public void goToHomePage() {
     sceneRouter.goToHomePage();
@@ -77,6 +89,24 @@ public class MenuController {
     } catch (Exception e) {
       System.err.println("Error loading menu items: " + e.getMessage());
       return List.of();
+    }
+  }
+  private void displayProductCards(List<Product> products) {
+    menuList.getChildren().clear(); // remove old cards
+
+    for (Product product : products) {
+      Button addButton = new Button("Add to Order");
+
+      Label name = new Label(product.getName());
+      Label price = new Label(String.format("$%.2f", product.getPrice()));
+
+      VBox productCard = new VBox(name, price, addButton);
+      productCard.setSpacing(5);
+      productCard.setStyle("-fx-padding: 10; -fx-border-color: #ccc; -fx-border-radius: 5;");
+
+      addButton.setOnAction(event -> sceneRouter.goToProductDetailsPage(product));
+
+      menuList.getChildren().add(productCard);
     }
   }
 }

@@ -61,11 +61,10 @@ public class OrderService {
    */
   public Order saveOrderAndClear() {
     try {
-      System.out.println("Order Unsaved: " + order);
       var s = this.repository.save(order);
+      s.setDiscount(order.getDiscount());
+      s.settype(order.gettype());
       this.clear();
-      System.out.println("Order saved successfully: " + s);
-
       return s;
     } catch (Exception e) {
       System.err.println("Error saving order: " + e.getLocalizedMessage());
@@ -73,11 +72,15 @@ public class OrderService {
     }
   }
 
-  public boolean setDiscount(Discount discount) {
-    return order.setDiscount(discount);
+  public void setDiscount(Discount discount) {
+    order.setDiscount(discount);
   }
 
   public double getPrice() {
     return order.getPrice();
+  }
+
+  public void settype(String ordertype) {
+    order.settype(ordertype);
   }
 }

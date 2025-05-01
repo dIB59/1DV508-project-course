@@ -16,7 +16,7 @@ public class Order implements Identifiable<Integer> {
   private final List<ProductQuantity> productQuantity;
   private Discount discount = new Coupons("No Discount", 0);
   private int id;
-
+  private String gettype;
   /**
    * Instantiates a new Order.
    *
@@ -112,9 +112,8 @@ public class Order implements Identifiable<Integer> {
     return sb.toString();
   }
 
-  public boolean setDiscount(Discount discount) {
+  public void setDiscount(Discount discount) {
     this.discount = discount;
-    return true;
   }
 
   public Discount getDiscount() {
@@ -122,15 +121,17 @@ public class Order implements Identifiable<Integer> {
   }
 
   public double getPrice() {
-    System.out.println(
-        "Price before discount"
-            + productQuantity.stream().mapToDouble(ProductQuantity::getPrice).sum());
-    var price =
-        productQuantity.stream()
+    return productQuantity.stream()
             .mapToDouble(ProductQuantity::getPrice)
             .map(discount::applyDiscount)
             .sum();
-    System.out.println("Price after discount" + price);
-    return price;
+  }
+
+  public String gettype() {
+    return gettype;
+  }
+
+  public void settype(String ordertype) {
+    this.gettype = ordertype;
   }
 }
