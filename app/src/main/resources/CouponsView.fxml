@@ -28,10 +28,36 @@
                        style="-fx-background-radius: 6; -fx-border-radius: 6; -fx-border-color: #cccccc; -fx-padding: 5 10;" />
         </HBox>
 
+        <!-- Apply and Delete Buttons -->
+        <HBox spacing="10.0" alignment="CENTER_LEFT">
+            <Button text="Apply Coupon"
+                    fx:id="addCouponButton"
+                    onAction="#handleAddCouponButtonAction"
+                    maxWidth="120"
+                    style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-background-radius: 6; -fx-padding: 8 20; -fx-font-size: 14px;" />
+
+            <Button text="Delete Coupon"
+                    fx:id="deleteCouponButton"
+                    onAction="#handleDeleteCouponButtonAction"
+                    maxWidth="120"
+                    style="-fx-background-color: #f44336; -fx-text-fill: white; -fx-background-radius: 6; -fx-padding: 8 20; -fx-font-size: 14px;" />
+        </HBox>
+
+        <!-- Scrollable Coupons Section -->
+        <ScrollPane layoutX="10" layoutY="60" prefHeight="480.0" prefWidth="580.0" fitToWidth="true"
+                    AnchorPane.topAnchor="60" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10"
+                    AnchorPane.bottomAnchor="60">
+            <VBox fx:id="couponsList"
+                  spacing="20"
+                  alignment="TOP_CENTER"
+                  style="-fx-padding: 20;">
+                <!-- Menu items dynamically injected here -->
+            </VBox>
+        </ScrollPane>
+
         <!-- Optional Apply Button -->
-        <Button text="Apply Coupon"
-                fx:id="addCouponButton"
-                onAction="#handleAddCouponButtonAction"
+        <Button text="Go Back to Menu"
+                onAction="#goToDashboardPage"
                 maxWidth="250"
                 style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-background-radius: 6; -fx-padding: 8 20; -fx-font-size: 14px;" />
     </VBox>
