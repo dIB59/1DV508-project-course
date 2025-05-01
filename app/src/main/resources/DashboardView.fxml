@@ -9,8 +9,9 @@
 <AnchorPane xmlns:fx="http://javafx.com/fxml"
             xmlns="http://javafx.com/javafx"
             fx:controller="org.example.features.dashboard.DashboardController"
-            prefHeight="400.0" prefWidth="600.0"
-            style="-fx-background-color: white;">
+            style="-fx-background-color: white;
+            -fx-min-width: 1920px;
+            -fx-min-height: 1080px;">
 
     <BorderPane prefHeight="400.0" prefWidth="600.0">
 

@@ -9,7 +9,7 @@
 <AnchorPane xmlns:fx="http://javafx.com/fxml"
             xmlns="http://javafx.com/javafx"
             fx:controller="org.example.features.admin.AdminController"
-            prefHeight="400.0" prefWidth="600.0"
+            prefHeight="1000.0" prefWidth="1000.0"
             style="-fx-background-color: white;">
 
     <VBox alignment="CENTER"

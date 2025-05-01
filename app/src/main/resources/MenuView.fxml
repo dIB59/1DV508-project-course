@@ -4,9 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 
-<AnchorPane prefHeight="1080.0" prefWidth="1920.0"
-            style="-fx-background-color: black;"
-            xmlns="http://javafx.com/javafx/23.0.1"
+<AnchorPane xmlns="http://javafx.com/javafx/23.0.1"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="org.example.features.menu.MenuController">
 
@@ -20,13 +18,16 @@
                style="-fx-font-size: 40px; -fx-font-weight: bold; -fx-text-fill: black;" />
 
         <!-- Tag Button Container -->
-        <!-- Tag Button Container -->
-        <ScrollPane fitToHeight="true" vbarPolicy="NEVER"
+        <ScrollPane fitToHeight="true" vbarPolicy="NEVER" hbarPolicy="NEVER"
                     prefHeight="70" maxHeight="70" minHeight="70"
+                    prefWidth="800" maxWidth="800" minWidth="800"
                     style="-fx-background-color: transparent; -fx-background: transparent;">
-            <HBox fx:id="tagButtonContainer" spacing="15" alignment="CENTER"
-                  style="-fx-padding: 10; -fx-background-color: #f0f0f0; -fx-background-radius: 10;" />
+            <HBox alignment="CENTER" style="-fx-background-color: transparent;" >
+                <HBox fx:id="tagButtonContainer" spacing="15" alignment="CENTER"
+                      style="-fx-padding: 10; -fx-background-color: #f0f0f0; -fx-background-radius: 10;" />
+            </HBox>
         </ScrollPane>
+
 
         <!-- Product Grid Scroll Section -->
         <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS"

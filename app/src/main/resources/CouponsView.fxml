@@ -5,9 +5,10 @@
 
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            prefHeight="400.0" prefWidth="600.0"
             fx:controller="org.example.features.coupons.CouponsController"
-            style="-fx-background-color: #f4f4f4;">
+            style="-fx-background-color: #f4f4f4;
+            -fx-min-width: 1920px;
+            -fx-min-height: 1080px;">
 
     <VBox layoutX="100.0" layoutY="100.0" spacing="20.0" alignment="CENTER_LEFT"
           style="-fx-background-color: white; -fx-padding: 30; -fx-background-radius: 10; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 4);">

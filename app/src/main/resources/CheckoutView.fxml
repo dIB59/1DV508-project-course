@@ -9,8 +9,10 @@
 <AnchorPane xmlns:fx="http://javafx.com/fxml"
             xmlns="http://javafx.com/javafx"
             fx:controller="org.example.features.checkout.CheckoutController"
-            prefHeight="600.0" prefWidth="800.0"
-            style="-fx-background-color: #f5f5f5;">
+            style="-fx-background-color: #f5f5f5;
+            -fx-min-width: 1000px;
+            -fx-min-height: 1000px;
+">
 
     <VBox spacing="25" AnchorPane.topAnchor="40.0" AnchorPane.bottomAnchor="40.0"
           AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0"
