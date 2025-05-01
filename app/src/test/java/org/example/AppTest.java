@@ -48,7 +48,7 @@ class AppTest {
     var tags = productRepository.findAllTags();
 
     Product updatedProduct = new Product(
-        product.id(), product.getName(), product.getDescription(), product.getPrice(),
+        product.getId(), product.getName(), product.getDescription(), product.getPrice(),
         product.getImageUrl(), product.getSpecialLabel(), tags);
 
     assertEquals(2, updatedProduct.getTags().size());
