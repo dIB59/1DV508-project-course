@@ -8,6 +8,7 @@ import org.example.features.admin.AdminController;
 import org.example.features.admin.AdminMapper;
 import org.example.features.admin.AdminRepository;
 import org.example.features.checkout.CheckoutController;
+import org.example.features.coupons.CouponsController;
 import org.example.features.coupons.CouponsRepository;
 import org.example.features.dashboard.DashboardController;
 import org.example.features.dashboard.DashboardModel;
@@ -63,6 +64,8 @@ public class AppControllerFactory implements Callback<Class<?>, Object> {
       case "AdminController" -> new AdminController(sceneRouter, getAdminRepository());
       case "DashboardController" ->
           new DashboardController(new DashboardModel(), sceneRouter, getProductRepository());
+      case "CouponsController" ->
+          new CouponsController(new CouponsRepository(), sceneRouter);
       default -> {
         try {
           yield controllerClass.getDeclaredConstructor(SceneRouter.class).newInstance(sceneRouter);
