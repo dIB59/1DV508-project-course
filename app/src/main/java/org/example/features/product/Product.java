@@ -129,8 +129,8 @@ public class Product implements Identifiable<Integer> {
   @Override
   public String toString() {
     return String.format(
-        "Product{id=%d, name='%s', description='%s', price=%.2f, imageUrl='%s', tags=%s}",
-        id, name, description, price, imageUrl, tags
+        "Product{id=%d, name='%s', description='%s', price=%.2f, imageUrl='%s', tags=%s, ingredients='%s'}",
+        id, name, description, price, imageUrl, tags, ingredients
     );
   }
 }

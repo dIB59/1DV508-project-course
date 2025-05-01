@@ -24,6 +24,14 @@ public class ProductDetailsController {
 
   @FXML private Label productIngredients;
 
+  @FXML private Spinner<Integer> tomatoSpinner;
+
+  @FXML private Spinner<Integer> cheeseSpinner;
+
+  @FXML private Spinner<Integer> jalapenoSpinner;
+
+
+
   public ProductDetailsController(OrderService orderService, SceneRouter sceneRouter) {
     this.orderService = orderService;
     this.sceneRouter = sceneRouter;
@@ -38,7 +46,7 @@ public class ProductDetailsController {
       productPrice.setText(String.format("$%.2f", product.getPrice()));
       System.err.println(product.getDescription());
       productDescription.setText(product.getDescription());
-      productDescription.setText(product.getIngredients());
+      productIngredients.setText(product.getIngredients());
 
       // Set a SpinnerValueFactory to manage the Spinner's value
       SpinnerValueFactory<Integer> valueFactory =
@@ -89,4 +97,14 @@ public class ProductDetailsController {
 
     sceneRouter.goToMenuPage(); // reroute back to menu page once done
   }
+
+  public void addIngredientToOrder() {
+    Integer quantity = tomatoSpinner.getValue(); // Get the current value from the Spinner
+    if (quantity == null) {
+      System.err.println("Spinner value is null. Ensure SpinnerValueFactory is set.");
+      return;
+    }
+  }
+
+
 }
