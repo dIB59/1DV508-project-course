@@ -35,7 +35,7 @@ public class Product implements Identifiable<Integer> {
    * @param specialLabel The special label for the product (e.g., "Hot", "Deal").
    * @param tags the tags
    */
-  public Product(int id, String name, String description, double price, String imageUrl, List<Tag> tags) {
+  public Product(int id, String name, String description, double price, String imageUrl, String specialLabel, List<Tag> tags) {
     if (name == null || name.isBlank()) {
       throw new IllegalArgumentException("Name cannot be null or empty");
     }
@@ -51,6 +51,7 @@ public class Product implements Identifiable<Integer> {
     this.price = price;
     this.imageUrl = imageUrl;
     this.tags = tags != null ? tags : new ArrayList<>();
+    this.specialLabel = specialLabel;
   }
 
   public Product(String name, String description, double price, String imageUrl, String specialLabel) {

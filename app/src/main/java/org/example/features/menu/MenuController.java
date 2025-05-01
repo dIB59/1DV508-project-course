@@ -7,7 +7,6 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
-import org.example.database.CrudRepository;
 import org.example.features.order.OrderService;
 import org.example.features.product.Product;
 import org.example.features.product.ProductRepository;
@@ -16,8 +15,6 @@ import org.example.shared.SceneRouter;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 
-
-/** The type Menu controller. */
 public class MenuController {
 
   private final MenuModel model;
@@ -29,15 +26,6 @@ public class MenuController {
   @FXML private VBox menuList;
   @FXML private VBox tagButtonContainer;
 
-
-  /**
-   * Instantiates a new Menu controller.
-   *
-   * @param model the model
-   * @param productRepository the product repository
-   * @param sceneRouter the scene router
-   * @param orderService the order service
-   */
   public MenuController(
       MenuModel model,
       ProductRepository productRepository,
@@ -49,10 +37,7 @@ public class MenuController {
     this.orderService = orderService;
   }
 
-  /** Initialize. */
   public void initialize() {
-
-
     int columns = 3;
     int row = 0;
     int col = 0;
@@ -62,7 +47,7 @@ public class MenuController {
 
       Label name = new Label(product.getName());
       name.setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;");
-      Label price = new Label(String.format("$%.2f", product.price()));
+      Label price = new Label(String.format("$%.2f", product.getPrice()));
       Label specialLabel = new Label(product.getSpecialLabel());
       if (product.getSpecialLabel() != null && !product.getSpecialLabel().isEmpty()) {
         specialLabel.setStyle("""
@@ -75,7 +60,7 @@ public class MenuController {
             """);
       }
 
-      VBox productInfo = new VBox(10, name ,price, addButton);
+      VBox productInfo = new VBox(10, name, price, addButton);
       productInfo.setStyle("-fx-alignment: center;");
       StackPane productCard = new StackPane();
       productCard.setStyle("""
@@ -101,9 +86,9 @@ public class MenuController {
         col = 0;
         row++;
       }
-
+    }
     populateTagButtons();
-    displayProductCards(getMenuItems()); // Default to showing all items
+    displayProductCards(getMenuItems());
   }
 
   private void populateTagButtons() {
@@ -114,7 +99,7 @@ public class MenuController {
     allButton.setOnAction(e -> displayProductCards(getMenuItems()));
     tagButtonContainer.getChildren().add(allButton);
     try {
-      List<Tag> tags = productRepository.findAllTags(); // You'll need to implement this
+      List<Tag> tags = productRepository.findAllTags();
       for (Tag tag : tags) {
         Button tagButton = getTagButton(tag);
         tagButtonContainer.getChildren().add(tagButton);
@@ -134,28 +119,20 @@ public class MenuController {
         List<Product> filteredProducts = productRepository.findProductsByTagName(tag.getName());
         displayProductCards(filteredProducts);
       } catch (SQLException ex) {
-        System.err.println("Error loading products for tag " + tag + ": " + ex.getMessage());
+        System.err.println("Error loading products for tag " + tag.getName() + ": " + ex.getMessage());
       }
     });
     return tagButton;
   }
 
-
-  /** Go to checkout page. */
   public void goToCheckoutPage() {
     sceneRouter.goToCheckoutPage();
   }
 
-  /** Go to home page. */
   public void goToHomePage() {
     sceneRouter.goToHomePage();
   }
 
-  /**
-   * Gets menu items.
-   *
-   * @return the menu items
-   */
   public List<Product> getMenuItems() {
     try {
       return productRepository.findAll();
@@ -164,8 +141,9 @@ public class MenuController {
       return List.of();
     }
   }
+
   private void displayProductCards(List<Product> products) {
-    menuList.getChildren().clear(); // remove old cards
+    menuList.getChildren().clear();
 
     for (Product product : products) {
       Button addButton = new Button("Add to Order");
