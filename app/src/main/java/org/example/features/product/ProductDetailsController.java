@@ -5,8 +5,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
+import javafx.scene.layout.VBox;
 import org.example.features.order.OrderService;
 import org.example.shared.SceneRouter;
+
+import java.util.Arrays;
+import java.util.List;
 
 
 public class ProductDetailsController {
@@ -19,19 +23,33 @@ public class ProductDetailsController {
 
   @FXML private Label productDescription;
 
-  @FXML private Spinner<Integer> quantitySpinner;
+  @FXML private Spinner<Integer> quantitySpinner = new Spinner<>();
 
   @FXML private Button addToOrderButton;
 
   @FXML private Label productIngredients;
 
+  @FXML private VBox ingredientsBox;
+
+  private IngredientController ingredientController;
+
+  List<String> defaultIngredients = Arrays.asList("Tomato", "Cheese", "Jalapeno");
+
   public ProductDetailsController(OrderService orderService, SceneRouter sceneRouter) {
     this.orderService = orderService;
     this.sceneRouter = sceneRouter;
+    ingredientController = new IngredientController();
   }
 
   public void setProduct(Product product) {
     this.product = product;
+
+    ingredientsBox.getChildren().clear();
+
+    // Create ingredient controls for each ingredient in the product
+    for (String ingredient : product.getIngredientsList()) {
+      ingredientsBox.getChildren().add(ingredientController.createIngredientControl(ingredient.trim()));
+    }
 
     if (productName != null && productPrice != null && quantitySpinner != null) {
       // Update product details

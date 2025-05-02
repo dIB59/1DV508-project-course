@@ -2,6 +2,7 @@ package org.example.features.product;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import org.example.database.Identifiable;
@@ -83,6 +84,14 @@ public class Product implements Identifiable<Integer> {
   }
 
   public String getIngredients(){return ingredients; }
+
+  public void setIngredients(String ingredients) {
+    this.ingredients = ingredients;
+  }
+
+  public List<String> getIngredientsList() {
+    return Arrays.asList(this.ingredients.split(","));
+  }
 
   public void setDescription(String description) {
     if (description == null || description.isBlank()) {

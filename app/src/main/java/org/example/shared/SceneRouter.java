@@ -96,6 +96,7 @@ public class SceneRouter {
 
       Scene scene = new Scene(loader.load());
       ProductDetailsController controller = loader.getController();
+      System.out.println(product);
       controller.setProduct(product); // Set the product after loading the FXML
 
       currentPage = KioskPage.PRODUCTDESCRIPTION;
