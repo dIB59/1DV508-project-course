@@ -46,8 +46,24 @@ public class PaymentController {
   public void initialize() {
     paypalButton.setOnAction(this::handlePayPalPay);
     freePayButton.setOnAction(this::handleFreePay);
-
+    addSlashToExpirationField();
     populatePaymentDetails();
+  }
+
+  private void addSlashToExpirationField() {
+    expirationField.textProperty().addListener((obs, oldText, newText) -> {
+      String sanitized = newText.replaceAll("[^\\d/]", "");
+      if (!sanitized.equals(newText)) {
+        expirationField.setText(sanitized);
+        return;
+      }
+
+      if (sanitized.length() == 2 && !oldText.endsWith("/") && !sanitized.contains("/")) {
+        expirationField.setText(sanitized + "/");
+      } else if (sanitized.length() > 5) {
+        expirationField.setText(sanitized.substring(0, 5));
+      }
+    });
   }
 
   private void populatePaymentDetails() {
