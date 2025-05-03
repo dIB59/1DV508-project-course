@@ -42,8 +42,6 @@
                    -fx-cursor: hand;"/>
         </HBox>
 
-        <Label text="or checkout using a credit card" style="-fx-text-fill: #bbbbbb;"/>
-
         <VBox spacing="12">
             <Label text="Cardholder Name" style="-fx-text-fill: #dddddd;"/>
             <TextField fx:id="cardholderNameField" promptText="Name on Card"
@@ -78,17 +76,16 @@
             </columnConstraints>
 
             <Label fx:id="subtotalLabel" text="Subtotal:" style="-fx-text-fill: #cccccc;" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
-            <Label fx:id="subtotalValueLabel" text="144.00 (approx. £117 GBP)" style="-fx-text-fill: #cccccc;" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+            <Label fx:id="subtotalValueLabel" text="SEK Demo" style="-fx-text-fill: #cccccc;" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
 
-            <Label fx:id="discountLabel" text="Yearly plan discount:" style="-fx-text-fill: #ff4081;" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
-            <Label fx:id="discountValueLabel" text="- $84.00 (approx. -£69 GBP)" style="-fx-text-fill: #ff4081;" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+            <Label fx:id="discountLabel" text="Discount:" style="-fx-text-fill: #ff4081;" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+            <Label fx:id="discountValueLabel" text="SEK Demo" style="-fx-text-fill: #ff4081;" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
 
             <Label fx:id="billedNowLabel" text="Billed Now:" style="-fx-font-weight: bold; -fx-text-fill: #ffffff;" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
-            <Label fx:id="billedNowValueLabel" text="USD $60.00 (approx. £49 GBP)" style="-fx-font-weight: bold; -fx-text-fill: #ffffff;" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+            <Label fx:id="billedNowValueLabel" text="SEK Demo" style="-fx-font-weight: bold; -fx-text-fill: #ffffff;" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
         </GridPane>
 
         <Label fx:id="footerNoteLabel" wrapText="true" style="-fx-font-size: 11; -fx-text-fill: #aaaaaa;">
-            All sales are charged in USD and all sales are final. You will be charged $60.00 USD
         </Label>
     </VBox>
 </AnchorPane>
