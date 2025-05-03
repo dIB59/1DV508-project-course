@@ -42,6 +42,9 @@ dependencies {
 
     // https://mvnrepository.com/artifact/com.mysql/mysql-connector-j
     implementation group: 'com.mysql', name: 'mysql-connector-j', version: '9.2.0'
+
+    implementation 'com.braintreepayments.gateway:braintree-java:3.40.0'
+
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
