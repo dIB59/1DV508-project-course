@@ -1,6 +1,9 @@
 package org.example.features.receipt;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
@@ -8,6 +11,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import org.example.features.order.Order;
 import org.example.features.order.ProductQuantity;
+import org.example.features.product.IngredientController;
 import org.example.features.product.Product;
 import org.example.shared.SceneRouter;
 
@@ -25,14 +29,19 @@ public class ReceiptController {
       restaurantNameLabel,
       addressLabel,
       contactLabel;
+  private final Map<String, Integer> ingredientCounts;
+  @FXML private Label extraIngredientsLabel;
 
-  public ReceiptController(Order order, SceneRouter sceneRouter) {
+  public ReceiptController(Order order, SceneRouter sceneRouter, Map<String, Integer> ingredientCounts) {
+    this.ingredientCounts = ingredientCounts;
     this.order = order;
     this.sceneRouter = sceneRouter;
   }
 
+
   @FXML
   public void initialize() {
+
     List<ProductQuantity> productQuantities = order.getProductQuantity();
 
     for (ProductQuantity pq : productQuantities) {
@@ -66,9 +75,11 @@ public class ReceiptController {
     restaurantNameLabel.setText("Restaurant Name: Gourmet Bistro");
     addressLabel.setText("Address: 123 Food St, Tasty Town");
     contactLabel.setText("Contact: (123) 456-7890");
+    extraIngredientsLabel.setText(ingredientCounts.toString());
   }
 
-  public void goToHomePage() {
+  public void goToHomePage(){
+    ingredientCounts.clear();
     sceneRouter.goToHomePage();
   }
 }

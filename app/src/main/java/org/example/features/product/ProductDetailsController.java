@@ -35,10 +35,10 @@ public class ProductDetailsController {
 
   List<String> defaultIngredients = Arrays.asList("Tomato", "Cheese", "Jalapeno");
 
-  public ProductDetailsController(OrderService orderService, SceneRouter sceneRouter) {
+  public ProductDetailsController(OrderService orderService, SceneRouter sceneRouter, IngredientController ingredientController) {
     this.orderService = orderService;
     this.sceneRouter = sceneRouter;
-    ingredientController = new IngredientController();
+    this.ingredientController = ingredientController;
   }
 
   public void setProduct(Product product) {

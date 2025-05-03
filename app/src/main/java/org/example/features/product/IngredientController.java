@@ -56,5 +56,9 @@ public class IngredientController {
     return ingredientCounts;
   }
 
+  public void clearIngredientCounts() {
+    ingredientCounts.clear();
+  }
+
 
 }

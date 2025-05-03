@@ -16,6 +16,7 @@ import org.example.features.home.HomeModel;
 import org.example.features.menu.MenuController;
 import org.example.features.menu.MenuModel;
 import org.example.features.order.OrderService;
+import org.example.features.product.IngredientController;
 import org.example.features.product.ProductDetailsController;
 import org.example.features.product.ProductMapper;
 import org.example.features.product.ProductRepository;
@@ -29,6 +30,7 @@ import org.example.features.receipt.ReceiptController;
 public class AppControllerFactory implements Callback<Class<?>, Object> {
 
   private final OrderService orderService;
+  private final IngredientController ingredientController = new IngredientController();
   private final SceneRouter sceneRouter;
   private final Connection connection = Database.getInstance().getConnection();
 
@@ -57,12 +59,13 @@ public class AppControllerFactory implements Callback<Class<?>, Object> {
       case "MenuController" ->
           new MenuController(new MenuModel(), getProductRepository(), sceneRouter, orderService);
       case "CheckoutController" -> new CheckoutController(orderService, getCouponsRepository(), sceneRouter);
-      case "ProductDetailsController" -> new ProductDetailsController(orderService, sceneRouter);
+      case "ProductDetailsController" -> new ProductDetailsController(orderService, sceneRouter, ingredientController);
       case "ReceiptController" ->
-          new ReceiptController(orderService.saveOrderAndClear(), sceneRouter);
+          new ReceiptController(orderService.saveOrderAndClear(), sceneRouter, ingredientController.getIngredientCounts());
       case "AdminController" -> new AdminController(sceneRouter, getAdminRepository());
       case "DashboardController" ->
           new DashboardController(new DashboardModel(), sceneRouter, getProductRepository());
+      case "IngredientController" -> ingredientController;
       default -> {
         try {
           yield controllerClass.getDeclaredConstructor(SceneRouter.class).newInstance(sceneRouter);
