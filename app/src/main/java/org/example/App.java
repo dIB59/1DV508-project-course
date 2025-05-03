@@ -33,5 +33,7 @@ public class App extends Application {
 
     primaryStage.setTitle("JavaFX with MySQL");
     router.goTo(SceneRouter.KioskPage.HOME);
+    primaryStage.setMaximized(true);
+    primaryStage.show();
   }
 }

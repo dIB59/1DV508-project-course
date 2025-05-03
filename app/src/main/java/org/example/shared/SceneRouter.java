@@ -42,7 +42,6 @@ public class SceneRouter {
       currentPage = page;
       Scene scene = new Scene(loader.load());
       stage.setScene(scene);
-      stage.show();
     } catch (IOException e) {
       System.err.println("Failed to load scene: " + e.getLocalizedMessage());
       e.printStackTrace();
@@ -101,7 +100,6 @@ public class SceneRouter {
 
       currentPage = KioskPage.PRODUCTDESCRIPTION;
       stage.setScene(scene);
-      stage.show();
     } catch (IOException e) {
       System.err.println("Failed to load Product Details page: " + e.getLocalizedMessage());
       e.printStackTrace();
