@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.List;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -26,16 +27,23 @@ public class CouponsController {
   /** Initialize. */
   public void initialize() {
     for (Coupons coupons : getCouponsList()) {
-      Button addButton = new Button("Delete coupon");
+      Button deleteButton = new Button("Delete coupon");
 
       Label code = new Label(coupons.getCode());
       Label discount = new Label(String.format("%.0f", coupons.getDiscount() * 100));
 
-      VBox coupon = new VBox(code, discount, addButton);
+      VBox coupon = new VBox(code, discount, deleteButton);
       coupon.setSpacing(5);
       coupon.setStyle("-fx-padding: 10; -fx-border-color: #ccc; -fx-border-radius: 5;");
 
-      // addButton.setOnAction(event -> orderService.addItem(product));
+      deleteButton.setOnAction(event -> {
+        try {
+          couponsRepository.delete(coupons.getCode());
+        } catch (SQLException e) {
+          throw new RuntimeException(e);
+        }
+        couponsList.getChildren().remove(coupon);
+      });
       couponsList.getChildren().add(coupon);
     }
   }
@@ -49,8 +57,7 @@ public class CouponsController {
     String discount = discountField.getText();
 
     if (code.isEmpty() || discount.isEmpty()) {
-      codeField.setText("Code or Discount cannot be empty");
-      discountField.setText("");
+      salert();
       return;
     }
 
@@ -89,5 +96,16 @@ public class CouponsController {
 
   public void goToDashboardPage(ActionEvent event) {
     sceneRouter.goToDashboardPage();
+  }
+
+  public void salert() {
+    // Show an alert if the cart is empty
+    Alert alert = new Alert(Alert.AlertType.WARNING);
+    alert.setTitle("Empty Cart");
+    alert.setHeaderText(null);
+    alert.setContentText("Your cart is empty. Please add items before proceeding.");
+    alert.showAndWait();
+    return;
+
   }
 }
