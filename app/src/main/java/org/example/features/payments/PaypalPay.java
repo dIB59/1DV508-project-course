@@ -1,9 +1,8 @@
 package org.example.features.payments;
 
 import com.braintreegateway.*;
-import java.math.BigDecimal;
 
-public class PaypalPay implements Pay {
+public class PaypalPay implements PayStrategy {
   private final BraintreeGateway gateway;
 
   public PaypalPay() {

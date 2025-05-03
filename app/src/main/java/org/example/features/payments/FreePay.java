@@ -1,8 +1,6 @@
 package org.example.features.payments;
 
-import java.math.BigDecimal;
-
-public class FreePay implements Pay{
+public class FreePay implements PayStrategy {
 
   @Override
   public boolean payWithCard(CardPaymentDetails cardPaymentDetails) {

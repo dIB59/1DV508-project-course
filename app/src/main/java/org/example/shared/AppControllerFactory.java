@@ -17,6 +17,7 @@ import org.example.features.home.HomeModel;
 import org.example.features.menu.MenuController;
 import org.example.features.menu.MenuModel;
 import org.example.features.order.OrderService;
+import org.example.features.payments.FreePay;
 import org.example.features.payments.PaymentController;
 import org.example.features.payments.PaypalPay;
 import org.example.features.product.ProductDetailsController;
@@ -68,7 +69,7 @@ public class AppControllerFactory implements Callback<Class<?>, Object> {
       case "DashboardController" ->
           new DashboardController(new DashboardModel(), sceneRouter, getProductRepository());
       case "CouponsController" -> new CouponsController(getCouponsRepository(), sceneRouter);
-      case "PaymentController" -> new PaymentController(sceneRouter, orderService, new PaypalPay());
+      case "PaymentController" -> new PaymentController(sceneRouter, orderService, new FreePay());
       default ->
           throw new IllegalArgumentException(
               "No controller found for class: " + controllerClass.getSimpleName());

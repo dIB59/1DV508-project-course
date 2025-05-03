@@ -8,12 +8,16 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import org.example.features.order.OrderService;
 import org.example.shared.SceneRouter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class PaymentController {
 
+  private static final Logger logger = LoggerFactory.getLogger(PaymentController.class);
+
   private final SceneRouter sceneRouter;
   private final OrderService orderService;
-  private Pay paymentService;
+  private PayStrategy paymentService;
 
   @FXML private Button paypalButton;
   @FXML private Button freePayButton;
@@ -30,7 +34,9 @@ public class PaymentController {
   @FXML private Label billedNowValueLabel;
   @FXML private Label footerNoteLabel;
 
-  public PaymentController(SceneRouter sceneRouter, OrderService orderService, Pay paymentService) {
+  private final String displayCurrency = "SEK";
+
+  public PaymentController(SceneRouter sceneRouter, OrderService orderService, PayStrategy paymentService) {
     this.sceneRouter = sceneRouter;
     this.orderService = orderService;
     this.paymentService = paymentService;
@@ -45,85 +51,79 @@ public class PaymentController {
   }
 
   private void populatePaymentDetails() {
-    // Assuming orderService has methods to get these values
     double subtotal = orderService.getSubtotal();
     double discount = orderService.getDiscountTotal();
-    double billedNow = orderService.getTotal();
-    String currencyCode = "USD"; // You might get this from a configuration
-    double gbpConversionRate = 0.82; // Example conversion rate - should be dynamic in a real app
-    double subtotalGBP = subtotal * gbpConversionRate;
-    double discountGBP = discount * gbpConversionRate;
-    double billedNowGBP = billedNow * gbpConversionRate;
+    double total = orderService.getTotal();
 
-    subtotalValueLabel.setText(String.format("$%.2f (approx. £%.2f GBP)", subtotal, subtotalGBP));
-    discountValueLabel.setText(String.format("-$%.2f (approx. -£%.2f GBP)", discount, discountGBP));
-    billedNowValueLabel.setText(String.format("%s $%.2f (approx. £%.2f GBP)", currencyCode, billedNow, billedNowGBP));
-    footerNoteLabel.setText(String.format("All sales are charged in %s and all sales are final. You will be charged $%.2f %s", currencyCode, billedNow, currencyCode));
+    subtotalValueLabel.setText(formatCurrency(subtotal));
+    discountValueLabel.setText(formatDiscount(discount));
+    billedNowValueLabel.setText(formatCurrency(total));
+    footerNoteLabel.setText(String.format("All sales are charged and processed in %s and all sales are final. You will be charged %s", displayCurrency, formatAmount(total)));
 
-    // You can also conditionally set the text of labels like discountLabel
     if (discount <= 0) {
       discountLabel.setText("No discount applied:");
-      discountValueLabel.setText("$0.00");
+      discountValueLabel.setText(formatAmount(0.0));
     }
   }
 
+  private String formatCurrency(double amount) {
+    return String.format("%s %.2f", displayCurrency, amount);
+  }
+
+  private String formatAmount(double amount) {
+    return String.format("%s %.2f", displayCurrency, amount);
+  }
+
+  private String formatDiscount(double discount) {
+    String formattedAmount = formatCurrency(Math.abs(discount));
+    return (discount < 0 ? "-" : "") + formattedAmount;
+  }
+
+  private void handlePayment(PayStrategy strategy) {
+    try {
+      String cardNumber = cardNumberField.getText();
+      String expiration = expirationField.getText();
+      String cvv = cvvField.getText();
+
+      if (cardNumber.isEmpty() || expiration.isEmpty() || cvv.isEmpty()) {
+        showAlert("Missing Information", "Please fill in all card details.");
+        return;
+      }
+
+      CardPaymentDetails card = new CardPaymentDetails(cardNumber, expiration, cvv, orderService.getTotal());
+      boolean success = strategy.payWithCard(card);
+
+      if (success) {
+        orderService.setPaid();
+        sceneRouter.goToReceiptPage();
+      } else {
+        showAlert("Payment Failed", "There was an error processing your payment. Please try again.");
+      }
+    } catch (PaymentProcessingException e) {
+      logger.error("Payment processing failed: {}", e.getMessage(), e);
+      showAlert("Payment Failed", "There was an error processing your payment: " + e.getMessage());
+    } catch (Exception e) {
+      logger.error("An unexpected error occurred during payment: {}", e.getMessage(), e);
+      showAlert("Unexpected Error", "An unexpected error occurred. Please try again.");
+    }
+  }
+
+  @FXML
   private void handlePayPalPay(ActionEvent event) {
-    try {
-      paymentService = new PaypalPay();
-      String cardNumber = cardNumberField.getText();
-      String expiration = expirationField.getText();
-      String cvv = cvvField.getText();
-
-      CardPaymentDetails card = new CardPaymentDetails(cardNumber, expiration, cvv, orderService.getTotal());
-      var success = paymentService.payWithCard(card);
-      if (success) {
-        orderService.setPaid();
-        sceneRouter.goToReceiptPage();
-      } else {
-        // handle payment failure
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Payment Error");
-        alert.setHeaderText("Payment Failed");
-        alert.setContentText("There was an error processing your payment. Please try again.");
-        alert.showAndWait();
-
-      }
-    } catch (Exception e) {
-      // handle error
-      Alert alert = new Alert(Alert.AlertType.ERROR);
-      alert.setTitle("Payment Error");
-      alert.setHeaderText("Payment Failed");
-      alert.setContentText("There was an error processing your payment. Please try again. "
-          + e.getMessage());
-      alert.showAndWait();
-      e.printStackTrace();
-    }
+    paymentService = new PaypalPay();
+    handlePayment(paymentService);
   }
 
+  @FXML
   private void handleFreePay(ActionEvent event) {
-    try {
-      String cardNumber = cardNumberField.getText();
-      String expiration = expirationField.getText();
-      String cvv = cvvField.getText();
+    handlePayment(paymentService);
+  }
 
-      CardPaymentDetails card = new CardPaymentDetails(cardNumber, expiration, cvv, orderService.getTotal());
-      var success = paymentService.payWithCard(card);
-      if (success) {
-        orderService.setPaid();
-        sceneRouter.goToReceiptPage();
-      } else {
-        // handle payment failure
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Payment Error");
-        alert.setHeaderText("Payment Failed");
-        alert.setContentText("There was an error processing your payment. Please try again.");
-        alert.showAndWait();
-
-      }
-
-    } catch (Exception e) {
-      // handle error
-      e.printStackTrace();
-    }
+  private void showAlert(String headerText, String contentText) {
+    Alert alert = new Alert(Alert.AlertType.ERROR);
+    alert.setTitle("Payment Error");
+    alert.setHeaderText(headerText);
+    alert.setContentText(contentText);
+    alert.showAndWait();
   }
 }

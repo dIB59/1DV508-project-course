@@ -1,7 +1,5 @@
 package org.example.features.payments;
 
-import java.math.BigDecimal;
-
-public interface Pay {
+public interface PayStrategy {
   boolean payWithCard(CardPaymentDetails cardPaymentDetails);
 }
