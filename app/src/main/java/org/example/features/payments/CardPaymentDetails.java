@@ -2,6 +2,7 @@ package org.example.features.payments;
 
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 public record CardPaymentDetails(
     String cardNumber,
@@ -29,6 +30,6 @@ public record CardPaymentDetails(
       String expirationDate,
       String cvv,
       double amount) {
-    this(cardNumber, expirationDate, cvv, BigDecimal.valueOf(amount));
+    this(cardNumber, expirationDate, cvv, BigDecimal.valueOf(amount).setScale(2, RoundingMode.HALF_UP));
   }
 }

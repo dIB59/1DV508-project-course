@@ -96,7 +96,7 @@ public class CheckoutController implements Initializable {
       itemListContainer.getChildren().add(itemBox);
     }
 
-    totalPriceLabel.setText(String.format("Total: $%.2f", orderService.getPrice()));
+    totalPriceLabel.setText(String.format("Total: $%.2f", orderService.getTotal()));
   }
 
   /**
@@ -182,7 +182,7 @@ public class CheckoutController implements Initializable {
         orderService::setDiscount,
         () -> couponNotFoundAlert().showAndWait()
     );
-    totalPriceLabel.setText(String.format("Total: $%.2f", orderService.getPrice()));
+    totalPriceLabel.setText(String.format("Total: $%.2f", orderService.getTotal()));
   }
 
   private Alert couponNotFoundAlert() {

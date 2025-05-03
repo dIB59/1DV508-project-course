@@ -17,8 +17,6 @@ import org.example.features.home.HomeModel;
 import org.example.features.menu.MenuController;
 import org.example.features.menu.MenuModel;
 import org.example.features.order.OrderService;
-import org.example.features.payments.FreePay;
-import org.example.features.payments.Pay;
 import org.example.features.payments.PaymentController;
 import org.example.features.payments.PaypalPay;
 import org.example.features.product.ProductDetailsController;

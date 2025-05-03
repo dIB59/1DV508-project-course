@@ -76,7 +76,7 @@ public class OrderService {
     order.setDiscount(discount);
   }
 
-  public double getPrice() {
+  public double getTotal() {
     return order.getPrice();
   }
 
@@ -86,5 +86,13 @@ public class OrderService {
 
   public void setPaid() {
     order.setPaid();
+  }
+
+  public double getSubtotal() {
+    return order.getSubtotal();
+  }
+
+  public double getDiscountTotal() {
+    return order.getSubtotal() - order.getPrice();
   }
 }

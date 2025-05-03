@@ -129,6 +129,12 @@ public class Order implements Identifiable<Integer> {
             .sum();
   }
 
+  public double getSubtotal() {
+    return productQuantity.stream()
+            .mapToDouble(ProductQuantity::getPrice)
+            .sum();
+  }
+
   public BigDecimal getPriceBigDecimal() {
     return BigDecimal.valueOf(getPrice());
   }
