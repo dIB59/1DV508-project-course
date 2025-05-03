@@ -3,6 +3,7 @@ package org.example.shared;
 import java.io.IOException;
 import java.net.URL;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -114,6 +115,10 @@ public class SceneRouter {
     goTo(KioskPage.ADMIN_LOGIN);
   }
 
+  public void goToPaymentPage() {
+    goTo(KioskPage.PAYMENT);
+  }
+
   /**
    * Enum representing the different pages in the kiosk application. Each enum constant corresponds
    * to a specific FXML file.
@@ -129,6 +134,8 @@ public class SceneRouter {
     COUPONS("CouponsView.fxml"),
     /** Checkout kiosk page. */
     CHECKOUT("CheckoutView.fxml"),
+    /** Payment Page. */
+    PAYMENT("PaymentView.fxml"),
     /** Receipt kiosk page. */
     RECEIPT("ReceiptView.fxml"),
     /** Dashboard kiosk page. */

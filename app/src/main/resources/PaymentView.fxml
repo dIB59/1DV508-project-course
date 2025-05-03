@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.paint.Color?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="org.example.features.payments.PaymentController"
+            prefHeight="450.0" prefWidth="600.0"
+            style="-fx-background-color: #121212;">
+
+    <VBox spacing="20" alignment="CENTER" layoutX="100" layoutY="50"
+          prefWidth="400" AnchorPane.topAnchor="20.0" AnchorPane.leftAnchor="100.0"
+          style="-fx-background-color: transparent;">
+
+        <Label text="Credit Card Payment" textFill="white">
+            <font>
+                <Font name="Arial Black" size="22"/>
+            </font>
+        </Label>
+
+        <VBox spacing="5" alignment="CENTER" style="-fx-background-color: #1E1E1E; -fx-background-radius: 10; -fx-padding: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 0);">
+            <TextField fx:id="cardNumberField" promptText="Card Number" prefWidth="300"
+                       style="-fx-background-color: transparent; -fx-text-fill: white; -fx-prompt-text-fill: gray; -fx-border-color: #4a5568; -fx-border-width: 1; -fx-border-radius: 5;"/>
+        </VBox>
+
+        <VBox spacing="5" alignment="CENTER" style="-fx-background-color: #1E1E1E; -fx-background-radius: 10; -fx-padding: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 0);">
+            <TextField fx:id="expirationField" promptText="MM/YY" prefWidth="300"
+                       style="-fx-background-color: transparent; -fx-text-fill: white; -fx-prompt-text-fill: gray; -fx-border-color: #4a5568; -fx-border-width: 1; -fx-border-radius: 5;"/>
+        </VBox>
+
+        <VBox spacing="5" alignment="CENTER" style="-fx-background-color: #1E1E1E; -fx-background-radius: 10; -fx-padding: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 0);">
+            <TextField fx:id="cvvField" promptText="CVV" prefWidth="300"
+                       style="-fx-background-color: transparent; -fx-text-fill: white; -fx-prompt-text-fill: gray; -fx-border-color: #4a5568; -fx-border-width: 1; -fx-border-radius: 5;"/>
+        </VBox>
+
+        <Button text="Pay" onAction="#onPayClicked" prefWidth="150"
+                style="-fx-background-color: #FF5722; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 10; -fx-padding: 12; -fx-font-size: 16;
+                        -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5), 5, 0, 0, 0);">
+            <font>
+                <Font name="Arial Bold" size="16" />
+            </font>
+        </Button>
+
+        <Label fx:id="statusLabel" textFill="white" style="-fx-font-weight: bold; -fx-font-size: 14;"/>
+
+        <VBox fx:id="buttonContainer" spacing="10" alignment="CENTER"/>
+    </VBox>
+</AnchorPane>

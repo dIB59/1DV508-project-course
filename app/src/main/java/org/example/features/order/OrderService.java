@@ -83,4 +83,8 @@ public class OrderService {
   public void settype(String ordertype) {
     order.settype(ordertype);
   }
+
+  public void setPaid() {
+    order.setPaid();
+  }
 }

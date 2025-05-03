@@ -10,7 +10,7 @@ public class AppConfig {
   }
 
   public static String getPayPalPrivateKey() {
-    return dotenv.get("PAYPAL_PRIVATE_KEY");
+    return dotenv.get("PAYPAL_PRIVATE_ID");
   }
 
   public static String getPayPalPublicKey() {
