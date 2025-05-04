@@ -49,6 +49,20 @@ public class CheckoutController implements Initializable {
     this.router = sceneRouter;
   }
 
+  /** Goes to the payment page. */
+  public void goToPaymentPage() {
+    if (orderService.getItems().isEmpty()) {
+      // Show an alert if the cart is empty
+      Alert alert = new Alert(Alert.AlertType.WARNING);
+      alert.setTitle("Empty Cart");
+      alert.setHeaderText(null);
+      alert.setContentText("Your cart is empty. Please add items before proceeding.");
+      alert.showAndWait();
+      return;
+    }
+    router.goToPaymentPage();
+  }
+
   /** Goes to the receipt page. */
   public void goToReceiptPage() {
     if (orderService.getItems().isEmpty()) {
@@ -82,7 +96,7 @@ public class CheckoutController implements Initializable {
       itemListContainer.getChildren().add(itemBox);
     }
 
-    totalPriceLabel.setText(String.format("Total: $%.2f", orderService.getPrice()));
+    totalPriceLabel.setText(String.format("Total: $%.2f", orderService.getTotal()));
   }
 
   /**
@@ -168,7 +182,7 @@ public class CheckoutController implements Initializable {
         orderService::setDiscount,
         () -> couponNotFoundAlert().showAndWait()
     );
-    totalPriceLabel.setText(String.format("Total: $%.2f", orderService.getPrice()));
+    totalPriceLabel.setText(String.format("Total: $%.2f", orderService.getTotal()));
   }
 
   private Alert couponNotFoundAlert() {

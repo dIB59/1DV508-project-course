@@ -76,11 +76,23 @@ public class OrderService {
     order.setDiscount(discount);
   }
 
-  public double getPrice() {
+  public double getTotal() {
     return order.getPrice();
   }
 
   public void settype(String ordertype) {
     order.settype(ordertype);
+  }
+
+  public void setPaid() {
+    order.setPaid();
+  }
+
+  public double getSubtotal() {
+    return order.getSubtotal();
+  }
+
+  public double getDiscountTotal() {
+    return order.getSubtotal() - order.getPrice();
   }
 }

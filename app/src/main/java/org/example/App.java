@@ -22,6 +22,9 @@ public class App extends Application {
 
   @Override
   public void start(Stage primaryStage) {
+    System.out.println(AppConfig.getMerchantId());
+    System.out.println(AppConfig.getPayPalPublicKey());
+    System.out.println(AppConfig.getPayPalPrivateKey());
 
     Connection conn = this.database.getConnection();
     var orderMapper = new OrderMapper();
@@ -33,5 +36,7 @@ public class App extends Application {
 
     primaryStage.setTitle("JavaFX with MySQL");
     router.goTo(SceneRouter.KioskPage.HOME);
+    primaryStage.setMaximized(true);
+    primaryStage.show();
   }
 }

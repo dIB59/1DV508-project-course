@@ -17,6 +17,9 @@ import org.example.features.home.HomeModel;
 import org.example.features.menu.MenuController;
 import org.example.features.menu.MenuModel;
 import org.example.features.order.OrderService;
+import org.example.features.payments.FreePay;
+import org.example.features.payments.PaymentController;
+import org.example.features.payments.PaypalPay;
 import org.example.features.product.ProductDetailsController;
 import org.example.features.product.ProductMapper;
 import org.example.features.product.ProductRepository;
@@ -57,28 +60,22 @@ public class AppControllerFactory implements Callback<Class<?>, Object> {
       case "HomeController" -> new HomeController(new HomeModel(), sceneRouter, orderService);
       case "MenuController" ->
           new MenuController(new MenuModel(), getProductRepository(), sceneRouter, orderService);
-      case "CheckoutController" -> new CheckoutController(orderService, getCouponsRepository(), sceneRouter);
+      case "CheckoutController" ->
+          new CheckoutController(orderService, getCouponsRepository(), sceneRouter);
       case "ProductDetailsController" -> new ProductDetailsController(orderService, sceneRouter);
       case "ReceiptController" ->
           new ReceiptController(orderService.saveOrderAndClear(), sceneRouter);
       case "AdminController" -> new AdminController(sceneRouter, getAdminRepository());
       case "DashboardController" ->
           new DashboardController(new DashboardModel(), sceneRouter, getProductRepository());
-      case "CouponsController" ->
-          new CouponsController(getCouponsRepository(), sceneRouter);
-      default -> {
-        try {
-          yield controllerClass.getDeclaredConstructor(SceneRouter.class).newInstance(sceneRouter);
-        } catch (NoSuchMethodException
-            | InstantiationException
-            | IllegalAccessException
-            | InvocationTargetException e) {
-          throw new RuntimeException(
-              "Failed to create controller instance for " + controllerClass.getName(), e);
-        }
-      }
+      case "CouponsController" -> new CouponsController(getCouponsRepository(), sceneRouter);
+      case "PaymentController" -> new PaymentController(sceneRouter, orderService, new FreePay());
+      default ->
+          throw new IllegalArgumentException(
+              "No controller found for class: " + controllerClass.getSimpleName());
     };
   }
+
 
   private ProductRepository getProductRepository() {
     return new ProductRepository(Database.getInstance().getConnection(), new ProductMapper());

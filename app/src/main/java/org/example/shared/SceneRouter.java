@@ -3,6 +3,7 @@ package org.example.shared;
 import java.io.IOException;
 import java.net.URL;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -42,7 +43,6 @@ public class SceneRouter {
       currentPage = page;
       Scene scene = new Scene(loader.load());
       stage.setScene(scene);
-      stage.show();
     } catch (IOException e) {
       System.err.println("Failed to load scene: " + e.getLocalizedMessage());
       e.printStackTrace();
@@ -101,7 +101,6 @@ public class SceneRouter {
 
       currentPage = KioskPage.PRODUCTDESCRIPTION;
       stage.setScene(scene);
-      stage.show();
     } catch (IOException e) {
       System.err.println("Failed to load Product Details page: " + e.getLocalizedMessage());
       e.printStackTrace();
@@ -114,6 +113,10 @@ public class SceneRouter {
 
   public void goToAdminLoginPage() {
     goTo(KioskPage.ADMIN_LOGIN);
+  }
+
+  public void goToPaymentPage() {
+    goTo(KioskPage.PAYMENT);
   }
 
   /**
@@ -131,6 +134,8 @@ public class SceneRouter {
     COUPONS("CouponsView.fxml"),
     /** Checkout kiosk page. */
     CHECKOUT("CheckoutView.fxml"),
+    /** Payment Page. */
+    PAYMENT("PaymentView.fxml"),
     /** Receipt kiosk page. */
     RECEIPT("ReceiptView.fxml"),
     /** Dashboard kiosk page. */
