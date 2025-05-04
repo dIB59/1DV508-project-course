@@ -47,8 +47,54 @@ public class PaymentController {
     paypalButton.setOnAction(this::handlePayPalPay);
     freePayButton.setOnAction(this::handleFreePay);
     addSlashToExpirationField();
+    addSpacesToCardNumberField();
+    limitAndSanitizeCvvField();
     populatePaymentDetails();
   }
+
+  private void limitAndSanitizeCvvField() {
+    cvvField.textProperty().addListener((obs, oldText, newText) -> {
+      String sanitized = newText.replaceAll("[^\\d]", "");
+      if (!sanitized.equals(newText)) {
+        cvvField.setText(sanitized);
+      }
+      if (sanitized.length() > 3) {
+        cvvField.setText(sanitized.substring(0, 3));
+      }
+    });
+  }
+
+  private void addSpacesToCardNumberField() {
+    cardNumberField.textProperty().addListener((obs, oldText, newText) -> {
+      String digits = newText.replaceAll("\\D", "");
+
+      // Limit to 16 digits
+      if (digits.length() > 16) {
+        digits = digits.substring(0, 16);
+      }
+
+      // Format into groups of 4 digits
+      StringBuilder formatted = new StringBuilder();
+      for (int i = 0; i < digits.length(); i++) {
+        if (i > 0 && i % 4 == 0) {
+          formatted.append(" ");
+        }
+        formatted.append(digits.charAt(i));
+      }
+
+      String formattedText = formatted.toString();
+
+      // Avoid setting text if it's already formatted correctly
+      if (!formattedText.equals(newText)) {
+        int caretPos = cardNumberField.getCaretPosition();
+        cardNumberField.setText(formattedText);
+        // Adjust the caret position as best as possible
+        cardNumberField.positionCaret(Math.min(caretPos, formattedText.length()));
+      }
+    });
+  }
+
+
 
   private void addSlashToExpirationField() {
     expirationField.textProperty().addListener((obs, oldText, newText) -> {
@@ -97,7 +143,7 @@ public class PaymentController {
 
   private void handlePayment(PayStrategy strategy) {
     try {
-      String cardNumber = cardNumberField.getText();
+      String cardNumber = cardNumberField.getText().replace(" ", "");
       String expiration = expirationField.getText();
       String cvv = cvvField.getText();
 
