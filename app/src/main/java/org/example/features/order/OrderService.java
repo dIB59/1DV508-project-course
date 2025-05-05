@@ -1,7 +1,9 @@
 package org.example.features.order;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.example.database.CrudRepository;
+import org.example.features.product.CustomizedProduct;
 import org.example.features.product.Product;
 import org.example.features.coupons.Discount;
 
@@ -13,7 +15,7 @@ public class OrderService {
 
   private final CrudRepository<Order, Integer> repository;
   private Order order;
-
+  private List<CustomizedProduct> customizedProducts = new ArrayList<>();
   /**
    * Instantiates a new Order service.
    *
@@ -77,5 +79,13 @@ public class OrderService {
 
   public double getPrice() {
     return order.getPrice();
+  }
+
+  public void addCustomizedProduct(CustomizedProduct product) {
+    this.customizedProducts.add(product);
+  }
+
+  public List<CustomizedProduct> getCustomizedProducts() {
+    return customizedProducts;
   }
 }

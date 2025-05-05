@@ -9,6 +9,7 @@ import javafx.scene.layout.VBox;
 import org.example.features.order.OrderService;
 import org.example.shared.SceneRouter;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -33,7 +34,6 @@ public class ProductDetailsController {
 
   private IngredientController ingredientController;
 
-  List<String> defaultIngredients = Arrays.asList("Tomato", "Cheese", "Jalapeno");
 
   public ProductDetailsController(OrderService orderService, SceneRouter sceneRouter, IngredientController ingredientController) {
     this.orderService = orderService;

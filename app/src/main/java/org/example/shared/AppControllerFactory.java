@@ -61,7 +61,7 @@ public class AppControllerFactory implements Callback<Class<?>, Object> {
       case "CheckoutController" -> new CheckoutController(orderService, getCouponsRepository(), sceneRouter);
       case "ProductDetailsController" -> new ProductDetailsController(orderService, sceneRouter, ingredientController);
       case "ReceiptController" ->
-          new ReceiptController(orderService.saveOrderAndClear(), sceneRouter, ingredientController.getIngredientCounts());
+          new ReceiptController(orderService.saveOrderAndClear(), sceneRouter, orderService.getCustomizedProducts());
       case "AdminController" -> new AdminController(sceneRouter, getAdminRepository());
       case "DashboardController" ->
           new DashboardController(new DashboardModel(), sceneRouter, getProductRepository());

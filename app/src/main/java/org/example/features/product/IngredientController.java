@@ -6,12 +6,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class IngredientController {
 
   private Map<String, Integer> ingredientCounts = new HashMap<>();
+  private ArrayList<Map<String,Integer>> allingredientCounts = new ArrayList<>();
 
   public HBox createIngredientControl(String ingredientName) {
 
