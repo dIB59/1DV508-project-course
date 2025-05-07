@@ -29,16 +29,16 @@ CREATE TABLE IF NOT EXISTS Order_ProductQuantity
 
 INSERT INTO Product (name, description, price, image_url, specialLabel, isASide)
 VALUES ('Burger', 'A delicious beef burger', 5.99, 'assets/burger.jpg', NULL, FALSE),
-       ('Pizza', 'A cheesy pizza with toppings', 8.99, 'pizza.jpg', 'Hot', FALSE),
-       ('Salad', 'A fresh garden salad', 4.99, 'salad.jpg', NULL, FALSE),
-       ('Soda', 'A refreshing soda drink', 1.99, 'soda.jpg', NULL, TRUE),
-       ('Fries', 'Crispy french fries', 2.99, 'fries.jpg', NULL, FALSE),
-       ('Ice Cream', 'A scoop of ice cream', 3.99, 'ice_cream.jpg', NULL, FALSE),
-       ('Pasta', 'Creamy pasta with sauce', 7.99, 'pasta.jpg', 'Deal', FALSE),
-       ('Sandwich', 'A tasty sandwich with fillings', 4.49, 'sandwich.jpg', NULL, FALSE),
-       ('Coffee', 'A hot cup of coffee', 2.49, 'coffee.jpg', NULL, FALSE),
-       ('Tea', 'A soothing cup of tea', 1.49, 'tea.jpg', NULL, FALSE),
-       ('Cake', 'A slice of chocolate cake', 3.49, 'cake.jpg', NULL, FALSE);
+       ('Pizza', 'A cheesy pizza with toppings', 8.99, 'assets/pizza.jpg', 'Hot', FALSE),
+       ('Salad', 'A fresh garden salad', 4.99, 'assets/salad.jpg', NULL, FALSE),
+       ('Soda', 'A refreshing soda drink', 1.99, 'assets/soda.jpg', NULL, TRUE),
+       ('Fries', 'Crispy french fries', 2.99, 'assets/fries.jpg', NULL, FALSE),
+       ('Ice Cream', 'A scoop of ice cream', 3.99, 'assets/ice_cream.jpg', NULL, FALSE),
+       ('Pasta', 'Creamy pasta with sauce', 7.99, 'assets/pasta.jpg', 'Deal', FALSE),
+       ('Sandwich', 'A tasty sandwich with fillings', 4.49, 'assets/sandwich.jpg', NULL, FALSE),
+       ('Coffee', 'A hot cup of coffee', 2.49, 'assets/coffee.jpg', NULL, FALSE),
+       ('Tea', 'A soothing cup of tea', 1.49, 'assets/tea.jpg', NULL, FALSE),
+       ('Cake', 'A slice of chocolate cake', 3.49, 'assets/cake.jpg', NULL, FALSE);
 
 CREATE TABLE IF NOT EXISTS Admin
 (
