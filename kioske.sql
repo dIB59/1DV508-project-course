@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS Order_ProductQuantity
 );
 
 INSERT INTO Product (name, description, price, image_url, specialLabel)
-VALUES ('Burger', 'A delicious beef burger', 5.99, 'burger.jpg', NULL),
+VALUES ('Burger', 'A delicious beef burger', 5.99, 'assets/burger.jpg', NULL),
        ('Pizza', 'A cheesy pizza with toppings', 8.99, 'pizza.jpg', 'Hot'),
        ('Salad', 'A fresh garden salad', 4.99, 'salad.jpg', NULL),
        ('Soda', 'A refreshing soda drink', 1.99, 'soda.jpg', NULL),

@@ -6,6 +6,8 @@ import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import org.example.features.order.OrderService;
 import org.example.features.product.Product;
@@ -99,17 +101,35 @@ public class MenuController {
   }
 
   private StackPane createProductCard(Product product) {
+
+    ImageView imageView = new ImageView();
+    try {
+      if (product.getImageUrl() != null && !product.getImageUrl().isBlank()) {
+        imageView.setImage(new Image(product.getImageUrl(), true));
+      }
+    } catch (Exception e) {
+      System.out.println("Could not load product image: " + e.getMessage());
+    }
+
+    imageView.setPreserveRatio(false); // Do not preserve aspect ratio, stretch to fit
+    imageView.setSmooth(true);
+    imageView.setCache(true);
+    imageView.setFitWidth(200);
+    imageView.setFitHeight(140);
+
     Label name = new Label(product.getName());
     name.setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;");
+    name.setWrapText(true);
 
     Label price = new Label(String.format("$%.2f", product.getPrice()));
     price.setStyle("-fx-font-size: 16px; -fx-text-fill: #555555;");
 
-    Button addButton = new Button("Add to Order");
+    /*Button addButton = new Button("Add to Order");
     addButton.setStyle("-fx-background-color: #34495e; -fx-text-fill: white; -fx-background-radius: 5;");
-    addButton.setOnAction(e -> sceneRouter.goToProductDetailsPage(product));
+    addButton.setOnAction(e -> sceneRouter.goToProductDetailsPage(product)); */
 
-    VBox productInfo = new VBox(10, name, price, addButton);
+    VBox productInfo = new VBox(10);
+    productInfo.getChildren().addAll(imageView, name, price);
     productInfo.setAlignment(Pos.CENTER);
 
     StackPane card = new StackPane(productInfo);
