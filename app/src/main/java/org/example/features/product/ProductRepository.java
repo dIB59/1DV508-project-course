@@ -51,7 +51,7 @@ public class ProductRepository implements CrudRepository<Product, Integer> {
 
   public List<Product> findAll() throws SQLException {
     String sql =
-        "SELECT Product.id, Product.name, Product.description, Product.price, Product.image_url, Product.specialLabel, GROUP_CONCAT(T.name) AS tags, GROUP_CONCAT(T.id) AS tags_ids "
+        "SELECT Product.id, Product.name, Product.description, Product.price, Product.image_url, Product.specialLabel, Product.isASide, GROUP_CONCAT(T.name) AS tags, GROUP_CONCAT(T.id) AS tags_ids "
             + "FROM Product "
             + "LEFT JOIN Product_Tags PT ON Product.id = PT.product_id "
             + "LEFT JOIN Tags T ON PT.tag_id = T.id "
@@ -68,7 +68,7 @@ public class ProductRepository implements CrudRepository<Product, Integer> {
   public List<Product> findProductsByTagName(String tagName) throws SQLException {
     String sql = """
         SELECT Product.id, Product.name, Product.description, Product.price, Product.image_url,
-               GROUP_CONCAT(T.name) AS tags, GROUP_CONCAT(T.id) AS tags_ids, Product.specialLabel
+            Product.isASide, GROUP_CONCAT(T.name) AS tags, GROUP_CONCAT(T.id) AS tags_ids, Product.specialLabel
         FROM Product
         JOIN Product_Tags PT ON Product.id = PT.product_id
         JOIN Tags T ON PT.tag_id = T.id
@@ -101,6 +101,7 @@ public class ProductRepository implements CrudRepository<Product, Integer> {
       stmt.setString(4, entity.getImageUrl());
       stmt.setString(5, entity.getSpecialLabel());
       stmt.setBoolean(6, entity.getisASide());
+      stmt.setBoolean(7, entity.getisASide());
 
       stmt.executeUpdate();
     }
