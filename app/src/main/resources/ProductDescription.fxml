@@ -24,6 +24,10 @@
 
         <!-- Add to Order Button -->
         <Button fx:id="addToOrderButton" text="Add to Order" onAction="#addToOrder"/>
+
+        <!-- Sides Section -->
+        <VBox fx:id="sidesContainer" spacing="10.0" alignment="TOP_LEFT"/>
     </VBox>
+
 
 </AnchorPane>

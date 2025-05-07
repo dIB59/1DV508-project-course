@@ -5,13 +5,21 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+
 import org.example.features.order.OrderService;
 import org.example.shared.SceneRouter;
+import java.util.ArrayList;
+import java.util.List;
+import java.sql.SQLException;
+import javafx.application.Platform;
 
 public class ProductDetailsController {
   private final OrderService orderService;
   private final SceneRouter sceneRouter;
   private Product product;
+  private final ProductRepository productRepository;
   @FXML private Label productName;
 
   @FXML private Label productPrice;
@@ -22,14 +30,15 @@ public class ProductDetailsController {
 
   @FXML private Button addToOrderButton;
 
-  public ProductDetailsController(OrderService orderService, SceneRouter sceneRouter) {
+  public ProductDetailsController(OrderService orderService, SceneRouter sceneRouter,ProductRepository productRepository) {
     this.orderService = orderService;
     this.sceneRouter = sceneRouter;
+    this.productRepository = productRepository;
   }
 
   public void setProduct(Product product) {
+    System.out.println("FUNCTION CALLED");
     this.product = product;
-
     if (productName != null && productPrice != null && quantitySpinner != null) {
       // Update product details
       productName.setText(product.getName());
@@ -67,10 +76,36 @@ public class ProductDetailsController {
                       .setText(oldValue); // Revert to old value if non-numeric
                 }
               });
+        
     } else {
       System.err.println("FXML fields are not initialized. Check FXML fx:id or initialization.");
     }
+
   }
+  @FXML private VBox sidesContainer;
+
+  public void displaySides() {
+    try {
+      List<Product> sides = productRepository.findAll();
+        if (sidesContainer != null) {
+          sidesContainer.getChildren().clear();
+          for (Product p : sides) {
+            if (p.getisASide()) { // Use the correct getter
+              Label sideLabel = new Label(p.getName() + " ($" + String.format("%.2f", p.getPrice()) + ")");
+              Spinner<Integer> sideSpinner = new Spinner<>(1, 10, 1);
+              sideSpinner.setPrefWidth(80);
+              HBox sideBox = new HBox(10, sideLabel, sideSpinner);
+              sidesContainer.getChildren().add(sideBox);
+            }
+          }
+        } else {
+          System.err.println("sidesContainer is not initialized. Check FXML fx:id or initialization.");
+        }
+    } catch (SQLException e) {
+      System.err.println("Error fetching sides: " + e.getMessage());
+    }
+  }
+
 
   @FXML
   public void addToOrder() {

@@ -100,6 +100,7 @@ public class ProductRepository implements CrudRepository<Product, Integer> {
       stmt.setString(3, entity.getDescription());
       stmt.setString(4, entity.getImageUrl());
       stmt.setString(5, entity.getSpecialLabel());
+      stmt.setBoolean(6, entity.getisASide());
 
       stmt.executeUpdate();
     }
@@ -115,6 +116,7 @@ public class ProductRepository implements CrudRepository<Product, Integer> {
             entity.getPrice(),
             entity.getImageUrl(),
             entity.getSpecialLabel(),
+            entity.getisASide(),
             entity.getTags());
       }
     }
@@ -133,6 +135,7 @@ public class ProductRepository implements CrudRepository<Product, Integer> {
       stmt.setString(3, entity.getDescription());
       stmt.setString(4, entity.getImageUrl());
       stmt.setInt(5, entity.getId());
+      stmt.setBoolean(6, entity.getisASide());
       stmt.executeUpdate();
     }
 
