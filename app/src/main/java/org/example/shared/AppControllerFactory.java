@@ -34,6 +34,7 @@ public class AppControllerFactory implements Callback<Class<?>, Object> {
 
   private final OrderService orderService;
   private final SceneRouter sceneRouter;
+
   private final Connection connection = Database.getInstance().getConnection();
 
   /**
@@ -62,7 +63,7 @@ public class AppControllerFactory implements Callback<Class<?>, Object> {
           new MenuController(new MenuModel(), getProductRepository(), sceneRouter, orderService);
       case "CheckoutController" ->
           new CheckoutController(orderService, getCouponsRepository(), sceneRouter);
-      case "ProductDetailsController" -> new ProductDetailsController(orderService, sceneRouter);
+      case "ProductDetailsController" -> new ProductDetailsController(orderService, sceneRouter, getProductRepository());
       case "ReceiptController" ->
           new ReceiptController(orderService.saveOrderAndClear(), sceneRouter);
       case "AdminController" -> new AdminController(sceneRouter, getAdminRepository());

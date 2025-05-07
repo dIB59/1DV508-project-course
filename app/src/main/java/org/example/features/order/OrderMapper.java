@@ -39,7 +39,9 @@ public class OrderMapper implements EntityMapper<Order> {
               rs.getDouble("price"),
               rs.getString("image_url"),
               rs.getString("specialLabel"),
-              tags);
+              rs.getBoolean("isASide"),
+              tags
+          );
       int quantity = rs.getInt("quantity");
       productQuantities.add(new ProductQuantity(product, quantity));
     }

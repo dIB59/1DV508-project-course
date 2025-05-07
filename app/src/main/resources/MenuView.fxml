@@ -9,13 +9,9 @@
             fx:controller="org.example.features.menu.MenuController">
 
     <VBox spacing="25" alignment="TOP_CENTER"
-          AnchorPane.topAnchor="40.0" AnchorPane.bottomAnchor="40.0"
-          AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0"
+          AnchorPane.topAnchor="20.0" AnchorPane.bottomAnchor="20.0"
+          AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0"
           style="-fx-background-color: white; -fx-background-radius: 20; -fx-padding: 40;">
-
-        <!-- Title -->
-        <Label text="Menu"
-               style="-fx-font-size: 40px; -fx-font-weight: bold; -fx-text-fill: black;" />
 
         <!-- Tag Button Container -->
         <ScrollPane fitToHeight="true" vbarPolicy="NEVER" hbarPolicy="NEVER"

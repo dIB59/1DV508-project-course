@@ -95,10 +95,11 @@ public class SceneRouter {
       FXMLLoader loader = new FXMLLoader(url);
       loader.setControllerFactory(controllerFactory);
 
+      System.out.println();
       Scene scene = new Scene(loader.load());
       ProductDetailsController controller = loader.getController();
       controller.setProduct(product); // Set the product after loading the FXML
-
+      controller.displaySides();
       currentPage = KioskPage.PRODUCTDESCRIPTION;
       stage.setScene(scene);
     } catch (IOException e) {
