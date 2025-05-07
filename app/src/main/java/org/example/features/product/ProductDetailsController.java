@@ -11,7 +11,9 @@ import javafx.scene.layout.VBox;
 import org.example.features.order.OrderService;
 import org.example.shared.SceneRouter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.sql.SQLException;
 import javafx.application.Platform;
 
@@ -20,6 +22,10 @@ public class ProductDetailsController {
   private final SceneRouter sceneRouter;
   private Product product;
   private final ProductRepository productRepository;
+
+  private final Map<Product, Spinner<Integer>> sideSpinnerMap = new HashMap<>();
+
+
   @FXML private Label productName;
 
   @FXML private Label productPrice;
@@ -94,6 +100,9 @@ public class ProductDetailsController {
               Label sideLabel = new Label(p.getName() + " ($" + String.format("%.2f", p.getPrice()) + ")");
               Spinner<Integer> sideSpinner = new Spinner<>(1, 10, 1);
               sideSpinner.setPrefWidth(80);
+
+              sideSpinnerMap.put(p, sideSpinner);
+
               HBox sideBox = new HBox(10, sideLabel, sideSpinner);
               sidesContainer.getChildren().add(sideBox);
             }
@@ -109,6 +118,9 @@ public class ProductDetailsController {
 
   @FXML
   public void addToOrder() {
+
+
+
     Integer quantity = quantitySpinner.getValue(); // Get the current value from the Spinner
     if (quantity == null) {
       System.err.println("Spinner value is null. Ensure SpinnerValueFactory is set.");
@@ -118,7 +130,15 @@ public class ProductDetailsController {
     for (int i = 0; i < quantity; i++) {
       orderService.addItem(product);
     }
-
+    //Add sides to the order based on spinner values
+    for (Map.Entry<Product, Spinner<Integer>> entry : sideSpinnerMap.entrySet()) {
+      Product side = entry.getKey();
+      Integer sideQuantity = entry.getValue().getValue();
+  
+      for (int i = 0; i < sideQuantity; i++) {
+        orderService.addItem(side);
+      }
+    }
     sceneRouter.goToMenuPage(); // reroute back to menu page once done
   }
 }
