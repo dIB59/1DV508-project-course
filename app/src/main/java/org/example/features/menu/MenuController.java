@@ -11,6 +11,8 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.shape.Rectangle;
+
 import org.example.features.order.OrderService;
 import org.example.features.product.Product;
 import org.example.features.product.ProductRepository;
@@ -135,6 +137,11 @@ public class MenuController {
       System.out.println("Could not load product image: " + e.getMessage());
     }
 
+    Rectangle clip = new Rectangle(400, 350);
+    clip.setArcWidth(30);
+    clip.setArcHeight(30);
+    imageView.setClip(clip);
+
     imageView.setPreserveRatio(false); // Do not preserve aspect ratio, stretch to fit
     imageView.setSmooth(true);
     imageView.setCache(true);
@@ -145,6 +152,7 @@ public class MenuController {
     Label name = new Label(product.getName());
     name.setStyle("-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;");
     name.setWrapText(true);
+    name.setPadding(new Insets(0, 0, 0, 10)); 
     HBox.setHgrow(name, Priority.ALWAYS);
 
     Label price = new Label(String.format("$%.2f", product.getPrice()));
@@ -164,12 +172,13 @@ public class MenuController {
 
     HBox textContainer = new HBox(10);
     textContainer.setAlignment(Pos.CENTER_LEFT);
+    textContainer.setPadding(new Insets(8, 0, 0, 0));
     textContainer.getChildren().addAll(name, price);
 
     VBox productInfo = new VBox(8);
     productInfo.getChildren().addAll(imageView, textContainer, description);
     productInfo.setAlignment(Pos.TOP_CENTER);
-    productInfo.setPadding(new Insets(0));
+    productInfo.setPadding(new Insets(0, 0, 10, 0));
 
     StackPane card = new StackPane(productInfo);
     card.setStyle("""
