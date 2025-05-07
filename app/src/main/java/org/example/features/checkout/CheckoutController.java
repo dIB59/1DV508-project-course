@@ -24,6 +24,7 @@ import org.example.features.coupons.CouponsRepository;
 import org.example.features.order.OrderService;
 import org.example.features.order.ProductQuantity;
 import org.example.shared.SceneRouter;
+import javafx.scene.layout.Region;
 
 /** The type Checkout controller. */
 public class CheckoutController implements Initializable {
@@ -92,65 +93,57 @@ public class CheckoutController implements Initializable {
    * @return the HBox representing the item
    */
   private HBox createItemBox(ProductQuantity item) {
-    // Create an HBox for each item with padding and spacing
-    HBox hbox = new HBox(20);
-    hbox.setAlignment(Pos.CENTER_LEFT); // Align content to the left initially
-    hbox.setPadding(new Insets(15, 20, 15, 20));
-    hbox.setStyle("-fx-background-color: white; -fx-border-radius: 8; -fx-border-color: #ddd;");
+    HBox container = new HBox();
+    container.setPadding(new Insets(15, 20, 15, 20));
+    container.setStyle("-fx-background-color: white; -fx-border-radius: 8; -fx-border-color: #ddd;");
+    container.setAlignment(Pos.TOP_LEFT);
+    container.setPrefWidth(1080);
 
-    // Label for item details with modern black and white styling
-    Label label =
-        new Label(
-            item.getProduct().getName()
-                + " - $"
-                + String.format("%.2f", item.getProduct().getPrice())
-                + " x "
-                + item.getQuantity());
+    // Create the label
+    Label label = new Label(
+        item.getProduct().getName()
+            + " - $"
+            + String.format("%.2f", item.getProduct().getPrice())
+            + " x "
+            + item.getQuantity());
     label.setFont(Font.font("Arial", 16));
     label.setTextFill(Color.valueOf("#333333"));
-    HBox.setHgrow(label, Priority.ALWAYS); // Allow label to take up remaining space
+    label.setWrapText(true);
 
-    // Create the increase button with modern black and white styling
+    // Create the buttons
     Button increaseButton = new Button("+");
-    increaseButton.setStyle(
-        "-fx-background-color: #2d3436; "
-            + "-fx-text-fill: white; "
-            + "-fx-background-radius: 8; "
-            + "-fx-cursor: hand; "
-            + "-fx-padding: 10 15; "
-            + "-fx-font-size: 16px;"
-            + "-fx-font-weight: bold;");
-    increaseButton.setOnAction(
-        event -> {
-          orderService.addItem(item.getProduct());
-          updateCartDisplay();
-        });
-
-    // Create the decrease button with modern black and white styling
     Button decreaseButton = new Button("-");
-    decreaseButton.setStyle(
-        "-fx-background-color: #2d3436; "
-            + "-fx-text-fill: white; "
-            + "-fx-background-radius: 8; "
-            + "-fx-cursor: hand; "
-            + "-fx-padding: 10 15; "
-            + "-fx-font-size: 16px;"
-            + "-fx-font-weight: bold;");
-    decreaseButton.setOnAction(
-        event -> {
-          orderService.removeItem(item.getProduct());
-          updateCartDisplay();
-        });
-    // Add the buttons in a horizontal layout for quantity control
-    HBox quantityControls = new HBox(15, decreaseButton, label, increaseButton);
-    quantityControls.setAlignment(Pos.CENTER_LEFT);
 
-    // Add the quantity controls to the main HBox
-    hbox.getChildren().addAll(quantityControls);
+    // Style the buttons
+    String buttonStyle = "-fx-background-color: #1E1EA9; -fx-text-fill: white; -fx-background-radius: 6; " +
+        "-fx-cursor: hand; -fx-font-size: 14px; -fx-font-weight: bold;";
+    increaseButton.setStyle(buttonStyle);
+    decreaseButton.setStyle(buttonStyle);
 
-    return hbox;
+    increaseButton.setPrefSize(30, 30);
+    decreaseButton.setPrefSize(30, 30);
+
+    increaseButton.setOnAction(event -> {
+      orderService.addItem(item.getProduct());
+      updateCartDisplay();
+    });
+
+    decreaseButton.setOnAction(event -> {
+      orderService.removeItem(item.getProduct());
+      updateCartDisplay();
+    });
+
+    // Right-aligned buttons
+    HBox buttonBox = new HBox(5, decreaseButton, increaseButton);
+    buttonBox.setAlignment(Pos.TOP_RIGHT);
+
+    // Add spacing between label and buttons
+    Region spacer = new Region();
+    HBox.setHgrow(spacer, Priority.ALWAYS);
+
+    container.getChildren().addAll(label, spacer, buttonBox);
+    return container;
   }
-
   public void applyCoupon() {
     String coupon = couponCodeField.getText();
     if (coupon == null || coupon.isEmpty()) {
