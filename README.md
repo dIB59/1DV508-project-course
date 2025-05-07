@@ -1,0 +1,1 @@
+Standard image size: 400 x 350
