@@ -41,6 +41,7 @@ public class ProductMapper implements EntityMapper<Product> {
         rs.getDouble("price"),
         rs.getString("image_url"),
         rs.getString("specialLabel"),
+        rs.getBoolean("isASide"),
         tags);
   }
 }

@@ -21,6 +21,7 @@ public class Product implements Identifiable<Integer> {
   private double price;
   private String imageUrl;
   private String specialLabel;
+  private Boolean isASide;
   private List<Tag> tags;
 
 
@@ -35,7 +36,7 @@ public class Product implements Identifiable<Integer> {
    * @param specialLabel The special label for the product (e.g., "Hot", "Deal").
    * @param tags the tags
    */
-  public Product(int id, String name, String description, double price, String imageUrl, String specialLabel, List<Tag> tags) {
+  public Product(int id, String name, String description, double price, String imageUrl, String specialLabel,boolean isASide, List<Tag> tags) {
     if (name == null || name.isBlank()) {
       throw new IllegalArgumentException("Name cannot be null or empty");
     }
@@ -52,14 +53,15 @@ public class Product implements Identifiable<Integer> {
     this.imageUrl = imageUrl;
     this.tags = tags != null ? tags : new ArrayList<>();
     this.specialLabel = specialLabel;
+    this.isASide = isASide;
   }
 
-  public Product(String name, String description, double price, String imageUrl, String specialLabel) {
-    this(0, name, description, price, imageUrl, specialLabel, List.of());
+  public Product(String name, String description, double price, String imageUrl, String specialLabel, boolean isASide) {
+    this(0, name, description, price, imageUrl, specialLabel, isASide,List.of());
   }
 
-  public Product(String name, String description, double price, String imageUrl, String specialLabel, List<Tag> tags) {
-    this(0, name, description, price, imageUrl, specialLabel, tags);
+  public Product(String name, String description, double price, String imageUrl, String specialLabel, boolean isASide,List<Tag> tags) {
+    this(0, name, description, price, imageUrl, specialLabel, isASide,tags);
   }
 
   public Integer getId() {
@@ -116,6 +118,10 @@ public class Product implements Identifiable<Integer> {
    */
   public String getSpecialLabel() {
     return specialLabel;
+  }
+
+  public Boolean getisASide(){
+    return isASide;
   }
 
   /**

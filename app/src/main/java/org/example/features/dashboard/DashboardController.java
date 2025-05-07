@@ -238,7 +238,7 @@ public class DashboardController {
         }
 
         Product updatedProduct = new Product(
-            product.getId(), newName, newDescription, newPrice, newImageUrl, specialLabel, selectedTags
+            product.getId(), newName, newDescription, newPrice, newImageUrl, specialLabel, false, selectedTags
         );
 
         repository.update(updatedProduct);
