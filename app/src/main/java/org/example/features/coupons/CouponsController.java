@@ -66,7 +66,7 @@ public class CouponsController {
     } catch (SQLException | NumberFormatException e) {
       throw new RuntimeException(e);
     }
-    sceneRouter.goToDashboardPage();
+    sceneRouter.refreshPage();
   }
 
   public void handleDeleteCouponButtonAction() {
