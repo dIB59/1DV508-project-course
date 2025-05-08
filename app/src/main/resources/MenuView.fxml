@@ -38,10 +38,14 @@
             </GridPane>
         </ScrollPane>
 
+        <!-- Buttons at Bottom -->
+        <HBox spacing="20" alignment="CENTER">
+            <Button text="Cancel Order" onAction="#goToHomePage"
+                    style="-fx-padding: 15 30; -fx-font-size: 16px; -fx-background-color: red; -fx-text-fill: white; -fx-background-radius: 10; -fx-cursor: hand;" />
+            <Button text="Go to Checkout" onAction="#goToCheckoutPage"
+                    style="-fx-padding: 15 30; -fx-font-size: 16px; -fx-background-color: black; -fx-text-fill: white; -fx-background-radius: 10; -fx-cursor: hand;" />
+        </HBox>
 
-        <!-- Checkout Button -->
-        <Button text="Go to Checkout" onAction="#goToCheckoutPage"
-                style="-fx-padding: 15 40; -fx-font-size: 18px; -fx-background-color: black; -fx-text-fill: white; -fx-background-radius: 10; -fx-cursor: hand;" />
     </VBox>
 
 </AnchorPane>
