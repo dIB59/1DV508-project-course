@@ -24,6 +24,8 @@ import org.example.features.coupons.CouponsRepository;
 import org.example.features.order.OrderService;
 import org.example.features.order.ProductQuantity;
 import org.example.shared.SceneRouter;
+import javafx.scene.control.RadioButton;
+
 
 /** The type Checkout controller. */
 public class CheckoutController implements Initializable {
@@ -36,6 +38,9 @@ public class CheckoutController implements Initializable {
   @FXML private Label totalPriceLabel;
   @FXML private VBox itemListContainer; // Changed from ListView to VBox
   @FXML private TextField couponCodeField;
+  @FXML private RadioButton yesPrint;
+  @FXML private RadioButton noPrint;
+
 
   /**
    * Instantiates a new Checkout controller.
@@ -66,7 +71,6 @@ public class CheckoutController implements Initializable {
   /** Goes to the receipt page. */
   public void goToReceiptPage() {
     if (orderService.getItems().isEmpty()) {
-      // Show an alert if the cart is empty
       Alert alert = new Alert(Alert.AlertType.WARNING);
       alert.setTitle("Empty Cart");
       alert.setHeaderText(null);
@@ -74,8 +78,17 @@ public class CheckoutController implements Initializable {
       alert.showAndWait();
       return;
     }
+
+    boolean shouldPrint = yesPrint.isSelected();
+    if (shouldPrint) {
+      printReceipt();
+    } else {
+      System.out.println("Receipt will not be printed — user selected 'No'.");
+    }
+
     router.goToReceiptPage();
   }
+
 
   /** Goes to the home/menu page. */
   public void goToMenuPage() {
@@ -183,6 +196,9 @@ public class CheckoutController implements Initializable {
         () -> couponNotFoundAlert().showAndWait()
     );
     totalPriceLabel.setText(String.format("Total: $%.2f", orderService.getTotal()));
+  }
+  private void printReceipt() {
+    System.out.println("Printing receipt...");
   }
 
   private Alert couponNotFoundAlert() {
