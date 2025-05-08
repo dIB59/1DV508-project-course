@@ -77,7 +77,7 @@ public class DashboardController {
     card.setAlignment(Pos.CENTER_LEFT);
     card.setPadding(new Insets(0));
     card.setSpacing(0);
-    card.setPrefHeight(140); // Fixed height
+    card.setPrefHeight(140);
     card.setStyle(
         "-fx-background-color: #f9f9f9;"
             + " -fx-background-radius: 12;"
@@ -93,14 +93,12 @@ public class DashboardController {
     } catch (Exception e) {
       System.out.println("Could not load product image: " + e.getMessage());
     }
-    imageView.setPreserveRatio(false); // Do not preserve aspect ratio, stretch to fit
+    imageView.setPreserveRatio(false);
     imageView.setSmooth(true);
     imageView.setCache(true);
     imageView.setFitWidth(140);
     imageView.setFitHeight(140);
-    // Removed background and border styles from imageView
 
-    // Image Container
     StackPane imageContainer = new StackPane(imageView);
     imageContainer.setPrefSize(140, 140);
     imageContainer.setMaxHeight(140);
@@ -119,28 +117,57 @@ public class DashboardController {
 
     infoBox.getChildren().addAll(nameLabel, priceLabel);
 
-    // Edit Button with Icon (FontAwesome or any icon font)
-    Button editButton = new Button();
-    Text editIcon = new Text("✎");
-    editIcon.setFont(Font.font(24)); // Set icon size
-    editIcon.setFill(Color.WHITE); // Set icon color
-    editButton.setGraphic(editIcon);
-    editButton.setStyle(
-        "-fx-background-color: black; -fx-text-fill: white; -fx-background-radius: 0 10 10 0; -fx-cursor: hand;");
-    editButton.setOnAction(e -> editProduct(product));
-
-    // Stretch the button vertically and place at the bottom
-    VBox.setVgrow(editButton, Priority.ALWAYS);
-    editButton.setMaxHeight(Double.MAX_VALUE); // Allow it to stretch to max height
-
     HBox spacer = new HBox();
     HBox.setHgrow(spacer, Priority.ALWAYS);
 
-    // Assemble
-    card.getChildren().addAll(imageContainer, infoBox, spacer, editButton);
+    // Edit Button (top half)
+    Button editButton = new Button();
+    Text editIcon = new Text("✎");
+    editIcon.setFont(Font.font(20));
+    editIcon.setFill(Color.WHITE);
+    editButton.setGraphic(editIcon);
+    editButton.setStyle(
+        "-fx-background-color: black; -fx-text-fill: white;"
+            + " -fx-background-radius: 0 10 0 0;"
+            + " -fx-cursor: hand;");
+    editButton.setMinHeight(70);
+    editButton.setMaxHeight(70);
+    editButton.setMaxWidth(Double.MAX_VALUE);
+    editButton.setOnAction(e -> editProduct(product));
 
+    // Delete Button (bottom half) with bin icon
+    Button deleteButton = new Button();
+    Text binIcon = new Text("X");
+    binIcon.setFont(Font.font(18));
+    binIcon.setFill(Color.WHITE);
+    deleteButton.setGraphic(binIcon);
+    deleteButton.setStyle(
+        "-fx-background-color: #6f1515; -fx-text-fill: white;"
+            + " -fx-background-radius: 0 0 10 0;"
+            + " -fx-cursor: hand;");
+    deleteButton.setMinHeight(70);
+    deleteButton.setMaxHeight(70);
+    deleteButton.setMaxWidth(Double.MAX_VALUE);
+    deleteButton.setOnAction(e -> {
+      try {
+        repository.delete(product.getId());
+        loadProducts();
+      } catch (SQLException ex) {
+        showAlert("Error deleting product: " + ex.getMessage());
+      }
+    });
+
+    // Combine edit and delete into a VBox
+    VBox actionBox = new VBox();
+    actionBox.setPrefHeight(140);
+    actionBox.setPrefWidth(50); // or adjust as needed
+    actionBox.getChildren().addAll(editButton, deleteButton);
+
+    // Assemble full card
+    card.getChildren().addAll(imageContainer, infoBox, spacer, actionBox);
     return card;
   }
+
 
   private void editProduct(Product product) {
     Stage dialog = new Stage();
