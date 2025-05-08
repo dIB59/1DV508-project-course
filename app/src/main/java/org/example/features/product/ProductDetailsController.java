@@ -17,6 +17,11 @@ import java.util.Map;
 import java.sql.SQLException;
 import javafx.application.Platform;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+
 public class ProductDetailsController {
   private final OrderService orderService;
   private final SceneRouter sceneRouter;
@@ -32,7 +37,7 @@ public class ProductDetailsController {
 
   @FXML private Label productDescription;
 
-  @FXML private Spinner<Integer> quantitySpinner;
+  @FXML private Spinner<Integer> quantitySpinner = new Spinner<>();
 
   @FXML private Button addToOrderButton;
 
@@ -141,4 +146,5 @@ public class ProductDetailsController {
     }
     sceneRouter.goToMenuPage(); // reroute back to menu page once done
   }
+
 }

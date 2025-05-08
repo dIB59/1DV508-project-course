@@ -1,7 +1,9 @@
 package org.example.features.order;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.example.database.CrudRepository;
+import org.example.features.product.CustomizedProduct;
 import org.example.features.product.Product;
 import org.example.features.coupons.Discount;
 
@@ -13,7 +15,7 @@ public class OrderService {
 
   private final CrudRepository<Order, Integer> repository;
   private Order order;
-
+  private List<CustomizedProduct> customizedProducts = new ArrayList<>();
   /**
    * Instantiates a new Order service.
    *
@@ -33,6 +35,20 @@ public class OrderService {
     this.order.addProduct(item);
   }
 
+  // Sets member status to true
+  public void setMember(){
+    this.order.setMember();
+  }
+
+  public boolean getMember(){
+    return this.order.getMember();
+  }
+
+  public void setMemberDB(boolean getMember){
+    if (getMember){
+      this.order.setMember();
+    }
+  }
   /**
    * Remove item.
    *
@@ -63,6 +79,7 @@ public class OrderService {
     try {
       var s = this.repository.save(order);
       s.setDiscount(order.getDiscount());
+      s.setMemberDB(order.getMember());
       s.settype(order.gettype());
       this.clear();
       return s;
@@ -78,6 +95,14 @@ public class OrderService {
 
   public double getTotal() {
     return order.getPrice();
+  }
+
+  public void addCustomizedProduct(CustomizedProduct product) {
+    this.customizedProducts.add(product);
+  }
+
+  public List<CustomizedProduct> getCustomizedProducts() {
+    return customizedProducts;
   }
 
   public void settype(String ordertype) {

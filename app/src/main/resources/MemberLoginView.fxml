@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="org.example.members.MemberController"
+            prefHeight="400.0" prefWidth="600.0">
+
+    <VBox alignment="CENTER"
+          layoutX="150.0"
+          layoutY="100.0"
+          spacing="15.0"
+          AnchorPane.leftAnchor="0"
+          AnchorPane.rightAnchor="0"
+          AnchorPane.topAnchor="0"
+          AnchorPane.bottomAnchor="0">
+
+        <Label text="Member Login"
+               style="-fx-text-fill: black; -fx-font-size: 28px; -fx-font-weight: bold;"/>
+
+        <TextField fx:id="personalnumber"
+                   promptText="Personal Number"
+                   maxWidth="250"
+                   style="-fx-background-radius: 10; -fx-padding: 10; -fx-text-fill: black;"/>
+
+
+        <Button text="Login"
+                fx:id="loginButton"
+                onAction="#handleLoginButtonAction"
+                maxWidth="250"
+                style="-fx-background-color: black; -fx-text-fill: white; -fx-background-radius: 10; -fx-font-weight: bold;"/>
+
+        <Label text="Not a member?"
+               style="-fx-text-fill: black; -fx-font-size: 20   px; -fx-font-weight: bold;"/>
+
+        <Button text="Not a member"
+                fx:id="nonmemberloginButton"
+                onAction="#handleNonMemberLoginButtionAction"
+                maxWidth="250"
+                style="-fx-background-color: black; -fx-text-fill: white; -fx-background-radius: 10; -fx-font-weight: bold;"/>
+
+    </VBox>
+</AnchorPane>

@@ -55,7 +55,7 @@ public class CheckoutController implements Initializable {
   }
 
   /** Goes to the payment page. */
-  public void goToPaymentPage() {
+  public void goToMemberLogin() {
     if (orderService.getItems().isEmpty()) {
       // Show an alert if the cart is empty
       Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -65,7 +65,7 @@ public class CheckoutController implements Initializable {
       alert.showAndWait();
       return;
     }
-    router.goToPaymentPage();
+    router.goToMemberLoginPage();
   }
 
   /** Goes to the receipt page. */

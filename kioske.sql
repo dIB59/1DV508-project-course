@@ -68,6 +68,7 @@ CREATE TABLE IF NOT EXISTS Product_Tags
     FOREIGN KEY (tag_id) REFERENCES Tags (id) ON DELETE CASCADE
 );
 
+
 -- Sample data for Product_Tag
 INSERT INTO Tags (name) VALUES
 ('Starters'),
@@ -90,3 +91,9 @@ INSERT INTO Coupons (code, discount) VALUES
 ('code10', 10),
 ('code5', 5),
 ('code50', 50);
+
+CREATE TABLE IF NOT EXISTS Members
+(
+    id       INT AUTO_INCREMENT PRIMARY KEY,
+    personal_number INT NOT NULL
+);

@@ -22,6 +22,7 @@ public class Database {
       "jdbc:mysql://localhost/kioske?useSSL=false&allowPublicKeyRetrieval=true";
   private final String USER = "main";
   private final String PASSWORD = "root";
+
   private Connection connection;
 
   protected Database() {}

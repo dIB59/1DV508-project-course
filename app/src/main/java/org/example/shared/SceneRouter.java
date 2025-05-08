@@ -98,6 +98,7 @@ public class SceneRouter {
       System.out.println();
       Scene scene = new Scene(loader.load());
       ProductDetailsController controller = loader.getController();
+      System.out.println(product);
       controller.setProduct(product); // Set the product after loading the FXML
       controller.displaySides();
       currentPage = KioskPage.PRODUCTDESCRIPTION;
@@ -115,6 +116,8 @@ public class SceneRouter {
   public void goToAdminLoginPage() {
     goTo(KioskPage.ADMIN_LOGIN);
   }
+
+  public void goToMemberLoginPage(){goTo(KioskPage.MEMBER_LOGIN);}
 
   public void goToPaymentPage() {
     goTo(KioskPage.PAYMENT);
@@ -144,7 +147,9 @@ public class SceneRouter {
     /** Admin login kiosk page. */
     ADMIN_LOGIN("AdminLoginView.fxml"),
     // Product description page
-    PRODUCTDESCRIPTION("ProductDescription.fxml");
+    PRODUCTDESCRIPTION("ProductDescription.fxml"),
+    // Member login page
+    MEMBER_LOGIN("MemberLoginView.fxml");
 
     private final String value;
 

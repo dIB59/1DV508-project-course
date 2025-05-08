@@ -24,6 +24,9 @@ import org.example.features.product.ProductDetailsController;
 import org.example.features.product.ProductMapper;
 import org.example.features.product.ProductRepository;
 import org.example.features.receipt.ReceiptController;
+import org.example.members.MemberController;
+import org.example.members.MemberMapper;
+import org.example.members.MemberRepository;
 
 /**
  * AppControllerFactory is a factory class that creates instances of controllers based on the
@@ -65,8 +68,9 @@ public class AppControllerFactory implements Callback<Class<?>, Object> {
           new CheckoutController(orderService, getCouponsRepository(), sceneRouter);
       case "ProductDetailsController" -> new ProductDetailsController(orderService, sceneRouter, getProductRepository());
       case "ReceiptController" ->
-          new ReceiptController(orderService.saveOrderAndClear(), sceneRouter);
+          new ReceiptController(orderService.saveOrderAndClear(), sceneRouter, orderService.getCustomizedProducts());
       case "AdminController" -> new AdminController(sceneRouter, getAdminRepository());
+      case "MemberController" -> new MemberController(sceneRouter, getMemberRepository(), orderService);
       case "DashboardController" ->
           new DashboardController(new DashboardModel(), sceneRouter, getProductRepository());
       case "CouponsController" -> new CouponsController(getCouponsRepository(), sceneRouter);
@@ -85,6 +89,10 @@ public class AppControllerFactory implements Callback<Class<?>, Object> {
 
   private AdminRepository getAdminRepository() {
     return new AdminRepository(connection, new AdminMapper());
+  }
+
+  private MemberRepository getMemberRepository() {
+    return new MemberRepository(connection, new MemberMapper());
   }
 
   private CouponsRepository getCouponsRepository() {

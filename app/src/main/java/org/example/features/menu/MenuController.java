@@ -72,6 +72,11 @@ public class MenuController {
     }
   }
 
+  /** Go to memberlogin page. */
+  public void goToMemberLogin() {
+    sceneRouter.goToMemberLoginPage();
+  }
+
   private void styleTagButton(Button button, boolean isPrimary) {
     String baseStyle = """
             -fx-padding: 10 20;
