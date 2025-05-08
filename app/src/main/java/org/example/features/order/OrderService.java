@@ -80,6 +80,7 @@ public class OrderService {
       var s = this.repository.save(order);
       s.setDiscount(order.getDiscount());
       s.setMemberDB(order.getMember());
+      s.settype(order.gettype());
       this.clear();
       return s;
     } catch (Exception e) {
@@ -92,7 +93,7 @@ public class OrderService {
     order.setDiscount(discount);
   }
 
-  public double getPrice() {
+  public double getTotal() {
     return order.getPrice();
   }
 
@@ -102,5 +103,21 @@ public class OrderService {
 
   public List<CustomizedProduct> getCustomizedProducts() {
     return customizedProducts;
+  }
+
+  public void settype(String ordertype) {
+    order.settype(ordertype);
+  }
+
+  public void setPaid() {
+    order.setPaid();
+  }
+
+  public double getSubtotal() {
+    return order.getSubtotal();
+  }
+
+  public double getDiscountTotal() {
+    return order.getSubtotal() - order.getPrice();
   }
 }

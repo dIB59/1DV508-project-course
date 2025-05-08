@@ -17,7 +17,7 @@
 }
 
 .item-name {
-    -fx-font-size: 14px;
+    -fx-font-size: 16px;
     -fx-font-weight: bold;
     -fx-text-fill: #10147E;
 }
@@ -29,13 +29,13 @@
 }
 
 .total {
-    -fx-font-size: 16px;
+    -fx-font-size: 15px;
     -fx-font-weight: bold;
     -fx-padding: 8 0 0 0;
 }
 
 .thank-you {
-    -fx-font-size: 14px;
+    -fx-font-size: 16px;
     -fx-padding: 8 0 4 0;
 }
 
@@ -43,3 +43,5 @@
     -fx-font-size: 12px;
     -fx-text-fill: #333;
 }
+
+

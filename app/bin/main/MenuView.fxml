@@ -4,32 +4,47 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
-<AnchorPane xmlns:fx="http://javafx.com/fxml"
-            xmlns="http://javafx.com/javafx"
-            fx:controller="org.example.features.menu.MenuController"
-            prefHeight="600.0" prefWidth="600.0">
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
 
-    <!-- Header (always visible) -->
-    <Label text="Menu Page"
-           layoutX="20" layoutY="20"
-           style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+<AnchorPane prefHeight="1080.0" prefWidth="1920.0" 
+            style="-fx-background-color: #f5f5f5;"
+            xmlns="http://javafx.com/javafx/23.0.1" 
+            xmlns:fx="http://javafx.com/fxml/1" 
+            fx:controller="org.example.features.menu.MenuController">
 
-    <!-- Scrollable Menu Section -->
-    <ScrollPane layoutX="10" layoutY="60" prefHeight="480.0" prefWidth="580.0" fitToWidth="true"
-                AnchorPane.topAnchor="60" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10"
-                AnchorPane.bottomAnchor="60">
-        <VBox fx:id="menuList"
-              spacing="20"
-              alignment="TOP_CENTER"
-              style="-fx-padding: 20;">
-            <!-- Menu items dynamically injected here -->
-        </VBox>
-    </ScrollPane>
+    <VBox spacing="25" AnchorPane.topAnchor="40.0" AnchorPane.bottomAnchor="40.0"
+          AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0"
+          style="-fx-background-color: white; -fx-background-radius: 15; -fx-padding: 30;"
+          alignment="TOP_CENTER">
 
-    <!-- Checkout Button (bottom right) -->
-    <Button text="Go to Checkout"
-            style="-fx-padding: 10 20; -fx-font-size: 14px; -fx-background-color: #4CAF50; -fx-text-fill: white;"
-            onAction="#goToCheckoutPage"
-            AnchorPane.bottomAnchor="10" AnchorPane.rightAnchor="10"/>
+        <!-- Title -->
+        <Label text="Menu"
+               style="-fx-font-size: 36px; -fx-font-weight: 600; -fx-text-fill: #2c3e50;"/>
+
+        <!-- Scrollable Menu Section -->
+        <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS"
+                   style="-fx-background-color: transparent; -fx-background: transparent;">
+            <VBox fx:id="menuList" alignment="TOP_CENTER" spacing="20">
+                <GridPane fx:id="menuGrid" hgap="20.0" vgap="20.0" 
+                         style="-fx-background-color: transparent;">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="300.0" prefWidth="400.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="300.0" prefWidth="400.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="300.0" prefWidth="400.0" />
+                    </columnConstraints>
+                </GridPane>
+            </VBox>
+        </ScrollPane>
+
+        <!-- Checkout Button -->
+        <Button onAction="#goToCheckoutPage" 
+                style="-fx-padding: 15 40; -fx-font-size: 18px; -fx-background-color: #1a1a2a; -fx-text-fill: white; -fx-background-radius: 8; -fx-cursor: hand;"
+                text="Go to Checkout" />
+    </VBox>
 </AnchorPane>

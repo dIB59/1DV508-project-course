@@ -70,3 +70,5 @@ app/.classpath
 app/.project
 app/.settings
 /.settings
+
+.env

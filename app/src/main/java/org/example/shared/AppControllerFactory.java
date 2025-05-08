@@ -8,6 +8,7 @@ import org.example.features.admin.AdminController;
 import org.example.features.admin.AdminMapper;
 import org.example.features.admin.AdminRepository;
 import org.example.features.checkout.CheckoutController;
+import org.example.features.coupons.CouponsController;
 import org.example.features.coupons.CouponsRepository;
 import org.example.features.dashboard.DashboardController;
 import org.example.features.dashboard.DashboardModel;
@@ -16,7 +17,9 @@ import org.example.features.home.HomeModel;
 import org.example.features.menu.MenuController;
 import org.example.features.menu.MenuModel;
 import org.example.features.order.OrderService;
-import org.example.features.product.IngredientController;
+import org.example.features.payments.FreePay;
+import org.example.features.payments.PaymentController;
+import org.example.features.payments.PaypalPay;
 import org.example.features.product.ProductDetailsController;
 import org.example.features.product.ProductMapper;
 import org.example.features.product.ProductRepository;
@@ -35,6 +38,7 @@ public class AppControllerFactory implements Callback<Class<?>, Object> {
   private final OrderService orderService;
   private final IngredientController ingredientController = new IngredientController();
   private final SceneRouter sceneRouter;
+
   private final Connection connection = Database.getInstance().getConnection();
 
   /**
@@ -58,35 +62,31 @@ public class AppControllerFactory implements Callback<Class<?>, Object> {
   @Override
   public Object call(Class<?> controllerClass) {
     return switch (controllerClass.getSimpleName()) {
-      case "HomeController" -> new HomeController(new HomeModel(), sceneRouter);
+      case "HomeController" -> new HomeController(new HomeModel(), sceneRouter, orderService);
       case "MenuController" ->
           new MenuController(new MenuModel(), getProductRepository(), sceneRouter, orderService);
-      case "CheckoutController" -> new CheckoutController(orderService, getCouponsRepository(), sceneRouter);
-      case "ProductDetailsController" -> new ProductDetailsController(orderService, sceneRouter, ingredientController);
+      case "CheckoutController" ->
+          new CheckoutController(orderService, getCouponsRepository(), sceneRouter);
+      case "ProductDetailsController" -> new ProductDetailsController(orderService, sceneRouter, getProductRepository());
       case "ReceiptController" ->
           new ReceiptController(orderService.saveOrderAndClear(), sceneRouter, orderService.getCustomizedProducts());
       case "AdminController" -> new AdminController(sceneRouter, getAdminRepository());
       case "MemberController" -> new MemberController(sceneRouter, getMemberRepository(), orderService);
       case "DashboardController" ->
           new DashboardController(new DashboardModel(), sceneRouter, getProductRepository());
-      case "IngredientController" -> ingredientController;
-      default -> {
-        try {
-          yield controllerClass.getDeclaredConstructor(SceneRouter.class).newInstance(sceneRouter);
-        } catch (NoSuchMethodException
-            | InstantiationException
-            | IllegalAccessException
-            | InvocationTargetException e) {
-          throw new RuntimeException(
-              "Failed to create controller instance for " + controllerClass.getName(), e);
-        }
-      }
+      case "CouponsController" -> new CouponsController(getCouponsRepository(), sceneRouter);
+      case "PaymentController" -> new PaymentController(sceneRouter, orderService, new FreePay());
+      default ->
+          throw new IllegalArgumentException(
+              "No controller found for class: " + controllerClass.getSimpleName());
     };
   }
 
+
   private ProductRepository getProductRepository() {
-    return new ProductRepository(connection, new ProductMapper());
+    return new ProductRepository(Database.getInstance().getConnection(), new ProductMapper());
   }
+
 
   private AdminRepository getAdminRepository() {
     return new AdminRepository(connection, new AdminMapper());

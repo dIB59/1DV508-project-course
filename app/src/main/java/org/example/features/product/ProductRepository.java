@@ -51,7 +51,7 @@ public class ProductRepository implements CrudRepository<Product, Integer> {
 
   public List<Product> findAll() throws SQLException {
     String sql =
-        "SELECT Product.id, Product.name, Product.description, Product.price, Product.image_url, GROUP_CONCAT(T.name) AS tags, GROUP_CONCAT(T.id) AS tags_ids, Product.ingredients "
+        "SELECT Product.id, Product.name, Product.description, Product.price, Product.image_url, Product.specialLabel, Product.isASide, GROUP_CONCAT(T.name) AS tags, GROUP_CONCAT(T.id) AS tags_ids "
             + "FROM Product "
             + "LEFT JOIN Product_Tags PT ON Product.id = PT.product_id "
             + "LEFT JOIN Tags T ON PT.tag_id = T.id "
@@ -65,18 +65,43 @@ public class ProductRepository implements CrudRepository<Product, Integer> {
     }
     return results;
   }
+  public List<Product> findProductsByTagName(String tagName) throws SQLException {
+    String sql = """
+        SELECT Product.id, Product.name, Product.description, Product.price, Product.image_url,
+            Product.isASide, GROUP_CONCAT(T.name) AS tags, GROUP_CONCAT(T.id) AS tags_ids, Product.specialLabel
+        FROM Product
+        JOIN Product_Tags PT ON Product.id = PT.product_id
+        JOIN Tags T ON PT.tag_id = T.id
+        WHERE T.name = ?
+        GROUP BY Product.id
+    """;
+
+    List<Product> results = new ArrayList<>();
+    try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+      stmt.setString(1, tagName);
+      ResultSet rs = stmt.executeQuery();
+      while (rs.next()) {
+        results.add(mapper.map(rs));
+      }
+    }
+    return results;
+  }
+
 
   public Product save(Product entity) throws SQLException {
     String sql =
         "INSERT INTO "
             + tableName
-            + " (name, price, description, image_url) "
-            + "VALUES (?, ?, ?, ?)";
+            + " (name, price, description, image_url, specialLabel) "
+            + "VALUES (?, ?, ?, ?, ?)";
     try (PreparedStatement stmt = connection.prepareStatement(sql)) {
       stmt.setString(1, entity.getName());
       stmt.setDouble(2, entity.getPrice());
       stmt.setString(3, entity.getDescription());
       stmt.setString(4, entity.getImageUrl());
+      stmt.setString(5, entity.getSpecialLabel());
+      stmt.setBoolean(6, entity.getisASide());
+      stmt.setBoolean(7, entity.getisASide());
 
       stmt.executeUpdate();
     }
@@ -91,8 +116,9 @@ public class ProductRepository implements CrudRepository<Product, Integer> {
             entity.getDescription(),
             entity.getPrice(),
             entity.getImageUrl(),
-            entity.getTags(),
-            entity.getIngredients());
+            entity.getSpecialLabel(),
+            entity.getisASide(),
+            entity.getTags());
       }
     }
     throw new SQLException("Failed to save product, no ID obtained.");
@@ -110,6 +136,7 @@ public class ProductRepository implements CrudRepository<Product, Integer> {
       stmt.setString(3, entity.getDescription());
       stmt.setString(4, entity.getImageUrl());
       stmt.setInt(5, entity.getId());
+      stmt.setBoolean(6, entity.getisASide());
       stmt.executeUpdate();
     }
 

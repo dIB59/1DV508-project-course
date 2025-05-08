@@ -14,14 +14,18 @@ import org.example.database.Identifiable;
  * description, price, image URL, and associated tags. It provides validation for the name,
  * description, and price fields to ensure they are not null or empty and that the price is not negative.
  */
+
 public class Product implements Identifiable<Integer> {
   private int id;
   private String name;
   private String description;
   private double price;
   private String imageUrl;
+  private String specialLabel;
+  private Boolean isASide;
   private List<Tag> tags;
   private String ingredients;
+
 
   /**
    * Instantiates a new Product.
@@ -31,9 +35,10 @@ public class Product implements Identifiable<Integer> {
    * @param description the description
    * @param price the price
    * @param imageUrl the image url
+   * @param specialLabel The special label for the product (e.g., "Hot", "Deal").
    * @param tags the tags
    */
-  public Product(int id, String name, String description, double price, String imageUrl, List<Tag> tags, String ingredients) {
+  public Product(int id, String name, String description, double price, String imageUrl, String specialLabel,boolean isASide, List<Tag> tags) {
     if (name == null || name.isBlank()) {
       throw new IllegalArgumentException("Name cannot be null or empty");
     }
@@ -49,15 +54,16 @@ public class Product implements Identifiable<Integer> {
     this.price = price;
     this.imageUrl = imageUrl;
     this.tags = tags != null ? tags : new ArrayList<>();
-    this.ingredients = ingredients;
+    this.specialLabel = specialLabel;
+    this.isASide = isASide;
   }
 
-  public Product(String name, String description, double price, String imageUrl, String ingredients) {
-    this(0, name, description, price, imageUrl, List.of(),  ingredients);
+  public Product(String name, String description, double price, String imageUrl, String specialLabel, boolean isASide) {
+    this(0, name, description, price, imageUrl, specialLabel, isASide,List.of());
   }
 
-  public Product(String name, String description, double price, String imageUrl, List<Tag> tags, String ingredients) {
-    this(0, name, description, price, imageUrl, tags,  ingredients);
+  public Product(String name, String description, double price, String imageUrl, String specialLabel, boolean isASide,List<Tag> tags) {
+    this(0, name, description, price, imageUrl, specialLabel, isASide,tags);
   }
 
   public Integer getId() {
@@ -66,6 +72,7 @@ public class Product implements Identifiable<Integer> {
 
   public void setId(int id) {
     this.id = id;
+
   }
 
   public String getName() {
@@ -114,6 +121,26 @@ public class Product implements Identifiable<Integer> {
   public String getImageUrl() {
     return imageUrl;
   }
+
+
+   /**
+   * Gets the special label
+   *
+   * @return the special label
+   */
+  public String getSpecialLabel() {
+    return specialLabel;
+  }
+
+  public Boolean getisASide(){
+    return isASide;
+  }
+
+  /**
+   * Gets tags.
+   *
+   * @return the tags
+   */
 
   public void setImageUrl(String imageUrl) {
     this.imageUrl = imageUrl;

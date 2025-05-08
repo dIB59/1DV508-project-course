@@ -22,16 +22,21 @@ public class App extends Application {
 
   @Override
   public void start(Stage primaryStage) {
+    System.out.println(AppConfig.getMerchantId());
+    System.out.println(AppConfig.getPayPalPublicKey());
+    System.out.println(AppConfig.getPayPalPrivateKey());
 
     Connection conn = this.database.getConnection();
     var orderMapper = new OrderMapper();
     CrudRepository<Order, Integer> orderRepository = new OrderRepository(conn, orderMapper);
+    primaryStage.setMaximized(true);
     var orderService = new OrderService(orderRepository);
 
     SceneRouter router = new SceneRouter(primaryStage, orderService);
 
-    router.goTo(SceneRouter.KioskPage.HOME);
     primaryStage.setTitle("JavaFX with MySQL");
+    router.goTo(SceneRouter.KioskPage.HOME);
+    primaryStage.setMaximized(true);
     primaryStage.show();
   }
 }

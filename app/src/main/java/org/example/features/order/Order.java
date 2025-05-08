@@ -1,5 +1,6 @@
 package org.example.features.order;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import org.example.database.Identifiable;
@@ -18,6 +19,10 @@ public class Order implements Identifiable<Integer> {
   private int id;
   private boolean isMember;
 
+
+  private String gettype;
+  private boolean isPaid = false;
+  
   /**
    * Instantiates a new Order.
    *
@@ -142,5 +147,31 @@ public class Order implements Identifiable<Integer> {
             .mapToDouble(ProductQuantity::getPrice)
             .map(discount::applyDiscount)
             .sum();
+  }
+
+  public double getSubtotal() {
+    return productQuantity.stream()
+            .mapToDouble(ProductQuantity::getPrice)
+            .sum();
+  }
+
+  public BigDecimal getPriceBigDecimal() {
+    return BigDecimal.valueOf(getPrice());
+  }
+
+  public String gettype() {
+    return gettype;
+  }
+
+  public void settype(String ordertype) {
+    this.gettype = ordertype;
+  }
+
+  public boolean isPaid() {
+    return isPaid;
+  }
+
+  public void setPaid(){
+    this.isPaid = true;
   }
 }
