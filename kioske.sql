@@ -4,7 +4,6 @@ CREATE TABLE IF NOT EXISTS Product
     id          INT AUTO_INCREMENT PRIMARY KEY,
     name        VARCHAR(255)   NOT NULL,
     description TEXT           NOT NULL,
-    ingredients TEXT           NOT NULL,
     price       DECIMAL(10, 2) NOT NULL CHECK (price >= 0),
     image_url   VARCHAR(500),
     specialLabel       VARCHAR(255),

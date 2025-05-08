@@ -1,6 +1,5 @@
 package org.example.features.receipt;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -12,7 +11,6 @@ import javafx.scene.layout.VBox;
 import org.example.features.order.Order;
 import org.example.features.order.ProductQuantity;
 import org.example.features.product.CustomizedProduct;
-import org.example.features.product.IngredientController;
 import org.example.features.product.Product;
 import org.example.shared.SceneRouter;
 

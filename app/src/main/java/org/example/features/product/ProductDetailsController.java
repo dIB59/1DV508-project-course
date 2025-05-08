@@ -56,7 +56,6 @@ public class ProductDetailsController {
       productPrice.setText(String.format("$%.2f", product.getPrice()));
       System.err.println(product.getDescription());
       productDescription.setText(product.getDescription());
-      productIngredients.setText(product.getIngredients());
 
       // Set a SpinnerValueFactory to manage the Spinner's value
       SpinnerValueFactory<Integer> valueFactory =

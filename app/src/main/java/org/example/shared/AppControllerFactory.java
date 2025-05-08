@@ -36,7 +36,6 @@ import org.example.members.MemberRepository;
 public class AppControllerFactory implements Callback<Class<?>, Object> {
 
   private final OrderService orderService;
-  private final IngredientController ingredientController = new IngredientController();
   private final SceneRouter sceneRouter;
 
   private final Connection connection = Database.getInstance().getConnection();
