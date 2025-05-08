@@ -42,8 +42,10 @@
         <Label fx:id="restaurantNameLabel" styleClass="info"/>
         <Label fx:id="addressLabel" styleClass="info"/>
         <Label fx:id="contactLabel" styleClass="info"/>
+        <Label fx:id="memberLabel" text="Member?"/>
 
         <Label fx:id="extraIngredientsLabel" style="-fx-font-size: 16px;" text="Extra ingredients:"/>
+
 
     </VBox>
 

@@ -35,6 +35,20 @@ public class OrderService {
     this.order.addProduct(item);
   }
 
+  // Sets member status to true
+  public void setMember(){
+    this.order.setMember();
+  }
+
+  public boolean getMember(){
+    return this.order.getMember();
+  }
+
+  public void setMemberDB(boolean getMember){
+    if (getMember){
+      this.order.setMember();
+    }
+  }
   /**
    * Remove item.
    *
@@ -65,6 +79,7 @@ public class OrderService {
     try {
       var s = this.repository.save(order);
       s.setDiscount(order.getDiscount());
+      s.setMemberDB(order.getMember());
       this.clear();
       return s;
     } catch (Exception e) {

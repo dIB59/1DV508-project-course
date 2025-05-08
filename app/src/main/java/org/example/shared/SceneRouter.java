@@ -116,6 +116,8 @@ public class SceneRouter {
     goTo(KioskPage.ADMIN_LOGIN);
   }
 
+  public void goToMemberLoginPage(){goTo(KioskPage.MEMBER_LOGIN);}
+
   /**
    * Enum representing the different pages in the kiosk application. Each enum constant corresponds
    * to a specific FXML file.
@@ -138,7 +140,9 @@ public class SceneRouter {
     /** Admin login kiosk page. */
     ADMIN_LOGIN("AdminLoginView.fxml"),
     // Product description page
-    PRODUCTDESCRIPTION("ProductDescription.fxml");
+    PRODUCTDESCRIPTION("ProductDescription.fxml"),
+    // Member login page
+    MEMBER_LOGIN("MemberLoginView.fxml");
 
     private final String value;
 

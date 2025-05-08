@@ -94,5 +94,6 @@ INSERT INTO Coupons (code, discount) VALUES
 
 CREATE TABLE IF NOT EXISTS Members
 (
+    id       INT AUTO_INCREMENT PRIMARY KEY,
     personal_number INT NOT NULL
 );

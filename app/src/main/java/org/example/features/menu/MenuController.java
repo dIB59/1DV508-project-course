@@ -56,9 +56,9 @@ public class MenuController {
     }
   }
 
-  /** Go to checkout page. */
-  public void goToCheckoutPage() {
-    sceneRouter.goToCheckoutPage();
+  /** Go to memberlogin page. */
+  public void goToMemberLogin() {
+    sceneRouter.goToMemberLoginPage();
   }
 
   /** Go to home page. */

@@ -22,6 +22,8 @@ public class ReceiptController {
   private final Order order;
   private final SceneRouter sceneRouter;
   @FXML public Label orderIdLabel;
+  public Label memberLabel;
+
   @FXML private VBox itemsContainer;
   @FXML
   private Label titleLabel,
@@ -79,6 +81,7 @@ public class ReceiptController {
     restaurantNameLabel.setText("Restaurant Name: Gourmet Bistro");
     addressLabel.setText("Address: 123 Food St, Tasty Town");
     contactLabel.setText("Contact: (123) 456-7890");
+    memberLabel.setText("Member: " + order.getMember());
 
     for (CustomizedProduct cp : customizedProducts) {
       Product product = cp.getProduct();

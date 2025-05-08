@@ -30,6 +30,6 @@
     <!-- Checkout Button (bottom right) -->
     <Button text="Go to Checkout"
             style="-fx-padding: 10 20; -fx-font-size: 14px; -fx-background-color: #4CAF50; -fx-text-fill: white;"
-            onAction="#goToCheckoutPage"
+            onAction="#goToMemberLogin"
             AnchorPane.bottomAnchor="10" AnchorPane.rightAnchor="10"/>
 </AnchorPane>
