@@ -30,17 +30,17 @@ public class MemberController {
     this.orderService = orderService;
   }
 
-  public void goToCheckout() {
-    sceneRouter.goToCheckoutPage();
+  public void goToPaymentPage() {
+    sceneRouter.goToPaymentPage();
   }
 
   public void handleNonMemberLoginButtionAction(ActionEvent actionevent){
-    goToCheckout();
+    goToPaymentPage();
   }
 
   public void handleLoginButtonAction(ActionEvent actionEvent) {
     this.orderService.setMember();
-    goToCheckout();
+    goToPaymentPage();
 
     /*String username = usernameField.getText();
     String password = passwordField.getText();
