@@ -96,26 +96,29 @@ public class CheckoutController implements Initializable {
     HBox container = new HBox();
     container.setPadding(new Insets(15, 20, 15, 20));
     container.setStyle("-fx-background-color: white; -fx-border-radius: 8; -fx-border-color: #ddd;");
-    container.setAlignment(Pos.TOP_LEFT);
+    container.setAlignment(Pos.CENTER_LEFT);
     container.setPrefWidth(1080);
 
-    // Create the label
-    Label label = new Label(
-        item.getProduct().getName()
-            + " - $"
-            + String.format("%.2f", item.getProduct().getPrice())
-            + " x "
-            + item.getQuantity());
-    label.setFont(Font.font("Arial", 16));
-    label.setTextFill(Color.valueOf("#333333"));
-    label.setWrapText(true);
+    // Create the item name label (bold and navy)
+    Label nameLabel = new Label(item.getProduct().getName());
+    nameLabel.setFont(Font.font("Arial", javafx.scene.text.FontWeight.BOLD, 20));
+    nameLabel.setTextFill(Color.valueOf("#1E1EA9"));
 
-    // Create the buttons
+    // Create the price label (light gray and smaller)
+    Label priceLabel = new Label(String.format("$%.2f", item.getProduct().getPrice()));
+    priceLabel.setFont(Font.font("Arial", 14));
+    priceLabel.setTextFill(Color.valueOf("#777777"));
+
+    // Create a VBox to group name and price vertically
+    VBox textContainer = new VBox(nameLabel, priceLabel);
+    textContainer.setSpacing(5);
+
+    // Create the increase and decrease buttons
     Button increaseButton = new Button("+");
     Button decreaseButton = new Button("-");
 
     // Style the buttons
-    String buttonStyle = "-fx-background-color: #1E1EA9; -fx-text-fill: white; -fx-background-radius: 6; " +
+    String buttonStyle = "-fx-background-color: #2d3436; -fx-text-fill: white; -fx-background-radius: 6; " +
         "-fx-cursor: hand; -fx-font-size: 14px; -fx-font-weight: bold;";
     increaseButton.setStyle(buttonStyle);
     decreaseButton.setStyle(buttonStyle);
@@ -135,13 +138,14 @@ public class CheckoutController implements Initializable {
 
     // Right-aligned buttons
     HBox buttonBox = new HBox(5, decreaseButton, increaseButton);
-    buttonBox.setAlignment(Pos.TOP_RIGHT);
+    buttonBox.setAlignment(Pos.CENTER_RIGHT);
 
-    // Add spacing between label and buttons
+    // Add spacing between the text and buttons
     Region spacer = new Region();
     HBox.setHgrow(spacer, Priority.ALWAYS);
 
-    container.getChildren().addAll(label, spacer, buttonBox);
+    // Combine the text and buttons in the main HBox
+    container.getChildren().addAll(textContainer, spacer, buttonBox);
     return container;
   }
   public void applyCoupon() {
