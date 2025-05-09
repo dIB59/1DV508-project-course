@@ -1,5 +1,6 @@
 package org.example.features.order;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import org.example.database.Identifiable;
@@ -16,7 +17,12 @@ public class Order implements Identifiable<Integer> {
   private final List<ProductQuantity> productQuantity;
   private Discount discount = new Coupons("No Discount", 0);
   private int id;
+  private boolean isMember;
 
+
+  private String gettype;
+  private boolean isPaid = false;
+  
   /**
    * Instantiates a new Order.
    *
@@ -26,12 +32,28 @@ public class Order implements Identifiable<Integer> {
   public Order(int id, List<ProductQuantity> productQuantity) {
     this.id = id;
     this.productQuantity = productQuantity;
+    isMember = false;
   }
 
   /** Instantiates a new Order. */
   public Order() {
     this.id = 0;
     this.productQuantity = new ArrayList<>();
+    isMember = false;
+  }
+
+  public void setMember(){
+    this.isMember = true;
+  }
+
+  public boolean getMember(){
+    return this.isMember;
+  }
+
+  public void setMemberDB(boolean getMember){
+    if (getMember){
+      this.setMember();
+    }
   }
 
   /**
@@ -125,5 +147,31 @@ public class Order implements Identifiable<Integer> {
             .mapToDouble(ProductQuantity::getPrice)
             .map(discount::applyDiscount)
             .sum();
+  }
+
+  public double getSubtotal() {
+    return productQuantity.stream()
+            .mapToDouble(ProductQuantity::getPrice)
+            .sum();
+  }
+
+  public BigDecimal getPriceBigDecimal() {
+    return BigDecimal.valueOf(getPrice());
+  }
+
+  public String gettype() {
+    return gettype;
+  }
+
+  public void settype(String ordertype) {
+    this.gettype = ordertype;
+  }
+
+  public boolean isPaid() {
+    return isPaid;
+  }
+
+  public void setPaid(){
+    this.isPaid = true;
   }
 }

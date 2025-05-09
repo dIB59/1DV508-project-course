@@ -2,11 +2,9 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Spinner?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.control.Spinner?>
-
 <AnchorPane xmlns:fx="http://javafx.com/fxml"
             xmlns="http://javafx.com/javafx"
             fx:controller="org.example.features.product.ProductDetailsController"
@@ -17,6 +15,9 @@
 
         <!-- Product Price -->
         <Label fx:id="productPrice" style="-fx-font-size: 16px;" text="Product Price"/>
+
+        <!-- Product Description -->
+        <Label fx:id="productDescription" style="-fx-font-size: 16px;" text="Product Description"/>
 
         <!-- Quantity Spinner -->
         <Spinner fx:id="quantitySpinner" prefWidth="150.0"/>

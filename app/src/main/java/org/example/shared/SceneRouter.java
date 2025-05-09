@@ -2,6 +2,8 @@ package org.example.shared;
 
 import java.io.IOException;
 import java.net.URL;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -38,16 +40,15 @@ public class SceneRouter {
       URL url = getClass().getResource("/" + page.getValue());
       FXMLLoader loader = new FXMLLoader(url);
       loader.setControllerFactory(controllerFactory);
-
       currentPage = page;
       Scene scene = new Scene(loader.load());
       stage.setScene(scene);
-      stage.show();
     } catch (IOException e) {
       System.err.println("Failed to load scene: " + e.getLocalizedMessage());
       e.printStackTrace();
     }
   }
+
 
   /** Refresh page. */
   public void refreshPage() {
@@ -94,13 +95,14 @@ public class SceneRouter {
       FXMLLoader loader = new FXMLLoader(url);
       loader.setControllerFactory(controllerFactory);
 
+      System.out.println();
       Scene scene = new Scene(loader.load());
       ProductDetailsController controller = loader.getController();
+      System.out.println(product);
       controller.setProduct(product); // Set the product after loading the FXML
-
+      controller.displaySides();
       currentPage = KioskPage.PRODUCTDESCRIPTION;
       stage.setScene(scene);
-      stage.show();
     } catch (IOException e) {
       System.err.println("Failed to load Product Details page: " + e.getLocalizedMessage());
       e.printStackTrace();
@@ -113,6 +115,12 @@ public class SceneRouter {
 
   public void goToAdminLoginPage() {
     goTo(KioskPage.ADMIN_LOGIN);
+  }
+
+  public void goToMemberLoginPage(){goTo(KioskPage.MEMBER_LOGIN);}
+
+  public void goToPaymentPage() {
+    goTo(KioskPage.PAYMENT);
   }
 
   /**
@@ -130,6 +138,8 @@ public class SceneRouter {
     COUPONS("CouponsView.fxml"),
     /** Checkout kiosk page. */
     CHECKOUT("CheckoutView.fxml"),
+    /** Payment Page. */
+    PAYMENT("PaymentView.fxml"),
     /** Receipt kiosk page. */
     RECEIPT("ReceiptView.fxml"),
     /** Dashboard kiosk page. */
@@ -137,7 +147,9 @@ public class SceneRouter {
     /** Admin login kiosk page. */
     ADMIN_LOGIN("AdminLoginView.fxml"),
     // Product description page
-    PRODUCTDESCRIPTION("ProductDescription.fxml");
+    PRODUCTDESCRIPTION("ProductDescription.fxml"),
+    // Member login page
+    MEMBER_LOGIN("MemberLoginView.fxml");
 
     private final String value;
 

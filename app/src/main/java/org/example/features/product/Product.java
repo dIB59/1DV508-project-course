@@ -2,6 +2,7 @@ package org.example.features.product;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import org.example.database.Identifiable;
@@ -13,13 +14,18 @@ import org.example.database.Identifiable;
  * description, price, image URL, and associated tags. It provides validation for the name,
  * description, and price fields to ensure they are not null or empty and that the price is not negative.
  */
+
 public class Product implements Identifiable<Integer> {
   private int id;
   private String name;
   private String description;
   private double price;
   private String imageUrl;
+  private String specialLabel;
+  private Boolean isASide;
   private List<Tag> tags;
+  private String ingredients;
+
 
   /**
    * Instantiates a new Product.
@@ -29,9 +35,10 @@ public class Product implements Identifiable<Integer> {
    * @param description the description
    * @param price the price
    * @param imageUrl the image url
+   * @param specialLabel The special label for the product (e.g., "Hot", "Deal").
    * @param tags the tags
    */
-  public Product(int id, String name, String description, double price, String imageUrl, List<Tag> tags) {
+  public Product(int id, String name, String description, double price, String imageUrl, String specialLabel,boolean isASide, List<Tag> tags) {
     if (name == null || name.isBlank()) {
       throw new IllegalArgumentException("Name cannot be null or empty");
     }
@@ -47,14 +54,16 @@ public class Product implements Identifiable<Integer> {
     this.price = price;
     this.imageUrl = imageUrl;
     this.tags = tags != null ? tags : new ArrayList<>();
+    this.specialLabel = specialLabel;
+    this.isASide = isASide;
   }
 
-  public Product(String name, String description, double price, String imageUrl) {
-    this(0, name, description, price, imageUrl, List.of());
+  public Product(String name, String description, double price, String imageUrl, String specialLabel, boolean isASide) {
+    this(0, name, description, price, imageUrl, specialLabel, isASide,List.of());
   }
 
-  public Product(String name, String description, double price, String imageUrl, List<Tag> tags) {
-    this(0, name, description, price, imageUrl, tags);
+  public Product(String name, String description, double price, String imageUrl, String specialLabel, boolean isASide,List<Tag> tags) {
+    this(0, name, description, price, imageUrl, specialLabel, isASide,tags);
   }
 
   public Integer getId() {
@@ -63,6 +72,7 @@ public class Product implements Identifiable<Integer> {
 
   public void setId(int id) {
     this.id = id;
+
   }
 
   public String getName() {
@@ -78,6 +88,16 @@ public class Product implements Identifiable<Integer> {
 
   public String getDescription() {
     return description;
+  }
+
+  public String getIngredients(){return ingredients; }
+
+  public void setIngredients(String ingredients) {
+    this.ingredients = ingredients;
+  }
+
+  public List<String> getIngredientsList() {
+    return Arrays.asList(this.ingredients.split(","));
   }
 
   public void setDescription(String description) {
@@ -102,6 +122,26 @@ public class Product implements Identifiable<Integer> {
     return imageUrl;
   }
 
+
+   /**
+   * Gets the special label
+   *
+   * @return the special label
+   */
+  public String getSpecialLabel() {
+    return specialLabel;
+  }
+
+  public Boolean getisASide(){
+    return isASide;
+  }
+
+  /**
+   * Gets tags.
+   *
+   * @return the tags
+   */
+
   public void setImageUrl(String imageUrl) {
     this.imageUrl = imageUrl;
   }
@@ -125,8 +165,8 @@ public class Product implements Identifiable<Integer> {
   @Override
   public String toString() {
     return String.format(
-        "Product{id=%d, name='%s', description='%s', price=%.2f, imageUrl='%s', tags=%s}",
-        id, name, description, price, imageUrl, tags
+        "Product{id=%d, name='%s', description='%s', price=%.2f, imageUrl='%s', tags=%s, ingredients='%s'}",
+        id, name, description, price, imageUrl, tags, ingredients
     );
   }
 }
