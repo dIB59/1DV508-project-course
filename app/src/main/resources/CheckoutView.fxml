@@ -26,9 +26,6 @@
             <!-- Dynamically populated items -->
         </VBox>
 
-        <Label fx:id="totalPriceLabel"
-               text="Total: $0.00"
-               style="-fx-font-size: 24px; -fx-text-fill: black;"/>
 
         <VBox VBox.vgrow="ALWAYS"/>
 

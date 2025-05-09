@@ -144,7 +144,7 @@ public class CheckoutController implements Initializable {
     Button decreaseButton = new Button("-");
 
     // Style the buttons
-    String buttonStyle = "-fx-background-color: #2d3436; -fx-text-fill: white; -fx-background-radius: 6; " +
+    String buttonStyle = "-fx-background-color:#1E1EA9; -fx-text-fill: white; -fx-background-radius: 6; " +
         "-fx-cursor: hand; -fx-font-size: 14px; -fx-font-weight: bold;";
     increaseButton.setStyle(buttonStyle);
     decreaseButton.setStyle(buttonStyle);
