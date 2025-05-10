@@ -50,6 +50,10 @@ public class Order implements Identifiable<Integer> {
     return this.isMember;
   }
 
+  public int getMemberID(){
+    return this.id;
+  }
+
   public void setMemberDB(boolean getMember){
     if (getMember){
       this.setMember();

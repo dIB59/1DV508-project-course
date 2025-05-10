@@ -72,4 +72,5 @@ public class MemberController {
         .findById(personalnumber)
         .isPresent();
   }
+  
 }

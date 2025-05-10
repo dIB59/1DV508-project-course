@@ -61,10 +61,11 @@ public class MemberRepository implements CrudRepository<Member, Integer>{
     }
   }
 
-  public void addPoints(int points) throws SQLException {
-    String sql = "UPDATE Members SET points = points + ?";
+  public void addPoints(int personalNumber, int points) throws SQLException {
+    String sql = "UPDATE Members SET points = points + ? WHERE personal_number = ?";
     try (PreparedStatement stmt = connection.prepareStatement(sql)) {
       stmt.setInt(1, points);
+      stmt.setInt(2, personalNumber);
       stmt.executeUpdate();
     }
   }

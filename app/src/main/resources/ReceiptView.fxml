@@ -46,7 +46,7 @@
         <Label fx:id="contactLabel" styleClass="info"/>
         <Label fx:id="memberLabel" text="Member?"/>
 
-        <Label fx:id="extraIngredientsLabel" style="-fx-font-size: 16px;" text="Extra ingredients:"/>
+        <Label fx:id="pointsLabel" style="-fx-font-size: 10px;" text=""/>
 
 
     </VBox>
