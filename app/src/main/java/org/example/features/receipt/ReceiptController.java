@@ -95,7 +95,7 @@ public class ReceiptController {
     addressLabel.setText("Address: 123 Food St, Tasty Town");
     contactLabel.setText("Contact: (123) 456-7890");
     memberLabel.setText("Member: " + order.getMember());
-    pointsLabel.setText("Points added: " + (int) Math.floor(order.getPrice()) * 10);
+    pointsLabel.setText("Points added: " + (int) Math.floor(order.getPrice()) * 10 + " MemberID: " + order.getMemberID());
   }
 
   public void goToHomePage(){

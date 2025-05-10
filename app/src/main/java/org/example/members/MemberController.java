@@ -61,6 +61,7 @@ public class MemberController {
 
     if (validateCredentials(number)) {
       this.orderService.setMember();
+      this.orderService.setMemberID(number);
       goToPaymentPage();
     } else {
       MemberLoginLabel.setText("Please enter correct personal number");
@@ -72,5 +73,5 @@ public class MemberController {
         .findById(personalnumber)
         .isPresent();
   }
-  
+
 }
