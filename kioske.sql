@@ -94,6 +94,10 @@ INSERT INTO Coupons (code, discount) VALUES
 
 CREATE TABLE IF NOT EXISTS Members
 (
-    id       INT AUTO_INCREMENT PRIMARY KEY,
-    personal_number INT NOT NULL
+    personal_number INT NOT NULL,
+    points INT NOT NULL
 );
+
+INSERT INTO Members (personal_number, points) VALUES
+('12345', '0'),
+('6969','0');
