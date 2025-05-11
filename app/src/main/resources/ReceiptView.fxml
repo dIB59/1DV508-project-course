@@ -11,7 +11,7 @@
             stylesheets="@styles/receipt.css"
             style="-fx-background-color: white;">
 
-    <VBox spacing="12"
+    <VBox spacing="10"
           AnchorPane.topAnchor="0.0"
           AnchorPane.leftAnchor="0.0"
           AnchorPane.rightAnchor="0.0"
@@ -45,15 +45,18 @@
         <Label fx:id="addressLabel" styleClass="info"/>
         <Label fx:id="contactLabel" styleClass="info"/>
         <Label fx:id="memberLabel" text="Member?"/>
-
         <Label fx:id="pointsLabel" style="-fx-font-size: 10px;" text=""/>
 
 
     </VBox>
 
-    <!-- Add go to home button -->
+    <!-- Add to home button -->
     <Button text="Go to Home"
             onAction="#goToHomePage"
             AnchorPane.bottomAnchor="10" AnchorPane.rightAnchor="10"/>
+
+    <Button text="Feedback"
+            onAction="#goToFeedbackPage"
+            AnchorPane.bottomAnchor="10" AnchorPane.leftAnchor="10"/>
 
 </AnchorPane>

@@ -101,4 +101,8 @@ public class ReceiptController {
   public void goToHomePage(){
     sceneRouter.goToHomePage();
   }
+
+  public void goToFeedbackPage(){
+    sceneRouter.goToFeedbackPage();
+  }
 }
