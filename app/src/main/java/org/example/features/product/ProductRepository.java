@@ -92,8 +92,8 @@ public class ProductRepository implements CrudRepository<Product, Integer> {
     String sql =
         "INSERT INTO "
             + tableName
-            + " (name, price, description, image_url, specialLabel) "
-            + "VALUES (?, ?, ?, ?, ?)";
+            + " (name, price, description, image_url, specialLabel, isASide) "
+            + "VALUES (?, ?, ?, ?, ?, ?)";
     try (PreparedStatement stmt = connection.prepareStatement(sql)) {
       stmt.setString(1, entity.getName());
       stmt.setDouble(2, entity.getPrice());
@@ -101,7 +101,7 @@ public class ProductRepository implements CrudRepository<Product, Integer> {
       stmt.setString(4, entity.getImageUrl());
       stmt.setString(5, entity.getSpecialLabel());
       stmt.setBoolean(6, entity.getisASide());
-      stmt.setBoolean(7, entity.getisASide());
+
 
       stmt.executeUpdate();
     }
