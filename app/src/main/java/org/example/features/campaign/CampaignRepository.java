@@ -1,0 +1,51 @@
+package org.example.features.campaign;
+
+import org.example.database.CrudRepository;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+public class CampaignRepository {
+    private final CampaignMapper campaignMapper;
+    private final Connection connection;
+
+    public CampaignRepository(Connection connection, CampaignMapper campaignMapper) {
+        this.connection = connection;
+        this.campaignMapper = campaignMapper;
+    }
+
+    public List<Campaign> findActiveCampaigns() {
+        String sql = """
+                SELECT
+                    c.id,
+                    c.name,
+                    c.description,
+                    c.type,
+                    c.start_date,
+                    c.end_date,
+                    GROUP_CONCAT(ci.image_url ORDER BY ci.id SEPARATOR ',') AS image_urls
+                FROM Campaign c
+                LEFT JOIN Campaign_Image ci ON c.id = ci.campaign_id
+                WHERE c.start_date <= CURRENT_DATE AND c.end_date >= CURRENT_DATE
+                GROUP BY c.id;""";
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            List<Campaign> campaigns = new ArrayList<>();
+            while (rs.next()) {
+                Campaign campaign = campaignMapper.map(rs);
+                if (campaign.isActive()) {
+                    campaigns.add(campaign);
+                }
+            }
+            return campaigns;
+        } catch (SQLException e) {
+            throw new RuntimeException("Error fetching active campaigns", e);
+        }
+    }
+}

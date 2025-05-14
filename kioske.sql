@@ -97,3 +97,36 @@ CREATE TABLE IF NOT EXISTS Members
     id       INT AUTO_INCREMENT PRIMARY KEY,
     personal_number INT NOT NULL
 );
+
+CREATE TABLE Campaign (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(255) NOT NULL,
+    description TEXT,
+    type ENUM('DISCOUNT', 'BUNDLE', 'BUY_ONE_GET_ONE') NOT NULL,
+    start_date DATE NOT NULL,
+    end_date DATE NOT NULL
+);
+
+CREATE TABLE Campaign_Image (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    campaign_id INT NOT NULL,
+    image_url VARCHAR(1024) NOT NULL,
+    FOREIGN KEY (campaign_id) REFERENCES Campaign(id) ON DELETE CASCADE
+);
+
+INSERT INTO Campaign (name, description, type, start_date, end_date)
+VALUES
+('Summer Sale', 'Get ready for summer with our special discounts!', 'DISCOUNT', '2025-05-01', '2025-08-31'),
+('Winter Wonderland', 'Warm up with our winter specials!', 'BUNDLE', '2025-12-01', '2025-02-28'),
+('Buy One Get One Free', 'Buy one item and get another one free!', 'BUY_ONE_GET_ONE', '2025-09-01', '2025-11-30');
+
+INSERT INTO Campaign_Image (campaign_id, image_url)
+VALUES
+(1, 'assets/campaign1_1.jpg'),
+(1, 'assets/campaign1_2.jpg'),
+(1, 'assets/campaign1_3.jpg'),
+(2, 'assets/campaign2_1.jpg'),
+(2, 'assets/campaign2_2.jpg'),
+(3, 'assets/campaign3_1.jpg'),
+(3, 'assets/campaign3_2.jpg');
+
