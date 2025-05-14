@@ -13,6 +13,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Rectangle;
 
+import org.example.features.campaign.Campaign;
+import org.example.features.campaign.CampaignRepository;
 import org.example.features.order.OrderService;
 import org.example.features.product.Product;
 import org.example.features.product.ProductRepository;
@@ -23,6 +25,7 @@ public class MenuController {
 
   private final MenuModel model;
   private final ProductRepository productRepository;
+  private final CampaignRepository campaignRepository;
   private final SceneRouter sceneRouter;
   private final OrderService orderService;
 
@@ -30,19 +33,21 @@ public class MenuController {
   @FXML private HBox tagButtonContainer;
 
   public MenuController(
-      MenuModel model,
-      ProductRepository productRepository,
-      SceneRouter sceneRouter,
-      OrderService orderService) {
+          MenuModel model,
+          ProductRepository productRepository, CampaignRepository campaignRepository,
+          SceneRouter sceneRouter,
+          OrderService orderService) {
     this.model = model;
     this.productRepository = productRepository;
-    this.sceneRouter = sceneRouter;
+      this.campaignRepository = campaignRepository;
+      this.sceneRouter = sceneRouter;
     this.orderService = orderService;
   }
 
   public void initialize() {
     populateTagButtons();
     displayProductCards(getMenuItems());
+    displayCampaignCard(campaignRepository.findActiveCampaigns());
   }
 
   private void populateTagButtons() {
@@ -90,6 +95,70 @@ public class MenuController {
       button.setStyle(baseStyle + "-fx-background-color: #bdc3c7; -fx-text-fill: #2c3e50;");
     }
     button.setMaxWidth(Double.MAX_VALUE);
+  }
+
+  private void displayCampaignCard(List<Campaign> campaigns){
+    for (Campaign campaign : campaigns) {
+      StackPane campaignCard = createCampaignCard(campaign);
+      menuGrid.add(campaignCard, 0, 0);
+    }
+  }
+
+  private StackPane createCampaignCard(Campaign campaign){
+    ImageView imageView = new ImageView();
+    try {
+      if (campaign.getImageUrls() != null && !campaign.getImageUrls().isEmpty()) {
+        imageView.setImage(new Image(campaign.getImageUrls().get(0), true));
+      }
+    } catch (Exception e) {
+      System.out.println("Could not load campaign image: " + e.getMessage());
+    }
+
+    Rectangle clip = new Rectangle(400, 350);
+    clip.setArcWidth(30);
+    clip.setArcHeight(30);
+    imageView.setClip(clip);
+
+    imageView.setPreserveRatio(false); // Do not preserve aspect ratio, stretch to fit
+    imageView.setSmooth(true);
+    imageView.setCache(true);
+    imageView.setFitWidth(400);
+    imageView.setFitHeight(350);
+
+    Label name = new Label(campaign.getName());
+    name.setStyle("-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;");
+    name.setWrapText(true);
+    name.setPadding(new Insets(0, 0, 0, 10));
+    HBox.setHgrow(name, Priority.ALWAYS);
+
+    Label description = new Label(campaign.getDescription());
+    description.setStyle("""
+            -fx-font-size: 14px;
+            -fx-text-fill: #666666;
+            """);
+    description.setWrapText(true);
+    description.setMaxWidth(280);
+
+    HBox textContainer = new HBox(10);
+    textContainer.setAlignment(Pos.CENTER_LEFT);
+    textContainer.setPadding(new Insets(8, 0, 0, 0));
+    textContainer.getChildren().addAll(name);
+
+    VBox campaignInfo = new VBox(8);
+    campaignInfo.getChildren().addAll(imageView, textContainer, description);
+    campaignInfo.setAlignment(Pos.TOP_CENTER);
+    campaignInfo.setPadding(new Insets(0, 0, 10, 0));
+
+    StackPane card = new StackPane(campaignInfo);
+    card.setStyle("""
+            -fx-background-color: white;
+            -fx-padding: 20;
+            -fx-border-radius: 10;
+            -fx-background-radius: 10;
+            -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 10, 0, 0, 0);
+        """);
+
+      return card;
   }
 
   private void displayProductCards(List<Product> products) {
