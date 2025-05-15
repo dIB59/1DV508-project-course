@@ -15,9 +15,11 @@ import org.example.shared.SceneRouter;
 public class App extends Application {
 
   private final Database database;
+  private final AppContext appContext;
 
   public App() {
     this.database = Database.getInstance();
+    this.appContext = AppContext.getInstance();
   }
 
   @Override
@@ -25,6 +27,7 @@ public class App extends Application {
     System.out.println(AppConfig.getMerchantId());
     System.out.println(AppConfig.getPayPalPublicKey());
     System.out.println(AppConfig.getPayPalPrivateKey());
+
 
     Connection conn = this.database.getConnection();
     var orderMapper = new OrderMapper();
