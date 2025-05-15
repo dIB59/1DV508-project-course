@@ -5,10 +5,12 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
+
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1"
             xmlns="http://javafx.com/javafx/8.0.171"
             fx:controller="org.example.features.receipt.ReceiptController"
             stylesheets="@styles/receipt.css"
+            prefWidth="600" prefHeight="800"
             style="-fx-background-color: white;">
 
     <VBox spacing="10"
@@ -18,7 +20,7 @@
           AnchorPane.bottomAnchor="0.0">
 
         <padding>
-            <Insets top="20" left="24" right="24" bottom="20"/>
+            <Insets top="30" left="32" right="32" bottom="30"/>
         </padding>
 
         <!-- Receipt Title -->
@@ -27,10 +29,10 @@
         <!-- Order ID -->
         <Label fx:id="orderIdLabel" styleClass="order-id"/>
 
-        <Label fx:id="EatinEatoutlabel" style="-fx-font-size: 15px;" />
+        <Label fx:id="EatinEatoutlabel" style="-fx-font-size: 18px;" />
 
         <!-- Items Container -->
-        <VBox fx:id="itemsContainer" spacing="8"/>
+        <VBox fx:id="itemsContainer" spacing="12"/>
 
         <!-- Total -->
         <Label fx:id="totalLabel" styleClass="total"/>
@@ -53,7 +55,7 @@
     <!-- Add to home button -->
     <Button text="Go to Home"
             onAction="#goToHomePage"
-            AnchorPane.bottomAnchor="10" AnchorPane.rightAnchor="10"/>
+            AnchorPane.bottomAnchor="20" AnchorPane.rightAnchor="20"/>
 
     <Button text="Feedback"
             onAction="#goToFeedbackPage"

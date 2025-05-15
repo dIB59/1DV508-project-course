@@ -26,12 +26,35 @@ import org.example.features.order.ProductQuantity;
 import org.example.shared.SceneRouter;
 import javafx.scene.layout.Region;
 import javafx.scene.control.RadioButton;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.util.Duration;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import java.util.ArrayList;
+import java.util.List;
+import org.example.features.campaign.Campaign;
+import org.example.features.campaign.CampaignRepository;
+import org.example.features.campaign.CampaignMapper;
+import org.example.features.campaign.CampaignType;
+import javafx.scene.layout.StackPane;
+import javafx.scene.image.ImageView;
+import javafx.scene.image.Image;
+import javafx.scene.control.Label;
+import javafx.scene.layout.BorderPane;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.util.Duration;
 
 /** The type Checkout controller. */
 public class CheckoutController implements Initializable {
 
   private final OrderService orderService;
   private final CouponsRepository couponsRepository;
+  private final CampaignRepository campaignRepository;
+  private List<Campaign> campaigns = new ArrayList<>();
+  private int currentCampaignIndex = 0;
+  private Timeline campaignTimeline;
 
   private final SceneRouter router;
   @FXML private Label itemCountLabel;
@@ -40,7 +63,7 @@ public class CheckoutController implements Initializable {
   @FXML private TextField couponCodeField;
   @FXML private RadioButton yesPrint;
   @FXML private RadioButton noPrint;
-
+  @FXML private StackPane campaignCardPane;
 
   /**
    * Instantiates a new Checkout controller.
@@ -48,11 +71,15 @@ public class CheckoutController implements Initializable {
    * @param orderService the order service
    * @param sceneRouter the scene router
    */
-  public CheckoutController(OrderService orderService, CouponsRepository couponsRepository, SceneRouter sceneRouter) {
+  public CheckoutController(OrderService orderService, CouponsRepository couponsRepository, SceneRouter sceneRouter, CampaignRepository campaignRepository) {
     this.orderService = orderService;
     this.couponsRepository = couponsRepository;
     this.router = sceneRouter;
+    this.campaignRepository = campaignRepository;
   }
+  
+  // Closing brace for the CheckoutController class
+  
 
   /** Goes to the payment page. */
   public void goToMemberLogin() {
@@ -230,5 +257,49 @@ public class CheckoutController implements Initializable {
       itemListContainer.getChildren().add(itemBox);
     }
     updateCartDisplay();
+    loadCampaignsAndStartRotation();
+  }
+
+  private void loadCampaignsAndStartRotation() {
+    try {
+        campaigns = campaignRepository.findActiveCampaigns();
+    } catch (Exception e) {
+        e.printStackTrace();
+        System.err.println("Failed to load campaigns: " + e.getMessage());
+        return;
+    }
+    if (!campaigns.isEmpty()) {
+        showCampaignCard(campaigns.get(0));
+        campaignTimeline = new Timeline(
+            new KeyFrame(Duration.seconds(10), event -> rotateCampaignCard())
+
+        );
+        campaignTimeline.setCycleCount(Timeline.INDEFINITE);
+        campaignTimeline.play();
+    }else {
+      campaignCardPane.getChildren().clear();
+  }
+}
+
+private void rotateCampaignCard() {
+    if (campaigns.isEmpty()) return;
+    currentCampaignIndex = (currentCampaignIndex + 1) % campaigns.size();
+    showCampaignCard(campaigns.get(currentCampaignIndex));
+}
+
+private void showCampaignCard(Campaign campaign) {
+  campaignCardPane.getChildren().clear();
+  String imageUrl = campaign.getImageUrl();
+  if (imageUrl != null && !imageUrl.isEmpty()) {
+    try {
+        ImageView img = new ImageView(new Image(imageUrl, 800, 320, false, false));
+        img.setPreserveRatio(false);
+        img.setSmooth(true);
+        campaignCardPane.setPrefWidth(820);
+        campaignCardPane.setPrefHeight(340);
+        img.setStyle("-fx-effect: dropshadow(gaussian, #1E1EA9, 10, 0.5, 0, 0);");
+        campaignCardPane.getChildren().add(img);
+      } catch (Exception ignored) {}
+  }
   }
 }

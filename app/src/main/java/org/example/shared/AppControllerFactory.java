@@ -7,6 +7,8 @@ import org.example.database.Database;
 import org.example.features.admin.AdminController;
 import org.example.features.admin.AdminMapper;
 import org.example.features.admin.AdminRepository;
+import org.example.features.campaign.CampaignMapper;
+import org.example.features.campaign.CampaignRepository;
 import org.example.features.checkout.CheckoutController;
 import org.example.features.coupons.CouponsController;
 import org.example.features.coupons.CouponsRepository;
@@ -64,9 +66,9 @@ public class AppControllerFactory implements Callback<Class<?>, Object> {
     return switch (controllerClass.getSimpleName()) {
       case "HomeController" -> new HomeController(new HomeModel(), sceneRouter, orderService);
       case "MenuController" ->
-          new MenuController(new MenuModel(), getProductRepository(), sceneRouter, orderService);
+          new MenuController(new MenuModel(), getProductRepository(), getCampaignRepository(), sceneRouter, orderService);
       case "CheckoutController" ->
-          new CheckoutController(orderService, getCouponsRepository(), sceneRouter);
+          new CheckoutController(orderService, getCouponsRepository(), sceneRouter, getCampaignRepository());
       case "ProductDetailsController" -> new ProductDetailsController(orderService, sceneRouter, getProductRepository());
       case "ReceiptController" ->
           new ReceiptController(orderService.saveOrderAndClear(), sceneRouter, getMemberRepository());
@@ -100,4 +102,8 @@ public class AppControllerFactory implements Callback<Class<?>, Object> {
   private CouponsRepository getCouponsRepository() {
     return new CouponsRepository(connection);
     }
+
+  private CampaignRepository getCampaignRepository() {
+    return new CampaignRepository(connection, new CampaignMapper());
+  }
 }
