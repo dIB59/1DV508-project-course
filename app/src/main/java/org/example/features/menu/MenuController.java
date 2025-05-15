@@ -47,7 +47,7 @@ public class MenuController {
   public void initialize() {
     populateTagButtons();
     displayProductCards(getMenuItems());
-    displayCampaignCard(campaignRepository.findActiveCampaigns());
+    //displayCampaignCard(campaignRepository.findActiveCampaigns());
   }
 
   private void populateTagButtons() {
@@ -97,14 +97,14 @@ public class MenuController {
     button.setMaxWidth(Double.MAX_VALUE);
   }
 
-  private void displayCampaignCard(List<Campaign> campaigns){
+  /*  private void displayCampaignCard(List<Campaign> campaigns){
     for (Campaign campaign : campaigns) {
       StackPane campaignCard = createCampaignCard(campaign);
       menuGrid.add(campaignCard, 0, 0);
     }
-  }
+  }*/
 
-  private StackPane createCampaignCard(Campaign campaign){
+  /*private StackPane createCampaignCard(Campaign campaign){
     ImageView imageView = new ImageView();
     try {
       if (campaign.getImageUrls() != null && !campaign.getImageUrls().isEmpty()) {
@@ -159,7 +159,7 @@ public class MenuController {
         """);
 
       return card;
-  }
+  }*/
 
   private void displayProductCards(List<Product> products) {
     menuGrid.getChildren().clear();

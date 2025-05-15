@@ -22,20 +22,19 @@ public class CampaignRepository {
     public List<Campaign> findActiveCampaigns() {
         String sql = """
                 SELECT
-                    c.id,
-                    c.name,
-                    c.description,
-                    c.type,
-                    c.start_date,
-                    c.end_date,
-                    GROUP_CONCAT(ci.image_url ORDER BY ci.id SEPARATOR ',') AS image_urls
-                FROM Campaign c
-                LEFT JOIN Campaign_Image ci ON c.id = ci.campaign_id
-                WHERE c.start_date <= CURRENT_DATE AND c.end_date >= CURRENT_DATE
-                GROUP BY c.id;""";
+                id,
+                name,
+                description,
+                type,
+                start_date,
+                end_date,
+                image_url
+            FROM Campaign
+            WHERE start_date <= CURRENT_DATE AND end_date >= CURRENT_DATE
+            """;
 
         try (PreparedStatement stmt = connection.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
+            ResultSet rs = stmt.executeQuery()) {
             List<Campaign> campaigns = new ArrayList<>();
             while (rs.next()) {
                 Campaign campaign = campaignMapper.map(rs);

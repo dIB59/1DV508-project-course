@@ -13,26 +13,26 @@ public class Campaign implements Identifiable<Integer> {
     private CampaignType type;
     private LocalDate startDate;
     private LocalDate endDate;
-    private List<String> imageUrls;
+    private String imageUrl;
 
-    public Campaign(String name, String description, CampaignType type, LocalDate startDate, LocalDate endDate, List<String> imageUrls) {
+    public Campaign(String name, String description, CampaignType type, LocalDate startDate, LocalDate endDate, String imageUrl) {
         this.id = 0; // Default ID for new campaigns
         this.name = name;
         this.description = description;
         this.type = type;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.imageUrls = imageUrls;
+        this.imageUrl = imageUrl;
     }
 
-    public Campaign(Integer id, String name, String description, CampaignType type, LocalDate startDate, LocalDate endDate, List<String> imageUrls) {
+    public Campaign(Integer id, String name, String description, CampaignType type, LocalDate startDate, LocalDate endDate, String imageUrl) {
         this.id = id; // Default ID for new campaigns
         this.name = name;
         this.description = description;
         this.type = type;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.imageUrls = imageUrls;
+        this.imageUrl = imageUrl;
     }
 
     public Integer getId() {
@@ -40,8 +40,9 @@ public class Campaign implements Identifiable<Integer> {
     }
 
     public boolean isActive() {
-        LocalDate today = LocalDate.now();
-        return (startDate != null && endDate != null) && (today.isAfter(startDate) && today.isBefore(endDate));
+        //LocalDate today = LocalDate.now();
+        //return (startDate != null && endDate != null) && (today.isAfter(startDate) && today.isBefore(endDate));
+        return true;
     }
 
     public void setId(Integer id) {
@@ -88,15 +89,11 @@ public class Campaign implements Identifiable<Integer> {
         this.endDate = endDate;
     }
 
-    public List<String> getImageUrls() {
-        return imageUrls;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    public void setImageUrls(List<String> imageUrls) {
-        this.imageUrls = imageUrls;
-    }
-
-    public void addImageUrl(String imageUrl) {
-        this.imageUrls.add(imageUrl);
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }
