@@ -49,6 +49,10 @@ public class OrderService {
       this.order.setMember();
     }
   }
+
+  public void setMemberID(int id){
+    this.order.setMemberID(id);
+  }
   /**
    * Remove item.
    *
@@ -81,6 +85,7 @@ public class OrderService {
       s.setDiscount(order.getDiscount());
       s.setMemberDB(order.getMember());
       s.settype(order.gettype());
+      s.setMemberID(order.getMemberID());
       this.clear();
       return s;
     } catch (Exception e) {

@@ -18,6 +18,7 @@ public class Order implements Identifiable<Integer> {
   private Discount discount = new Coupons("No Discount", 0);
   private int id;
   private boolean isMember;
+  private int memberID;
 
 
   private String gettype;
@@ -48,6 +49,15 @@ public class Order implements Identifiable<Integer> {
 
   public boolean getMember(){
     return this.isMember;
+  }
+
+  public void setMemberID(int memberId) {
+    this.memberID = memberId;
+    this.isMember = true;
+  }
+
+  public int getMemberID(){
+    return this.memberID;
   }
 
   public void setMemberDB(boolean getMember){
