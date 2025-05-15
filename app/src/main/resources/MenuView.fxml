@@ -6,6 +6,7 @@
 
 <AnchorPane xmlns="http://javafx.com/javafx/23.0.1"
             xmlns:fx="http://javafx.com/fxml/1"
+            fx:id="menuView"
             fx:controller="org.example.features.menu.MenuController"
             style="-fx-background-color: white;">
     <HBox spacing="25"
