@@ -27,6 +27,9 @@ import org.example.features.product.ProductDetailsController;
 import org.example.features.product.ProductMapper;
 import org.example.features.product.ProductRepository;
 import org.example.features.receipt.ReceiptController;
+import org.example.features.translation.LibreTranslateClient;
+import org.example.features.translation.TranslationRepository;
+import org.example.features.translation.TranslationService;
 import org.example.members.MemberController;
 import org.example.members.MemberMapper;
 import org.example.members.MemberRepository;
@@ -40,6 +43,7 @@ public class AppControllerFactory implements Callback<Class<?>, Object> {
 
   private final OrderService orderService;
   private final SceneRouter sceneRouter;
+  private final LibreTranslateClient translateClient;
 
   private final Connection connection = Database.getInstance().getConnection();
 
@@ -52,6 +56,7 @@ public class AppControllerFactory implements Callback<Class<?>, Object> {
   public AppControllerFactory(OrderService orderService, SceneRouter sceneRouter) {
     this.orderService = orderService;
     this.sceneRouter = sceneRouter;
+    this.translateClient = new LibreTranslateClient();
   }
 
   /**
@@ -64,9 +69,9 @@ public class AppControllerFactory implements Callback<Class<?>, Object> {
   @Override
   public Object call(Class<?> controllerClass) {
     return switch (controllerClass.getSimpleName()) {
-      case "HomeController" -> new HomeController(new HomeModel(), sceneRouter, orderService);
+      case "HomeController" -> new HomeController(new HomeModel(), sceneRouter, orderService, getTranslationService());
       case "MenuController" ->
-          new MenuController(new MenuModel(), getProductRepository(), getCampaignRepository(), sceneRouter, orderService);
+          new MenuController(new MenuModel(), getProductRepository(), getCampaignRepository(), sceneRouter, orderService, getTranslationService());
       case "CheckoutController" ->
           new CheckoutController(orderService, getCouponsRepository(), sceneRouter, getCampaignRepository());
       case "ProductDetailsController" -> new ProductDetailsController(orderService, sceneRouter, getProductRepository());
@@ -105,5 +110,9 @@ public class AppControllerFactory implements Callback<Class<?>, Object> {
 
   private CampaignRepository getCampaignRepository() {
     return new CampaignRepository(connection, new CampaignMapper());
+  }
+
+  private TranslationService getTranslationService() {
+    return new TranslationService(new TranslationRepository(connection), translateClient);
   }
 }
