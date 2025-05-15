@@ -46,10 +46,10 @@ class LibreTranslateClientTest {
             .POST(HttpRequest.BodyPublishers.ofString(body.toString()))
             .build();
 
-        HttpClient httpClient = HttpClient.newHttpClient();
-        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-
-        return new JSONObject(response.body()).getString("translatedText");
+        try (HttpClient httpClient = HttpClient.newHttpClient()) {
+          HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+          return new JSONObject(response.body()).getString("translatedText");
+        }
       }
     };
   }
