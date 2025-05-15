@@ -13,7 +13,7 @@
             prefWidth="600" prefHeight="800"
             style="-fx-background-color: white;">
 
-    <VBox spacing="16"
+    <VBox spacing="10"
           AnchorPane.topAnchor="0.0"
           AnchorPane.leftAnchor="0.0"
           AnchorPane.rightAnchor="0.0"
@@ -47,14 +47,18 @@
         <Label fx:id="addressLabel" styleClass="info"/>
         <Label fx:id="contactLabel" styleClass="info"/>
         <Label fx:id="memberLabel" text="Member?"/>
+        <Label fx:id="pointsLabel" style="-fx-font-size: 10px;" text=""/>
 
-        <Label fx:id="extraIngredientsLabel" style="-fx-font-size: 20px;" text="Extra ingredients:"/>
 
     </VBox>
 
-    <!-- Add go to home button -->
+    <!-- Add to home button -->
     <Button text="Go to Home"
             onAction="#goToHomePage"
             AnchorPane.bottomAnchor="20" AnchorPane.rightAnchor="20"/>
+
+    <Button text="Feedback"
+            onAction="#goToFeedbackPage"
+            AnchorPane.bottomAnchor="10" AnchorPane.leftAnchor="10"/>
 
 </AnchorPane>

@@ -89,6 +89,7 @@ public class SceneRouter {
     goTo(KioskPage.CHECKOUT);
   }
 
+
   public void goToProductDetailsPage(Product product) {
     try {
       URL url = getClass().getResource("/" + KioskPage.PRODUCTDESCRIPTION.getValue());
@@ -123,6 +124,10 @@ public class SceneRouter {
     goTo(KioskPage.PAYMENT);
   }
 
+  public void goToFeedbackPage() {
+    goTo(KioskPage.FEEDBACK);
+  }
+
   /**
    * Enum representing the different pages in the kiosk application. Each enum constant corresponds
    * to a specific FXML file.
@@ -149,7 +154,9 @@ public class SceneRouter {
     // Product description page
     PRODUCTDESCRIPTION("ProductDescription.fxml"),
     // Member login page
-    MEMBER_LOGIN("MemberLoginView.fxml");
+    MEMBER_LOGIN("MemberLoginView.fxml"),
+    // Feedback page
+    FEEDBACK("CustomerFeedback.fxml");
 
     private final String value;
 

@@ -4,14 +4,14 @@
 }
 
 .title {
-    -fx-font-size: 27px;
+    -fx-font-size: 20px;
     -fx-font-weight: bold;
     -fx-text-fill: #10147E;
     -fx-underline: true;
 }
 
 .order-id {
-    -fx-font-size: 20px;
+    -fx-font-size: 18px;
     -fx-text-fill: #050505;
     -fx-padding: 0 0 12 0;
 }

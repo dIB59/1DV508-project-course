@@ -1,13 +1,16 @@
 package org.example.members;
 
+import com.sun.javafx.scene.control.IntegerField;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import org.example.features.admin.AdminRepository;
 import org.example.features.order.OrderService;
 import org.example.shared.SceneRouter;
+import org.w3c.dom.Text;
 
 import java.sql.SQLException;
 
@@ -16,7 +19,9 @@ public class MemberController {
   private final SceneRouter sceneRouter;
   private final MemberRepository memberRepository;
   @FXML
-  private TextField personalnumber;
+  Label MemberLoginLabel;
+  @FXML
+    private TextField personalnumber;
 
 
   /**
@@ -38,24 +43,29 @@ public class MemberController {
     goToPaymentPage();
   }
 
-  public void handleLoginButtonAction(ActionEvent actionEvent) {
-    this.orderService.setMember();
-    goToPaymentPage();
+  public void handleLoginButtonAction(ActionEvent actionEvent) throws SQLException {
 
-    /*String username = usernameField.getText();
-    String password = passwordField.getText();
-    if (username.isEmpty() || password.isEmpty()) {
-      usernameField.setText("Username or Password cannot be empty");
-      passwordField.setText("");
+    String input = personalnumber.getText();
+
+    if (input == null || !input.matches("\\d+")) { // matches("\\d+") ensures it's all digits.
+      MemberLoginLabel.setText("Please enter a valid personal number");
       return;
-      }
-    if (validateCredentials(username, password)) {
-      goToDashboard();
-    } else {
-      usernameField.setText("Invalid credentials");
-      passwordField.setText("");
-    }*/
+    }
 
+    Integer number = Integer.parseInt(input); // converts string to int
+
+    if (number < 1) {
+      MemberLoginLabel.setText("Please enter a valid personal number");
+      return;
+    }
+
+    if (validateCredentials(number)) {
+      this.orderService.setMember();
+      this.orderService.setMemberID(number);
+      goToPaymentPage();
+    } else {
+      MemberLoginLabel.setText("Please enter correct personal number");
+    }
   }
 
   private boolean validateCredentials(Integer personalnumber) throws SQLException {
@@ -63,4 +73,5 @@ public class MemberController {
         .findById(personalnumber)
         .isPresent();
   }
+
 }

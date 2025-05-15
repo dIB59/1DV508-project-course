@@ -1,5 +1,6 @@
 package org.example.features.receipt;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
@@ -12,6 +13,7 @@ import org.example.features.order.Order;
 import org.example.features.order.ProductQuantity;
 import org.example.features.product.CustomizedProduct;
 import org.example.features.product.Product;
+import org.example.members.MemberRepository;
 import org.example.shared.SceneRouter;
 
 
@@ -31,16 +33,16 @@ public class ReceiptController {
       restaurantNameLabel,
       addressLabel,
       contactLabel,
-      EatinEatoutlabel;
+      EatinEatoutlabel,
+      pointsLabel;
 
-  private final List<CustomizedProduct> customizedProducts;
+  private final MemberRepository memberRepository;
 
-  @FXML private Label extraIngredientsLabel;
 
-  public ReceiptController(Order order, SceneRouter sceneRouter, List<CustomizedProduct> customizedProducts) {
-    this.customizedProducts = customizedProducts;
+  public ReceiptController(Order order, SceneRouter sceneRouter, MemberRepository memberRepository) {
     this.order = order;
     this.sceneRouter = sceneRouter;
+    this.memberRepository = memberRepository;
   }
 
 
@@ -73,6 +75,17 @@ public class ReceiptController {
 
       itemsContainer.getChildren().add(itemRow);
     }
+
+    if (order.getMember()) {
+      try {
+        int personalNumber = order.getMemberID();
+        int pointsToAdd = (int) Math.floor(order.getPrice()) * 10;
+        memberRepository.addPoints(personalNumber, pointsToAdd);
+      } catch (SQLException e) {
+        System.err.println("Failed to add points: " + e.getMessage());
+      }
+    }
+
     EatinEatoutlabel.setText(order.gettype());
     orderIdLabel.setText("Order Number: " + order.getId());
     totalLabel.setText(String.format("Total: $%.2f", order.getPrice()));
@@ -82,24 +95,14 @@ public class ReceiptController {
     addressLabel.setText("Address: 123 Food St, Tasty Town");
     contactLabel.setText("Contact: (123) 456-7890");
     memberLabel.setText("Member: " + order.getMember());
-
-    for (CustomizedProduct cp : customizedProducts) {
-      Product product = cp.getProduct();
-
-      Label productLabel = new Label(product.getName() + " x");
-      itemsContainer.getChildren().add(productLabel);
-
-      for (Map.Entry<String, Integer> entry : cp.getIngredientCounts().entrySet()) {
-        if (entry.getValue() > 0) {
-          Label ingredientLabel = new Label("  - " + entry.getKey() + " x" + entry.getValue());
-          ingredientLabel.setStyle("-fx-padding: 0 0 0 15; -fx-font-size: 12px;");
-          itemsContainer.getChildren().add(ingredientLabel);
-        }
-      }
-    }
+    pointsLabel.setText("Points added: " + (int) Math.floor(order.getPrice()) * 10 + " MemberID: " + order.getMemberID());
   }
 
   public void goToHomePage(){
     sceneRouter.goToHomePage();
+  }
+
+  public void goToFeedbackPage(){
+    sceneRouter.goToFeedbackPage();
   }
 }
