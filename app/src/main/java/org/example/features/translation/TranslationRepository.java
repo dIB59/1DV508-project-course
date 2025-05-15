@@ -9,7 +9,7 @@ import java.util.Optional;
 public class TranslationRepository {
   private final Connection conn;
 
-  public TranslationRepository(Connection conn) throws SQLException {
+  public TranslationRepository(Connection conn){
     this.conn = conn;
   }
 
