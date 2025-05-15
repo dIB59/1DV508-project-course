@@ -2,6 +2,7 @@ package org.example.features.menu;
 
 import java.sql.SQLException;
 import java.util.List;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
@@ -13,12 +14,15 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Rectangle;
 
+import org.example.AppContext;
 import org.example.features.campaign.Campaign;
 import org.example.features.campaign.CampaignRepository;
 import org.example.features.order.OrderService;
 import org.example.features.product.Product;
 import org.example.features.product.ProductRepository;
 import org.example.features.product.Tag;
+import org.example.features.translation.Language;
+import org.example.features.translation.TranslationService;
 import org.example.shared.SceneRouter;
 
 public class MenuController {
@@ -28,26 +32,35 @@ public class MenuController {
   private final CampaignRepository campaignRepository;
   private final SceneRouter sceneRouter;
   private final OrderService orderService;
+  private final TranslationService translationService;
+  @FXML private AnchorPane menuView;
 
   @FXML private GridPane menuGrid;
   @FXML private VBox tagButtonContainer;
 
   public MenuController(
-          MenuModel model,
-          ProductRepository productRepository, CampaignRepository campaignRepository,
-          SceneRouter sceneRouter,
-          OrderService orderService) {
+      MenuModel model,
+      ProductRepository productRepository, CampaignRepository campaignRepository,
+      SceneRouter sceneRouter,
+      OrderService orderService, TranslationService translationService) {
     this.model = model;
     this.productRepository = productRepository;
       this.campaignRepository = campaignRepository;
       this.sceneRouter = sceneRouter;
     this.orderService = orderService;
+    this.translationService = translationService;
   }
 
   public void initialize() {
     populateTagButtons();
     displayProductCards(getMenuItems());
-    //displayCampaignCard(campaignRepository.findActiveCampaigns());
+    Platform.runLater(() -> {
+      if (menuView.getScene() != null && AppContext.getInstance().getLanguage() != Language.ENGLISH) {
+        translationService.translate(menuView.getScene().getRoot());
+      }
+    });
+
+
   }
 
   private void populateTagButtons() {
