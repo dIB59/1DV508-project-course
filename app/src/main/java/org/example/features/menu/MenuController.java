@@ -30,7 +30,7 @@ public class MenuController {
   private final OrderService orderService;
 
   @FXML private GridPane menuGrid;
-  @FXML private HBox tagButtonContainer;
+  @FXML private VBox tagButtonContainer;
 
   public MenuController(
           MenuModel model,
