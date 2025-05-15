@@ -1,16 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.collections.FXCollections?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
+<?import java.lang.String?>
+
 <AnchorPane xmlns:fx="http://javafx.com/fxml"
             xmlns="http://javafx.com/javafx"
             fx:controller="org.example.features.home.HomeController"
             prefWidth="600.0" prefHeight="600.0">
 
-    <VBox spacing="20" alignment="CENTER" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0"
-          AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" style="-fx-padding: 100; -fx-margin: 10">
+    <VBox spacing="20" alignment="CENTER"
+          AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0"
+          AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0"
+          style="-fx-padding: 100; -fx-margin: 10">
 
         <!-- Header -->
         <Label text="Welcome!"
@@ -21,8 +27,26 @@
         <Label text="Please choose one of the options below:"
                style="-fx-font-size: 16px;"/>
 
-        <!-- Button -->
+        <!-- Language Selector -->
+        <ComboBox fx:id="languageSelector"
+                  prefWidth="150"
+                  style="-fx-font-size: 14px;">
+            <items>
+                <FXCollections fx:factory="observableArrayList">
+                    <String fx:value="en"/>
+                    <String fx:value="sv"/>
+                    <String fx:value="de"/>
+                    <String fx:value="es"/>
+                </FXCollections>
+            </items>
+        </ComboBox>
 
+        <Button text="Translate"
+                prefWidth="150"
+                onAction="#translatePage"
+                style="-fx-padding: 10 0; -fx-font-size: 14px; -fx-background-color: darkblue; -fx-text-fill: white;"/>
+
+        <!-- Action Buttons -->
         <Button text="Eat-in"
                 fx:id="eatInButton"
                 prefWidth="150"
@@ -34,7 +58,6 @@
                 prefWidth="150"
                 style="-fx-padding: 10 0; -fx-font-size: 14px; -fx-background-color: green; -fx-text-fill: white;"
                 onAction="#goToMenuPageTakeout"/>
-
     </VBox>
 
     <Button text="Admin"
@@ -42,5 +65,4 @@
             style="-fx-padding: 8 16; -fx-font-size: 13px; -fx-background-color: darkblue; -fx-text-fill: white;"
             onAction="#goToAdminPage"
             AnchorPane.bottomAnchor="20" AnchorPane.rightAnchor="20"/>
-
 </AnchorPane>
