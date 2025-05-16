@@ -434,4 +434,8 @@ public class DashboardController {
     dialog.setScene(scene);
     dialog.showAndWait();
   }
+
+  public void goToLanguagesPage(ActionEvent actionEvent) {
+    sceneRouter.goToLanguagesPage();
+  }
 }
