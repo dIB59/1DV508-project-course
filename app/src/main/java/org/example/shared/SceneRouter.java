@@ -11,6 +11,7 @@ import javafx.util.Callback;
 import org.example.features.order.OrderService;
 import org.example.features.product.Product;
 import org.example.features.product.ProductDetailsController;
+import org.example.features.translation.TranslationService;
 
 /** The type Scene router. */
 public class SceneRouter {
@@ -18,6 +19,7 @@ public class SceneRouter {
   private final Stage stage;
   private final Callback<Class<?>, Object> controllerFactory;
   private KioskPage currentPage;
+  private final TranslationService translationService;
 
   /**
    * Instantiates a new Scene router.
@@ -25,9 +27,10 @@ public class SceneRouter {
    * @param stage the stage
    * @param orderService the order service
    */
-  public SceneRouter(Stage stage, OrderService orderService) {
+  public SceneRouter(Stage stage, OrderService orderService, TranslationService translationService) {
     this.stage = stage;
     this.controllerFactory = new AppControllerFactory(orderService, this);
+    this.translationService = translationService;
   }
 
   /**
@@ -42,7 +45,9 @@ public class SceneRouter {
       loader.setControllerFactory(controllerFactory);
       currentPage = page;
       Scene scene = new Scene(loader.load());
+
       stage.setScene(scene);
+      translationService.translate(scene.getRoot());
     } catch (IOException e) {
       System.err.println("Failed to load scene: " + e.getLocalizedMessage());
       e.printStackTrace();
@@ -104,6 +109,9 @@ public class SceneRouter {
       controller.displaySides();
       currentPage = KioskPage.PRODUCTDESCRIPTION;
       stage.setScene(scene);
+      Platform.runLater(() -> {
+        translationService.translate(scene.getRoot());
+      });
     } catch (IOException e) {
       System.err.println("Failed to load Product Details page: " + e.getLocalizedMessage());
       e.printStackTrace();
