@@ -25,6 +25,7 @@ import org.example.features.product.ProductDetailsController;
 import org.example.features.product.ProductMapper;
 import org.example.features.product.ProductRepository;
 import org.example.features.receipt.ReceiptController;
+import org.example.features.translation.EditTranslationController;
 import org.example.features.translation.LibreTranslateClient;
 import org.example.features.translation.TranslationRepository;
 import org.example.features.translation.TranslationService;
@@ -82,6 +83,8 @@ public class AppControllerFactory implements Callback<Class<?>, Object> {
       case "CouponsController" -> new CouponsController(getCouponsRepository(), sceneRouter);
       case "PaymentController" -> new PaymentController(sceneRouter, orderService, new FreePay());
       case "FeedbackController" -> new FeedbackController();
+      case "EditTranslationController" ->
+          new EditTranslationController(sceneRouter, getTranslationRepository());
       default ->
           throw new IllegalArgumentException(
               "No controller found for class: " + controllerClass.getSimpleName());
@@ -111,6 +114,10 @@ public class AppControllerFactory implements Callback<Class<?>, Object> {
   }
 
   private TranslationService getTranslationService() {
-    return new TranslationService(new TranslationRepository(connection), translateClient);
+    return new TranslationService(getTranslationRepository(), translateClient);
   }
+
+  private TranslationRepository getTranslationRepository() {
+    return new TranslationRepository(connection);
+    }
 }
