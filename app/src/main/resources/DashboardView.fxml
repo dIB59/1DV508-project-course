@@ -31,6 +31,11 @@
                         onAction="#goToCouponsPage"
                         prefWidth="120.0"/>
 
+                <Button text="Languages"
+                        style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14px; -fx-cursor: hand;"
+                        onAction="#goToLanguagesPage"
+                        prefWidth="120.0"/>
+
                 <Button text="Settings"
                         style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14px; -fx-cursor: hand;"
                         prefWidth="120.0"/>
