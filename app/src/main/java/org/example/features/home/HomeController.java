@@ -1,19 +1,14 @@
 package org.example.features.home;
 
-import com.braintreegateway.Transaction;
-import java.sql.SQLException;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import org.example.AppContext;
-import org.example.database.Database;
 import org.example.features.order.OrderService;
 import org.example.features.translation.Language;
-import org.example.features.translation.TranslationRepository;
 import org.example.features.translation.TranslationService;
 import org.example.shared.SceneRouter;
-import org.example.features.translation.LibreTranslateClient;
 
 /** The type Home controller. */
 public class HomeController {
@@ -30,8 +25,7 @@ public class HomeController {
   @FXML private Button takeOutButton;
   @FXML private ComboBox<Language> languageSelector;
 
-  public HomeController(HomeModel homeModel, SceneRouter sceneRouter, OrderService orderService,
-                        TranslationService translationService){
+  public HomeController(HomeModel homeModel, SceneRouter sceneRouter, OrderService orderService, TranslationService translationService) {
     this.homeModel = homeModel;
     this.sceneRouter = sceneRouter;
     this.orderService = orderService;
