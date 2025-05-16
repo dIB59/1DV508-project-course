@@ -3,7 +3,6 @@ package org.example.shared;
 import java.io.IOException;
 import java.net.URL;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;

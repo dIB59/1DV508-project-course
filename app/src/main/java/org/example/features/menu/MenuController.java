@@ -2,7 +2,6 @@ package org.example.features.menu;
 
 import java.sql.SQLException;
 import java.util.List;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
@@ -13,15 +12,11 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Rectangle;
-
-import org.example.AppContext;
 import org.example.features.campaign.CampaignRepository;
 import org.example.features.order.OrderService;
 import org.example.features.product.Product;
 import org.example.features.product.ProductRepository;
 import org.example.features.product.Tag;
-import org.example.features.translation.Language;
-import org.example.features.translation.TranslationService;
 import org.example.shared.SceneRouter;
 
 public class MenuController {

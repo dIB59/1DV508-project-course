@@ -1,18 +1,12 @@
 package org.example.members;
 
-import com.sun.javafx.scene.control.IntegerField;
+import java.sql.SQLException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import org.example.features.admin.AdminRepository;
 import org.example.features.order.OrderService;
 import org.example.shared.SceneRouter;
-import org.w3c.dom.Text;
-
-import java.sql.SQLException;
 
 public class MemberController {
   private OrderService orderService;

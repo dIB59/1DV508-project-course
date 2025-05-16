@@ -1,6 +1,5 @@
 package org.example.shared;
 
-import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
 import javafx.util.Callback;
 import org.example.database.Database;
@@ -22,7 +21,6 @@ import org.example.features.menu.MenuModel;
 import org.example.features.order.OrderService;
 import org.example.features.payments.FreePay;
 import org.example.features.payments.PaymentController;
-import org.example.features.payments.PaypalPay;
 import org.example.features.product.ProductDetailsController;
 import org.example.features.product.ProductMapper;
 import org.example.features.product.ProductRepository;

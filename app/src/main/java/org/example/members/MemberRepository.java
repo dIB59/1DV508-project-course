@@ -8,8 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.example.database.CrudRepository;
-import org.example.features.admin.Admin;
-
 
 public class MemberRepository implements CrudRepository<Member, Integer>{
 

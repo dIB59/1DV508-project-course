@@ -1,10 +1,7 @@
 package org.example.features.campaign;
 
-import org.example.database.Identifiable;
-
 import java.time.LocalDate;
-import java.util.List;
-
+import org.example.database.Identifiable;
 
 public class Campaign implements Identifiable<Integer> {
     private Integer id;

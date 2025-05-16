@@ -1,10 +1,9 @@
 package org.example.features.campaign;
 
-import org.example.database.EntityMapper;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import org.example.database.EntityMapper;
 
 public class CampaignMapper implements EntityMapper<Campaign> {
 

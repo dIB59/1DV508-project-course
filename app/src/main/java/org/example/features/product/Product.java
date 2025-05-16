@@ -1,10 +1,8 @@
 package org.example.features.product;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import org.example.database.Identifiable;
 
 /**
