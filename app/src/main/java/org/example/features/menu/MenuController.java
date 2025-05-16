@@ -15,7 +15,6 @@ import javafx.scene.layout.*;
 import javafx.scene.shape.Rectangle;
 
 import org.example.AppContext;
-import org.example.features.campaign.Campaign;
 import org.example.features.campaign.CampaignRepository;
 import org.example.features.order.OrderService;
 import org.example.features.product.Product;
@@ -32,7 +31,6 @@ public class MenuController {
   private final CampaignRepository campaignRepository;
   private final SceneRouter sceneRouter;
   private final OrderService orderService;
-  private final TranslationService translationService;
   @FXML private AnchorPane menuView;
 
   @FXML private GridPane menuGrid;
@@ -42,23 +40,22 @@ public class MenuController {
       MenuModel model,
       ProductRepository productRepository, CampaignRepository campaignRepository,
       SceneRouter sceneRouter,
-      OrderService orderService, TranslationService translationService) {
+      OrderService orderService) {
     this.model = model;
     this.productRepository = productRepository;
       this.campaignRepository = campaignRepository;
       this.sceneRouter = sceneRouter;
     this.orderService = orderService;
-    this.translationService = translationService;
   }
 
   public void initialize() {
     populateTagButtons();
     displayProductCards(getMenuItems());
-    Platform.runLater(() -> {
+    /*Platform.runLater(() -> {
       if (menuView.getScene() != null && AppContext.getInstance().getLanguage() != Language.ENGLISH) {
         translationService.translate(menuView.getScene().getRoot());
       }
-    });
+    })*/;
 
 
   }
