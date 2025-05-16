@@ -71,7 +71,7 @@ public class AppControllerFactory implements Callback<Class<?>, Object> {
     return switch (controllerClass.getSimpleName()) {
       case "HomeController" -> new HomeController(new HomeModel(), sceneRouter, orderService, getTranslationService());
       case "MenuController" ->
-          new MenuController(new MenuModel(), getProductRepository(), getCampaignRepository(), sceneRouter, orderService, getTranslationService());
+          new MenuController(new MenuModel(), getProductRepository(), getCampaignRepository(), sceneRouter, orderService);
       case "CheckoutController" ->
           new CheckoutController(orderService, getCouponsRepository(), sceneRouter, getCampaignRepository());
       case "ProductDetailsController" -> new ProductDetailsController(orderService, sceneRouter, getProductRepository());
