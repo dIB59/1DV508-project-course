@@ -135,6 +135,10 @@ public class SceneRouter {
     goTo(KioskPage.FEEDBACK);
   }
 
+  public void goToLanguagesPage() {
+    goTo(KioskPage.EDIT_TRANSLATION);
+  }
+
   /**
    * Enum representing the different pages in the kiosk application. Each enum constant corresponds
    * to a specific FXML file.
@@ -163,8 +167,9 @@ public class SceneRouter {
     // Member login page
     MEMBER_LOGIN("MemberLoginView.fxml"),
     // Feedback page
-    FEEDBACK("CustomerFeedback.fxml");
-
+    FEEDBACK("CustomerFeedback.fxml"),
+    // Edit translation page
+    EDIT_TRANSLATION("EditTranslationView.fxml");
     private final String value;
 
     KioskPage(String value) {
