@@ -10,6 +10,7 @@
 <AnchorPane xmlns:fx="http://javafx.com/fxml"
             xmlns="http://javafx.com/javafx"
             fx:controller="org.example.features.home.HomeController"
+            stylesheets="@styles/home.css"
             prefWidth="600.0" prefHeight="600.0">
 
     <VBox spacing="20" alignment="CENTER"
@@ -26,25 +27,6 @@
         <Label text="Please choose one of the options below:"
                style="-fx-font-size: 16px;"/>
 
-        <!-- Language Selector -->
-        <ComboBox fx:id="languageSelector"
-                  prefWidth="150"
-                  style="-fx-font-size: 14px;">
-            <items>
-                <FXCollections fx:factory="observableArrayList">
-                    <String fx:value="en"/>
-                    <String fx:value="sv"/>
-                    <String fx:value="de"/>
-                    <String fx:value="es"/>
-                </FXCollections>
-            </items>
-        </ComboBox>
-
-        <Button text="Translate"
-                prefWidth="150"
-                onAction="#translatePage"
-                style="-fx-padding: 10 0; -fx-font-size: 14px; -fx-background-color: darkblue; -fx-text-fill: white;"/>
-
         <!-- Action Buttons -->
         <Button text="Eat-in"
                 fx:id="eatInButton"
@@ -58,6 +40,14 @@
                 style="-fx-padding: 10 0; -fx-font-size: 14px; -fx-background-color: green; -fx-text-fill: white;"
                 onAction="#goToMenuPageTakeout"/>
     </VBox>
+
+    <!-- Language Selector (Bottom Left, above Admin) -->
+    <ComboBox fx:id="languageSelector"
+              prefWidth="150"
+              onAction="#translatePage"
+              AnchorPane.bottomAnchor="20" AnchorPane.leftAnchor="20">
+    </ComboBox>
+
 
     <Button text="Admin"
             fx:id="adminButton"

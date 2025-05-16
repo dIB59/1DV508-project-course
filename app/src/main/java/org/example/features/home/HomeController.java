@@ -37,11 +37,16 @@ public class HomeController {
   public void initialize() {
     languageSelector.getItems().setAll(Language.values());
     languageSelector.getSelectionModel().select(Language.ENGLISH); // Default selection
+    languageSelector.getStyleClass().add("language-combo");
   }
 
   @FXML
   public void translatePage() {
     Language selectedLanguage = languageSelector.getValue();
+    if (selectedLanguage == Language.ENGLISH) {
+      translationService.reverseTranslate(welcomeLabel.getScene().getRoot()); // Restore original tex
+      return;
+    }
     if (selectedLanguage != null) {
       AppContext.getInstance().setLanguage(selectedLanguage); // Store choice globally
       translationService.translate(welcomeLabel.getScene().getRoot()); // Translate whole scene

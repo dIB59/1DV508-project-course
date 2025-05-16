@@ -33,11 +33,39 @@ public class TranslationService {
 
   public void translate(Node root) {
     Language targetLang = AppContext.getInstance().getLanguage();
-    if (targetLang == null || targetLang.equals(Language.ENGLISH)) {
+    if (targetLang == null) {
       return;
     }
 
     traverseAndTranslate(root, Language.ENGLISH.toString(), targetLang.toString());
+  }
+
+  public void reverseTranslate(Node root) {
+    traverseAndRestore(root);
+  }
+
+  private void traverseAndRestore(Node node) {
+    switch (node) {
+      case Labeled labeled -> {
+        Object original = labeled.getProperties().get("originalText");
+        if (original instanceof String originalText) {
+          labeled.setText(originalText);
+        }
+      }
+      case Text textNode -> {
+        Object original = textNode.getProperties().get("originalText");
+        if (original instanceof String originalText) {
+          textNode.setText(originalText);
+        }
+      }
+      default -> logger.info("Node type not handled: {}", node.getClass().getSimpleName());
+    }
+
+    if (node instanceof Parent parent) {
+      for (Node child : parent.getChildrenUnmodifiable()) {
+        traverseAndRestore(child);
+      }
+    }
   }
 
   private void traverseAndTranslate(Node node, String sourceLang, String targetLang) {
@@ -49,6 +77,7 @@ public class TranslationService {
           try {
             String translated = get(originalText, sourceLang, targetLang);
             logger.info("Translated label: {}", translated);
+            labeled.getProperties().put("originalText", originalText);
             labeled.setText(translated);
           } catch (Exception e) {
             logger.error("Translation failed for: {}", originalText, e);
@@ -61,6 +90,7 @@ public class TranslationService {
           try {
             String translated = get(originalText, sourceLang, targetLang);
             logger.info("Translated TxtNode: {}", translated);
+            textNode.getProperties().put("originalText", originalText);
             textNode.setText(translated);
           } catch (Exception e) {
             logger.error("TxtNode failed for: {}", originalText, e);
