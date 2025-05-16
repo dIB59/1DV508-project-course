@@ -5,15 +5,15 @@ import java.util.Optional;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Labeled;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import org.example.AppContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class TranslationService {
   private final TranslationRepository repo;
   private final LibreTranslateClient client;
-  private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(TranslationService.class);
+  private static final Logger logger = LoggerFactory.getLogger(TranslationService.class);
 
   public TranslationService(TranslationRepository repo, LibreTranslateClient client) {
     this.repo = repo;
@@ -32,12 +32,12 @@ public class TranslationService {
   }
 
   public void translate(Node root) {
-    String targetLang = AppContext.getInstance().getLanguage().toString();
-    if (targetLang == null || targetLang.isBlank() || targetLang.equals("en")) {
+    Language targetLang = AppContext.getInstance().getLanguage();
+    if (targetLang == null || targetLang.equals(Language.ENGLISH)) {
       return;
     }
 
-    traverseAndTranslate(root, "en", targetLang);
+    traverseAndTranslate(root, Language.ENGLISH.toString(), targetLang.toString());
   }
 
   private void traverseAndTranslate(Node node, String sourceLang, String targetLang) {
@@ -48,7 +48,7 @@ public class TranslationService {
         if (originalText != null && !originalText.isBlank()) {
           try {
             String translated = get(originalText, sourceLang, targetLang);
-            logger.info("Translated text: {}", translated);
+            logger.info("Translated label: {}", translated);
             labeled.setText(translated);
           } catch (Exception e) {
             logger.error("Translation failed for: {}", originalText, e);
@@ -60,28 +60,10 @@ public class TranslationService {
         if (originalText != null && !originalText.isBlank()) {
           try {
             String translated = get(originalText, sourceLang, targetLang);
-            logger.info("Translated text: {}", translated);
+            logger.info("Translated TxtNode: {}", translated);
             textNode.setText(translated);
           } catch (Exception e) {
             logger.error("TxtNode failed for: {}", originalText, e);
-          }
-        }
-      }
-      case StackPane stackPane -> {
-        logger.info("StackPane found");
-        for (Node child : stackPane.getChildren()) {
-          traverseAndTranslate(child, sourceLang, targetLang);
-        }
-      }
-      case Region region -> {
-        String originalText = region.getAccessibleText();
-        if (originalText != null && !originalText.isBlank()) {
-          try {
-            String translated = get(originalText, sourceLang, targetLang);
-            logger.info("Translated text: {}", translated);
-            region.setAccessibleText(translated);
-          } catch (Exception e) {
-            logger.error("Region failed for: {}", originalText, e);
           }
         }
       }
