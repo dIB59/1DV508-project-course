@@ -2,8 +2,6 @@ package org.example.features.receipt;
 
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Map;
-
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
@@ -11,11 +9,9 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import org.example.features.order.Order;
 import org.example.features.order.ProductQuantity;
-import org.example.features.product.CustomizedProduct;
 import org.example.features.product.Product;
 import org.example.members.MemberRepository;
 import org.example.shared.SceneRouter;
-
 
 public class ReceiptController {
 

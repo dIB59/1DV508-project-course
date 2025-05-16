@@ -37,7 +37,7 @@ public final class TestDatabase extends Database {
   public Connection getConnection() {
     try {
       if (connection == null || connection.isClosed()) {
-        String URL = "jdbc:mysql://localhost/kioske_test?useSSL=false&allowPublicKeyRetrieval=true";
+        String URL = "jdbc:mysql://localhost/k_test?useSSL=false&allowPublicKeyRetrieval=true";
         connection = DriverManager.getConnection(URL + "&user=" + USER + "&password=" + PASSWORD);
       }
     } catch (SQLException e) {

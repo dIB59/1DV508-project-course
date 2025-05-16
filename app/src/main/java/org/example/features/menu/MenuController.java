@@ -12,8 +12,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Rectangle;
-
-import org.example.features.campaign.Campaign;
 import org.example.features.campaign.CampaignRepository;
 import org.example.features.order.OrderService;
 import org.example.features.product.Product;
@@ -28,15 +26,16 @@ public class MenuController {
   private final CampaignRepository campaignRepository;
   private final SceneRouter sceneRouter;
   private final OrderService orderService;
+  @FXML private AnchorPane menuView;
 
   @FXML private GridPane menuGrid;
   @FXML private VBox tagButtonContainer;
 
   public MenuController(
-          MenuModel model,
-          ProductRepository productRepository, CampaignRepository campaignRepository,
-          SceneRouter sceneRouter,
-          OrderService orderService) {
+      MenuModel model,
+      ProductRepository productRepository, CampaignRepository campaignRepository,
+      SceneRouter sceneRouter,
+      OrderService orderService) {
     this.model = model;
     this.productRepository = productRepository;
       this.campaignRepository = campaignRepository;
@@ -47,7 +46,13 @@ public class MenuController {
   public void initialize() {
     populateTagButtons();
     displayProductCards(getMenuItems());
-    //displayCampaignCard(campaignRepository.findActiveCampaigns());
+    /*Platform.runLater(() -> {
+      if (menuView.getScene() != null && AppContext.getInstance().getLanguage() != Language.ENGLISH) {
+        translationService.translate(menuView.getScene().getRoot());
+      }
+    })*/;
+
+
   }
 
   private void populateTagButtons() {

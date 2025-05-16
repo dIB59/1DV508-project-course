@@ -6,7 +6,6 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
-
 <AnchorPane xmlns:fx="http://javafx.com/fxml"
             xmlns="http://javafx.com/javafx"
             fx:controller="org.example.features.dashboard.DashboardController"
@@ -30,6 +29,11 @@
                 <Button text="Coupons"
                         style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14px; -fx-cursor: hand;"
                         onAction="#goToCouponsPage"
+                        prefWidth="120.0"/>
+
+                <Button text="Languages"
+                        style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14px; -fx-cursor: hand;"
+                        onAction="#goToLanguagesPage"
                         prefWidth="120.0"/>
 
                 <Button text="Settings"

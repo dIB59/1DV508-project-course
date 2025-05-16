@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import org.example.database.Identifiable;
 import org.example.features.coupons.Coupons;
-import org.example.features.product.Product;
 import org.example.features.coupons.Discount;
+import org.example.features.product.Product;
 
 /**
  * Order class represents a customer's order in the system. It contains a list of ProductQuantity

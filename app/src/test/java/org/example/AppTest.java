@@ -11,6 +11,7 @@ import org.example.features.product.Product;
 import org.example.features.product.ProductMapper;
 import org.example.features.product.ProductRepository;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class AppTest {
@@ -22,12 +23,19 @@ class AppTest {
     database.resetDatabase();
   }
 
+  @BeforeEach
+  void setUp() {
+    database.resetDatabase();
+  }
+
+
   @Test
   void productRepoTest() throws Exception {
     ProductRepository productRepository =
         new ProductRepository(database.getConnection(), new ProductMapper());
 
-    productRepository.save(new Product("Test Product", "Test Description", 10.0, "1", "Test label"));
+    //  Product(String name, String description, double price, String imageUrl, String specialLabel, boolean isASide)
+    productRepository.save(new Product("Test Product", "Test Description", 10.0, "image.jpeg", "Test label", false));
 
     assertEquals(
         1,
@@ -41,15 +49,17 @@ class AppTest {
     ProductRepository productRepository =
         new ProductRepository(database.getConnection(), new ProductMapper());
 
-    var product = productRepository.save(new Product("Test Product", "Test Description", 10.0, "1", "Test label"));
+    var product = productRepository.save(new Product("Test Product", "Test Description", 10.0, "image.jpeg", "Test label", false));
+
+    var previousTags = product.getTags();
+
     productRepository.createTag("Tag4");
     productRepository.createTag("Tag5");
 
     var tags = productRepository.findAllTags();
 
     Product updatedProduct = new Product(
-        product.getId(), product.getName(), product.getDescription(), product.getPrice(),
-        product.getImageUrl(), product.getSpecialLabel(), tags);
+       product.getName(), product.getDescription(), product.getPrice(), product.getImageUrl(), product.getSpecialLabel(),product.getisASide(),  tags);
 
     assertEquals(2, updatedProduct.getTags().size());
   }

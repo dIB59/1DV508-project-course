@@ -1,5 +1,9 @@
 package org.example.features.product;
 
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -7,20 +11,8 @@ import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-
 import org.example.features.order.OrderService;
 import org.example.shared.SceneRouter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.sql.SQLException;
-import javafx.application.Platform;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 
 public class ProductDetailsController {
   private final OrderService orderService;
