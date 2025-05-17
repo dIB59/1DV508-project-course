@@ -8,10 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.example.database.CrudRepository;
+import org.example.database.EntityMapper;
 
 public class MemberRepository implements CrudRepository<Member, Integer>{
 
-  private final MemberMapper memberMapper;
+  private final EntityMapper<Member> memberMapper;
   private final Connection connection;
 
   public MemberRepository(Connection connection, MemberMapper memberMapper){

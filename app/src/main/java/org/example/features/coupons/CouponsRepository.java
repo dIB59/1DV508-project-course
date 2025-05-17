@@ -5,11 +5,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.example.database.CrudRepository;
+import org.example.database.EntityMapper;
 
 public class CouponsRepository implements CrudRepository<Coupons, String> {
 
   private final Connection connection;
-  private final CouponMapper couponMapper = new CouponMapper();
+  private final EntityMapper<Coupons> couponMapper = new CouponMapper();
 
   public CouponsRepository(Connection connection) {
     this.connection = connection;

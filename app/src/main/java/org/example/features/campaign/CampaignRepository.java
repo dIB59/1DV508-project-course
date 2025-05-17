@@ -7,9 +7,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import org.example.database.EntityMapper;
 
 public class CampaignRepository {
-    private final CampaignMapper campaignMapper;
+    private final EntityMapper<Campaign> campaignMapper;
     private final Connection connection;
 
     public CampaignRepository(Connection connection, CampaignMapper campaignMapper) {
