@@ -21,9 +21,16 @@
 
             <Label text="Search:"/>
             <TextField fx:id="searchField" promptText="Search translations..." onKeyReleased="#handleSearch"/>
+
+            <!-- Cache Button -->
+            <Button text="Cache All Translations"
+                    fx:id="cacheButton"
+                    onAction="#handleCacheTranslations"
+                    style="-fx-background-color: #10b981; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 10 20; -fx-background-radius: 5;"/>
+
+            <ProgressBar fx:id="cacheProgressBar" prefWidth="200" visible="false"/>
+
         </HBox>
-
-
 
         <!-- Translation List -->
         <TableView fx:id="translationTable" prefHeight="300" prefWidth="760">

@@ -84,7 +84,7 @@ public class AppControllerFactory implements Callback<Class<?>, Object> {
       case "PaymentController" -> new PaymentController(sceneRouter, orderService, new FreePay());
       case "FeedbackController" -> new FeedbackController();
       case "EditTranslationController" ->
-          new EditTranslationController(sceneRouter, getTranslationRepository());
+          new EditTranslationController(sceneRouter, getTranslationRepository(), getTranslationService());
       default ->
           throw new IllegalArgumentException(
               "No controller found for class: " + controllerClass.getSimpleName());

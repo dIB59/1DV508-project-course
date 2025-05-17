@@ -1,7 +1,9 @@
 package org.example.features.translation;
 
-
+import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.Consumer;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Labeled;
@@ -30,6 +32,46 @@ public class TranslationService {
     repo.save(text, sourceLang, targetLang, translated);
     return translated;
   }
+
+  /**
+   * Asynchronously caches translations for all texts from source language to target language
+   * @param sourceLang Source language code
+   * @param targetLang Target language code
+   * @return CompletableFuture with the count of successfully cached translations
+   */
+
+  public CompletableFuture<Integer> cacheTranslationsAsync(
+      String sourceLang,
+      String targetLang,
+      Consumer<Double> progressCallback
+  ) {
+    return CompletableFuture.supplyAsync(() -> {
+      List<String> textsToTranslate = repo.findUntranslatedTexts(sourceLang, targetLang);
+      int total = textsToTranslate.size();
+      int successCount = 0;
+
+      logger.info("Found {} texts to translate from {} to {}", total, sourceLang, targetLang);
+
+      for (int i = 0; i < total; i++) {
+        String text = textsToTranslate.get(i);
+        try {
+          String translated = client.translate(text, targetLang, sourceLang);
+          repo.save(text, sourceLang, targetLang, translated);
+          successCount++;
+        } catch (Exception e) {
+          logger.error("Failed to cache translation for: {}", text, e);
+        }
+
+        // Update progress after each item
+        double progress = (i + 1) / (double) total;
+        progressCallback.accept(progress);
+      }
+
+      logger.info("Successfully cached {} translations from {} to {}", successCount, sourceLang, targetLang);
+      return successCount;
+    });
+  }
+
 
   public void translate(Node root) {
     Language targetLang = AppContext.getInstance().getLanguage();
