@@ -72,6 +72,9 @@ public class TranslationService {
     switch (node) {
       case Labeled labeled -> {
         String originalText = labeled.getText();
+        if (labeled.getProperties().get("originalText") != null) {
+          originalText = (String) labeled.getProperties().get("originalText");
+        }
         logger.info("Original text: {}", originalText);
         if (originalText != null && !originalText.isBlank()) {
           try {
@@ -86,6 +89,9 @@ public class TranslationService {
       }
       case Text textNode -> {
         String originalText = textNode.getText();
+        if (textNode.getProperties().get("originalText") != null) {
+          originalText = (String) textNode.getProperties().get("originalText");
+        }
         if (originalText != null && !originalText.isBlank()) {
           try {
             String translated = get(originalText, sourceLang, targetLang);

@@ -2,7 +2,10 @@ package org.example.features.translation;
 
 public enum Language {
   ENGLISH("en"),
-  SWEDISH("sv");
+  SWEDISH("sv"),
+  FRENCH("fr"),
+  PORTUGUESE("pt"),
+  JAPANESE("ja");
 
   private final String code;
 

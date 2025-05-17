@@ -1,5 +1,6 @@
 package org.example.features.home;
 
+import java.util.Arrays;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -9,10 +10,13 @@ import org.example.features.order.OrderService;
 import org.example.features.translation.Language;
 import org.example.features.translation.TranslationService;
 import org.example.shared.SceneRouter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /** The type Home controller. */
 public class HomeController {
 
+  private final Logger log = LoggerFactory.getLogger(HomeController.class);
   private final SceneRouter sceneRouter;
   private final OrderService orderService;
   private final HomeModel homeModel;
@@ -35,6 +39,7 @@ public class HomeController {
 
   @FXML
   public void initialize() {
+    log.info(Arrays.toString(Language.values()));
     languageSelector.getItems().setAll(Language.values());
     languageSelector.getSelectionModel().select(Language.ENGLISH); // Default selection
     languageSelector.getStyleClass().add("language-combo");
