@@ -129,3 +129,25 @@ CREATE TABLE IF NOT EXISTS Translations (
     modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     UNIQUE (original_text_hash, source_lang, target_lang)
 );
+
+CREATE IF NOT EXISTS Ingredients (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name        VARCHAR(255)   NOT NULL,
+    price DECIMAL(10, 2) NOT NULL CHECK (price >= 0),
+);
+
+CREATE IF NOT EXISTS Product_Indgredients (
+    product_id INT NOT NULL,
+    ingredients_id INT NOT NULL,
+    PRIMARY KEY (product_id, ingredients_id),
+    FOREIGN KEY (product_id) REFERENCES Product(id) ON DELETE CASCADE,
+    FOREIGN KEY (ingredients_id) REFERENCES Ingredients(id) ON DELETE CASCADE
+
+);
+
+INSERT INTO Ingredients (name, price)
+VALUES 
+
+('Lettuce', 0.50),
+('Tomato', 0.60),
+('Cheese', 0.75);
