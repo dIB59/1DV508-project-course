@@ -1,5 +1,6 @@
 package org.example.features.translation;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
@@ -13,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class TranslationService {
+  public static final String DO_NOT_TRANSLATE = "doNotTranslate";
   private final TranslationRepository repo;
   private final LibreTranslateClient client;
   private static final Logger logger = LoggerFactory.getLogger(TranslationService.class);
@@ -45,6 +47,8 @@ public class TranslationService {
       String targetLang,
       Consumer<Double> progressCallback
   ) {
+    LocalDateTime now = LocalDateTime.now();
+    logger.info("Caching translations from {} to {} at {}", sourceLang, targetLang, now);
     return CompletableFuture.supplyAsync(() -> {
       List<String> textsToTranslate = repo.findUntranslatedTexts(sourceLang, targetLang);
       int total = textsToTranslate.size();
@@ -67,7 +71,7 @@ public class TranslationService {
         progressCallback.accept(progress);
       }
 
-      logger.info("Successfully cached {} translations from {} to {}", successCount, sourceLang, targetLang);
+      logger.info("Successfully cached {} translations from {} to {} at {}", successCount, sourceLang, targetLang, now);
       return successCount;
     });
   }
@@ -89,12 +93,18 @@ public class TranslationService {
   private void traverseAndRestore(Node node) {
     switch (node) {
       case Labeled labeled -> {
+        if (labeled.getProperties().get(DO_NOT_TRANSLATE) != null) {
+          return;
+        }
         Object original = labeled.getProperties().get("originalText");
         if (original instanceof String originalText) {
           labeled.setText(originalText);
         }
       }
       case Text textNode -> {
+        if (textNode.getProperties().get(DO_NOT_TRANSLATE) != null) {
+          return;
+        }
         Object original = textNode.getProperties().get("originalText");
         if (original instanceof String originalText) {
           textNode.setText(originalText);
@@ -113,6 +123,9 @@ public class TranslationService {
   private void traverseAndTranslate(Node node, String sourceLang, String targetLang) {
     switch (node) {
       case Labeled labeled -> {
+        if (labeled.getProperties().get(DO_NOT_TRANSLATE) != null) {
+          return;
+        }
         String originalText = labeled.getText();
         if (labeled.getProperties().get("originalText") != null) {
           originalText = (String) labeled.getProperties().get("originalText");
@@ -130,6 +143,9 @@ public class TranslationService {
         }
       }
       case Text textNode -> {
+        if (textNode.getProperties().get(DO_NOT_TRANSLATE) != null) {
+          return;
+        }
         String originalText = textNode.getText();
         if (textNode.getProperties().get("originalText") != null) {
           originalText = (String) textNode.getProperties().get("originalText");

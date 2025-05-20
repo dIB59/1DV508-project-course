@@ -134,13 +134,13 @@ public class TranslationRepository {
 
     // Find all source texts that don't have a corresponding target language translation
     String query = """
-        SELECT DISTINCT t1.original_text 
+        SELECT DISTINCT t1.original_text
         FROM Translations t1
-        WHERE t1.source_lang = ? 
+        WHERE t1.source_lang = ?
         AND NOT EXISTS (
-            SELECT 1 FROM Translations t2 
-            WHERE t2.original_text_hash = t1.original_text_hash 
-            AND t2.source_lang = ? 
+            SELECT 1 FROM Translations t2
+            WHERE t2.original_text_hash = t1.original_text_hash
+            AND t2.source_lang = ?
             AND t2.target_lang = ?
         )
         """;

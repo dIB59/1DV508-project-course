@@ -9,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+import org.example.features.translation.TranslationService;
 import org.example.shared.SceneRouter;
 
 public class CouponsController {
@@ -29,8 +30,9 @@ public class CouponsController {
       Button deleteButton = new Button("Delete coupon");
 
       Label code = new Label(coupons.getCode());
+      code.getProperties().put(TranslationService.DO_NOT_TRANSLATE, true);
       Label discount = new Label(String.format("%.0f", coupons.getDiscount() * 100));
-
+      // add property to label top doNotTranslate
       VBox coupon = new VBox(code, discount, deleteButton);
       coupon.setSpacing(5);
       coupon.setStyle("-fx-padding: 10; -fx-border-color: #ccc; -fx-border-radius: 5;");
