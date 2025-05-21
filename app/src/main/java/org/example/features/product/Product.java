@@ -2,7 +2,10 @@ package org.example.features.product;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import org.example.database.Identifiable;
 import org.example.features.ingredients.Ingredient;
 
@@ -23,7 +26,7 @@ public class Product implements Identifiable<Integer> {
   private String specialLabel;
   private Boolean isASide;
   private List<Tag> tags;
-  private final List<Ingredient> ingredients = new ArrayList<>();
+  private Map<Ingredient, Integer> defaultIngredients = new HashMap<>();
 
   /**
    * Instantiates a new Product.
@@ -150,28 +153,28 @@ public class Product implements Identifiable<Integer> {
     return tagIds;
   }
 
-  public List<Ingredient> getIngredients(){
-    return List.copyOf(ingredients);
+  public void setIngredients(Map<Ingredient, Integer> ingredients) {
+    this.defaultIngredients = ingredients;
   }
 
-  public void addIngredient(Ingredient ing){
-    if (ing != null && !ingredients.contains(ing))
-    {
-      ingredients.add(ing);
-    }
+  public Map<Ingredient, Integer> getIngredients() {
+        return defaultIngredients;
   }
 
-  public void removeIngredient(Ingredient ing){
-    if(ing!= null && ingredients.contains(ing)){
-      ingredients.remove(ing);
+  public void addIngredient(Ingredient ingredient, int quantity) {
+    if (defaultIngredients.containsKey(ingredient)) {
+        int currentQty = defaultIngredients.get(ingredient);
+        defaultIngredients.put(ingredient, currentQty + quantity);
+    } else {
+        defaultIngredients.put(ingredient, quantity);
     }
-  }
+}
 
   @Override
   public String toString() {
     return String.format(
         "Product{id=%d, name='%s', description='%s', price=%.2f, imageUrl='%s', tags=%s, ingredients='%s'}",
-        id, name, description, price, imageUrl, tags, ingredients
+        id, name, description, price, imageUrl, tags, defaultIngredients
     );
   }
 }

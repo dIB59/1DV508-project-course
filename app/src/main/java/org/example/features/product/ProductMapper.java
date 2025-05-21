@@ -55,7 +55,7 @@ public class ProductMapper implements EntityMapper<Product> {
 
     List<Ingredient> ingredients = ingredientRepository.getIngredientsForProduct(product);
       for (Ingredient ingredient : ingredients) {
-        product.addIngredient(ingredient);
+        product.addIngredient(ingredient, 1);
       }
 
     return product;

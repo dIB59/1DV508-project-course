@@ -1,27 +1,35 @@
 package org.example.features.order;
 
+import org.example.features.product.CustomizedProduct;
 import org.example.features.product.Product;
 
 /**
- * ProductQuantity class represents a product and its quantity in an order. It contains methods to
+ * ProductQuantity class represents a product and its quantity in an order. It
+ * contains methods to
  * add or subtract the quantity of the product.
  *
- * <p>The reason is that product is stored within the database, and the quantity is not
+ * <p>
+ * The reason is that product is stored within the database, and the quantity is
+ * not
  */
 public class ProductQuantity {
 
-  private final Product product;
+  private final CustomizedProduct customizedProduct;
   private int quantity;
 
   /**
    * Instantiates a new Product quantity.
    *
-   * @param product the product
+   * @param product  the product
    * @param quantity the quantity
    */
-  public ProductQuantity(Product product, int quantity) {
-    this.product = product;
+  public ProductQuantity(CustomizedProduct customizedProduct, int quantity) {
+    this.customizedProduct = customizedProduct;
     this.quantity = quantity;
+  }
+
+  public CustomizedProduct getCustomizedProduct() {
+    return customizedProduct;
   }
 
   /**
@@ -48,7 +56,7 @@ public class ProductQuantity {
    * @return the product id
    */
   public int getProductId() {
-    return product.getId();
+    return customizedProduct.getProduct().getId();
   }
 
   /**
@@ -57,7 +65,7 @@ public class ProductQuantity {
    * @return the price
    */
   public double getPrice() {
-    return product.getPrice() * quantity;
+    return customizedProduct.getTotalPrice() * quantity;
   }
 
   /**
@@ -74,12 +82,9 @@ public class ProductQuantity {
    *
    * @return the product
    */
-  public Product getProduct() {
-    return product;
-  }
 
   @Override
   public String toString() {
-    return "ProductQuantity{" + "product=" + product + ", quantity=" + quantity + '}';
+    return "ProductQuantity{" + "product=" + customizedProduct.getProduct().getName() + ", quantity=" + quantity + '}';
   }
 }
