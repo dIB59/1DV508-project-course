@@ -6,7 +6,11 @@ package org.example;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.sql.Connection;
+
 import org.example.database.TestDatabase;
+import org.example.features.ingredients.IngredientMapper;
+import org.example.features.ingredients.IngredientsRepository;
 import org.example.features.product.Product;
 import org.example.features.product.ProductMapper;
 import org.example.features.product.ProductRepository;
@@ -28,13 +32,13 @@ class AppTest {
     database.resetDatabase();
   }
 
-
   @Test
   void productRepoTest() throws Exception {
-    ProductRepository productRepository =
-        new ProductRepository(database.getConnection(), new ProductMapper());
-
-    //  Product(String name, String description, double price, String imageUrl, String specialLabel, boolean isASide)
+    Connection connection = database.getConnection();
+    ProductRepository productRepository = new ProductRepository(connection,
+        new ProductMapper(new IngredientsRepository(connection, new IngredientMapper())));
+    // Product(String name, String description, double price, String imageUrl,
+    // String specialLabel, boolean isASide)
     productRepository.save(new Product("Test Product", "Test Description", 10.0, "image.jpeg", "Test label", false));
 
     assertEquals(
@@ -46,10 +50,12 @@ class AppTest {
 
   @Test
   void productTagsTest() throws Exception {
-    ProductRepository productRepository =
-        new ProductRepository(database.getConnection(), new ProductMapper());
+    Connection connection = database.getConnection();
+    ProductRepository productRepository = new ProductRepository(connection,
+        new ProductMapper(new IngredientsRepository(connection, new IngredientMapper())));
 
-    var product = productRepository.save(new Product("Test Product", "Test Description", 10.0, "image.jpeg", "Test label", false));
+    var product = productRepository
+        .save(new Product("Test Product", "Test Description", 10.0, "image.jpeg", "Test label", false));
 
     var previousTags = product.getTags();
 
@@ -59,7 +65,8 @@ class AppTest {
     var tags = productRepository.findAllTags();
 
     Product updatedProduct = new Product(
-       product.getName(), product.getDescription(), product.getPrice(), product.getImageUrl(), product.getSpecialLabel(),product.getisASide(),  tags);
+        product.getName(), product.getDescription(), product.getPrice(), product.getImageUrl(),
+        product.getSpecialLabel(), product.getisASide(), tags);
 
     assertEquals(2, updatedProduct.getTags().size());
   }

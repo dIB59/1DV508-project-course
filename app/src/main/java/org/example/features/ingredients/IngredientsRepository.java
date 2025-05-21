@@ -23,25 +23,38 @@ public class IngredientsRepository {
         this.mapper = mapper;
     }
 
-    public Optional<Ingredient> getIngredientsForProduct(Product product) throws SQLException {
+    public List<Ingredient> getIngredientsForProduct(Product product) throws SQLException {
         int productId = product.getId();
 
         String sql = """
-                SELECT i.* FROM Ingridients i
+                SELECT i.* FROM Ingredients i
                 JOIN Product_ingredients pi on i.id = pi.ingredients_id
                 WHERE pi.product_id = ?
                 """;
 
+        List<Ingredient> ingredients= new ArrayList<>();
+
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, productId);
             ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                return Optional.of(mapper.map(rs));
-
+            while(rs.next()){
+                ingredients.add(mapper.map(rs));
             }
         }
-        return Optional.empty();
+        return ingredients;
     }
+
+    public Optional<Ingredient> findById(Integer id) throws SQLException {
+    String sql = "SELECT * FROM Ingredients WHERE id = ?";
+    try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+        stmt.setInt(1, id);
+        ResultSet rs = stmt.executeQuery();
+        if (rs.next()) {
+            return Optional.of(mapper.map(rs));
+        }
+    }
+    return Optional.empty();
+}
 
     public Ingredient save(Ingredient entity) throws SQLException {
         String sql = """
@@ -67,10 +80,23 @@ public class IngredientsRepository {
     }
 
     public void delete(Integer id) throws SQLException {
+
     String sql = "DELETE FROM " + tableName + " WHERE id = ?";
     try (PreparedStatement stmt = connection.prepareStatement(sql)) {
       stmt.setInt(1, id);
       stmt.executeUpdate();
     }
   }
+  public void update(Ingredient ingredient) throws SQLException {
+    String sql = "UPDATE Ingredients SET name = ?, price = ? WHERE id = ?";
+    try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+        stmt.setString(1, ingredient.getName());
+        stmt.setDouble(2, ingredient.getPrice());
+        stmt.setInt(3, ingredient.getId());
+        stmt.executeUpdate();
+    }
 }
+
+}
+
+

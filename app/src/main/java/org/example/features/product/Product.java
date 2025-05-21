@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.example.database.Identifiable;
+import org.example.features.ingredients.Ingredient;
 
 /**
  * Represents a product in the system.
@@ -22,8 +23,7 @@ public class Product implements Identifiable<Integer> {
   private String specialLabel;
   private Boolean isASide;
   private List<Tag> tags;
-  private String ingredients;
-
+  private final List<Ingredient> ingredients = new ArrayList<>();
 
   /**
    * Instantiates a new Product.
@@ -88,16 +88,6 @@ public class Product implements Identifiable<Integer> {
     return description;
   }
 
-  public String getIngredients(){return ingredients; }
-
-  public void setIngredients(String ingredients) {
-    this.ingredients = ingredients;
-  }
-
-  public List<String> getIngredientsList() {
-    return Arrays.asList(this.ingredients.split(","));
-  }
-
   public void setDescription(String description) {
     if (description == null || description.isBlank()) {
       throw new IllegalArgumentException("Description cannot be null or empty");
@@ -158,6 +148,23 @@ public class Product implements Identifiable<Integer> {
       tagIds.add(tag.getId());
     }
     return tagIds;
+  }
+
+  public List<Ingredient> getIngredients(){
+    return List.copyOf(ingredients);
+  }
+
+  public void addIngredient(Ingredient ing){
+    if (ing != null && !ingredients.contains(ing))
+    {
+      ingredients.add(ing);
+    }
+  }
+
+  public void removeIngredient(Ingredient ing){
+    if(ing!= null && ingredients.contains(ing)){
+      ingredients.remove(ing);
+    }
   }
 
   @Override
