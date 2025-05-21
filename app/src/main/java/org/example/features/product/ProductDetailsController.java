@@ -97,7 +97,7 @@ public class ProductDetailsController {
 
         for(Ingredient ing : ingredients.keySet()) {
           Label ingLabel = new Label(ing.getName() + "($" + String.format("%.2f", ing.getPrice()) + ")");
-          Spinner<Integer> ingSpinner = new Spinner<>(1,10, ingredients.get(ing));
+          Spinner<Integer> ingSpinner = new Spinner<>(0,10, ingredients.get(ing));
           ingSpinner.setPrefWidth(80);
           ingredientSpinnerMap.put(ing, ingSpinner);
 
