@@ -44,6 +44,14 @@ public class OrderService {
     return this.order.getMember();
   }
 
+  public void setFeedback(int feedback){
+    this.order.setFeedback(feedback);
+  }
+
+  public  int getFeedback(){
+    return this.order.getFeedback();
+  }
+
   public void setMemberDB(boolean getMember){
     if (getMember){
       this.order.setMember();
@@ -86,6 +94,7 @@ public class OrderService {
       s.setMemberDB(order.getMember());
       s.settype(order.gettype());
       s.setMemberID(order.getMemberID());
+      s.setFeedback(order.getFeedback());
       this.clear();
       return s;
     } catch (Exception e) {

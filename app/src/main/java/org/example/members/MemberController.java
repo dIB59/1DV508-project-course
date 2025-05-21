@@ -29,12 +29,12 @@ public class MemberController {
     this.orderService = orderService;
   }
 
-  public void goToPaymentPage() {
-    sceneRouter.goToPaymentPage();
+  public void goToFeedbackPage() {
+    sceneRouter.goToFeedbackPage();
   }
 
   public void handleNonMemberLoginButtionAction(ActionEvent actionevent){
-    goToPaymentPage();
+    goToFeedbackPage();
   }
 
   public void handleLoginButtonAction(ActionEvent actionEvent) throws SQLException {
@@ -56,7 +56,7 @@ public class MemberController {
     if (validateCredentials(number)) {
       this.orderService.setMember();
       this.orderService.setMemberID(number);
-      goToPaymentPage();
+      goToFeedbackPage();
     } else {
       MemberLoginLabel.setText("Please enter correct personal number");
     }

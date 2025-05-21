@@ -13,7 +13,8 @@ CREATE TABLE IF NOT EXISTS Product
 -- Table for Order
 CREATE TABLE IF NOT EXISTS Orders
 (
-    id INT AUTO_INCREMENT PRIMARY KEY
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    feedback INT NOT NULL
 );
 
 -- Table for ProductQuantity (associates products with orders and quantities)

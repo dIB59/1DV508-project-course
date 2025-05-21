@@ -17,6 +17,7 @@ public class Order implements Identifiable<Integer> {
   private final List<ProductQuantity> productQuantity;
   private Discount discount = new Coupons("No Discount", 0);
   private int id;
+  private int feedback;
   private boolean isMember;
   private int memberID;
 
@@ -123,6 +124,13 @@ public class Order implements Identifiable<Integer> {
     this.id = id;
   }
 
+  public void setFeedback(int feedback) {
+    this.feedback = feedback;
+  }
+
+  public  int getFeedback() {
+    return this.feedback;
+  }
   /**
    * Returns the list of ProductQuantity objects in the order.
    *
