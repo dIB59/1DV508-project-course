@@ -131,13 +131,13 @@ CREATE TABLE IF NOT EXISTS Translations (
     UNIQUE (original_text_hash, source_lang, target_lang)
 );
 
-CREATE IF NOT EXISTS Ingredients (
+CREATE TABLE IF NOT EXISTS Ingredients (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name        VARCHAR(255)   NOT NULL,
-    price DECIMAL(10, 2) NOT NULL CHECK (price >= 0),
+    price DECIMAL(10, 2) NOT NULL CHECK (price >= 0)
 );
 
-CREATE IF NOT EXISTS Product_Indgredients (
+CREATE TABLE IF NOT EXISTS Product_ingredients (
     product_id INT NOT NULL,
     ingredients_id INT NOT NULL,
     PRIMARY KEY (product_id, ingredients_id),
@@ -152,3 +152,9 @@ VALUES
 ('Lettuce', 0.50),
 ('Tomato', 0.60),
 ('Cheese', 0.75);
+
+INSERT INTO Product_ingredients (product_id, ingredients_id)
+VALUES
+(1, 1),
+(1, 2),  
+(1, 3);  

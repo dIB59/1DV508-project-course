@@ -6,9 +6,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.example.database.EntityMapper;
+import org.example.features.ingredients.*;
 
 /** The type Product mapper. */
 public class ProductMapper implements EntityMapper<Product> {
+
+  private final IngredientsRepository ingredientRepository;
+
+  public ProductMapper(IngredientsRepository ingredientRepository) {
+    this.ingredientRepository = ingredientRepository;
+  }
 
   @Override
   public Product map(ResultSet rs) throws SQLException {
@@ -34,14 +41,23 @@ public class ProductMapper implements EntityMapper<Product> {
       tags.add(new Tag(tagIds.get(i), tagsName.get(i)));
     }
 
-    return new Product(
-        rs.getInt("id"),
-        rs.getString("name"),
-        rs.getString("description"),
-        rs.getDouble("price"),
-        rs.getString("image_url"),
-        rs.getString("specialLabel"),
-        rs.getBoolean("isASide"),
-        tags);
+    int id = rs.getInt("id");
+
+    Product product = new Product(
+      id,
+      rs.getString("name"),
+      rs.getString("description"),
+      rs.getDouble("price"),
+      rs.getString("image_url"),
+      rs.getString("specialLabel"),
+      rs.getBoolean("isASide"),
+      tags);
+
+    List<Ingredient> ingredients = ingredientRepository.getIngredientsForProduct(product);
+      for (Ingredient ingredient : ingredients) {
+        product.addIngredient(ingredient);
+      }
+
+    return product;
   }
 }
