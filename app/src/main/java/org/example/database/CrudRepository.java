@@ -1,6 +1,5 @@
 package org.example.database;
 
-import org.example.members.Member;
 
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;

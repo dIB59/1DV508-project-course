@@ -4,13 +4,11 @@ import javafx.animation.PauseTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -23,6 +21,9 @@ public class AdminController {
   private final AdminRepository adminRepository;
   @FXML private TextField usernameField;
   @FXML private PasswordField passwordField;
+  @FXML private TextField visiblePasswordField;
+  @FXML private javafx.scene.control.Button togglePasswordBtn;
+
 
   /**
    * Instantiates a new Admin controller.
@@ -33,6 +34,22 @@ public class AdminController {
     this.sceneRouter = sceneRouter;
     this.adminRepository = adminRepository;
   }
+  @FXML
+  private void initialize() {
+    visiblePasswordField.textProperty().bindBidirectional(passwordField.textProperty());
+  }
+
+  @FXML
+  private void togglePasswordVisibility() {
+    boolean isVisible = visiblePasswordField.isVisible();
+
+    visiblePasswordField.setVisible(!isVisible);
+    visiblePasswordField.setManaged(!isVisible);
+
+    passwordField.setVisible(isVisible);
+    passwordField.setManaged(isVisible);
+  }
+
 
   /** Go to admin page. */
   public void goToDashboard() {

@@ -8,10 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.example.database.CrudRepository;
+import org.example.database.EntityMapper;
 
 public class AdminRepository implements CrudRepository<Admin, Integer> {
 
-  private final AdminMapper adminMapper;
+  private final EntityMapper<Admin> adminMapper;
   private final Connection connection;
 
   public AdminRepository(Connection connection, AdminMapper adminMapper) {

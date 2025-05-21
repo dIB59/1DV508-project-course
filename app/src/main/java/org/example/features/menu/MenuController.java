@@ -2,6 +2,7 @@ package org.example.features.menu;
 
 import java.sql.SQLException;
 import java.util.List;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
@@ -12,43 +13,61 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Rectangle;
-
+import org.example.AppContext;
+import org.example.features.campaign.CampaignRepository;
 import org.example.features.order.OrderService;
 import org.example.features.product.Product;
 import org.example.features.product.ProductRepository;
 import org.example.features.product.Tag;
 import org.example.shared.SceneRouter;
+import org.example.features.translation.Language;
+import org.example.features.translation.TranslationService;
 
 public class MenuController {
 
   private final MenuModel model;
   private final ProductRepository productRepository;
+  private final CampaignRepository campaignRepository;
   private final SceneRouter sceneRouter;
   private final OrderService orderService;
+  private final TranslationService translationService;
 
+  @FXML private AnchorPane menuView;
   @FXML private GridPane menuGrid;
-  @FXML private HBox tagButtonContainer;
+  @FXML private VBox tagButtonContainer;
 
   public MenuController(
       MenuModel model,
       ProductRepository productRepository,
+      CampaignRepository campaignRepository,
       SceneRouter sceneRouter,
-      OrderService orderService) {
+      OrderService orderService,
+      TranslationService translationService // Inject translation service
+  ) {
     this.model = model;
     this.productRepository = productRepository;
+    this.campaignRepository = campaignRepository;
     this.sceneRouter = sceneRouter;
     this.orderService = orderService;
+    this.translationService = translationService;
   }
 
   public void initialize() {
     populateTagButtons();
-    displayProductCards(getMenuItems());
+    displayAndTranslate(getMenuItems());
+
+    // Re-enable translation on UI init
+    Platform.runLater(() -> {
+      if (menuView.getScene() != null && AppContext.getInstance().getLanguage() != Language.ENGLISH) {
+        translationService.translate(menuView.getScene().getRoot());
+      }
+    });
   }
 
   private void populateTagButtons() {
     Button allButton = new Button("All");
     styleTagButton(allButton, true);
-    allButton.setOnAction(e -> displayProductCards(getMenuItems()));
+    allButton.setOnAction(e -> displayAndTranslate(getMenuItems()));
     tagButtonContainer.getChildren().add(allButton);
 
     try {
@@ -59,8 +78,7 @@ public class MenuController {
         tagButton.setOnAction(e -> {
           try {
             List<Product> filteredProducts = productRepository.findProductsByTagName(tag.getName());
-            displayProductCards(filteredProducts);
-            System.out.println("Filtered products for tag " + tag.getName() + ": " + filteredProducts);
+            displayAndTranslate(filteredProducts); // Call helper
           } catch (SQLException ex) {
             System.err.println("Error loading products for tag " + tag.getName() + ": " + ex.getMessage());
           }
@@ -72,7 +90,6 @@ public class MenuController {
     }
   }
 
-  /** Go to memberlogin page. */
   public void goToMemberLogin() {
     sceneRouter.goToMemberLoginPage();
   }
@@ -92,9 +109,16 @@ public class MenuController {
     button.setMaxWidth(Double.MAX_VALUE);
   }
 
+  private void displayAndTranslate(List<Product> products) {
+    displayProductCards(products);
+    if (AppContext.getInstance().getLanguage() != Language.ENGLISH) {
+      translationService.translate(menuView);
+    }
+  }
+
   private void displayProductCards(List<Product> products) {
     menuGrid.getChildren().clear();
-    menuGrid.setHgap(15.0); // Reduced from 30.0
+    menuGrid.setHgap(15.0);
     menuGrid.setVgap(15.0);
     menuGrid.setAlignment(Pos.CENTER);
     menuGrid.getRowConstraints().clear();
@@ -109,30 +133,27 @@ public class MenuController {
       column.setMaxWidth(columnWidth);
       column.setHalignment(HPos.CENTER);
       menuGrid.getColumnConstraints().add(column);
-  }
+    }
 
-  int col = 0;
-  int row = 0;
+    int col = 0;
+    int row = 0;
 
-  for (Product product : products) {
+    for (Product product : products) {
       StackPane productCard = createProductCard(product);
-      
-      // Set exact size for the card
       productCard.setPrefWidth(400);
       productCard.setMaxWidth(400);
       productCard.setMinWidth(400);
-      
+
       menuGrid.add(productCard, col, row);
       col++;
       if (col >= columns) {
-          col = 0;
-          row++;
+        col = 0;
+        row++;
       }
     }
   }
 
   private StackPane createProductCard(Product product) {
-
     ImageView imageView = new ImageView();
     try {
       if (product.getImageUrl() != null && !product.getImageUrl().isBlank()) {
@@ -146,18 +167,16 @@ public class MenuController {
     clip.setArcWidth(30);
     clip.setArcHeight(30);
     imageView.setClip(clip);
-
-    imageView.setPreserveRatio(false); // Do not preserve aspect ratio, stretch to fit
+    imageView.setPreserveRatio(false);
     imageView.setSmooth(true);
     imageView.setCache(true);
     imageView.setFitWidth(400);
     imageView.setFitHeight(350);
-    
 
     Label name = new Label(product.getName());
     name.setStyle("-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;");
     name.setWrapText(true);
-    name.setPadding(new Insets(0, 0, 0, 10)); 
+    name.setPadding(new Insets(0, 0, 0, 10));
     HBox.setHgrow(name, Priority.ALWAYS);
 
     Label price = new Label(String.format("$%.2f", product.getPrice()));
@@ -170,10 +189,6 @@ public class MenuController {
             """);
     description.setWrapText(true);
     description.setMaxWidth(280);
-
-    /*Button addButton = new Button("Add to Order");
-    addButton.setStyle("-fx-background-color: #34495e; -fx-text-fill: white; -fx-background-radius: 5;");
-    addButton.setOnAction(e -> sceneRouter.goToProductDetailsPage(product)); */
 
     HBox textContainer = new HBox(10);
     textContainer.setAlignment(Pos.CENTER_LEFT);
@@ -195,7 +210,6 @@ public class MenuController {
         """);
 
     card.setOnMouseClicked(e -> sceneRouter.goToProductDetailsPage(product));
-
 
     if (product.getSpecialLabel() != null && !product.getSpecialLabel().isEmpty()) {
       Label special = new Label(product.getSpecialLabel());

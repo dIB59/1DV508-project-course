@@ -1,6 +1,5 @@
 package org.example.features.coupons;
 import org.example.database.Identifiable;
-import org.example.features.product.ProductDetailsController;
 
 public class Coupons implements Discount, Identifiable<String> {
   private final String code;

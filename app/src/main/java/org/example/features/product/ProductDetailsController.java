@@ -1,26 +1,21 @@
 package org.example.features.product;
 
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
+import org.example.features.ingredients.Ingredient;
 import org.example.features.order.OrderService;
 import org.example.shared.SceneRouter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.sql.SQLException;
-import javafx.application.Platform;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 
 public class ProductDetailsController {
   private final OrderService orderService;
@@ -29,7 +24,7 @@ public class ProductDetailsController {
   private final ProductRepository productRepository;
 
   private final Map<Product, Spinner<Integer>> sideSpinnerMap = new HashMap<>();
-
+  private final Map<Ingredient, Spinner<Integer>> ingredientSpinnerMap = new HashMap<>();
 
   @FXML private Label productName;
 
@@ -41,6 +36,10 @@ public class ProductDetailsController {
 
   @FXML private Button addToOrderButton;
 
+  @FXML private VBox   ingredientsContainer;
+
+  @FXML private Label  totalPriceLabel;
+
   @FXML private Button goBackButton;
 
   public ProductDetailsController(OrderService orderService, SceneRouter sceneRouter,ProductRepository productRepository) {
@@ -50,7 +49,6 @@ public class ProductDetailsController {
   }
 
   public void setProduct(Product product) {
-    System.out.println("FUNCTION CALLED");
     this.product = product;
     if (productName != null && productPrice != null && quantitySpinner != null) {
       // Update product details
@@ -61,12 +59,7 @@ public class ProductDetailsController {
 
       // Set a SpinnerValueFactory to manage the Spinner's value
       SpinnerValueFactory<Integer> valueFactory =
-          new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 100, 1); // Min:
-      // 1,
-      // Max:
-      // 100,
-      // Initial:
-      // 1
+          new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 100, 1);
       quantitySpinner.setValueFactory(valueFactory);
 
       // Ensure the Spinner is editable
@@ -89,12 +82,33 @@ public class ProductDetailsController {
                       .setText(oldValue); // Revert to old value if non-numeric
                 }
               });
-        
+
+
     } else {
       System.err.println("FXML fields are not initialized. Check FXML fx:id or initialization.");
     }
 
   }
+
+  public void displayIngredients() {
+    if (ingredientsContainer != null) {
+        ingredientsContainer.getChildren().clear();
+        ingredientSpinnerMap.clear();
+
+        Map<Ingredient, Integer> ingredients = product.getIngredients();
+
+        for(Ingredient ing : ingredients.keySet()) {
+          Label ingLabel = new Label(ing.getName() + "($" + String.format("%.2f", ing.getPrice()) + ")");
+          Spinner<Integer> ingSpinner = new Spinner<>(0,10, ingredients.get(ing));
+          ingSpinner.setPrefWidth(80);
+          ingredientSpinnerMap.put(ing, ingSpinner);
+
+          HBox ingBox = new HBox(10, ingLabel, ingSpinner);
+          ingredientsContainer.getChildren().add(ingBox);
+    }
+  }
+
+}
   @FXML private VBox sidesContainer;
 
   public void displaySides() {
@@ -103,9 +117,9 @@ public class ProductDetailsController {
         if (sidesContainer != null) {
           sidesContainer.getChildren().clear();
           for (Product p : sides) {
-            if (p.getisASide()) { // Use the correct getter
+            if (p.getisASide()) {
               Label sideLabel = new Label(p.getName() + " ($" + String.format("%.2f", p.getPrice()) + ")");
-              Spinner<Integer> sideSpinner = new Spinner<>(1, 10, 1);
+              Spinner<Integer> sideSpinner = new Spinner<>(0, 10, 0);
               sideSpinner.setPrefWidth(80);
 
               sideSpinnerMap.put(p, sideSpinner);
@@ -127,28 +141,45 @@ public class ProductDetailsController {
   public void addToOrder() {
 
 
-
     Integer quantity = quantitySpinner.getValue(); // Get the current value from the Spinner
     if (quantity == null) {
       System.err.println("Spinner value is null. Ensure SpinnerValueFactory is set.");
       return;
     }
 
-    for (int i = 0; i < quantity; i++) {
-      orderService.addItem(product);
+    Map<Ingredient, Integer> selectedIngredients = new HashMap<>();
+
+    // adding ingredients and products
+    for (Map.Entry<Ingredient, Spinner<Integer>> entry : ingredientSpinnerMap.entrySet()) {
+      Ingredient ingredient = entry.getKey();
+      Integer ingQuantity = entry.getValue().getValue();
+
+      if (ingQuantity != null && ingQuantity > 0) {
+        selectedIngredients.put(ingredient, ingQuantity);
+      }
     }
-    //Add sides to the order based on spinner values
+
+    for (int i = 0; i < quantity; i++) {
+      if (!selectedIngredients.isEmpty()) {
+        orderService.addItem(product, selectedIngredients);
+      } else {
+        orderService.addItem(product, new HashMap<>());
+      }
+    }
+
+    // handeling sides
     for (Map.Entry<Product, Spinner<Integer>> entry : sideSpinnerMap.entrySet()) {
       Product side = entry.getKey();
       Integer sideQuantity = entry.getValue().getValue();
-  
-      for (int i = 0; i < sideQuantity; i++) {
-        orderService.addItem(side);
+
+      if (sideQuantity != null && sideQuantity > 0) {
+        for (int i = 0; i < sideQuantity; i++) {
+          orderService.addItem(side, new HashMap<>());
+        }
       }
     }
-    sceneRouter.goToMenuPage(); // reroute back to menu page once done
+    sceneRouter.goToMenuPage();
   }
-
     @FXML
     private void goBack() {
       sceneRouter.goToMenuPage(); // or goToHomePage() if you prefer

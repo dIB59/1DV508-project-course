@@ -94,6 +94,66 @@ INSERT INTO Coupons (code, discount) VALUES
 
 CREATE TABLE IF NOT EXISTS Members
 (
-    id       INT AUTO_INCREMENT PRIMARY KEY,
-    personal_number INT NOT NULL
+    personal_number INT NOT NULL,
+    points INT NOT NULL
 );
+
+INSERT INTO Members (personal_number, points) VALUES
+('12345', '0'),
+('6969','0');
+
+CREATE TABLE Campaign (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(255) NOT NULL,
+    description TEXT,
+    type ENUM('DISCOUNT', 'BUNDLE', 'BUY_ONE_GET_ONE') NOT NULL,
+    start_date DATE NOT NULL,
+    end_date DATE NOT NULL,
+    image_url VARCHAR(1024) NOT NULL
+);
+
+INSERT INTO Campaign (name, description, type, start_date, end_date, image_url)
+VALUES
+('Summer Sale', 'Get ready for summer with our special discounts!', 'DISCOUNT', '2025-05-01', '2025-08-31', 'assets/campaign1.jpg'),
+('Winter Wonderland', 'Warm up with our winter specials!', 'BUNDLE', '2025-12-01', '2025-08-28', 'assets/campaign2.jpg'),
+('Buy One Get One Free', 'Buy one item and get another one free!', 'BUY_ONE_GET_ONE', '2025-05-01', '2025-11-30', 'assets/campaign3.jpg');
+
+CREATE TABLE IF NOT EXISTS Translations (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    original_text_hash VARCHAR(64) NOT NULL, -- Using VARCHAR for hash
+    original_text TEXT,
+    source_lang VARCHAR(10) NOT NULL,
+    target_lang VARCHAR(10) NOT NULL,
+    translated_text TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    UNIQUE (original_text_hash, source_lang, target_lang)
+);
+
+CREATE TABLE IF NOT EXISTS Ingredients (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name        VARCHAR(255)   NOT NULL,
+    price DECIMAL(10, 2) NOT NULL CHECK (price >= 0)
+);
+
+CREATE TABLE IF NOT EXISTS Product_ingredients (
+    product_id INT NOT NULL,
+    ingredients_id INT NOT NULL,
+    PRIMARY KEY (product_id, ingredients_id),
+    FOREIGN KEY (product_id) REFERENCES Product(id) ON DELETE CASCADE,
+    FOREIGN KEY (ingredients_id) REFERENCES Ingredients(id) ON DELETE CASCADE
+
+);
+
+INSERT INTO Ingredients (name, price)
+VALUES 
+
+('Lettuce', 0.50),
+('Tomato', 0.60),
+('Cheese', 0.75);
+
+INSERT INTO Product_ingredients (product_id, ingredients_id)
+VALUES
+(1, 1),
+(1, 2),  
+(1, 3);  

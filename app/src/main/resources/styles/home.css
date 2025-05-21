@@ -1,0 +1,48 @@
+.language-combo {
+    -fx-background-color: #1e3a8a; /* Dark blue */
+    -fx-background-radius: 6;
+    -fx-border-radius: 6;
+    -fx-border-color: transparent;
+    -fx-font-size: 13px;
+    -fx-text-fill: #344467;
+    -fx-padding: 6 12;
+    -fx-cursor: hand;
+}
+
+/* Text inside the ComboBox (selected item) */
+.language-combo .text {
+    -fx-fill: white;
+    -fx-font-weight: 500;
+}
+
+/* Dropdown container styling */
+.combo-box-popup .list-view {
+    -fx-background-color: #1e3a8a;          /* Bright white for contrast */
+    -fx-border-color: #1e3a8a;              /* Match main color */
+    -fx-border-width: 1px;
+    -fx-background-radius: 6;
+    -fx-padding: 4;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 8, 0, 0, 2); /* Elevation */
+}
+
+/* Items inside dropdown */
+.combo-box-popup .list-view .list-cell {
+    -fx-text-fill: #222;
+    -fx-font-size: 13px;
+    -fx-padding: 8 14;
+    -fx-background-color: transparent;
+    -fx-border-radius: 4;
+}
+
+/* Hovered item */
+.combo-box-popup .list-view .list-cell:hover {
+    -fx-background-color: #6f87b7;          /* Light blue hover */
+    -fx-text-fill: #1e3a8a;
+}
+
+/* Selected item */
+.combo-box-popup .list-view .list-cell:selected {
+    -fx-background-color: #6f87b7;          /* Light blue selected */
+    -fx-text-fill: #1e3a8a;
+    -fx-font-weight: bold;
+}

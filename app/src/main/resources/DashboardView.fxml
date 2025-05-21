@@ -11,9 +11,10 @@
             fx:controller="org.example.features.dashboard.DashboardController"
             style="-fx-background-color: white;
             -fx-min-width: 1920px;
-            -fx-min-height: 1080px;">
+-fx-min-height: 1080px;">
 
-    <BorderPane prefHeight="400.0" prefWidth="600.0">
+    <BorderPane AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"
+                AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
 
         <!-- Sidebar Navbar -->
         <left>
@@ -30,6 +31,11 @@
                         onAction="#goToCouponsPage"
                         prefWidth="120.0"/>
 
+                <Button text="Languages"
+                        style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14px; -fx-cursor: hand;"
+                        onAction="#goToLanguagesPage"
+                        prefWidth="120.0"/>
+
                 <Button text="Settings"
                         style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14px; -fx-cursor: hand;"
                         prefWidth="120.0"/>
@@ -38,25 +44,28 @@
                         style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14px; -fx-cursor: hand;"
                         onAction="#goToHomePage"
                         prefWidth="120.0"/>
-
             </VBox>
         </left>
 
         <!-- Main Content Area -->
         <center>
-            <Label text="Products" style="-fx-text-fill: black; -fx-font-size: 28px; -fx-font-weight: bold;"/>
+            <VBox spacing="20.0" alignment="TOP_CENTER" style="-fx-padding: 40;">
+                <Label text="Products" style="-fx-text-fill: black; -fx-font-size: 28px; -fx-font-weight: bold;"/>
 
-            <ScrollPane layoutX="10" layoutY="60" prefHeight="480.0" prefWidth="580.0" fitToWidth="true"
-                        AnchorPane.topAnchor="60" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10"
-                        AnchorPane.bottomAnchor="60">
-                <VBox fx:id="productList"
-                      spacing="20"
-                      alignment="TOP_CENTER"
-                      style="-fx-padding: 20;">
-                    <!-- Menu items dynamically injected here -->
-                </VBox>
-            </ScrollPane>
+                <Button text="Create Product"
+                        onAction="#createProduct"
+                        style="-fx-background-color: #000000; -fx-text-fill: white; -fx-font-size: 14px; -fx-cursor: hand;"
+                        prefWidth="160.0"/>
 
+                <ScrollPane fitToWidth="true" fitToHeight="true" maxHeight="Infinity" maxWidth="Infinity">
+                    <VBox fx:id="productList"
+                          spacing="20"
+                          alignment="TOP_CENTER"
+                          style="-fx-padding: 20;">
+                        <!-- Menu items dynamically injected here -->
+                    </VBox>
+                </ScrollPane>
+            </VBox>
         </center>
 
     </BorderPane>

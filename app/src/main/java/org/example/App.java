@@ -9,15 +9,20 @@ import org.example.features.order.Order;
 import org.example.features.order.OrderMapper;
 import org.example.features.order.OrderRepository;
 import org.example.features.order.OrderService;
+import org.example.features.translation.LibreTranslateClient;
+import org.example.features.translation.TranslationRepository;
+import org.example.features.translation.TranslationService;
 import org.example.shared.SceneRouter;
 
 /** The type App. */
 public class App extends Application {
 
   private final Database database;
+  private final AppContext appContext;
 
   public App() {
     this.database = Database.getInstance();
+    this.appContext = AppContext.getInstance();
   }
 
   @Override
@@ -26,17 +31,25 @@ public class App extends Application {
     System.out.println(AppConfig.getPayPalPublicKey());
     System.out.println(AppConfig.getPayPalPrivateKey());
 
+
     Connection conn = this.database.getConnection();
     var orderMapper = new OrderMapper();
     CrudRepository<Order, Integer> orderRepository = new OrderRepository(conn, orderMapper);
     primaryStage.setMaximized(true);
     var orderService = new OrderService(orderRepository);
 
-    SceneRouter router = new SceneRouter(primaryStage, orderService);
+    SceneRouter router = new SceneRouter(primaryStage, orderService, getTranslationService());
 
     primaryStage.setTitle("JavaFX with MySQL");
     router.goTo(SceneRouter.KioskPage.HOME);
     primaryStage.setMaximized(true);
     primaryStage.show();
   }
+
+
+  private TranslationService getTranslationService() {
+    return new TranslationService(new TranslationRepository(this.database.getConnection()), new LibreTranslateClient());
+  }
 }
+
+

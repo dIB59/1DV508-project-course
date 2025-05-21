@@ -1,5 +1,6 @@
 package org.example.features.receipt;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
@@ -8,14 +9,16 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+
+import org.example.features.ingredients.Ingredient;
 import org.example.features.order.Order;
 import org.example.features.order.ProductQuantity;
-import org.example.features.product.CustomizedProduct;
 import org.example.features.product.Product;
+import org.example.members.MemberRepository;
 import org.example.shared.SceneRouter;
 import javafx.animation.PauseTransition;
 import javafx.util.Duration;
-
 
 public class ReceiptController {
 
@@ -33,16 +36,16 @@ public class ReceiptController {
       restaurantNameLabel,
       addressLabel,
       contactLabel,
-      EatinEatoutlabel;
+      EatinEatoutlabel,
+      pointsLabel;
 
-  private final List<CustomizedProduct> customizedProducts;
+  private final MemberRepository memberRepository;
 
-  @FXML private Label extraIngredientsLabel;
 
-  public ReceiptController(Order order, SceneRouter sceneRouter, List<CustomizedProduct> customizedProducts) {
-    this.customizedProducts = customizedProducts;
+  public ReceiptController(Order order, SceneRouter sceneRouter, MemberRepository memberRepository) {
     this.order = order;
     this.sceneRouter = sceneRouter;
+    this.memberRepository = memberRepository;
   }
 
 
@@ -52,13 +55,40 @@ public class ReceiptController {
     List<ProductQuantity> productQuantities = order.getProductQuantity();
 
     for (ProductQuantity pq : productQuantities) {
-      Product product = pq.getProduct();
+      Product product = pq.getCustomizedProduct().getProduct();
       int quantity = pq.getQuantity();
-      double itemTotal = product.getPrice() * quantity;
+      double itemTotal = pq.getCustomizedProduct().getTotalPrice() * quantity;
 
       // Left: Product name with quantity
       Label nameLabel = new Label(product.getName() + " x" + quantity);
       nameLabel.getStyleClass().add("item-name");
+      VBox ingredientdiff = new VBox();
+      ingredientdiff.setSpacing(3);
+      Map<Ingredient, Integer> ingredients = pq.getCustomizedProduct().getIngredientquanities();
+      Map<Ingredient, Integer> defaultIngs = product.getIngredients();
+
+      for(Ingredient ingredient: defaultIngs.keySet()) {
+        int ingQuantity = ingredients.getOrDefault(ingredient, 0);
+        int defaultQty = defaultIngs.get(ingredient);
+
+        if(ingQuantity != defaultQty) {
+        String ingLabel;
+        if (ingQuantity > defaultQty) {
+          ingLabel = "+" + (ingQuantity - defaultQty) + " " + ingredient.getName();
+        }
+        else{
+          ingLabel = "-" + (defaultQty - ingQuantity) + " " + ingredient.getName();
+        }
+
+        Label IngredientLabel = new Label(ingLabel);
+        IngredientLabel.setFont(Font.font("Arial", javafx.scene.text.FontWeight.BOLD, 12));
+        ingredientdiff.getChildren().add(IngredientLabel);
+      }
+      }
+
+      VBox nameAndIngredientsBox = new VBox(nameLabel, ingredientdiff);
+      nameAndIngredientsBox.setSpacing(5);
+
 
       // Right: Price
       Label priceLabel = new Label(String.format("$%.2f", itemTotal));
@@ -67,7 +97,7 @@ public class ReceiptController {
       HBox.setHgrow(priceLabel, Priority.ALWAYS);
       priceLabel.setStyle("-fx-alignment: CENTER-RIGHT;");
 
-      HBox itemRow = new HBox(nameLabel, priceLabel);
+      HBox itemRow = new HBox(nameAndIngredientsBox, priceLabel);
       itemRow.setSpacing(10);
       itemRow.setStyle("-fx-padding: 5 0 5 0; -fx-alignment: center-left; -fx-pref-width: 100%;");
       HBox.setHgrow(priceLabel, Priority.ALWAYS);
@@ -75,6 +105,17 @@ public class ReceiptController {
 
       itemsContainer.getChildren().add(itemRow);
     }
+
+    if (order.getMember()) {
+      try {
+        int personalNumber = order.getMemberID();
+        int pointsToAdd = (int) Math.floor(order.getPrice()) * 10;
+        memberRepository.addPoints(personalNumber, pointsToAdd);
+      } catch (SQLException e) {
+        System.err.println("Failed to add points: " + e.getMessage());
+      }
+    }
+
     EatinEatoutlabel.setText(order.gettype());
     orderIdLabel.setText("Order Number: " + order.getId());
     totalLabel.setText(String.format("Total: $%.2f", order.getPrice()));
@@ -84,22 +125,8 @@ public class ReceiptController {
     addressLabel.setText("Address: 123 Food St, Tasty Town");
     contactLabel.setText("Contact: (123) 456-7890");
     memberLabel.setText("Member: " + order.getMember());
-
-    for (CustomizedProduct cp : customizedProducts) {
-      Product product = cp.getProduct();
-
-      Label productLabel = new Label(product.getName() + " x");
-      itemsContainer.getChildren().add(productLabel);
-
-      for (Map.Entry<String, Integer> entry : cp.getIngredientCounts().entrySet()) {
-        if (entry.getValue() > 0) {
-          Label ingredientLabel = new Label("  - " + entry.getKey() + " x" + entry.getValue());
-          ingredientLabel.setStyle("-fx-padding: 0 0 0 15; -fx-font-size: 12px;");
-          itemsContainer.getChildren().add(ingredientLabel);
-        }
-      }
-    }
-  startAutoRedirect();
+    pointsLabel.setText("Points added: " + (int) Math.floor(order.getPrice()) * 10 + " MemberID: " + order.getMemberID());
+    startAutoRedirect();
   }
 
   public void goToHomePage(){
@@ -111,4 +138,8 @@ public class ReceiptController {
     pause.setOnFinished(e -> goToHomePage());
     pause.play();
   }
+
+  public void goToFeedbackPage(){
+    sceneRouter.goToFeedbackPage();
   }
+}

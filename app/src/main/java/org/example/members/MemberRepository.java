@@ -8,12 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.example.database.CrudRepository;
-import org.example.features.admin.Admin;
-
+import org.example.database.EntityMapper;
 
 public class MemberRepository implements CrudRepository<Member, Integer>{
 
-  private final MemberMapper memberMapper;
+  private final EntityMapper<Member> memberMapper;
   private final Connection connection;
 
   public MemberRepository(Connection connection, MemberMapper memberMapper){
@@ -32,7 +31,7 @@ public class MemberRepository implements CrudRepository<Member, Integer>{
     try (PreparedStatement stmt = connection.prepareStatement(sql2);
          ResultSet rs = stmt.executeQuery()){
       if (rs.next()) {
-        return new Member(entity.getPersonalNumber());
+        return new Member(entity.getPersonalNumber(), entity.getMemberPoints());
       }
     }
     throw new SQLException("Failed to retrieve the last inserted id.");
@@ -57,6 +56,15 @@ public class MemberRepository implements CrudRepository<Member, Integer>{
     String sql = "UPDATE Members SET personal_number = ?";
     try (PreparedStatement stmt = connection.prepareStatement(sql)) {
       stmt.setInt(1, entity.getPersonalNumber());
+      stmt.executeUpdate();
+    }
+  }
+
+  public void addPoints(int personalNumber, int points) throws SQLException {
+    String sql = "UPDATE Members SET points = points + ? WHERE personal_number = ?";
+    try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+      stmt.setInt(1, points);
+      stmt.setInt(2, personalNumber);
       stmt.executeUpdate();
     }
   }

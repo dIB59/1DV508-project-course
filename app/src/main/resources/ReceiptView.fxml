@@ -9,16 +9,17 @@
             xmlns="http://javafx.com/javafx/8.0.171"
             fx:controller="org.example.features.receipt.ReceiptController"
             stylesheets="@styles/receipt.css"
+            prefWidth="600" prefHeight="800"
             style="-fx-background-color: white;">
 
-    <VBox spacing="12"
+    <VBox spacing="10"
           AnchorPane.topAnchor="0.0"
           AnchorPane.leftAnchor="0.0"
           AnchorPane.rightAnchor="0.0"
           AnchorPane.bottomAnchor="0.0">
 
         <padding>
-            <Insets top="20" left="24" right="24" bottom="20"/>
+            <Insets top="30" left="32" right="32" bottom="30"/>
         </padding>
 
         <!-- Receipt Title -->
@@ -27,10 +28,10 @@
         <!-- Order ID -->
         <Label fx:id="orderIdLabel" styleClass="order-id"/>
 
-        <Label fx:id="EatinEatoutlabel" style="-fx-font-size: 15px;" />
+        <Label fx:id="EatinEatoutlabel" style="-fx-font-size: 18px;" />
 
         <!-- Items Container -->
-        <VBox fx:id="itemsContainer" spacing="8"/>
+        <VBox fx:id="itemsContainer" spacing="12"/>
 
         <!-- Total -->
         <Label fx:id="totalLabel" styleClass="total"/>
@@ -45,15 +46,18 @@
         <Label fx:id="addressLabel" styleClass="info"/>
         <Label fx:id="contactLabel" styleClass="info"/>
         <Label fx:id="memberLabel" text="Member?"/>
-
-        <Label fx:id="extraIngredientsLabel" style="-fx-font-size: 16px;" text="Extra ingredients:"/>
+        <Label fx:id="pointsLabel" style="-fx-font-size: 10px;" text=""/>
 
 
     </VBox>
 
-    <!-- Add go to home button -->
+    <!-- Add to home button -->
     <Button text="Go to Home"
             onAction="#goToHomePage"
-            AnchorPane.bottomAnchor="10" AnchorPane.rightAnchor="10"/>
+            AnchorPane.bottomAnchor="20" AnchorPane.rightAnchor="20"/>
+
+    <Button text="Feedback"
+            onAction="#goToFeedbackPage"
+            AnchorPane.bottomAnchor="10" AnchorPane.leftAnchor="10"/>
 
 </AnchorPane>

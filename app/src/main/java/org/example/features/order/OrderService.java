@@ -2,10 +2,13 @@ package org.example.features.order;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
 import org.example.database.CrudRepository;
+import org.example.features.coupons.Discount;
+import org.example.features.ingredients.Ingredient;
 import org.example.features.product.CustomizedProduct;
 import org.example.features.product.Product;
-import org.example.features.coupons.Discount;
 
 /**
  * OrderService class is responsible for managing the order. It provides methods to add, remove, and
@@ -31,8 +34,8 @@ public class OrderService {
    *
    * @param item the item
    */
-  public void addItem(Product item) {
-    this.order.addProduct(item);
+  public void addItem(Product product, Map<Ingredient, Integer> ingredientQuantities) {
+    order.addProduct(product, ingredientQuantities);;
   }
 
   // Sets member status to true
@@ -49,13 +52,17 @@ public class OrderService {
       this.order.setMember();
     }
   }
+
+  public void setMemberID(int id){
+    this.order.setMemberID(id);
+  }
   /**
    * Remove item.
    *
    * @param item the item
    */
-  public void removeItem(Product item) {
-    this.order.removeProduct(item);
+  public void removeItem(Product item, Map<Ingredient, Integer> ingredientQuantities) {
+    order.removeProduct(item, ingredientQuantities);
   }
 
   /**
@@ -81,6 +88,7 @@ public class OrderService {
       s.setDiscount(order.getDiscount());
       s.setMemberDB(order.getMember());
       s.settype(order.gettype());
+      s.setMemberID(order.getMemberID());
       this.clear();
       return s;
     } catch (Exception e) {

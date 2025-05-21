@@ -3,6 +3,7 @@ package org.example.features.dashboard;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -265,7 +266,7 @@ public class DashboardController {
         }
 
         Product updatedProduct = new Product(
-            product.getId(), newName, newDescription, newPrice, newImageUrl, specialLabel, false, selectedTags
+            product.getId(), newName, newDescription, newPrice, newImageUrl, specialLabel, true, selectedTags
         );
 
         repository.update(updatedProduct);
@@ -306,5 +307,135 @@ public class DashboardController {
     System.err.println("Error: " + message);
     alert.setContentText(message);
     alert.showAndWait();
+  }
+
+  public void createProduct(ActionEvent actionEvent) {
+    Stage dialog = new Stage();
+    dialog.initModality(Modality.APPLICATION_MODAL);
+    dialog.setTitle("Create Product");
+
+    VBox vbox = new VBox(10);
+    vbox.setPadding(new Insets(20));
+
+    // Empty fields for new product
+    TextField nameField = new TextField();
+    TextField descriptionField = new TextField();
+    TextField priceField = new TextField();
+    TextField imageUrlField = new TextField();
+    TextField specialLabelField = new TextField();
+
+    // Fetch all tags
+    List<Tag> allTags;
+    try {
+      allTags = repository.findAllTags();
+    } catch (SQLException e) {
+      showAlert("Error fetching tags: " + e.getMessage());
+      return;
+    }
+
+    VBox tagsBox = new VBox(5);
+    List<CheckBox> tagCheckboxes = new ArrayList<>();
+
+    for (Tag tag : allTags) {
+      CheckBox checkBox = new CheckBox(tag.getName());
+      tagCheckboxes.add(checkBox);
+      tagsBox.getChildren().add(checkBox);
+    }
+
+    // HBox for Tags Label + Add Button
+    HBox tagsLabelBox = new HBox(5);
+    Label tagsLabel = new Label("Tags:");
+    Button addTagButton = new Button("+");
+    addTagButton.setStyle("-fx-background-color: black; -fx-text-fill: white; -fx-background-radius: 5;");
+    tagsLabelBox.getChildren().addAll(tagsLabel, addTagButton);
+
+    addTagButton.setOnAction(e -> {
+      TextInputDialog inputDialog = new TextInputDialog();
+      inputDialog.setTitle("Add New Tag");
+      inputDialog.setHeaderText(null);
+      inputDialog.setContentText("Enter new tag name:");
+
+      inputDialog.showAndWait().ifPresent(tagName -> {
+        if (!tagName.trim().isEmpty()) {
+          int newTagId;
+          try {
+            newTagId = repository.createTag(tagName.trim());
+          } catch (SQLException ex) {
+            showAlert("Error adding tag: " + ex.getMessage());
+            return;
+          }
+
+          Tag newTag = new Tag(newTagId, tagName.trim());
+          allTags.add(newTag);
+
+          CheckBox newCheckBox = new CheckBox(newTag.getName());
+          newCheckBox.setSelected(true);
+          tagCheckboxes.add(newCheckBox);
+          tagsBox.getChildren().add(newCheckBox);
+        }
+      });
+    });
+
+    Button saveButton = new Button("Save");
+    saveButton.setStyle("-fx-background-color: black; -fx-text-fill: white; -fx-background-radius: 5;");
+
+    saveButton.setOnAction(e -> {
+      try {
+        String name = nameField.getText();
+        String description = descriptionField.getText();
+        double price = Double.parseDouble(priceField.getText());
+        String imageUrl = imageUrlField.getText();
+        String specialLabel = specialLabelField.getText();
+
+        List<Tag> selectedTags = new ArrayList<>();
+        for (int i = 0; i < tagCheckboxes.size(); i++) {
+          if (tagCheckboxes.get(i).isSelected()) {
+            selectedTags.add(allTags.get(i));
+          }
+        }
+
+        Product newProduct = new Product(
+                0, // or null, depending on how IDs are generated
+                name,
+                description,
+                price,
+                imageUrl,
+                specialLabel,
+                true,
+                selectedTags
+
+        );
+
+        repository.save(newProduct); // make sure you have this method
+        loadProducts(); // refresh list
+        dialog.close();
+
+      } catch (NumberFormatException ex) {
+        showAlert("Invalid price format.");
+      } catch (IllegalArgumentException ex) {
+        showAlert(ex.getMessage());
+      } catch (SQLException ex) {
+        showAlert("Error saving product: " + ex.getMessage());
+      }
+    });
+
+    vbox.getChildren().addAll(
+            new Label("Name:"), nameField,
+            new Label("Description:"), descriptionField,
+            new Label("Price:"), priceField,
+            new Label("Image URL:"), imageUrlField,
+            new Label("Special Label:"), specialLabelField,
+            tagsLabelBox,
+            tagsBox,
+            saveButton
+    );
+
+    Scene scene = new Scene(vbox, 400, 600);
+    dialog.setScene(scene);
+    dialog.showAndWait();
+  }
+
+  public void goToLanguagesPage(ActionEvent actionEvent) {
+    sceneRouter.goToLanguagesPage();
   }
 }

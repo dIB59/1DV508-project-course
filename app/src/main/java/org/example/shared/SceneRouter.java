@@ -3,7 +3,6 @@ package org.example.shared;
 import java.io.IOException;
 import java.net.URL;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -11,6 +10,7 @@ import javafx.util.Callback;
 import org.example.features.order.OrderService;
 import org.example.features.product.Product;
 import org.example.features.product.ProductDetailsController;
+import org.example.features.translation.TranslationService;
 
 /** The type Scene router. */
 public class SceneRouter {
@@ -18,6 +18,7 @@ public class SceneRouter {
   private final Stage stage;
   private final Callback<Class<?>, Object> controllerFactory;
   private KioskPage currentPage;
+  private final TranslationService translationService;
 
   /**
    * Instantiates a new Scene router.
@@ -25,9 +26,10 @@ public class SceneRouter {
    * @param stage the stage
    * @param orderService the order service
    */
-  public SceneRouter(Stage stage, OrderService orderService) {
+  public SceneRouter(Stage stage, OrderService orderService, TranslationService translationService) {
     this.stage = stage;
     this.controllerFactory = new AppControllerFactory(orderService, this);
+    this.translationService = translationService;
   }
 
   /**
@@ -42,7 +44,9 @@ public class SceneRouter {
       loader.setControllerFactory(controllerFactory);
       currentPage = page;
       Scene scene = new Scene(loader.load());
+
       stage.setScene(scene);
+      translationService.translate(scene.getRoot());
     } catch (IOException e) {
       System.err.println("Failed to load scene: " + e.getLocalizedMessage());
       e.printStackTrace();
@@ -89,6 +93,7 @@ public class SceneRouter {
     goTo(KioskPage.CHECKOUT);
   }
 
+
   public void goToProductDetailsPage(Product product) {
     try {
       URL url = getClass().getResource("/" + KioskPage.PRODUCTDESCRIPTION.getValue());
@@ -101,8 +106,12 @@ public class SceneRouter {
       System.out.println(product);
       controller.setProduct(product); // Set the product after loading the FXML
       controller.displaySides();
+      controller.displayIngredients();
       currentPage = KioskPage.PRODUCTDESCRIPTION;
       stage.setScene(scene);
+      Platform.runLater(() -> {
+        translationService.translate(scene.getRoot());
+      });
     } catch (IOException e) {
       System.err.println("Failed to load Product Details page: " + e.getLocalizedMessage());
       e.printStackTrace();
@@ -121,6 +130,14 @@ public class SceneRouter {
 
   public void goToPaymentPage() {
     goTo(KioskPage.PAYMENT);
+  }
+
+  public void goToFeedbackPage() {
+    goTo(KioskPage.FEEDBACK);
+  }
+
+  public void goToLanguagesPage() {
+    goTo(KioskPage.EDIT_TRANSLATION);
   }
 
   /**
@@ -149,8 +166,11 @@ public class SceneRouter {
     // Product description page
     PRODUCTDESCRIPTION("ProductDescription.fxml"),
     // Member login page
-    MEMBER_LOGIN("MemberLoginView.fxml");
-
+    MEMBER_LOGIN("MemberLoginView.fxml"),
+    // Feedback page
+    FEEDBACK("CustomerFeedback.fxml"),
+    // Edit translation page
+    EDIT_TRANSLATION("EditTranslationView.fxml");
     private final String value;
 
     KioskPage(String value) {
