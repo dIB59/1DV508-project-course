@@ -55,7 +55,7 @@ public class ReceiptController {
     for (ProductQuantity pq : productQuantities) {
       Product product = pq.getCustomizedProduct().getProduct();
       int quantity = pq.getQuantity();
-      double itemTotal = product.getPrice() * quantity;
+      double itemTotal = pq.getCustomizedProduct().getTotalPrice() * quantity;
 
       // Left: Product name with quantity
       Label nameLabel = new Label(product.getName() + " x" + quantity);
@@ -63,20 +63,19 @@ public class ReceiptController {
       VBox ingredientdiff = new VBox();
       ingredientdiff.setSpacing(3);
       Map<Ingredient, Integer> ingredients = pq.getCustomizedProduct().getIngredientquanities();
-      Map<Ingredient, Integer> defultIngs = product.getIngredients();
+      Map<Ingredient, Integer> defaultIngs = product.getIngredients();
 
-      for(Map.Entry<Ingredient,Integer> entry : ingredients.entrySet()) {
-        Ingredient ingredient = entry.getKey();
-        int ingQuantity = entry.getValue();
-        int ingDefault = defultIngs.getOrDefault(ingredient, 0);
+      for(Ingredient ingredient: defaultIngs.keySet()) {
+        int ingQuantity = ingredients.getOrDefault(ingredient, 0);
+        int defaultQty = defaultIngs.get(ingredient);
 
-        if(ingQuantity != ingDefault) {
+        if(ingQuantity != defaultQty) {
         String ingLabel;
-        if (ingQuantity != ingDefault) {
-          ingLabel = "+" + (ingQuantity - ingDefault) + " " + ingredient.getName();
+        if (ingQuantity > defaultQty) {
+          ingLabel = "+" + (ingQuantity - defaultQty) + " " + ingredient.getName();
         }
         else{
-          ingLabel = "-" + (ingDefault - ingQuantity) + " " + ingredient.getName();
+          ingLabel = "-" + (defaultQty - ingQuantity) + " " + ingredient.getName();
         }
 
         Label IngredientLabel = new Label(ingLabel);

@@ -152,7 +152,7 @@ public class CheckoutController implements Initializable {
     nameLabel.setTextFill(Color.valueOf("#1E1EA9"));
 
     // Create the price label (light gray and smaller)
-    Label priceLabel = new Label(String.format("$%.2f", item.getCustomizedProduct().getProduct().getPrice()));
+    Label priceLabel = new Label(String.format("$%.2f", item.getCustomizedProduct().getTotalPrice()));
     priceLabel.setFont(Font.font("Arial", 14));
     priceLabel.setTextFill(Color.valueOf("#777777"));
 
@@ -161,14 +161,13 @@ public class CheckoutController implements Initializable {
     Map<Ingredient, Integer> ingredients = item.getCustomizedProduct().getIngredientquanities();
     Map<Ingredient, Integer> defaultings = item.getCustomizedProduct().getProduct().getIngredients();
     
-    for (Map.Entry<Ingredient, Integer> entry: ingredients.entrySet() ){
-      Ingredient ingredient = entry.getKey();
-      int quantity = entry.getValue();
-      int defaultQty = defaultings.getOrDefault(ingredient, 0);
+    for (Ingredient ingredient: defaultings.keySet() ){
+      int quantity = ingredients.getOrDefault(ingredient, 0);
+      int defaultQty = defaultings.get(ingredient);
 
       if(quantity != defaultQty) {
         String ingLabel;
-        if (quantity != defaultQty) {
+        if (quantity > defaultQty) {
           ingLabel = "+" + (quantity - defaultQty) + " " + ingredient.getName();
         }
         else{
