@@ -23,6 +23,7 @@ public class Product implements Identifiable<Integer> {
   private String description;
   private double price;
   private String imageUrl;
+  private byte[] imageBytes;
   private String specialLabel;
   private Boolean isASide;
   private List<Tag> tags;
@@ -57,6 +58,13 @@ public class Product implements Identifiable<Integer> {
     this.tags = tags != null ? tags : new ArrayList<>();
     this.specialLabel = specialLabel;
     this.isASide = isASide;
+  }
+  public byte[] getImageBytes() {
+    return imageBytes;
+  }
+
+  public void setImageBytes(byte[] imageBytes) {
+    this.imageBytes = imageBytes;
   }
 
   public Product(String name, String description, double price, String imageUrl, String specialLabel, boolean isASide) {

@@ -6,6 +6,7 @@ CREATE TABLE IF NOT EXISTS Product
     description TEXT           NOT NULL,
     price       DECIMAL(10, 2) NOT NULL CHECK (price >= 0),
     image_url   VARCHAR(500),
+    image       LONGBLOB,
     specialLabel       VARCHAR(255),
     isASide     BOOLEAN NOT NULl DEFAULT FALSE
 );

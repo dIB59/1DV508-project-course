@@ -52,6 +52,9 @@ public class ProductMapper implements EntityMapper<Product> {
       rs.getString("specialLabel"),
       rs.getBoolean("isASide"),
       tags);
+// Set the imageBytes from the LONGBLOB column
+    byte[] imageBytes = rs.getBytes("image");
+    product.setImageBytes(imageBytes);
 
     List<Ingredient> ingredients = ingredientRepository.getIngredientsForProduct(product);
       for (Ingredient ingredient : ingredients) {
