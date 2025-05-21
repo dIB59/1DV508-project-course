@@ -5,9 +5,12 @@ import java.net.URI;
 import java.net.http.*;
 import java.nio.charset.StandardCharsets;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class LibreTranslateClient {
   private static final URI ENDPOINT = URI.create("http://localhost:8081/translate");
+  private static final Logger log = LoggerFactory.getLogger(LibreTranslateClient.class);
   private final HttpClient client = HttpClient.newHttpClient();
   private final URI endpoint;
 
@@ -35,7 +38,7 @@ public class LibreTranslateClient {
         .build();
 
     HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-    System.out.println(response);
+    log.debug("Response: {}", response);
 
     return new JSONObject(response.body()).getString("translatedText");
   }

@@ -71,15 +71,19 @@ public class TranslationService {
   private void traverseAndTranslate(Node node, String sourceLang, String targetLang) {
     switch (node) {
       case Labeled labeled -> {
+        if (labeled.textProperty().isBound()) {
+          logger.debug("Label is bound, skipping translation: {}", labeled);
+          return;
+        }
         String originalText = labeled.getText();
         if (labeled.getProperties().get("originalText") != null) {
           originalText = (String) labeled.getProperties().get("originalText");
         }
-        logger.info("Original text: {}", originalText);
+        logger.debug("Original text: {}", originalText);
         if (originalText != null && !originalText.isBlank()) {
           try {
             String translated = get(originalText, sourceLang, targetLang);
-            logger.info("Translated label: {}", translated);
+            logger.debug("Translated label: {}", translated);
             labeled.getProperties().put("originalText", originalText);
             labeled.setText(translated);
           } catch (Exception e) {
@@ -88,6 +92,10 @@ public class TranslationService {
         }
       }
       case Text textNode -> {
+        if (textNode.textProperty().isBound()) {
+          logger.debug("Text is bound, skipping translation: {}", textNode);
+          return;
+        }
         String originalText = textNode.getText();
         if (textNode.getProperties().get("originalText") != null) {
           originalText = (String) textNode.getProperties().get("originalText");
@@ -95,7 +103,7 @@ public class TranslationService {
         if (originalText != null && !originalText.isBlank()) {
           try {
             String translated = get(originalText, sourceLang, targetLang);
-            logger.info("Translated TxtNode: {}", translated);
+            logger.debug("Translated TxtNode: {}", translated);
             textNode.getProperties().put("originalText", originalText);
             textNode.setText(translated);
           } catch (Exception e) {
@@ -103,7 +111,7 @@ public class TranslationService {
           }
         }
       }
-      default -> logger.info("Node type not handled: {}", node.getClass().getSimpleName());
+      default -> logger.debug("Node type not handled: {}", node.getClass().getSimpleName());
     }
 
     if (node instanceof Parent parent) {

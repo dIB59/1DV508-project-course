@@ -9,12 +9,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.logging.Logger;
 import org.example.database.CrudRepository;
 import org.example.database.EntityMapper;
 
 /** The type Product repository. */
 public class ProductRepository implements CrudRepository<Product, Integer> {
 
+  private static final Logger log = Logger.getLogger(ProductRepository.class.getName());
   private final Connection connection;
   private final String tableName = "Product";
   private final EntityMapper<Product> mapper;
@@ -105,6 +107,7 @@ public class ProductRepository implements CrudRepository<Product, Integer> {
 
       stmt.executeUpdate();
     }
+    log.info("Product saved: " + entity.getName());
     String sql2 = "SELECT LAST_INSERT_ID()";
     try (PreparedStatement stmt = connection.prepareStatement(sql2);
         ResultSet rs = stmt.executeQuery()) {

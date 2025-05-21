@@ -52,7 +52,6 @@ public class ProductDetailsController {
       // Update product details
       productName.setText(product.getName());
       productPrice.setText(String.format("$%.2f", product.getPrice()));
-      System.err.println(product.getDescription());
       productDescription.setText(product.getDescription());
 
       // Set a SpinnerValueFactory to manage the Spinner's value
