@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.animation.KeyFrame;
@@ -34,6 +35,7 @@ import org.example.features.campaign.Campaign;
 import org.example.features.campaign.CampaignRepository;
 import org.example.features.coupons.Coupons;
 import org.example.features.coupons.CouponsRepository;
+import org.example.features.ingredients.Ingredient;
 import org.example.features.order.OrderService;
 import org.example.features.order.ProductQuantity;
 import org.example.shared.SceneRouter;
@@ -154,8 +156,33 @@ public class CheckoutController implements Initializable {
     priceLabel.setFont(Font.font("Arial", 14));
     priceLabel.setTextFill(Color.valueOf("#777777"));
 
+    VBox ingredientDiffBox = new VBox();
+    ingredientDiffBox.setSpacing(3);
+    Map<Ingredient, Integer> ingredients = item.getCustomizedProduct().getIngredientquanities();
+    Map<Ingredient, Integer> defaultings = item.getCustomizedProduct().getProduct().getIngredients();
+    
+    for (Map.Entry<Ingredient, Integer> entry: ingredients.entrySet() ){
+      Ingredient ingredient = entry.getKey();
+      int quantity = entry.getValue();
+      int defaultQty = defaultings.getOrDefault(ingredient, 0);
+
+      if(quantity != defaultQty) {
+        String ingLabel;
+        if (quantity != defaultQty) {
+          ingLabel = "+" + (quantity - defaultQty) + " " + ingredient.getName();
+        }
+        else{
+          ingLabel = "-" + (defaultQty - quantity) + " " + ingredient.getName();
+        }
+
+        Label IngredientLabel = new Label(ingLabel);
+        IngredientLabel.setFont(Font.font("Arial", javafx.scene.text.FontWeight.BOLD, 12));
+        ingredientDiffBox.getChildren().add(IngredientLabel);
+      }
+
+    }
     // Create a VBox to group name and price vertically
-    VBox textContainer = new VBox(nameLabel, priceLabel);
+    VBox textContainer = new VBox(nameLabel, priceLabel, ingredientDiffBox);
     textContainer.setSpacing(5);
 
     // Create the increase and decrease buttons

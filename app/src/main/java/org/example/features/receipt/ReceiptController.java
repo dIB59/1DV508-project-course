@@ -2,11 +2,16 @@ package org.example.features.receipt;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+
+import org.example.features.ingredients.Ingredient;
 import org.example.features.order.Order;
 import org.example.features.order.ProductQuantity;
 import org.example.features.product.Product;
@@ -55,6 +60,34 @@ public class ReceiptController {
       // Left: Product name with quantity
       Label nameLabel = new Label(product.getName() + " x" + quantity);
       nameLabel.getStyleClass().add("item-name");
+      VBox ingredientdiff = new VBox();
+      ingredientdiff.setSpacing(3);
+      Map<Ingredient, Integer> ingredients = pq.getCustomizedProduct().getIngredientquanities();
+      Map<Ingredient, Integer> defultIngs = product.getIngredients();
+
+      for(Map.Entry<Ingredient,Integer> entry : ingredients.entrySet()) {
+        Ingredient ingredient = entry.getKey();
+        int ingQuantity = entry.getValue();
+        int ingDefault = defultIngs.getOrDefault(ingredient, 0);
+
+        if(ingQuantity != ingDefault) {
+        String ingLabel;
+        if (ingQuantity != ingDefault) {
+          ingLabel = "+" + (ingQuantity - ingDefault) + " " + ingredient.getName();
+        }
+        else{
+          ingLabel = "-" + (ingDefault - ingQuantity) + " " + ingredient.getName();
+        }
+
+        Label IngredientLabel = new Label(ingLabel);
+        IngredientLabel.setFont(Font.font("Arial", javafx.scene.text.FontWeight.BOLD, 12));
+        ingredientdiff.getChildren().add(IngredientLabel);
+      }
+      }
+      
+      VBox nameAndIngredientsBox = new VBox(nameLabel, ingredientdiff);
+      nameAndIngredientsBox.setSpacing(5);
+
 
       // Right: Price
       Label priceLabel = new Label(String.format("$%.2f", itemTotal));
@@ -63,7 +96,7 @@ public class ReceiptController {
       HBox.setHgrow(priceLabel, Priority.ALWAYS);
       priceLabel.setStyle("-fx-alignment: CENTER-RIGHT;");
 
-      HBox itemRow = new HBox(nameLabel, priceLabel);
+      HBox itemRow = new HBox(nameAndIngredientsBox, priceLabel);
       itemRow.setSpacing(10);
       itemRow.setStyle("-fx-padding: 5 0 5 0; -fx-alignment: center-left; -fx-pref-width: 100%;");
       HBox.setHgrow(priceLabel, Priority.ALWAYS);
