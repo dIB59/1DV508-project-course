@@ -26,8 +26,12 @@ public class FeedbackController {
   @FXML
   private void handleRating(ActionEvent event) {
     Button clickedButton = (Button) event.getSource();
-    int rating = Integer.parseInt(clickedButton.getText()); // Assuming text is "1", "2", etc.
-    // Save the rating to the database
+
+    // Get parent HBox and find index of clicked button
+    int rating = ((javafx.scene.layout.HBox) clickedButton.getParent())
+        .getChildrenUnmodifiable()
+        .indexOf(clickedButton) + 1;
+
     orderService.setFeedback(rating);
     goToPaymentPage();
   }

@@ -29,7 +29,7 @@ public class OrderRepository implements CrudRepository<Order, Integer> {
   }
 
   public Order save(Order order) throws SQLException {
-    String insertOrderSql = "INSERT INTO Orders (feedback) VALUES ()";
+    String insertOrderSql = "INSERT INTO Orders (feedback) VALUES (?)";
     try (PreparedStatement orderStmt =
         connection.prepareStatement(insertOrderSql, Statement.RETURN_GENERATED_KEYS)) {
       orderStmt.setInt(1, order.getFeedback());

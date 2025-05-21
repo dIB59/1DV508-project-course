@@ -130,7 +130,4 @@ public class ReceiptController {
     sceneRouter.goToHomePage();
   }
 
-  public void goToFeedbackPage(){
-    sceneRouter.goToFeedbackPage();
-  }
 }
