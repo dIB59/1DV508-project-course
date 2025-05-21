@@ -41,6 +41,8 @@ public class ProductDetailsController {
 
   @FXML private Button addToOrderButton;
 
+  @FXML private Button goBackButton;
+
   public ProductDetailsController(OrderService orderService, SceneRouter sceneRouter,ProductRepository productRepository) {
     this.orderService = orderService;
     this.sceneRouter = sceneRouter;
@@ -146,5 +148,10 @@ public class ProductDetailsController {
     }
     sceneRouter.goToMenuPage(); // reroute back to menu page once done
   }
+
+    @FXML
+    private void goBack() {
+      sceneRouter.goToMenuPage(); // or goToHomePage() if you prefer
+    }
 
 }
