@@ -2,8 +2,12 @@ package org.example.features.product;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import org.example.database.Identifiable;
+import org.example.features.ingredients.Ingredient;
 
 /**
  * Represents a product in the system.
@@ -22,8 +26,7 @@ public class Product implements Identifiable<Integer> {
   private String specialLabel;
   private Boolean isASide;
   private List<Tag> tags;
-  private String ingredients;
-
+  private Map<Ingredient, Integer> defaultIngredients = new HashMap<>();
 
   /**
    * Instantiates a new Product.
@@ -88,16 +91,6 @@ public class Product implements Identifiable<Integer> {
     return description;
   }
 
-  public String getIngredients(){return ingredients; }
-
-  public void setIngredients(String ingredients) {
-    this.ingredients = ingredients;
-  }
-
-  public List<String> getIngredientsList() {
-    return Arrays.asList(this.ingredients.split(","));
-  }
-
   public void setDescription(String description) {
     if (description == null || description.isBlank()) {
       throw new IllegalArgumentException("Description cannot be null or empty");
@@ -160,11 +153,28 @@ public class Product implements Identifiable<Integer> {
     return tagIds;
   }
 
+  public void setIngredients(Map<Ingredient, Integer> ingredients) {
+    this.defaultIngredients = ingredients;
+  }
+
+  public Map<Ingredient, Integer> getIngredients() {
+        return defaultIngredients;
+  }
+
+  public void addIngredient(Ingredient ingredient, int quantity) {
+    if (defaultIngredients.containsKey(ingredient)) {
+        int currentQty = defaultIngredients.get(ingredient);
+        defaultIngredients.put(ingredient, currentQty + quantity);
+    } else {
+        defaultIngredients.put(ingredient, quantity);
+    }
+}
+
   @Override
   public String toString() {
     return String.format(
         "Product{id=%d, name='%s', description='%s', price=%.2f, imageUrl='%s', tags=%s, ingredients='%s'}",
-        id, name, description, price, imageUrl, tags, ingredients
+        id, name, description, price, imageUrl, tags, defaultIngredients
     );
   }
 }

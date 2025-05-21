@@ -3,6 +3,7 @@ package org.example.features.checkout;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -144,12 +145,12 @@ public class CheckoutController implements Initializable {
     container.setPrefWidth(1080);
 
     // Create the item name label (bold and navy)
-    Label nameLabel = new Label(item.getProduct().getName());
+    Label nameLabel = new Label(item.getCustomizedProduct().getProduct().getName());
     nameLabel.setFont(Font.font("Arial", javafx.scene.text.FontWeight.BOLD, 20));
     nameLabel.setTextFill(Color.valueOf("#1E1EA9"));
 
     // Create the price label (light gray and smaller)
-    Label priceLabel = new Label(String.format("$%.2f", item.getProduct().getPrice()));
+    Label priceLabel = new Label(String.format("$%.2f", item.getCustomizedProduct().getProduct().getPrice()));
     priceLabel.setFont(Font.font("Arial", 14));
     priceLabel.setTextFill(Color.valueOf("#777777"));
 
@@ -171,12 +172,12 @@ public class CheckoutController implements Initializable {
     decreaseButton.setPrefSize(30, 30);
 
     increaseButton.setOnAction(event -> {
-      orderService.addItem(item.getProduct());
+      orderService.addItem(item.getCustomizedProduct().getProduct(), item.getCustomizedProduct().getIngredientquanities());
       updateCartDisplay();
     });
 
     decreaseButton.setOnAction(event -> {
-      orderService.removeItem(item.getProduct());
+      orderService.removeItem(item.getCustomizedProduct().getProduct(), new HashMap<>());
       updateCartDisplay();
     });
 
@@ -231,9 +232,9 @@ public class CheckoutController implements Initializable {
     ObservableList<String> items = FXCollections.observableArrayList();
     for (ProductQuantity item : orderService.getItems()) {
       items.add(
-          item.getProduct().getName()
+          item.getCustomizedProduct().getProduct().getName()
               + " - $"
-              + item.getProduct().getPrice()
+              + item.getCustomizedProduct().getProduct().getPrice()
               + " x "
               + item.getQuantity());
     }

@@ -43,7 +43,7 @@ public class OrderRepository implements CrudRepository<Order, Integer> {
         try (PreparedStatement productStmt = connection.prepareStatement(insertProductSQL)) {
           for (ProductQuantity pq : order.getProductQuantity()) {
             productStmt.setInt(1, orderId);
-            productStmt.setInt(2, pq.getProduct().getId());
+            productStmt.setInt(2, pq.getCustomizedProduct().getProduct().getId());
             productStmt.setInt(3, pq.getQuantity());
             productStmt.addBatch();
           }
@@ -99,7 +99,7 @@ public class OrderRepository implements CrudRepository<Order, Integer> {
     try (PreparedStatement stmt = connection.prepareStatement(insertSql)) {
       for (ProductQuantity pq : order.getProductQuantity()) {
         stmt.setInt(1, order.getId());
-        stmt.setInt(2, pq.getProduct().getId());
+        stmt.setInt(2, pq.getCustomizedProduct().getProduct().getId());
         stmt.setInt(3, pq.getQuantity());
         stmt.addBatch();
       }
