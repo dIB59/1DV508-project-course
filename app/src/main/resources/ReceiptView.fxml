@@ -56,8 +56,4 @@
             onAction="#goToHomePage"
             AnchorPane.bottomAnchor="20" AnchorPane.rightAnchor="20"/>
 
-    <Button text="Feedback"
-            onAction="#goToFeedbackPage"
-            AnchorPane.bottomAnchor="10" AnchorPane.leftAnchor="10"/>
-
 </AnchorPane>
