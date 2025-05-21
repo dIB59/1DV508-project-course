@@ -14,7 +14,7 @@ public class Main {
     Application.launch(App.class, args);
   }
 }
-
+  
 /*
  * bugs that need to be fixed:
  * -menu page images are slightly misaligned 

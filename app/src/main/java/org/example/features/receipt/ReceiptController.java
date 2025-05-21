@@ -48,7 +48,7 @@ public class ReceiptController {
     List<ProductQuantity> productQuantities = order.getProductQuantity();
 
     for (ProductQuantity pq : productQuantities) {
-      Product product = pq.getProduct();
+      Product product = pq.getCustomizedProduct().getProduct();
       int quantity = pq.getQuantity();
       double itemTotal = product.getPrice() * quantity;
 

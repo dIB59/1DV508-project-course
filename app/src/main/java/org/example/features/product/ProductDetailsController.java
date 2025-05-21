@@ -93,11 +93,11 @@ public class ProductDetailsController {
         ingredientsContainer.getChildren().clear();
         ingredientSpinnerMap.clear();
 
-        List<Ingredient> ingredients = product.getIngredients();
+        Map<Ingredient, Integer> ingredients = product.getIngredients();
 
-        for(Ingredient ing : ingredients) {
+        for(Ingredient ing : ingredients.keySet()) {
           Label ingLabel = new Label(ing.getName() + "($" + String.format("%.2f", ing.getPrice()) + ")");
-          Spinner<Integer> ingSpinner = new Spinner<>(1,10, 1);
+          Spinner<Integer> ingSpinner = new Spinner<>(1,10, ingredients.get(ing));
           ingSpinner.setPrefWidth(80);
           ingredientSpinnerMap.put(ing, ingSpinner);
 
@@ -145,20 +145,41 @@ public class ProductDetailsController {
       System.err.println("Spinner value is null. Ensure SpinnerValueFactory is set.");
       return;
     }
+    
+    Map<Ingredient, Integer> selectedIngredients = new HashMap<>();
 
-    for (int i = 0; i < quantity; i++) {
-      orderService.addItem(product);
-    }
-    //Add sides to the order based on spinner values
-    for (Map.Entry<Product, Spinner<Integer>> entry : sideSpinnerMap.entrySet()) {
-      Product side = entry.getKey();
-      Integer sideQuantity = entry.getValue().getValue();
-  
-      for (int i = 0; i < sideQuantity; i++) {
-        orderService.addItem(side);
+    // adding ingredients and products
+    for (Map.Entry<Ingredient, Spinner<Integer>> entry : ingredientSpinnerMap.entrySet()){
+      Ingredient ingredient = entry.getKey();
+      Integer ingQuantity = entry.getValue().getValue();
+
+      if ( ingQuantity != null && ingQuantity > 0) {
+        selectedIngredients.put(ingredient, ingQuantity);
       }
     }
-    sceneRouter.goToMenuPage(); // reroute back to menu page once done
+
+    for(int i = 0; i < quantity; i++) {
+      if(!selectedIngredients.isEmpty()) {
+        orderService.addItem(product, selectedIngredients);
+      }
+      else{
+        orderService.addItem(product, new HashMap<>());
+      }
+    }
+
+    // handeling sides 
+    for (Map.Entry<Product, Spinner<Integer>> entry : sideSpinnerMap.entrySet()) {
+        Product side = entry.getKey();
+        Integer sideQuantity = entry.getValue().getValue();
+
+        if (sideQuantity != null && sideQuantity > 0) {
+            for (int i = 0; i < sideQuantity; i++) {
+                orderService.addItem(side, new HashMap<>());
+            }
+        }
+    }
+    sceneRouter.goToMenuPage();
+
   }
 
 }
