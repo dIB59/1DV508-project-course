@@ -13,6 +13,8 @@ import org.example.features.order.ProductQuantity;
 import org.example.features.product.CustomizedProduct;
 import org.example.features.product.Product;
 import org.example.shared.SceneRouter;
+import javafx.animation.PauseTransition;
+import javafx.util.Duration;
 
 
 public class ReceiptController {
@@ -97,9 +99,16 @@ public class ReceiptController {
         }
       }
     }
+  startAutoRedirect();
   }
 
   public void goToHomePage(){
     sceneRouter.goToHomePage();
+    }
+
+  private void startAutoRedirect() {
+    PauseTransition pause = new PauseTransition(Duration.seconds(7));
+    pause.setOnFinished(e -> goToHomePage());
+    pause.play();
   }
-}
+  }
