@@ -2,11 +2,16 @@ package org.example.features.receipt;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+
+import org.example.features.ingredients.Ingredient;
 import org.example.features.order.Order;
 import org.example.features.order.ProductQuantity;
 import org.example.features.product.Product;
@@ -48,13 +53,40 @@ public class ReceiptController {
     List<ProductQuantity> productQuantities = order.getProductQuantity();
 
     for (ProductQuantity pq : productQuantities) {
-      Product product = pq.getProduct();
+      Product product = pq.getCustomizedProduct().getProduct();
       int quantity = pq.getQuantity();
-      double itemTotal = product.getPrice() * quantity;
+      double itemTotal = pq.getCustomizedProduct().getTotalPrice() * quantity;
 
       // Left: Product name with quantity
       Label nameLabel = new Label(product.getName() + " x" + quantity);
       nameLabel.getStyleClass().add("item-name");
+      VBox ingredientdiff = new VBox();
+      ingredientdiff.setSpacing(3);
+      Map<Ingredient, Integer> ingredients = pq.getCustomizedProduct().getIngredientquanities();
+      Map<Ingredient, Integer> defaultIngs = product.getIngredients();
+
+      for(Ingredient ingredient: defaultIngs.keySet()) {
+        int ingQuantity = ingredients.getOrDefault(ingredient, 0);
+        int defaultQty = defaultIngs.get(ingredient);
+
+        if(ingQuantity != defaultQty) {
+        String ingLabel;
+        if (ingQuantity > defaultQty) {
+          ingLabel = "+" + (ingQuantity - defaultQty) + " " + ingredient.getName();
+        }
+        else{
+          ingLabel = "-" + (defaultQty - ingQuantity) + " " + ingredient.getName();
+        }
+
+        Label IngredientLabel = new Label(ingLabel);
+        IngredientLabel.setFont(Font.font("Arial", javafx.scene.text.FontWeight.BOLD, 12));
+        ingredientdiff.getChildren().add(IngredientLabel);
+      }
+      }
+      
+      VBox nameAndIngredientsBox = new VBox(nameLabel, ingredientdiff);
+      nameAndIngredientsBox.setSpacing(5);
+
 
       // Right: Price
       Label priceLabel = new Label(String.format("$%.2f", itemTotal));
@@ -63,7 +95,7 @@ public class ReceiptController {
       HBox.setHgrow(priceLabel, Priority.ALWAYS);
       priceLabel.setStyle("-fx-alignment: CENTER-RIGHT;");
 
-      HBox itemRow = new HBox(nameLabel, priceLabel);
+      HBox itemRow = new HBox(nameAndIngredientsBox, priceLabel);
       itemRow.setSpacing(10);
       itemRow.setStyle("-fx-padding: 5 0 5 0; -fx-alignment: center-left; -fx-pref-width: 100%;");
       HBox.setHgrow(priceLabel, Priority.ALWAYS);
