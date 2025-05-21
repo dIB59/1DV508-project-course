@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 
 public class TranslationService {
   public static final String DO_NOT_TRANSLATE = "doNotTranslate";
+  public static final String ORIGINAL_TEXT = "originalText";
   private final TranslationRepository repo;
   private final LibreTranslateClient client;
   private static final Logger logger = LoggerFactory.getLogger(TranslationService.class);
@@ -127,8 +128,8 @@ public class TranslationService {
           return;
         }
         String originalText = labeled.getText();
-        if (labeled.getProperties().get("originalText") != null) {
-          originalText = (String) labeled.getProperties().get("originalText");
+        if (labeled.getProperties().get(ORIGINAL_TEXT) != null) {
+          originalText = (String) labeled.getProperties().get(ORIGINAL_TEXT);
         }
         logger.info("Original text: {}", originalText);
         if (originalText != null && !originalText.isBlank()) {
@@ -147,8 +148,8 @@ public class TranslationService {
           return;
         }
         String originalText = textNode.getText();
-        if (textNode.getProperties().get("originalText") != null) {
-          originalText = (String) textNode.getProperties().get("originalText");
+        if (textNode.getProperties().get(ORIGINAL_TEXT) != null) {
+          originalText = (String) textNode.getProperties().get(ORIGINAL_TEXT);
         }
         if (originalText != null && !originalText.isBlank()) {
           try {
