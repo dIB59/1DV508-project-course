@@ -31,6 +31,7 @@ public class MemberController {
 
   public void goToPaymentPage() {
     sceneRouter.goToPaymentPage();
+    //sceneRouter.goToReceiptPage();
   }
 
   public void handleNonMemberLoginButtionAction(ActionEvent actionevent){
