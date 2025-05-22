@@ -13,7 +13,7 @@ plugins {
 
 javafx {
     version = "23"
-    modules = ['javafx.controls', 'javafx.fxml']
+    modules = ['javafx.controls', 'javafx.fxml', 'javafx.media']
 }
 
 repositories {
@@ -22,32 +22,26 @@ repositories {
 }
 
 dependencies {
-
     implementation 'org.openjfx:javafx-controls:21'
     implementation 'org.openjfx:javafx-fxml:21'
+    implementation 'org.openjfx:javafx-media:21' // <-- Add media support
 
     // Use JUnit Jupiter for testing.
     testImplementation libs.junit.jupiter
     testImplementation 'com.github.tomakehurst:wiremock-jre8:2.35.0'
-
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-
-    // JavaFX modules
-    implementation 'org.openjfx:javafx-controls:21'
-    implementation 'org.openjfx:javafx-fxml:21'
 
     // This dependency is used by the application.
     implementation libs.guava
 
-    // https://mvnrepository.com/artifact/com.mysql/mysql-connector-j
+    // MySQL JDBC
     implementation group: 'com.mysql', name: 'mysql-connector-j', version: '9.2.0'
 
+    // Other dependencies
     implementation 'com.braintreepayments.gateway:braintree-java:3.40.0'
     implementation 'io.github.cdimascio:dotenv-java:3.0.0'
     implementation 'org.slf4j:slf4j-simple:2.0.17'
     implementation 'org.json:json:20231013'
-
-
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
@@ -71,7 +65,7 @@ run {
     doFirst {
         jvmArgs = [
                 '--module-path', classpath.asPath,
-                '--add-modules', 'javafx.controls,javafx.fxml'
+                '--add-modules', 'javafx.controls,javafx.fxml,javafx.media'
         ]
     }
 }
