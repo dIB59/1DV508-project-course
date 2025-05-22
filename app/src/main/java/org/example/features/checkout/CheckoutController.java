@@ -75,22 +75,8 @@ public class CheckoutController implements Initializable {
   // Closing brace for the CheckoutController class
   
 
-  /** Goes to the payment page. */
+  /** Goes to the login page. */
   public void goToMemberLogin() {
-    if (orderService.getItems().isEmpty()) {
-      // Show an alert if the cart is empty
-      Alert alert = new Alert(Alert.AlertType.WARNING);
-      alert.setTitle("Empty Cart");
-      alert.setHeaderText(null);
-      alert.setContentText("Your cart is empty. Please add items before proceeding.");
-      alert.showAndWait();
-      return;
-    }
-    router.goToMemberLoginPage();
-  }
-
-  /** Goes to the receipt page. */
-  public void goToReceiptPage() {
     if (orderService.getItems().isEmpty()) {
       Alert alert = new Alert(Alert.AlertType.WARNING);
       alert.setTitle("Empty Cart");
@@ -101,6 +87,7 @@ public class CheckoutController implements Initializable {
     }
 
     boolean shouldPrint = yesPrint.isSelected();
+
     if (shouldPrint) {
       printReceipt();
     }
@@ -240,7 +227,7 @@ public class CheckoutController implements Initializable {
   }
   private void printReceipt() {
     System.out.println("Printing receipt...");
-    router.goToReceiptPage();
+    router.goToMemberLoginPage();
   }
 
   private Alert couponNotFoundAlert() {
