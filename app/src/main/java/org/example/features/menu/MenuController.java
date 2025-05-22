@@ -2,6 +2,7 @@ package org.example.features.menu;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.stream.Collectors;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
@@ -32,6 +33,8 @@ public class MenuController {
   private final OrderService orderService;
   private final TranslationService translationService;
 
+  private List<Product> allProducts; // cache loaded products
+
   @FXML private AnchorPane menuView;
   @FXML private GridPane menuGrid;
   @FXML private VBox tagButtonContainer;
@@ -42,7 +45,7 @@ public class MenuController {
       CampaignRepository campaignRepository,
       SceneRouter sceneRouter,
       OrderService orderService,
-      TranslationService translationService // Inject translation service
+      TranslationService translationService
   ) {
     this.model = model;
     this.productRepository = productRepository;
@@ -53,10 +56,16 @@ public class MenuController {
   }
 
   public void initialize() {
-    populateTagButtons();
-    displayAndTranslate(getMenuItems());
+    try {
+      allProducts = productRepository.findAll();
+    } catch (Exception e) {
+      System.err.println("Error loading menu items: " + e.getMessage());
+      allProducts = List.of(); // fallback
+    }
 
-    // Re-enable translation on UI init
+    populateTagButtons();
+    displayAndTranslate(allProducts);
+
     Platform.runLater(() -> {
       if (menuView.getScene() != null && AppContext.getInstance().getLanguage() != Language.ENGLISH) {
         translationService.translate(menuView.getScene().getRoot());
@@ -67,7 +76,7 @@ public class MenuController {
   private void populateTagButtons() {
     Button allButton = new Button("All");
     styleTagButton(allButton, true);
-    allButton.setOnAction(e -> displayAndTranslate(getMenuItems()));
+    allButton.setOnAction(e -> displayAndTranslate(allProducts));
     tagButtonContainer.getChildren().add(allButton);
 
     try {
@@ -76,18 +85,20 @@ public class MenuController {
         Button tagButton = new Button(tag.getName());
         styleTagButton(tagButton, false);
         tagButton.setOnAction(e -> {
-          try {
-            List<Product> filteredProducts = productRepository.findProductsByTagName(tag.getName());
-            displayAndTranslate(filteredProducts); // Call helper
-          } catch (SQLException ex) {
-            System.err.println("Error loading products for tag " + tag.getName() + ": " + ex.getMessage());
-          }
+          List<Product> filtered = filterProductsByTag(tag.getName());
+          displayAndTranslate(filtered);
         });
         tagButtonContainer.getChildren().add(tagButton);
       }
     } catch (SQLException e) {
       System.err.println("Error fetching tags: " + e.getMessage());
     }
+  }
+
+  private List<Product> filterProductsByTag(String tagName) {
+    return allProducts.stream()
+        .filter(p -> p.getTags().stream().anyMatch(t -> t.getName().equals(tagName)))
+        .collect(Collectors.toList());
   }
 
   public void goToMemberLogin() {
@@ -237,11 +248,6 @@ public class MenuController {
   }
 
   public List<Product> getMenuItems() {
-    try {
-      return productRepository.findAll();
-    } catch (Exception e) {
-      System.err.println("Error loading menu items: " + e.getMessage());
-      return List.of();
-    }
+    return allProducts;
   }
 }
