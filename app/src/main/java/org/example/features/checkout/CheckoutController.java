@@ -103,11 +103,11 @@ public class CheckoutController implements Initializable {
     boolean shouldPrint = yesPrint.isSelected();
     if (shouldPrint) {
       printReceipt();
-    } else {
-      System.out.println("Receipt will not be printed — user selected 'No'.");
     }
 
-    router.goToReceiptPage();
+    else {
+      System.out.println("Receipt will not be printed — user selected 'No'.");
+    }
   }
 
 
@@ -240,6 +240,7 @@ public class CheckoutController implements Initializable {
   }
   private void printReceipt() {
     System.out.println("Printing receipt...");
+    router.goToReceiptPage();
   }
 
   private Alert couponNotFoundAlert() {
