@@ -254,6 +254,7 @@ public class CheckoutController implements Initializable {
     ToggleGroup printToggleGroup = new ToggleGroup();
     yesPrint.setToggleGroup(printToggleGroup);
     noPrint.setToggleGroup(printToggleGroup);
+    yesPrint.setSelected(true);
 
 
     int itemCount = orderService.getItems().size();
