@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.logging.Logger;
+
 import org.example.database.CrudRepository;
 import org.example.database.EntityMapper;
 
@@ -129,7 +130,7 @@ public class ProductRepository implements CrudRepository<Product, Integer> {
 
   public void update(Product entity) throws SQLException {
     String sql =
-            "UPDATE " + tableName + " SET name = ?, price = ?, description = ?, image_url = ?, isASide = ?, image = ? WHERE id = ?";
+            "UPDATE " + tableName + " SET name = ?, price = ?, description = ?, image_url = ?, isASide = ?, specialLabel = ?,image = ? WHERE id = ?";
 
     try (PreparedStatement stmt = connection.prepareStatement(sql)) {
       stmt.setString(1, entity.getName());
@@ -137,8 +138,9 @@ public class ProductRepository implements CrudRepository<Product, Integer> {
       stmt.setString(3, entity.getDescription());
       stmt.setString(4, entity.getImageUrl());
       stmt.setBoolean(5, entity.getisASide());
-      stmt.setBytes(6, entity.getImageBytes());
-      stmt.setInt(7, entity.getId());
+      stmt.setString(6, entity.getSpecialLabel());
+      stmt.setBytes(7, entity.getImageBytes());    
+      stmt.setInt(8, entity.getId());
       stmt.executeUpdate();
     }
 
