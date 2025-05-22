@@ -39,7 +39,7 @@
                     style="-fx-background-color: #ffc430;
                    -fx-text-fill: #021588;
                    -fx-font-size: 20px;
-                   -fx-font-weight: 20;
+                   -fx-font-weight: bold;
                    -fx-background-radius: 12;" />
 
             <Button text="🛍  Takeout"
@@ -49,7 +49,7 @@
                     style="-fx-background-color: #ffc400;
                    -fx-text-fill: #021588;
                    -fx-font-size: 20px;
-                   -fx-font-weight: 20;
+                   -fx-font-weight: bold;
                    -fx-background-radius: 12;" />
         </VBox>
     </VBox>
