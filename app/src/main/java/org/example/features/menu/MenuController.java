@@ -15,12 +15,15 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Rectangle;
 import org.example.AppContext;
+import org.example.SoundUtil;
 import org.example.features.product.Product;
 import org.example.features.product.ProductRepository;
 import org.example.features.product.Tag;
 import org.example.features.translation.Language;
 import org.example.features.translation.TranslationService;
 import org.example.shared.SceneRouter;
+import javafx.scene.media.AudioClip;
+
 
 public class MenuController {
 
@@ -205,7 +208,11 @@ public class MenuController {
             -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 10, 0, 0, 0);
         """);
 
-    card.setOnMouseClicked(e -> sceneRouter.goToProductDetailsPage(product));
+    card.setOnMouseClicked(e -> {
+      sceneRouter.goToProductDetailsPage(product);
+      SoundUtil.playClick();
+    });
+
 
     if (product.getSpecialLabel() != null && !product.getSpecialLabel().isEmpty()) {
       Label special = new Label(product.getSpecialLabel());
