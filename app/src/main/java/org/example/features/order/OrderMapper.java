@@ -2,12 +2,15 @@ package org.example.features.order;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import java.util.Optional;
 import org.example.database.EntityMapper;
+import org.example.features.coupons.Coupons;
 import org.example.features.ingredients.Ingredient;
 import org.example.features.product.CustomizedProduct;
 import org.example.features.product.Product;
@@ -21,9 +24,41 @@ public class OrderMapper implements EntityMapper<Order> {
     List<ProductQuantity> productQuantities = new ArrayList<>();
     int orderId = -1;
 
+    Coupons discount = new Coupons("No Discount", 0);
+    Optional<Integer> memberId = Optional.empty();
+    Order.Type type = Order.Type.EAT_IN; // Default value
+
+    int feedback = 0;
+    boolean isReceipt = false;
+    boolean isPaid = false;
+    LocalDateTime createdAt = null;
     while (rs.next()) {
       if (orderId == -1) {
         orderId = rs.getInt("order_id");
+
+        feedback = rs.getInt("feedback");
+
+        // Get discount (coupon)
+        String couponCode = rs.getString("coupon_code");
+        int couponDiscount = rs.getInt("discount"); // ensure 'discount' is selected in query
+        if (couponCode != null) {
+          discount = new Coupons(couponCode, couponDiscount);
+        }
+
+        // Get optional member
+        int memberRaw = rs.getInt("member_id");
+        if (!rs.wasNull()) {
+          memberId = Optional.of(memberRaw);
+        }
+
+        isReceipt = rs.getBoolean("is_receipt");
+        isPaid = rs.getBoolean("is_paid");
+        String typeStr = rs.getString("type");
+        if (typeStr != null) {
+          type = Order.Type.valueOf(typeStr);
+        }
+
+        createdAt = rs.getTimestamp("created_at").toLocalDateTime();
       }
 
       List<Tag> tags = new ArrayList<>();
@@ -57,6 +92,17 @@ public class OrderMapper implements EntityMapper<Order> {
       return null;
     }
 
-    return new Order(orderId, productQuantities);
+    return new Order(
+        orderId,
+        productQuantities,
+        Optional.of(discount),
+        feedback,
+        memberId,
+        isReceipt,
+        type,
+        isPaid,
+        createdAt
+    );
+
   }
 }

@@ -89,8 +89,9 @@ INSERT INTO Product_Tags (product_id, tag_id) VALUES
 
 CREATE TABLE IF NOT EXISTS Coupons
 (
-    code        VARCHAR(255)   NOT NULL,
-    discount    INT NOT NULL CHECK (discount >= 0)
+    code        VARCHAR(255)   NOT NULL UNIQUE,
+    discount    INT NOT NULL CHECK (discount >= 0),
+    PRIMARY KEY (code)
 );
 
 INSERT INTO Coupons (code, discount) VALUES
@@ -162,4 +163,14 @@ INSERT INTO Product_ingredients (product_id, ingredients_id)
 VALUES
 (1, 1),
 (1, 2),  
-(1, 3);  
+(1, 3);
+
+ALTER TABLE Orders
+    ADD COLUMN coupon_code VARCHAR(255),
+    ADD COLUMN is_member BOOLEAN NOT NULL DEFAULT FALSE,
+    ADD COLUMN member_id INT,
+    ADD COLUMN is_receipt BOOLEAN NOT NULL DEFAULT FALSE,
+    ADD COLUMN type ENUM('EAT_IN', 'TAKEAWAY', 'DELIVERY') DEFAULT 'EAT_IN',
+    ADD COLUMN is_paid BOOLEAN NOT NULL DEFAULT FALSE,
+    ADD COLUMN created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    ADD FOREIGN KEY (coupon_code) REFERENCES Coupons(code);

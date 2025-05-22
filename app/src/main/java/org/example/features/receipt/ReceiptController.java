@@ -108,9 +108,9 @@ public class ReceiptController {
       itemsContainer.getChildren().add(itemRow);
     }
 
-    if (order.getMember()) {
+    if (order.isMember()) {
       try {
-        int personalNumber = order.getMemberID();
+        int personalNumber = order.getMemberId().orElse(0);
         int pointsToAdd = (int) Math.floor(order.getPrice()) * 10;
         memberRepository.addPoints(personalNumber, pointsToAdd);
       } catch (SQLException e) {
@@ -121,13 +121,17 @@ public class ReceiptController {
     EatinEatoutlabel.setText("Order Type: " + order.getType().name());
     orderIdLabel.setText("Order Number: " + order.getId());
     totalLabel.setText(String.format("Total: $%.2f", order.getPrice()));
-    couponsLabel.setText(String.format("Coupons: %s", order.getDiscount().getCode()));
+    couponsLabel.setText(String.format("Coupons: %s", order.getDiscount()
+        .map(discount -> discount.getCode() + " -$" + discount.getDiscount())
+        .orElse("No Coupons")));
     thankYouLabel.setText("Thank you for dining with us!");
     restaurantNameLabel.setText("Restaurant Name: Gourmet Bistro");
     addressLabel.setText("Address: 123 Food St, Tasty Town");
     contactLabel.setText("Contact: (123) 456-7890");
-    memberLabel.setText("Member: " + order.getMember());
-    pointsLabel.setText("Points added: " + (int) Math.floor(order.getPrice()) * 10 + " MemberID: " + order.getMemberID());
+    memberLabel.setText("Member: " + order.getMemberId()
+        .map(String::valueOf)
+        .orElse("No Member"));
+    pointsLabel.setText("Points added: " + (int) Math.floor(order.getPrice()) * 10 + " MemberID: " + order.getMemberId().orElse(0));
     startAutoRedirect();
   }
 

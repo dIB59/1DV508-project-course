@@ -32,7 +32,7 @@ public class OrderService {
   /**
    * Add item.
    *
-   * @param item the item
+   * @param product the item
    */
   public void addItem(Product product, Map<Ingredient, Integer> ingredientQuantities) {
     order.addProduct(product, ingredientQuantities);;
@@ -40,19 +40,19 @@ public class OrderService {
 
   // Sets member status to true
   public void setMember(){
-    this.order.setMember();
+    this.order.setMemberId(12345);
   }
 
   public boolean getMember(){
-    return this.order.getMember();
+    return this.order.isMember();
   }
 
   public void setReceipt(){
-    this.order.setReceipt();
+    this.order.setReceipt(true);
   }
 
   public boolean getReceipt(){
-    return this.order.getReceipt();
+    return this.order.isReceipt();
   }
 
   public Order.Type gettype(){
@@ -73,14 +73,8 @@ public class OrderService {
     return this.order.getFeedback();
   }
 
-  public void setMemberDB(boolean getMember){
-    if (getMember){
-      this.order.setMember();
-    }
-  }
-
   public void setMemberID(int id){
-    this.order.setMemberID(id);
+    this.order.setMemberId(id);
   }
   /**
    * Remove item.
@@ -111,11 +105,6 @@ public class OrderService {
   public Order saveOrderAndClear() {
     try {
       var s = this.repository.save(order);
-      s.setDiscount(order.getDiscount());
-      s.setMemberDB(order.getMember());
-      s.setType(order.getType());
-      s.setMemberID(order.getMemberID());
-      s.setFeedback(order.getFeedback());
       this.clear();
       return s;
     } catch (Exception e) {
