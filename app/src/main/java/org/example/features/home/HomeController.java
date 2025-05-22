@@ -41,7 +41,9 @@ public class HomeController {
   public void initialize() {
     log.info(Arrays.toString(Language.values()));
     languageSelector.getItems().setAll(Language.values());
-    languageSelector.getSelectionModel().select(Language.ENGLISH); // Default selection
+    languageSelector
+        .getSelectionModel()
+        .select(AppContext.getInstance().getLanguage()); // Default selection
     languageSelector.getStyleClass().add("language-combo");
   }
 
