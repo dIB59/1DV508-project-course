@@ -35,27 +35,27 @@ CREATE TABLE Order_ProductQuantity_Ingredient (
 
 INSERT INTO Product (name, description, price, image, image_url, specialLabel, isASide)
 VALUES
-    ('TRALALERO TRALALA', 'Sings arias that summon thunder ⚡🎤 Mamma mia, he *vibrato*-slaps!', 5.99, LOAD_FILE('/var/lib/mysql-files/assets/burger.jpg'), 'assets/burger.jpg', NULL, FALSE),
+    ('TRALALERO TRALALA', 'Sings arias that summon thunder ⚡🎤 Mamma mia, he *vibrato*-slaps!', 5.99, LOAD_FILE('/var/lib/mysql-files/assets/tralalero-tralala.jpg'), 'assets/tralalero-tralala.jpg', NULL, FALSE),
 
-    ('BRR BRR PATAPIM', 'He enters. He toots. Reality shakes 🧀💥 *PATAPIM BRRR!!*', 8.99, LOAD_FILE('/var/lib/mysql-files/assets/pizza.jpg'), 'assets/pizza.jpg', '🔥 HOT HOT HOT', FALSE),
+    ('BRR BRR PATAPIM', 'He enters. He toots. Reality shakes 🧀💥 *PATAPIM BRRR!!*', 8.99, LOAD_FILE('/var/lib/mysql-files/assets/Brr_brr_patapim.jpg'), 'assets/Brr_brr_patapim.jpg', '🔥 HOT HOT HOT', FALSE),
 
-    ('TUNG TUNG TUNG TUNG SHAUR', 'Tung-powered tank from the dunes 💨 *TUNG* x4 = obliteration.', 4.99, LOAD_FILE('/var/lib/mysql-files/assets/salad.jpg'), 'assets/salad.jpg', NULL, FALSE),
+    ('TUNG TUNG TUNG TUNG SHAUR', 'Tung-powered tank from the dunes 💨 *TUNG* x4 = obliteration.', 4.99, LOAD_FILE('/var/lib/mysql-files/assets/artworks-Ugyi6VK6utMMpLzA-iOuDVA-t500x500.jpeg'), 'assets/artworks-Ugyi6VK6utMMpLzA-iOuDVA-t500x500.jpeg', NULL, FALSE),
 
-    ('BOMBARDILO CROCODILO', 'Explodes into battle with toothy chaos 🐊💣 *BOOMbar-dilo!*', 1.99, LOAD_FILE('/var/lib/mysql-files/assets/soda.jpg'), 'assets/soda.jpg', NULL, TRUE),
+    ('BOMBARDILO CROCODILO', 'Explodes into battle with toothy chaos 🐊💣 *BOOMbar-dilo!*', 1.99, LOAD_FILE('/var/lib/mysql-files/assets/img_4257.jpg'), 'assets/img_4257.jpg', NULL, TRUE),
 
-    ('COCOSINO RHINO', 'Charges with coconut-powered rage 🌴💢 — BONK goes the rival!', 2.99, LOAD_FILE('/var/lib/mysql-files/assets/fries.jpg'), 'assets/fries.jpg', NULL, FALSE),
+    ('COCOSINO RHINO', 'Charges with coconut-powered rage 🌴💢 — BONK goes the rival!', 2.99, LOAD_FILE('/var/lib/mysql-files/assets/GTA5-2025-05-07-17-55-51_269-e1746625550739.png'), 'assets/GTA5-2025-05-07-17-55-51_269-e1746625550739.png', NULL, FALSE),
 
-    ('BONECA AMVALABU', 'Skeleton doll with chaotic energy 😵‍💫💀 – it giggles in Morse code.', 3.99, LOAD_FILE('/var/lib/mysql-files/assets/ice_cream.jpg'), 'assets/ice_cream.jpg', NULL, FALSE),
+    ('BONECA AMVALABU', 'Skeleton doll with chaotic energy 😵‍💫💀 – it giggles in Morse code.', 3.99, LOAD_FILE('/var/lib/mysql-files/assets/boneca-ambalabu-ezgif.com-webp-to-jpg-converter.jpg'), 'assets/boneca-ambalabu-ezgif.com-webp-to-jpg-converter.jpg', NULL, FALSE),
 
-    ('ANANITTO GIRAFFINI', 'Neck-a so long it pierces the *cheese stratosphere* 🧀🦒', 7.99, LOAD_FILE('/var/lib/mysql-files/assets/pasta.jpg'), 'assets/pasta.jpg', '🤑 DEAL OF DESTINY', FALSE),
+    ('ANANITTO GIRAFFINI', 'Neck-a so long it pierces the *cheese stratosphere* 🧀🦒', 7.99, LOAD_FILE('/var/lib/mysql-files/assets/Images_-_2025-05-18T114613.167.jpg'), 'assets/Images_-_2025-05-18T114613.167.jpg', '🤑 DEAL OF DESTINY', FALSE),
 
     ('PANINO DEL DESTINO', 'Still a panino, but destiny awaits inside... probably Tob Tobi.', 4.49, LOAD_FILE('/var/lib/mysql-files/assets/sandwich.jpg'), 'assets/sandwich.jpg', NULL, FALSE),
 
-    ('CAPUCCINO ASASHINO', 'Caffeinated shinobi ☕🥷 Disappears between sips. *Zoom!*', 2.49, LOAD_FILE('/var/lib/mysql-files/assets/coffee.jpg'), 'assets/coffee.jpg', NULL, FALSE),
+    ('CAPUCCINO ASASHINO', 'Caffeinated shinobi ☕🥷 Disappears between sips. *Zoom!*', 2.49, LOAD_FILE('/var/lib/mysql-files/assets/images.jpeg'), 'assets/images.jpeg', NULL, FALSE),
 
-    ('TOB TOBI TOB TOB TOBI TOB', 'Too many Tobis. Echoes of barks in the void 🐾🌀 *BARK²*.', 1.49, LOAD_FILE('/var/lib/mysql-files/assets/tea.jpg'), 'assets/tea.jpg', NULL, FALSE),
+    ('TOB TOBI TOB TOB TOBI TOB', 'Too many Tobis. Echoes of barks in the void 🐾🌀 *BARK²*.', 1.49, LOAD_FILE('/var/lib/mysql-files/assets/Tob_Tobi_Tob_Camel-ezgif.com-webp-to-jpg-converter.jpg'), 'assets/Tob_Tobi_Tob_Camel-ezgif.com-webp-to-jpg-converter.jpg', NULL, FALSE),
 
-    ('TRIPY TROPHY', 'Won ALL the imaginary Olympics 🏆🦓 – even the sideways ones.', 3.49, LOAD_FILE('/var/lib/mysql-files/assets/cake.jpg'), 'assets/cake.jpg', NULL, FALSE);
+    ('TRIPY TROPHY', 'Won ALL the imaginary Olympics 🏆🦓 – even the sideways ones.', 3.49, LOAD_FILE('/var/lib/mysql-files/assets/lets-settle-the-debate-who-is-tripi-tropi-v0-t4elw6moq0ue1.jpg'), 'assets/lets-settle-the-debate-who-is-tripi-tropi-v0-t4elw6moq0ue1.jpg', NULL, FALSE);
 
 
 CREATE TABLE IF NOT EXISTS Admin
