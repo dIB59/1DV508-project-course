@@ -6,7 +6,7 @@ import javafx.application.Application;
 public class Main {
 
   /**
-   * The entry point of application.
+   * The entry point of application.4
    *
    * @param args the input arguments
    */

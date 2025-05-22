@@ -1,46 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.String?>
-<?import javafx.collections.FXCollections?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.*?>
+
 <AnchorPane xmlns:fx="http://javafx.com/fxml"
             xmlns="http://javafx.com/javafx"
             fx:controller="org.example.features.home.HomeController"
-            stylesheets="@styles/home.css"
-            prefWidth="600.0" prefHeight="600.0">
+            prefWidth="1280.0" prefHeight="800.0"
+            style="-fx-background-color: white;">
 
-    <VBox spacing="20" alignment="CENTER"
+    <!-- Central VBox -->
+    <VBox spacing="30" alignment="CENTER"
           AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0"
           AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0"
-          style="-fx-padding: 100; -fx-margin: 10">
+          style="-fx-padding: 80;">
 
-        <!-- Header -->
-        <Label text="Welcome!"
+        <!-- Welcome Title -->
+        <Label text="Welcome to our Kiosk!"
                fx:id="welcomeLabel"
-               style="-fx-font-size: 30px; -fx-font-weight: bold;"/>
+               style="-fx-font-size: 44px; -fx-font-weight: bold; -fx-text-fill: #021588;" />
 
-        <!-- Body -->
+        <Region prefHeight="50"/>
+
+        <!-- Subtitle -->
         <Label text="Please choose one of the options below:"
-               style="-fx-font-size: 16px;"/>
+               style="-fx-font-size: 20px; -fx-text-fill: #021588;" />
 
-        <!-- Action Buttons -->
-        <Button text="Eat-in"
-                fx:id="eatInButton"
-                prefWidth="150"
-                style="-fx-padding: 10 0; -fx-font-size: 14px; -fx-background-color: green; -fx-text-fill: white;"
-                onAction="#goToMenuPageEatIn"/>
+        <!-- Spacer between subtitle and buttons -->
+        <Region prefHeight="20"/>
 
-        <Button text="Takeout"
-                fx:id="takeOutButton"
-                prefWidth="150"
-                style="-fx-padding: 10 0; -fx-font-size: 14px; -fx-background-color: green; -fx-text-fill: white;"
-                onAction="#goToMenuPageTakeout"/>
+        <!-- Ordering Buttons -->
+        <VBox spacing="20" alignment="CENTER">
+            <Button text="🍽  Eat-in"
+                    fx:id="eatInButton"
+                    onAction="#goToMenuPageEatIn"
+                    prefWidth="200" prefHeight="55"
+                    style="-fx-background-color: #ffc430;
+                   -fx-text-fill: #021588;
+                   -fx-font-size: 20px;
+                   -fx-font-weight: 20;
+                   -fx-background-radius: 12;" />
+
+            <Button text="🛍  Takeout"
+                    fx:id="takeOutButton"
+                    onAction="#goToMenuPageTakeout"
+                    prefWidth="200" prefHeight="55"
+                    style="-fx-background-color: #ffc400;
+                   -fx-text-fill: #021588;
+                   -fx-font-size: 20px;
+                   -fx-font-weight: 20;
+                   -fx-background-radius: 12;" />
+        </VBox>
     </VBox>
-
     <!-- Language Selector (Bottom Left, above Admin) -->
     <ComboBox fx:id="languageSelector"
               prefWidth="150"
@@ -48,10 +60,16 @@
               AnchorPane.bottomAnchor="20" AnchorPane.leftAnchor="20">
     </ComboBox>
 
-
+    <!-- Admin Button -->
     <Button text="Admin"
             fx:id="adminButton"
-            style="-fx-padding: 8 16; -fx-font-size: 13px; -fx-background-color: darkblue; -fx-text-fill: white;"
             onAction="#goToAdminPage"
-            AnchorPane.bottomAnchor="20" AnchorPane.rightAnchor="20"/>
+            AnchorPane.bottomAnchor="30"
+            AnchorPane.rightAnchor="30"
+            style="-fx-background-color:#021588 ;
+                   -fx-text-fill: yellow;
+                   -fx-font-size: 16px;
+                   -fx-font-weight: bold;
+                   -fx-background-radius: 10;
+                   -fx-padding: 10 25;" />
 </AnchorPane>

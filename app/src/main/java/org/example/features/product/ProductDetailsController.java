@@ -36,9 +36,11 @@ public class ProductDetailsController {
 
   @FXML private Button addToOrderButton;
 
-  @FXML private VBox   ingredientsContainer; 
-  
+  @FXML private VBox   ingredientsContainer;
+
   @FXML private Label  totalPriceLabel;
+
+  @FXML private Button goBackButton;
 
   public ProductDetailsController(OrderService orderService, SceneRouter sceneRouter,ProductRepository productRepository) {
     this.orderService = orderService;
@@ -80,7 +82,7 @@ public class ProductDetailsController {
                 }
               });
 
-        
+
     } else {
       System.err.println("FXML fields are not initialized. Check FXML fx:id or initialization.");
     }
@@ -100,9 +102,9 @@ public class ProductDetailsController {
           ingSpinner.setPrefWidth(80);
           ingredientSpinnerMap.put(ing, ingSpinner);
 
-          HBox ingBox = new HBox(10, ingLabel, ingSpinner); 
+          HBox ingBox = new HBox(10, ingLabel, ingSpinner);
           ingredientsContainer.getChildren().add(ingBox);
-    } 
+    }
   }
 
 }
@@ -138,47 +140,48 @@ public class ProductDetailsController {
   public void addToOrder() {
 
 
-
     Integer quantity = quantitySpinner.getValue(); // Get the current value from the Spinner
     if (quantity == null) {
       System.err.println("Spinner value is null. Ensure SpinnerValueFactory is set.");
       return;
     }
-    
+
     Map<Ingredient, Integer> selectedIngredients = new HashMap<>();
 
     // adding ingredients and products
-    for (Map.Entry<Ingredient, Spinner<Integer>> entry : ingredientSpinnerMap.entrySet()){
+    for (Map.Entry<Ingredient, Spinner<Integer>> entry : ingredientSpinnerMap.entrySet()) {
       Ingredient ingredient = entry.getKey();
       Integer ingQuantity = entry.getValue().getValue();
 
-      if ( ingQuantity != null && ingQuantity > 0) {
+      if (ingQuantity != null && ingQuantity > 0) {
         selectedIngredients.put(ingredient, ingQuantity);
       }
     }
 
-    for(int i = 0; i < quantity; i++) {
-      if(!selectedIngredients.isEmpty()) {
+    for (int i = 0; i < quantity; i++) {
+      if (!selectedIngredients.isEmpty()) {
         orderService.addItem(product, selectedIngredients);
-      }
-      else{
+      } else {
         orderService.addItem(product, new HashMap<>());
       }
     }
 
-    // handeling sides 
+    // handeling sides
     for (Map.Entry<Product, Spinner<Integer>> entry : sideSpinnerMap.entrySet()) {
-        Product side = entry.getKey();
-        Integer sideQuantity = entry.getValue().getValue();
+      Product side = entry.getKey();
+      Integer sideQuantity = entry.getValue().getValue();
 
-        if (sideQuantity != null && sideQuantity > 0) {
-            for (int i = 0; i < sideQuantity; i++) {
-                orderService.addItem(side, new HashMap<>());
-            }
+      if (sideQuantity != null && sideQuantity > 0) {
+        for (int i = 0; i < sideQuantity; i++) {
+          orderService.addItem(side, new HashMap<>());
         }
+      }
     }
     sceneRouter.goToMenuPage();
-
   }
+    @FXML
+    private void goBack() {
+      sceneRouter.goToMenuPage(); // or goToHomePage() if you prefer
+    }
 
 }

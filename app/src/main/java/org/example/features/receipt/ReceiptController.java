@@ -17,6 +17,8 @@ import org.example.features.order.ProductQuantity;
 import org.example.features.product.Product;
 import org.example.members.MemberRepository;
 import org.example.shared.SceneRouter;
+import javafx.animation.PauseTransition;
+import javafx.util.Duration;
 
 public class ReceiptController {
 
@@ -83,7 +85,7 @@ public class ReceiptController {
         ingredientdiff.getChildren().add(IngredientLabel);
       }
       }
-      
+
       VBox nameAndIngredientsBox = new VBox(nameLabel, ingredientdiff);
       nameAndIngredientsBox.setSpacing(5);
 
@@ -124,10 +126,17 @@ public class ReceiptController {
     contactLabel.setText("Contact: (123) 456-7890");
     memberLabel.setText("Member: " + order.getMember());
     pointsLabel.setText("Points added: " + (int) Math.floor(order.getPrice()) * 10 + " MemberID: " + order.getMemberID());
+    startAutoRedirect();
   }
 
   public void goToHomePage(){
     sceneRouter.goToHomePage();
+    }
+
+  private void startAutoRedirect() {
+    PauseTransition pause = new PauseTransition(Duration.seconds(7));
+    pause.setOnFinished(e -> goToHomePage());
+    pause.play();
   }
 
 }
