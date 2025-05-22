@@ -18,14 +18,18 @@ CREATE TABLE IF NOT EXISTS Orders
 );
 
 -- Table for ProductQuantity (associates products with orders and quantities)
-CREATE TABLE IF NOT EXISTS Order_ProductQuantity
-(
-    order_id   INT NOT NULL,
-    product_id INT NOT NULL,
-    quantity   INT NOT NULL CHECK (quantity >= 0),
-    PRIMARY KEY (order_id, product_id),
-    FOREIGN KEY (order_id) REFERENCES Orders (id) ON DELETE CASCADE,
-    FOREIGN KEY (product_id) REFERENCES Product (id)
+CREATE TABLE Order_ProductQuantity (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  order_id INT,
+  product_id INT,
+  quantity INT
+);
+
+CREATE TABLE Order_ProductQuantity_Ingredient (
+  order_product_quantity_id INT,
+  ingredient_id INT,
+  quantity INT,
+  PRIMARY KEY (order_product_quantity_id, ingredient_id)
 );
 
 INSERT INTO Product (name, description, price, image_url, specialLabel, isASide)

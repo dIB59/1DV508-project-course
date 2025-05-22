@@ -7,9 +7,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import org.example.database.CrudRepository;
 import org.example.database.EntityMapper;
+import org.example.features.ingredients.Ingredient;
 
 /** The type Order repository. */
 public class OrderRepository implements CrudRepository<Order, Integer> {
@@ -41,14 +43,36 @@ public class OrderRepository implements CrudRepository<Order, Integer> {
 
         String insertProductSQL =
             "INSERT INTO Order_ProductQuantity (order_id, product_id, quantity) VALUES (?, ?, ?)";
-        try (PreparedStatement productStmt = connection.prepareStatement(insertProductSQL)) {
+        String insertIngredientSQL = 
+        "INSERT INTO Order_ProductQuantity_Ingredient (order_product_quantity_id, ingredient_id, quantity) VALUES (?, ?, ?)";
+
+        try (
+          PreparedStatement productStmt = connection.prepareStatement(insertProductSQL, Statement.RETURN_GENERATED_KEYS);
+          PreparedStatement ingredientStmt = connection.prepareStatement(insertIngredientSQL)
+
+        ) {
           for (ProductQuantity pq : order.getProductQuantity()) {
             productStmt.setInt(1, orderId);
             productStmt.setInt(2, pq.getCustomizedProduct().getProduct().getId());
             productStmt.setInt(3, pq.getQuantity());
-            productStmt.addBatch();
+            productStmt.executeUpdate();
+
+            ResultSet productKeys = productStmt.getGeneratedKeys();
+            if(productKeys.next()) {
+              int Order_ProductQuantityId = productKeys.getInt(1);
+              
+              Map<Ingredient, Integer> ingredients = pq.getCustomizedProduct().getIngredientquanities();
+              for (Map.Entry<Ingredient, Integer> entry: ingredients.entrySet()) {
+                ingredientStmt.setInt(1, Order_ProductQuantityId);
+                ingredientStmt.setInt(2, entry.getKey().getId());
+                ingredientStmt.setInt(3, entry.getValue());
+                ingredientStmt.addBatch();
+              }
+            
+            }
+            
           }
-          productStmt.executeBatch();
+          ingredientStmt.executeBatch();
         }
         return new Order(orderId, order.getProductQuantity());
       }
