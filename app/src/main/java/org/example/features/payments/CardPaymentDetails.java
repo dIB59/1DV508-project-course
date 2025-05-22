@@ -1,15 +1,10 @@
 package org.example.features.payments;
 
-
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 public record CardPaymentDetails(
-    String cardNumber,
-    String expirationDate,
-    String cvv,
-    BigDecimal amount
-) {
+    String cardNumber, String expirationDate, String cvv, BigDecimal amount) {
   public CardPaymentDetails {
     if (cardNumber == null || cardNumber.isEmpty()) {
       throw new IllegalArgumentException("Card number cannot be null or empty");
@@ -25,11 +20,11 @@ public record CardPaymentDetails(
     }
   }
 
-  public CardPaymentDetails(
-      String cardNumber,
-      String expirationDate,
-      String cvv,
-      double amount) {
-    this(cardNumber, expirationDate, cvv, BigDecimal.valueOf(amount).setScale(2, RoundingMode.HALF_UP));
+  public CardPaymentDetails(String cardNumber, String expirationDate, String cvv, double amount) {
+    this(
+        cardNumber,
+        expirationDate,
+        cvv,
+        BigDecimal.valueOf(amount).setScale(2, RoundingMode.HALF_UP));
   }
 }

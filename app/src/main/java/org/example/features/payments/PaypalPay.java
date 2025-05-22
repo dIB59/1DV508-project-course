@@ -15,7 +15,7 @@ public class PaypalPay implements PayStrategy {
     System.out.println("CVV: " + cpDetails.cvv());
     System.out.println("Amount: " + cpDetails.amount());
     String expirationDate;
-    //valdate card number
+    // valdate card number
     if (cpDetails.expirationDate().matches("\\d{4}")) {
       expirationDate =
           cpDetails.expirationDate().substring(0, 2)
@@ -45,7 +45,8 @@ public class PaypalPay implements PayStrategy {
       return true;
     } else {
       if (result.getTransaction() != null) {
-        System.err.println("Transaction failed: " + result.getTransaction().getProcessorResponseText());
+        System.err.println(
+            "Transaction failed: " + result.getTransaction().getProcessorResponseText());
       } else {
         for (ValidationError error : result.getErrors().getAllDeepValidationErrors()) {
           System.err.println("Validation Error: " + error.getMessage());

@@ -43,23 +43,24 @@ public class ProductMapper implements EntityMapper<Product> {
 
     int id = rs.getInt("id");
 
-    Product product = new Product(
-      id,
-      rs.getString("name"),
-      rs.getString("description"),
-      rs.getDouble("price"),
-      rs.getString("image_url"),
-      rs.getString("specialLabel"),
-      rs.getBoolean("isASide"),
-      tags);
+    Product product =
+        new Product(
+            id,
+            rs.getString("name"),
+            rs.getString("description"),
+            rs.getDouble("price"),
+            rs.getString("image_url"),
+            rs.getString("specialLabel"),
+            rs.getBoolean("isASide"),
+            tags);
     // Set the imageBytes from the LONGBLOB column
     byte[] imageBytes = rs.getBytes("image");
     product.setImageBytes(imageBytes);
 
     List<Ingredient> ingredients = ingredientRepository.getIngredientsForProduct(product);
-      for (Ingredient ingredient : ingredients) {
-        product.addIngredient(ingredient, 1);
-      }
+    for (Ingredient ingredient : ingredients) {
+      product.addIngredient(ingredient, 1);
+    }
 
     return product;
   }

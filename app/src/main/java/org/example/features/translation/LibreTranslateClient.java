@@ -1,6 +1,5 @@
 package org.example.features.translation;
 
-
 import java.net.URI;
 import java.net.http.*;
 import java.nio.charset.StandardCharsets;
@@ -22,20 +21,21 @@ public class LibreTranslateClient {
     this(ENDPOINT);
   }
 
-
   public String translate(String text, String targetLang, String sourceLang) throws Exception {
 
-    JSONObject body = new JSONObject()
-        .put("q", text)
-        .put("source", sourceLang)
-        .put("target", targetLang)
-        .put("format", "text");
+    JSONObject body =
+        new JSONObject()
+            .put("q", text)
+            .put("source", sourceLang)
+            .put("target", targetLang)
+            .put("format", "text");
 
-    HttpRequest request = HttpRequest.newBuilder()
-        .uri(endpoint)
-        .header("Content-Type", "application/json")
-        .POST(HttpRequest.BodyPublishers.ofString(body.toString(), StandardCharsets.UTF_8))
-        .build();
+    HttpRequest request =
+        HttpRequest.newBuilder()
+            .uri(endpoint)
+            .header("Content-Type", "application/json")
+            .POST(HttpRequest.BodyPublishers.ofString(body.toString(), StandardCharsets.UTF_8))
+            .build();
 
     HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
     log.debug("Response: {}", response);

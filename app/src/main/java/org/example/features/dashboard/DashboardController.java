@@ -1,5 +1,6 @@
 package org.example.features.dashboard;
 
+import java.io.File;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,28 +24,21 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.example.features.product.Product;
 import org.example.features.product.ProductRepository;
 import org.example.features.product.Tag;
 import org.example.shared.SceneRouter;
-import javafx.stage.FileChooser;
-import java.io.File;
-import javafx.scene.image.Image;
-import java.io.ByteArrayInputStream;
-
 
 public class DashboardController {
 
-  private final DashboardModel dashboardModel;
   private final SceneRouter sceneRouter;
   private final ProductRepository repository;
   @FXML private VBox productList; // The VBox inside the ScrollPane
 
-  public DashboardController(
-      DashboardModel dashboardModel, SceneRouter sceneRouter, ProductRepository repository) {
-    this.dashboardModel = dashboardModel;
+  public DashboardController(SceneRouter sceneRouter, ProductRepository repository) {
     this.sceneRouter = sceneRouter;
     this.repository = repository;
   }

@@ -37,17 +37,19 @@ public class CouponsController {
       coupon.setSpacing(5);
       coupon.setStyle("-fx-padding: 10; -fx-border-color: #ccc; -fx-border-radius: 5;");
 
-      deleteButton.setOnAction(event -> {
-        try {
-          couponsRepository.delete(coupons.getCode());
-        } catch (SQLException e) {
-          throw new RuntimeException(e);
-        }
-        couponsList.getChildren().remove(coupon);
-      });
+      deleteButton.setOnAction(
+          event -> {
+            try {
+              couponsRepository.delete(coupons.getCode());
+            } catch (SQLException e) {
+              throw new RuntimeException(e);
+            }
+            couponsList.getChildren().remove(coupon);
+          });
       couponsList.getChildren().add(coupon);
     }
   }
+
   /**
    * Go to dashboard page.
    *
@@ -63,7 +65,7 @@ public class CouponsController {
     }
 
     try {
-      couponsRepository.save(new Coupons(code, Double.parseDouble(discount)* 100));
+      couponsRepository.save(new Coupons(code, Double.parseDouble(discount) * 100));
     } catch (SQLException | NumberFormatException e) {
       throw new RuntimeException(e);
     }
@@ -106,7 +108,5 @@ public class CouponsController {
     alert.setHeaderText(null);
     alert.setContentText("Your cart is empty. Please add items before proceeding.");
     alert.showAndWait();
-    return;
-
   }
 }

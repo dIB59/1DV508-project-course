@@ -3,8 +3,8 @@ package org.example.members;
 import org.example.database.Identifiable;
 
 public class Member implements Identifiable<Integer> {
-  private int personalNumber;
-  private int memberPoints;
+  private final int personalNumber;
+  private final int memberPoints;
 
   public Member(int personalNumber, int memberPoints) {
     this.personalNumber = personalNumber;

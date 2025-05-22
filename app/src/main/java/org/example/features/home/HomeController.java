@@ -2,10 +2,10 @@ package org.example.features.home;
 
 import java.util.Arrays;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import org.example.AppContext;
+import org.example.features.order.Order;
 import org.example.features.order.OrderService;
 import org.example.features.translation.Language;
 import org.example.features.translation.TranslationService;
@@ -19,18 +19,11 @@ public class HomeController {
   private final Logger log = LoggerFactory.getLogger(HomeController.class);
   private final SceneRouter sceneRouter;
   private final OrderService orderService;
-  private final HomeModel homeModel;
   private final TranslationService translationService;
-
-  public boolean takeout = false;
-
   @FXML private Label welcomeLabel;
-  @FXML private Button eatInButton;
-  @FXML private Button takeOutButton;
   @FXML private ComboBox<Language> languageSelector;
 
-  public HomeController(HomeModel homeModel, SceneRouter sceneRouter, OrderService orderService, TranslationService translationService) {
-    this.homeModel = homeModel;
+  public HomeController(SceneRouter sceneRouter, OrderService orderService, TranslationService translationService) {
     this.sceneRouter = sceneRouter;
     this.orderService = orderService;
     this.translationService = translationService;
@@ -63,15 +56,13 @@ public class HomeController {
   @FXML
   public void goToMenuPageTakeout() {
     sceneRouter.goToMenuPage();
-    orderService.settype("Your order is for Take out");
-    takeout = true;
+    orderService.setType(Order.Type.TAKEOUT);
   }
 
   @FXML
   public void goToMenuPageEatIn() {
     sceneRouter.goToMenuPage();
-    orderService.settype("Your order is for Eat in ");
-    takeout = false;
+    orderService.setType(Order.Type.EAT_IN);
   }
 
   public void goToAdminPage() {

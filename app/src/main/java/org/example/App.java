@@ -31,7 +31,6 @@ public class App extends Application {
     System.out.println(AppConfig.getPayPalPublicKey());
     System.out.println(AppConfig.getPayPalPrivateKey());
 
-
     Connection conn = this.database.getConnection();
     var orderMapper = new OrderMapper();
     CrudRepository<Order, Integer> orderRepository = new OrderRepository(conn, orderMapper);
@@ -46,10 +45,8 @@ public class App extends Application {
     primaryStage.show();
   }
 
-
   private TranslationService getTranslationService() {
-    return new TranslationService(new TranslationRepository(this.database.getConnection()), new LibreTranslateClient());
+    return new TranslationService(
+        new TranslationRepository(this.database.getConnection()), new LibreTranslateClient());
   }
 }
-
-

@@ -10,12 +10,12 @@ import java.util.Optional;
 import org.example.database.CrudRepository;
 import org.example.database.EntityMapper;
 
-public class MemberRepository implements CrudRepository<Member, Integer>{
+public class MemberRepository implements CrudRepository<Member, Integer> {
 
   private final EntityMapper<Member> memberMapper;
   private final Connection connection;
 
-  public MemberRepository(Connection connection, MemberMapper memberMapper){
+  public MemberRepository(Connection connection, MemberMapper memberMapper) {
     this.connection = connection;
     this.memberMapper = memberMapper;
   }
@@ -29,14 +29,13 @@ public class MemberRepository implements CrudRepository<Member, Integer>{
     }
     String sql2 = "SELECT LAST_INSERT_ID()";
     try (PreparedStatement stmt = connection.prepareStatement(sql2);
-         ResultSet rs = stmt.executeQuery()){
+        ResultSet rs = stmt.executeQuery()) {
       if (rs.next()) {
         return new Member(entity.getPersonalNumber(), entity.getMemberPoints());
       }
     }
     throw new SQLException("Failed to retrieve the last inserted id.");
   }
-
 
   @Override
   public Optional<Member> findById(Integer personalnumber) throws SQLException {
@@ -82,7 +81,7 @@ public class MemberRepository implements CrudRepository<Member, Integer>{
   public List<Member> findAll() throws SQLException {
     String sql = "SELECT * FROM Members";
     try (PreparedStatement stmt = connection.prepareStatement(sql);
-         ResultSet rs = stmt.executeQuery()) {
+        ResultSet rs = stmt.executeQuery()) {
       List<Member> members = new ArrayList<>();
       while (rs.next()) {
         members.add(memberMapper.map(rs));

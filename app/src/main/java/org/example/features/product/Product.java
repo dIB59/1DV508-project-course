@@ -1,5 +1,6 @@
 package org.example.features.product;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
@@ -7,16 +8,14 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+import javafx.scene.image.Image;
 import org.example.database.Identifiable;
 import org.example.features.ingredients.Ingredient;
-import javafx.scene.image.Image;
-
-import java.io.ByteArrayInputStream;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Represents a product in the system.
@@ -27,14 +26,15 @@ import java.io.ByteArrayInputStream;
  */
 
 public class Product implements Identifiable<Integer> {
+  private static final Logger log = LoggerFactory.getLogger(Product.class);
   private int id;
   private String name;
   private String description;
   private double price;
   private String imageUrl;
   private byte[] imageBytes;
-  private String specialLabel;
-  private Boolean isASide;
+  private final String specialLabel;
+  private final Boolean isASide;
   private List<Tag> tags;
   private Map<Ingredient, Integer> defaultIngredients = new HashMap<>();
 
@@ -69,8 +69,20 @@ public class Product implements Identifiable<Integer> {
     this.isASide = isASide;
     this.imageBytes = readImageBytesFromFile(imageUrl);
   }
+  public Product(String name, String description, double price, String imageUrl, String specialLabel, boolean isASide) {
+    this(0, name, description, price, imageUrl, specialLabel, isASide,List.of());
+  }
+
+  public Product(String name, String description, double price, String imageUrl, String specialLabel, boolean isASide,List<Tag> tags) {
+    this(0, name, description, price, imageUrl, specialLabel, isASide,tags);
+  }
+
   public byte[] getImageBytes() {
     return imageBytes;
+  }
+
+  public void setImageBytes(byte[] imageBytes) {
+    this.imageBytes = imageBytes;
   }
 
   public void loadImageFromFile(File file) {
@@ -83,23 +95,11 @@ public class Product implements Identifiable<Integer> {
     }
   }
 
-  public void setImageBytes(byte[] imageBytes) {
-    this.imageBytes = imageBytes;
-  }
-
   public Image getImage() {
     if (imageBytes != null && imageBytes.length > 0) {
       return new Image(new ByteArrayInputStream(imageBytes));
     }
     return null; // or you can return a default image
-  }
-
-  public Product(String name, String description, double price, String imageUrl, String specialLabel, boolean isASide) {
-    this(0, name, description, price, imageUrl, specialLabel, isASide,List.of());
-  }
-
-  public Product(String name, String description, double price, String imageUrl, String specialLabel, boolean isASide,List<Tag> tags) {
-    this(0, name, description, price, imageUrl, specialLabel, isASide,tags);
   }
 
   public Integer getId() {
@@ -148,6 +148,15 @@ public class Product implements Identifiable<Integer> {
     return imageUrl;
   }
 
+  /**
+   * Gets tags.
+   *
+   * @return the tags
+   */
+
+  public void setImageUrl(String imageUrl) {
+    this.imageUrl = imageUrl;
+  }
 
    /**
    * Gets the special label
@@ -160,16 +169,6 @@ public class Product implements Identifiable<Integer> {
 
   public Boolean getisASide(){
     return isASide;
-  }
-
-  /**
-   * Gets tags.
-   *
-   * @return the tags
-   */
-
-  public void setImageUrl(String imageUrl) {
-    this.imageUrl = imageUrl;
   }
 
   public List<Tag> getTags() {
@@ -188,12 +187,12 @@ public class Product implements Identifiable<Integer> {
     return tagIds;
   }
 
-  public void setIngredients(Map<Ingredient, Integer> ingredients) {
-    this.defaultIngredients = ingredients;
-  }
-
   public Map<Ingredient, Integer> getIngredients() {
         return defaultIngredients;
+  }
+
+  public void setIngredients(Map<Ingredient, Integer> ingredients) {
+    this.defaultIngredients = ingredients;
   }
 
   public void addIngredient(Ingredient ingredient, int quantity) {
@@ -219,8 +218,8 @@ public class Product implements Identifiable<Integer> {
       Path path = Paths.get(URI.create(imageUrl));
       return Files.readAllBytes(path);
     } catch (IOException | IllegalArgumentException e) {
-      System.err.println("Failed to read image file: " + imageUrl);
-      e.printStackTrace();
+      log.error("Error reading image file: {}", e.getMessage());
+      log.error("Image URL: {}", imageUrl);
       return new byte[0];
     }
   }
