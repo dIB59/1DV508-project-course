@@ -124,51 +124,58 @@ public class TranslationService {
   private void traverseAndTranslate(Node node, String sourceLang, String targetLang) {
     switch (node) {
       case Labeled labeled -> {
-        if (labeled.getProperties().get(DO_NOT_TRANSLATE) != null) {
+        if (labeled.getProperties().get(DO_NOT_TRANSLATE) != null) return;
         if (labeled.textProperty().isBound()) {
           logger.debug("Label is bound, skipping translation: {}", labeled);
           return;
         }
+
         String originalText = labeled.getText();
         if (labeled.getProperties().get(ORIGINAL_TEXT) != null) {
           originalText = (String) labeled.getProperties().get(ORIGINAL_TEXT);
         }
+
         logger.debug("Original text: {}", originalText);
         if (originalText != null && !originalText.isBlank()) {
           try {
             String translated = get(originalText, sourceLang, targetLang);
             logger.debug("Translated label: {}", translated);
-            labeled.getProperties().put("originalText", originalText);
+            labeled.getProperties().put(ORIGINAL_TEXT, originalText);
             labeled.setText(translated);
           } catch (Exception e) {
             logger.error("Translation failed for: {}", originalText, e);
           }
         }
       }
+
       case Text textNode -> {
-        if (textNode.getProperties().get(DO_NOT_TRANSLATE) != null) {
+        if (textNode.getProperties().get(DO_NOT_TRANSLATE) != null) return;
         if (textNode.textProperty().isBound()) {
           logger.debug("Text is bound, skipping translation: {}", textNode);
           return;
         }
+
         String originalText = textNode.getText();
         if (textNode.getProperties().get(ORIGINAL_TEXT) != null) {
           originalText = (String) textNode.getProperties().get(ORIGINAL_TEXT);
         }
+
         if (originalText != null && !originalText.isBlank()) {
           try {
             String translated = get(originalText, sourceLang, targetLang);
-            logger.debug("Translated TxtNode: {}", translated);
-            textNode.getProperties().put("originalText", originalText);
+            logger.debug("Translated TextNode: {}", translated);
+            textNode.getProperties().put(ORIGINAL_TEXT, originalText);
             textNode.setText(translated);
           } catch (Exception e) {
-            logger.error("TxtNode failed for: {}", originalText, e);
+            logger.error("TextNode failed for: {}", originalText, e);
           }
         }
       }
+
       default -> logger.debug("Node type not handled: {}", node.getClass().getSimpleName());
     }
 
+    // After switch: recurse into children
     if (node instanceof Parent parent) {
       for (Node child : parent.getChildrenUnmodifiable()) {
         traverseAndTranslate(child, sourceLang, targetLang);
