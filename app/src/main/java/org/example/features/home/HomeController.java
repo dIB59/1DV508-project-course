@@ -44,6 +44,7 @@ public class HomeController {
   public void translatePage() {
     Language selectedLanguage = languageSelector.getValue();
     if (selectedLanguage == Language.ENGLISH) {
+      AppContext.getInstance().setLanguage(Language.ENGLISH); // Store choice globally
       translationService.reverseTranslate(welcomeLabel.getScene().getRoot()); // Restore original tex
       return;
     }
