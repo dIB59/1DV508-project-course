@@ -4,18 +4,29 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.KeyEvent;
+import javafx.application.Platform;
 import org.example.shared.SceneRouter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 
 public class EditTranslationController {
 
   private final TranslationRepository translationRepository;
+  private final TranslationService translationService;
   private final SceneRouter sceneRouter;
+  private static final Logger logger = LoggerFactory.getLogger(EditTranslationController.class);
 
   private Translation currentTranslation;
 
@@ -24,16 +35,21 @@ public class EditTranslationController {
   @FXML private TableView<Translation> translationTable;
   @FXML private TableColumn<Translation, String> originalColumn;
   @FXML private TableColumn<Translation, String> translatedColumn;
+  @FXML private Button cacheButton;
 
   @FXML private TextField originalTextField;
   @FXML private TextField translatedTextField;
+  @FXML private ProgressBar cacheProgressBar;
 
   private final ObservableList<Translation> allTranslations = FXCollections.observableArrayList();
   private final ObservableList<Translation> filteredTranslations = FXCollections.observableArrayList();
 
-  public EditTranslationController(SceneRouter sceneRouter, TranslationRepository translationRepository) {
+  public EditTranslationController(SceneRouter sceneRouter,
+                                   TranslationRepository translationRepository,
+                                   TranslationService translationService) {
     this.sceneRouter = sceneRouter;
     this.translationRepository = translationRepository;
+    this.translationService = translationService;
   }
 
   @FXML
@@ -89,7 +105,6 @@ public class EditTranslationController {
     );
   }
 
-
   @FXML
   private void handleSave() {
     if (currentTranslation != null) {
@@ -105,6 +120,55 @@ public class EditTranslationController {
       // Refresh table
       loadTranslations();
     }
+  }
+
+  @FXML
+  private void handleCacheTranslations() {
+    Language targetLanguage = languageComboBox.getValue();
+
+    if (targetLanguage == null) {
+      showAlert("Please select a target language first.");
+      return;
+    }
+
+    String originalText = cacheButton.getText();
+    cacheButton.setDisable(true);
+    cacheButton.setText("Caching...");
+    cacheProgressBar.setProgress(0);
+    cacheProgressBar.setVisible(true);
+
+    translationService
+        .cacheTranslationsAsync(
+            Language.ENGLISH.toString(),
+            targetLanguage.toString(),
+            progress -> Platform.runLater(() -> cacheProgressBar.setProgress(progress))
+        )
+        .thenAccept(successCount -> Platform.runLater(() -> {
+          cacheButton.setDisable(false);
+          cacheButton.setText(originalText);
+          cacheProgressBar.setVisible(false);
+          showAlert("Successfully cached " + successCount + " translations for " + targetLanguage);
+          loadTranslations();
+        }))
+        .exceptionally(ex -> {
+          Platform.runLater(() -> {
+            cacheButton.setDisable(false);
+            cacheButton.setText(originalText);
+            cacheProgressBar.setVisible(false);
+            logger.error("Error caching translations", ex);
+            showAlert("Failed to cache translations: " + ex.getMessage());
+          });
+          return null;
+        });
+  }
+
+
+  private void showAlert(String message) {
+    Alert alert = new Alert(AlertType.INFORMATION);
+    alert.setTitle("Translation Cache");
+    alert.setHeaderText(null);
+    alert.setContentText(message);
+    alert.showAndWait();
   }
 
   public void handleLanguageChange(ActionEvent actionEvent) {

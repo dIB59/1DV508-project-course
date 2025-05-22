@@ -128,4 +128,37 @@ public class TranslationRepository {
 
     return translations;
   }
+
+  public List<String> findUntranslatedTexts(String sourceLang, String targetLang) {
+    List<String> untranslatedTexts = new ArrayList<>();
+
+    // Find all source texts that don't have a corresponding target language translation
+    String query = """
+        SELECT DISTINCT t1.original_text
+        FROM Translations t1
+        WHERE t1.source_lang = ?
+        AND NOT EXISTS (
+            SELECT 1 FROM Translations t2
+            WHERE t2.original_text_hash = t1.original_text_hash
+            AND t2.source_lang = ?
+            AND t2.target_lang = ?
+        )
+        """;
+
+    try (PreparedStatement stmt = conn.prepareStatement(query)) {
+      stmt.setString(1, sourceLang);
+      stmt.setString(2, sourceLang);
+      stmt.setString(3, targetLang);
+
+      try (ResultSet rs = stmt.executeQuery()) {
+        while (rs.next()) {
+          untranslatedTexts.add(rs.getString("original_text"));
+        }
+      }
+    } catch (SQLException e) {
+      logger.error("Error fetching untranslated texts", e);
+    }
+
+    return untranslatedTexts;
+  }
 }
