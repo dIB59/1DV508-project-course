@@ -2,6 +2,7 @@ package org.example.features.product;
 
 import java.util.Map;
 
+import java.util.Objects;
 import org.example.features.ingredients.Ingredient;
 
 public class CustomizedProduct {
@@ -49,11 +50,10 @@ public class CustomizedProduct {
   public boolean equals(Object object) {
     if (this == object)
       return true;
-    if (!(object instanceof CustomizedProduct))
+    if (!(object instanceof CustomizedProduct other))
       return false;
-    CustomizedProduct other = (CustomizedProduct) object;
 
-    return product.getId() == other.product.getId() && product.getIngredients().equals(other.product.getIngredients());
+    return Objects.equals(product.getId(), other.product.getId()) && product.getIngredients().equals(other.product.getIngredients());
   }
 
 }
