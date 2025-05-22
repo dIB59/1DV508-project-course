@@ -26,8 +26,7 @@ public class Order implements Identifiable<Integer> {
   private boolean isMember;
   private int memberID;
   private boolean isReceipt;
-
-  private String gettype;
+  private Type type;
   private boolean isPaid = false;
 
   /**
@@ -196,13 +195,6 @@ public class Order implements Identifiable<Integer> {
     return BigDecimal.valueOf(getPrice());
   }
 
-  public String gettype() {
-    return gettype;
-  }
-
-  public void settype(String ordertype) {
-    this.gettype = ordertype;
-  }
 
   public boolean isPaid() {
     return isPaid;
@@ -210,5 +202,18 @@ public class Order implements Identifiable<Integer> {
 
   public void setPaid() {
     this.isPaid = true;
+  }
+
+  public Type getType() {
+    return type;
+  }
+
+  public void setType(Type type) {
+    this.type = type;
+  }
+
+  public enum Type {
+    TAKEOUT,
+    EAT_IN
   }
 }

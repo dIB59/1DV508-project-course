@@ -14,6 +14,8 @@ import java.util.Map;
 
 import org.example.database.Identifiable;
 import org.example.features.ingredients.Ingredient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Represents a product in the system.
@@ -24,6 +26,7 @@ import org.example.features.ingredients.Ingredient;
  */
 
 public class Product implements Identifiable<Integer> {
+  private static final Logger log = LoggerFactory.getLogger(Product.class);
   private int id;
   private String name;
   private String description;
@@ -199,8 +202,8 @@ public class Product implements Identifiable<Integer> {
       Path path = Paths.get(URI.create(imageUrl));
       return Files.readAllBytes(path);
     } catch (IOException | IllegalArgumentException e) {
-      System.err.println("Failed to read image file: " + imageUrl);
-      e.printStackTrace();
+      log.error("Error reading image file: {}", e.getMessage());
+      log.error("Image URL: {}", imageUrl);
       return new byte[0];
     }
   }

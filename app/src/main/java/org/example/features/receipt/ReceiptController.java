@@ -118,7 +118,7 @@ public class ReceiptController {
       }
     }
 
-    EatinEatoutlabel.setText(order.gettype());
+    EatinEatoutlabel.setText("Order Type: " + order.getType().name());
     orderIdLabel.setText("Order Number: " + order.getId());
     totalLabel.setText(String.format("Total: $%.2f", order.getPrice()));
     couponsLabel.setText(String.format("Coupons: %s", order.getDiscount().getCode()));

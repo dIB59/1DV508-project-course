@@ -55,8 +55,8 @@ public class OrderService {
     return this.order.getReceipt();
   }
 
-  public String gettype(){
-    return this.order.gettype();
+  public Order.Type gettype(){
+    return this.order.getType();
   }
 
   public int getId(){
@@ -113,7 +113,7 @@ public class OrderService {
       var s = this.repository.save(order);
       s.setDiscount(order.getDiscount());
       s.setMemberDB(order.getMember());
-      s.settype(order.gettype());
+      s.setType(order.getType());
       s.setMemberID(order.getMemberID());
       s.setFeedback(order.getFeedback());
       this.clear();
@@ -140,8 +140,8 @@ public class OrderService {
     return customizedProducts;
   }
 
-  public void settype(String ordertype) {
-    order.settype(ordertype);
+  public void setType(Order.Type ordertype) {
+    order.setType(ordertype);
   }
 
   public void setPaid() {

@@ -6,6 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import org.example.AppContext;
+import org.example.features.order.Order;
 import org.example.features.order.OrderService;
 import org.example.features.translation.Language;
 import org.example.features.translation.TranslationService;
@@ -63,15 +64,13 @@ public class HomeController {
   @FXML
   public void goToMenuPageTakeout() {
     sceneRouter.goToMenuPage();
-    orderService.settype("Your order is for Take out");
-    takeout = true;
+    orderService.setType(Order.Type.TAKEOUT);
   }
 
   @FXML
   public void goToMenuPageEatIn() {
     sceneRouter.goToMenuPage();
-    orderService.settype("Your order is for Eat in ");
-    takeout = false;
+    orderService.setType(Order.Type.EAT_IN);
   }
 
   public void goToAdminPage() {

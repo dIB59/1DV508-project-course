@@ -35,7 +35,7 @@ public class SmallReceiptController {
 
   @FXML
   public void initialize() {
-    EatinEatoutlabel.setText(orderService.gettype());
+    EatinEatoutlabel.setText(orderService.gettype().name());
     orderIdLabel.setText("Order Number: " + orderService.getId());
     startAutoRedirect();
   }
