@@ -277,58 +277,80 @@ public class DashboardController {
   }
 
   private Button createIngredientButton(List<Ingredient> allIngredients, List<CheckBox> ingredientCheckboxes, VBox ingredientsBox) {
-    Button addIngredientButton = new Button("+");
-    addIngredientButton.setStyle("-fx-background-color: black; -fx-text-fill: white; -fx-background-radius: 5;");
-    addIngredientButton.setOnAction(
-        e -> {
-          TextInputDialog inputDialog = new TextInputDialog();
-          inputDialog.setTitle("Add New Ingredient");
-          inputDialog.setHeaderText(null);
-          inputDialog.setContentText("Enter new ingredient name:");
+    Button addButton = new Button("+");
+    addButton.setStyle("-fx-background-color: black; -fx-text-fill: white; -fx-background-radius: 5;");
+    addButton.setOnAction(e -> showAddIngredientPopup(allIngredients, ingredientCheckboxes, ingredientsBox));
+    return addButton;
+  }
 
-          inputDialog
-              .showAndWait()
-              .ifPresent(
-                  ingredientName -> {
-                    if (!ingredientName.trim().isEmpty()) {
-                      String name = ingredientName.trim();
-                      TextInputDialog priceDialog = new TextInputDialog();
-                      priceDialog.setTitle("Add New Ingredient");
-                      priceDialog.setHeaderText(null);
-                      priceDialog.setContentText("Enter ingredient price:");
-                      priceDialog
-                          .showAndWait()
-                          .ifPresent(
-                              priceStr -> {
-                                try {
-                                  double price = Double.parseDouble(priceStr.trim());
-                                  if (price < 0) {
-                                    throw new IllegalArgumentException("Price cannot be negative");
-                                  }
-                                  int newIngredientId;
-                                  try {
-                                    newIngredientId = ingredientsRepository.save(new Ingredient(name, price)).getId();
-                                  } catch (SQLException ex) {
-                                    showAlert("Error adding ingredient: " + ex.getMessage());
-                                    return;
-                                  }
+  private void showAddIngredientPopup(List<Ingredient> allIngredients, List<CheckBox> ingredientCheckboxes, VBox ingredientsBox) {
+    Stage popup = new Stage();
+    popup.initModality(Modality.APPLICATION_MODAL);
+    popup.setTitle("Add Ingredient");
+    popup.setResizable(false);
 
-                                  Ingredient newIngredient =
-                                      new Ingredient(newIngredientId, name, price);
-                                  allIngredients.add(newIngredient);
+    // Fields
+    Label titleLabel = new Label("Add New Ingredient");
+    titleLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
 
-                                  CheckBox newCheckBox = new CheckBox(newIngredient.getName());
-                                  newCheckBox.setSelected(true);
-                                  ingredientCheckboxes.add(newCheckBox);
-                                  ingredientsBox.getChildren().add(newCheckBox);
-                                } catch (NumberFormatException ex) {
-                                  showAlert("Invalid price format.");
-                                }
-                              });
-                    }
-                  });
-        });
-    return addIngredientButton;
+    TextField nameField = new TextField();
+    nameField.setPromptText("Ingredient name");
+    nameField.setMaxWidth(Double.MAX_VALUE);
+
+    TextField priceField = new TextField();
+    priceField.setPromptText("Price (e.g., 3.50)");
+    priceField.setMaxWidth(Double.MAX_VALUE);
+
+    Button saveButton = new Button("Add");
+    saveButton.setStyle("-fx-background-color: #007BFF; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 5;");
+    saveButton.setMaxWidth(Double.MAX_VALUE);
+
+    saveButton.setOnAction(e -> {
+      String name = nameField.getText().trim();
+      String priceStr = priceField.getText().trim();
+
+      if (name.isEmpty() || priceStr.isEmpty()) {
+        showAlert("Please enter both name and price.");
+        return;
+      }
+
+      try {
+        double price = Double.parseDouble(priceStr);
+        if (price < 0) {
+          showAlert("Price must be non-negative.");
+          return;
+        }
+
+        int newIngredientId;
+        try {
+          newIngredientId = ingredientsRepository.save(new Ingredient(name, price)).getId();
+        } catch (SQLException ex) {
+          showAlert("Error saving ingredient: " + ex.getMessage());
+          return;
+        }
+
+        Ingredient newIngredient = new Ingredient(newIngredientId, name, price);
+        allIngredients.add(newIngredient);
+
+        CheckBox newCheckBox = new CheckBox(newIngredient.getName());
+        newCheckBox.setSelected(true);
+        ingredientCheckboxes.add(newCheckBox);
+        ingredientsBox.getChildren().add(newCheckBox);
+
+        popup.close();
+      } catch (NumberFormatException ex) {
+        showAlert("Invalid price format.");
+      }
+    });
+
+    VBox layout = new VBox(15, titleLabel, nameField, priceField, saveButton);
+    layout.setPadding(new Insets(25));
+    layout.setAlignment(Pos.CENTER);
+    layout.setStyle("-fx-background-color: #f9f9f9; -fx-border-radius: 10; -fx-background-radius: 10; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 10, 0.3, 0, 4);");
+
+    Scene scene = new Scene(layout, 320, 250);
+    popup.setScene(scene);
+    popup.showAndWait();
   }
 
   private Button createTagButton(List<Tag> allTags, List<CheckBox> tagCheckboxes, VBox tagsBox) {
