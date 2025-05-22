@@ -11,11 +11,13 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.example.database.Identifiable;
 import org.example.features.ingredients.Ingredient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import javafx.scene.image.Image;
+import java.io.ByteArrayInputStream;
+
 
 /**
  * Represents a product in the system.
@@ -73,8 +75,25 @@ public class Product implements Identifiable<Integer> {
     return imageBytes;
   }
 
+  public void loadImageFromFile(File file) {
+    try {
+      this.imageBytes = Files.readAllBytes(file.toPath());
+      this.imageUrl = file.toURI().toString(); // keeps consistency with existing logic
+    } catch (IOException e) {
+      System.err.println("Failed to load image from file: " + file.getAbsolutePath());
+      e.printStackTrace();
+    }
+  }
+
   public void setImageBytes(byte[] imageBytes) {
     this.imageBytes = imageBytes;
+  }
+
+  public Image getImage() {
+    if (imageBytes != null && imageBytes.length > 0) {
+      return new Image(new ByteArrayInputStream(imageBytes));
+    }
+    return null; // or you can return a default image
   }
 
   public Product(String name, String description, double price, String imageUrl, String specialLabel, boolean isASide) {

@@ -31,6 +31,8 @@ import org.example.features.product.Tag;
 import org.example.shared.SceneRouter;
 import javafx.stage.FileChooser;
 import java.io.File;
+import javafx.scene.image.Image;
+import java.io.ByteArrayInputStream;
 
 
 public class DashboardController {
@@ -55,6 +57,12 @@ public class DashboardController {
   public void goToCouponsPage() {
     sceneRouter.goToCouponsPage();
   }
+  private boolean isImageFile(File file) {
+    String fileName = file.getName().toLowerCase();
+    return fileName.endsWith(".png") || fileName.endsWith(".jpg") ||
+            fileName.endsWith(".jpeg") || fileName.endsWith(".gif");
+  }
+
 
   private void loadProducts() {
 
@@ -88,11 +96,16 @@ public class DashboardController {
     // Image setup
     ImageView imageView = new ImageView();
     try {
-      if (product.getImageUrl() != null && !product.getImageUrl().isBlank()) {
-        imageView.setImage(new Image(product.getImageUrl(), true));
+      Image image = product.getImage();
+      if (image != null) {
+        imageView.setImage(image);
       }
-    } catch (Exception e) {
-      System.out.println("Could not load product image: " + e.getMessage());
+    } catch (IllegalArgumentException e) {
+        System.err.println("Error loading image: " + e.getMessage());
+        imageView.setImage(new Image("default_image.png")); // Placeholder image
+        } catch (Exception e) {
+        System.err.println("Error loading image: " + e.getMessage());
+        imageView.setImage(new Image("default_image.png")); // Placeholder image
     }
     imageView.setPreserveRatio(false);
     imageView.setSmooth(true);
@@ -135,6 +148,7 @@ public class DashboardController {
     editButton.setMaxHeight(70);
     editButton.setMaxWidth(Double.MAX_VALUE);
     editButton.setOnAction(e -> editProduct(product));
+
 
     // Delete Button (bottom half) with bin icon
     Button deleteButton = new Button();
@@ -338,7 +352,11 @@ public class DashboardController {
     TextField priceField = new TextField();
     TextField specialLabelField = new TextField();
     HBox imageBox = new HBox(5);
-    TextField imageUrlField = new TextField();
+
+    TextField imageUrlField = new TextField("");
+
+    imageUrlField.setPrefWidth(250);
+
     Button browseButton = new Button("Browse");
     browseButton.setOnAction(e -> {
       FileChooser fileChooser = new FileChooser();
@@ -351,7 +369,48 @@ public class DashboardController {
         imageUrlField.setText(selectedFile.toURI().toString());
       }
     });
-    imageBox.getChildren().addAll(imageUrlField, browseButton);
+
+    StackPane dragDropArea = new StackPane();
+    dragDropArea.setPrefSize(200, 100);
+    dragDropArea.setStyle("-fx-border-color: gray; -fx-border-style: dashed; -fx-border-width: 2; -fx-background-color: #f0f0f0;");
+    Label dragDropLabel = new Label("Drag & Drop Image Here");
+    dragDropArea.getChildren().add(dragDropLabel);
+
+    dragDropArea.setOnDragOver(event -> {
+      if (event.getGestureSource() != dragDropArea &&
+              event.getDragboard().hasFiles()) {
+        event.acceptTransferModes(javafx.scene.input.TransferMode.COPY_OR_MOVE);
+      }
+      event.consume();
+    });
+
+    dragDropArea.setOnDragDropped(event -> {
+      var db = event.getDragboard();
+      boolean success = false;
+      if (db.hasFiles()) {
+        File file = db.getFiles().get(0);
+        if (file != null && isImageFile(file)) {
+          imageUrlField.setText(file.toURI().toString());
+          success = true;
+        }
+      }
+      event.setDropCompleted(success);
+      event.consume();
+    });
+
+    imageBox.getChildren().addAll(imageUrlField, browseButton, dragDropArea);
+
+    browseButton.setOnAction(e -> {
+      FileChooser fileChooser = new FileChooser();
+      fileChooser.setTitle("Choose Image File");
+      fileChooser.getExtensionFilters().addAll(
+              new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg", "*.gif")
+      );
+      File selectedFile = fileChooser.showOpenDialog(dialog);
+      if (selectedFile != null) {
+        imageUrlField.setText(selectedFile.toURI().toString());
+      }
+    });
 
 
     // Fetch all tags

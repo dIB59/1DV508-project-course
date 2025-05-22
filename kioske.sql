@@ -33,18 +33,19 @@ CREATE TABLE Order_ProductQuantity_Ingredient (
   PRIMARY KEY (order_product_quantity_id, ingredient_id)
 );
 
-INSERT INTO Product (name, description, price, image_url, specialLabel, isASide)
-VALUES ('Burger', 'A delicious beef burger', 5.99, 'assets/burger.jpg', NULL, FALSE),
-       ('Pizza', 'A cheesy pizza with toppings', 8.99, 'assets/pizza.jpg', 'Hot', FALSE),
-       ('Salad', 'A fresh garden salad', 4.99, 'assets/salad.jpg', NULL, FALSE),
-       ('Soda', 'A refreshing soda drink', 1.99, 'assets/soda.jpg', NULL, TRUE),
-       ('Fries', 'Crispy french fries', 2.99, 'assets/fries.jpg', NULL, FALSE),
-       ('Ice Cream', 'A scoop of ice cream', 3.99, 'assets/ice_cream.jpg', NULL, FALSE),
-       ('Pasta', 'Creamy pasta with sauce', 7.99, 'assets/pasta.jpg', 'Deal', FALSE),
-       ('Sandwich', 'A tasty sandwich with fillings', 4.49, 'assets/sandwich.jpg', NULL, FALSE),
-       ('Coffee', 'A hot cup of coffee', 2.49, 'assets/coffee.jpg', NULL, FALSE),
-       ('Tea', 'A soothing cup of tea', 1.49, 'assets/tea.jpg', NULL, FALSE),
-       ('Cake', 'A slice of chocolate cake', 3.49, 'assets/cake.jpg', NULL, FALSE);
+INSERT INTO Product (name, description, price, image, image_url, specialLabel, isASide)
+VALUES
+    ('Burger', 'A delicious beef burger', 5.99, LOAD_FILE('/var/lib/mysql-files/assets/burger.jpg'), 'assets/burger.jpg', NULL, FALSE),
+    ('Pizza', 'A cheesy pizza with toppings', 8.99, LOAD_FILE('/var/lib/mysql-files/assets/pizza.jpg'), 'assets/pizza.jpg', 'Hot', FALSE),
+    ('Salad', 'A fresh garden salad', 4.99, LOAD_FILE('/var/lib/mysql-files/assets/salad.jpg'), 'assets/salad.jpg', NULL, FALSE),
+    ('Soda', 'A refreshing soda drink', 1.99, LOAD_FILE('/var/lib/mysql-files/assets/soda.jpg'), 'assets/soda.jpg', NULL, TRUE),
+    ('Fries', 'Crispy french fries', 2.99, LOAD_FILE('/var/lib/mysql-files/assets/fries.jpg'), 'assets/fries.jpg', NULL, FALSE),
+    ('Ice Cream', 'A scoop of ice cream', 3.99, LOAD_FILE('/var/lib/mysql-files/assets/ice_cream.jpg'), 'assets/ice_cream.jpg', NULL, FALSE),
+    ('Pasta', 'Creamy pasta with sauce', 7.99, LOAD_FILE('/var/lib/mysql-files/assets/pasta.jpg'), 'assets/pasta.jpg', 'Deal', FALSE),
+    ('Sandwich', 'A tasty sandwich with fillings', 4.49, LOAD_FILE('/var/lib/mysql-files/assets/sandwich.jpg'), 'assets/sandwich.jpg', NULL, FALSE),
+    ('Coffee', 'A hot cup of coffee', 2.49, LOAD_FILE('/var/lib/mysql-files/assets/coffee.jpg'), 'assets/coffee.jpg', NULL, FALSE),
+    ('Tea', 'A soothing cup of tea', 1.49, LOAD_FILE('/var/lib/mysql-files/assets/tea.jpg'), 'assets/tea.jpg', NULL, FALSE),
+    ('Cake', 'A slice of chocolate cake', 3.49, LOAD_FILE('/var/lib/mysql-files/assets/cake.jpg'), 'assets/cake.jpg', NULL, FALSE);
 
 CREATE TABLE IF NOT EXISTS Admin
 (
