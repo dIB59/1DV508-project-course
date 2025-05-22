@@ -13,6 +13,8 @@ import org.example.features.product.ProductDetailsController;
 import org.example.features.translation.TranslationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import javafx.animation.FadeTransition;
+import javafx.util.Duration;
 
 /** The type Scene router. */
 public class SceneRouter {
@@ -35,6 +37,15 @@ public class SceneRouter {
     this.translationService = translationService;
   }
 
+  // Fade in animation
+  private void applyFadeInTransition(Scene scene) {
+    FadeTransition fadeIn = new FadeTransition(Duration.millis(1500), scene.getRoot());
+    fadeIn.setFromValue(0.0);
+    fadeIn.setToValue(1.0);
+    fadeIn.play();
+  }
+
+
   /**
    * Sets the stage for the application.
    *
@@ -49,6 +60,8 @@ public class SceneRouter {
       Scene scene = new Scene(loader.load());
 
       stage.setScene(scene);
+      applyFadeInTransition(scene);
+
       translationService.translate(scene.getRoot());
     } catch (IOException e) {
       System.err.println("Failed to load scene: " + e.getLocalizedMessage());
@@ -111,6 +124,7 @@ public class SceneRouter {
       controller.displayIngredients();
       currentPage = KioskPage.PRODUCTDESCRIPTION;
       stage.setScene(scene);
+      applyFadeInTransition(scene);
       Platform.runLater(() -> {
         translationService.translate(scene.getRoot());
       });
