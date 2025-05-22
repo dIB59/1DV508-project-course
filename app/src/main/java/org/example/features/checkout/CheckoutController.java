@@ -160,11 +160,11 @@ public class CheckoutController implements Initializable {
     VBox ingredientDiffBox = new VBox();
     ingredientDiffBox.setSpacing(3);
     Map<Ingredient, Integer> ingredients = item.getCustomizedProduct().getIngredientquanities();
-    Map<Ingredient, Integer> defaultings = item.getCustomizedProduct().getProduct().getIngredients();
+    Map<Ingredient, Integer> defaultIngredients = item.getCustomizedProduct().getProduct().getIngredients();
     
-    for (Ingredient ingredient: defaultings.keySet() ){
+    for (Ingredient ingredient: defaultIngredients.keySet() ){
       int quantity = ingredients.getOrDefault(ingredient, 0);
-      int defaultQty = defaultings.get(ingredient);
+      int defaultQty = defaultIngredients.get(ingredient);
 
       if(quantity != defaultQty) {
         String ingLabel;
