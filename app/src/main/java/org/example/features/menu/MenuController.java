@@ -68,19 +68,15 @@ public class MenuController {
     allButton.setOnAction(e -> displayAndTranslate(allProducts));
     tagButtonContainer.getChildren().add(allButton);
 
-    try {
-      List<Tag> tags = productRepository.findAllTags();
-      for (Tag tag : tags) {
-        Button tagButton = new Button(tag.getName());
-        styleTagButton(tagButton, false);
-        tagButton.setOnAction(e -> {
-          List<Product> filtered = filterProductsByTag(tag.getName());
-          displayAndTranslate(filtered);
-        });
-        tagButtonContainer.getChildren().add(tagButton);
-      }
-    } catch (SQLException e) {
-      System.err.println("Error fetching tags: " + e.getMessage());
+    List<Tag> tags = productRepository.findAllTags();
+    for (Tag tag : tags) {
+      Button tagButton = new Button(tag.getName());
+      styleTagButton(tagButton, false);
+      tagButton.setOnAction(e -> {
+        List<Product> filtered = filterProductsByTag(tag.getName());
+        displayAndTranslate(filtered);
+      });
+      tagButtonContainer.getChildren().add(tagButton);
     }
   }
 
