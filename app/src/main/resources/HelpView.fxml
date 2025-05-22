@@ -9,8 +9,9 @@
             prefHeight="400.0" prefWidth="600.0"
             style="-fx-background-color: red;">
 
-    <Label text="HELP"
-           style="-fx-text-fill: white; -fx-font-size: 48px; -fx-font-weight: bold;"
+    <Label fx:id="helpLabel"
+            text="HELP"
+           style="-fx-text-fill: white; -fx-font-size: 50px; -fx-font-weight: bold;"
            layoutX="225" layoutY="175" />
 
 </AnchorPane>
