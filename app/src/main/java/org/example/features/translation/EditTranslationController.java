@@ -1,48 +1,40 @@
 package org.example.features.translation;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.input.KeyEvent;
-import javafx.application.Platform;
 import org.example.shared.SceneRouter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.List;
-
-
 public class EditTranslationController {
 
+  private static final Logger logger = LoggerFactory.getLogger(EditTranslationController.class);
   private final TranslationRepository translationRepository;
   private final TranslationService translationService;
   private final SceneRouter sceneRouter;
-  private static final Logger logger = LoggerFactory.getLogger(EditTranslationController.class);
-
+  private final ObservableList<Translation> allTranslations = FXCollections.observableArrayList();
+  private final ObservableList<Translation> filteredTranslations = FXCollections.observableArrayList();
   private Translation currentTranslation;
-
   @FXML private TextField searchField;
   @FXML private ComboBox<Language> languageComboBox;
   @FXML private TableView<Translation> translationTable;
   @FXML private TableColumn<Translation, String> originalColumn;
   @FXML private TableColumn<Translation, String> translatedColumn;
   @FXML private Button cacheButton;
-
   @FXML private TextField originalTextField;
   @FXML private TextField translatedTextField;
   @FXML private ProgressBar cacheProgressBar;
-
-  private final ObservableList<Translation> allTranslations = FXCollections.observableArrayList();
-  private final ObservableList<Translation> filteredTranslations = FXCollections.observableArrayList();
 
   public EditTranslationController(SceneRouter sceneRouter,
                                    TranslationRepository translationRepository,

@@ -1,7 +1,6 @@
 package org.example.features.order;
 
 import org.example.features.product.CustomizedProduct;
-import org.example.features.product.Product;
 
 /**
  * ProductQuantity class represents a product and its quantity in an order. It

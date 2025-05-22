@@ -3,7 +3,6 @@ package org.example.features.order;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
 import org.example.database.CrudRepository;
 import org.example.features.coupons.Discount;
 import org.example.features.ingredients.Ingredient;
@@ -18,7 +17,7 @@ public class OrderService {
 
   private final CrudRepository<Order, Integer> repository;
   private Order order;
-  private List<CustomizedProduct> customizedProducts = new ArrayList<>();
+  private final List<CustomizedProduct> customizedProducts = new ArrayList<>();
   /**
    * Instantiates a new Order service.
    *
@@ -32,55 +31,47 @@ public class OrderService {
   /**
    * Add item.
    *
-   * @param item the item
+   * @param product the item
    */
   public void addItem(Product product, Map<Ingredient, Integer> ingredientQuantities) {
-    order.addProduct(product, ingredientQuantities);;
+    order.addProduct(product, ingredientQuantities);
   }
 
   // Sets member status to true
   public void setMember(){
-    this.order.setMember();
+    this.order.setMemberId(12345);
   }
 
   public boolean getMember(){
-    return this.order.getMember();
+    return this.order.isMember();
   }
 
   public void setReceipt(){
-    this.order.setReceipt();
+    this.order.setReceipt(true);
   }
 
   public boolean getReceipt(){
-    return this.order.getReceipt();
+    return this.order.isReceipt();
   }
 
-  public String gettype(){
-    return this.order.gettype();
+  public Order.Type gettype(){
+    return this.order.getType();
   }
 
   public int getId(){
     return this.order.getId();
   }
 
-
+  public  int getFeedback(){
+    return this.order.getFeedback();
+  }
 
   public void setFeedback(int feedback){
     this.order.setFeedback(feedback);
   }
 
-  public  int getFeedback(){
-    return this.order.getFeedback();
-  }
-
-  public void setMemberDB(boolean getMember){
-    if (getMember){
-      this.order.setMember();
-    }
-  }
-
   public void setMemberID(int id){
-    this.order.setMemberID(id);
+    this.order.setMemberId(id);
   }
   /**
    * Remove item.
@@ -111,11 +102,6 @@ public class OrderService {
   public Order saveOrderAndClear() {
     try {
       var s = this.repository.save(order);
-      s.setDiscount(order.getDiscount());
-      s.setMemberDB(order.getMember());
-      s.settype(order.gettype());
-      s.setMemberID(order.getMemberID());
-      s.setFeedback(order.getFeedback());
       this.clear();
       return s;
     } catch (Exception e) {
@@ -140,8 +126,8 @@ public class OrderService {
     return customizedProducts;
   }
 
-  public void settype(String ordertype) {
-    order.settype(ordertype);
+  public void setType(Order.Type ordertype) {
+    order.setType(ordertype);
   }
 
   public void setPaid() {

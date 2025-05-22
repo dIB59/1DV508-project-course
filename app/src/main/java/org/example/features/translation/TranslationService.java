@@ -16,9 +16,9 @@ import org.slf4j.LoggerFactory;
 public class TranslationService {
   public static final String DO_NOT_TRANSLATE = "doNotTranslate";
   public static final String ORIGINAL_TEXT = "originalText";
+  private static final Logger logger = LoggerFactory.getLogger(TranslationService.class);
   private final TranslationRepository repo;
   private final LibreTranslateClient client;
-  private static final Logger logger = LoggerFactory.getLogger(TranslationService.class);
 
   public TranslationService(TranslationRepository repo, LibreTranslateClient client) {
     this.repo = repo;

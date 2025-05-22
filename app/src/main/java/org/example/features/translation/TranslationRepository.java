@@ -11,8 +11,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class TranslationRepository {
-  private final Connection conn;
   private static final Logger logger = LoggerFactory.getLogger(TranslationRepository.class);
+  private final Connection conn;
 
   public TranslationRepository(Connection conn) {
     this.conn = conn;
@@ -101,7 +101,8 @@ public class TranslationRepository {
     List<Translation> translations = new ArrayList<>();
     String tarLang = language.toString();
 
-    String query = """
+    String query =
+        """
       SELECT id, original_text, source_lang, target_lang, translated_text
       FROM Translations
       WHERE target_lang = ?
@@ -112,13 +113,13 @@ public class TranslationRepository {
 
       try (ResultSet rs = stmt.executeQuery()) {
         while (rs.next()) {
-          Translation translation = new Translation(
-              rs.getInt("id"),
-              rs.getString("original_text"),
-              rs.getString("source_lang"),
-              rs.getString("target_lang"),
-              rs.getString("translated_text")
-          );
+          Translation translation =
+              new Translation(
+                  rs.getInt("id"),
+                  rs.getString("original_text"),
+                  rs.getString("source_lang"),
+                  rs.getString("target_lang"),
+                  rs.getString("translated_text"));
           translations.add(translation);
         }
       }
@@ -133,7 +134,8 @@ public class TranslationRepository {
     List<String> untranslatedTexts = new ArrayList<>();
 
     // Find all source texts that don't have a corresponding target language translation
-    String query = """
+    String query =
+        """
         SELECT DISTINCT t1.original_text
         FROM Translations t1
         WHERE t1.source_lang = ?

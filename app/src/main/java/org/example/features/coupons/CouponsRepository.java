@@ -16,7 +16,7 @@ public class CouponsRepository implements CrudRepository<Coupons, String> {
     this.connection = connection;
   }
 
-  public double findDiscountByCode(String code)  {
+  public double findDiscountByCode(String code) {
     String sql = "SELECT Coupons.discount FROM Coupons WHERE Coupons.code = ?";
 
     try (PreparedStatement stmt = connection.prepareStatement(sql)) {
@@ -26,7 +26,7 @@ public class CouponsRepository implements CrudRepository<Coupons, String> {
         return rs.getDouble("discount");
       }
     } catch (SQLException e) {
-      System.out.println("Coupons could not be found: " + e.getMessage());;
+      System.out.println("Coupons could not be found: " + e.getMessage());
     }
     return 0;
   }
@@ -53,7 +53,7 @@ public class CouponsRepository implements CrudRepository<Coupons, String> {
         return Optional.of(coupon);
       }
     } catch (SQLException e) {
-      System.out.println("Coupons could not be found: " + e.getMessage());;
+      System.out.println("Coupons could not be found: " + e.getMessage());
     }
     return Optional.empty();
   }
@@ -67,7 +67,6 @@ public class CouponsRepository implements CrudRepository<Coupons, String> {
     }
   }
 
-
   public void delete(String code) throws SQLException {
     String sql = "DELETE FROM Coupons WHERE code = ?";
     try (PreparedStatement stmt = connection.prepareStatement(sql)) {
@@ -79,7 +78,7 @@ public class CouponsRepository implements CrudRepository<Coupons, String> {
   public List<Coupons> findAll() throws SQLException {
     String sql = "SELECT * FROM Coupons";
     try (PreparedStatement stmt = connection.prepareStatement(sql);
-         ResultSet rs = stmt.executeQuery()) {
+        ResultSet rs = stmt.executeQuery()) {
       List<Coupons> coupons = new ArrayList<>();
       while (rs.next()) {
         coupons.add(couponMapper.map(rs));

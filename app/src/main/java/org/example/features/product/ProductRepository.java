@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.logging.Logger;
-
 import org.example.database.CrudRepository;
 import org.example.database.EntityMapper;
 
