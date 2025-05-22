@@ -31,6 +31,8 @@ import org.example.features.product.Tag;
 import org.example.shared.SceneRouter;
 import javafx.stage.FileChooser;
 import java.io.File;
+import javafx.scene.image.Image;
+import java.io.ByteArrayInputStream;
 
 
 public class DashboardController {
@@ -91,11 +93,16 @@ public class DashboardController {
     // Image setup
     ImageView imageView = new ImageView();
     try {
-      if (product.getImageUrl() != null && !product.getImageUrl().isBlank()) {
-        imageView.setImage(new Image(product.getImageUrl(), true));
+      Image image = product.getImage();
+      if (image != null) {
+        imageView.setImage(image);
       }
-    } catch (Exception e) {
-      System.out.println("Could not load product image: " + e.getMessage());
+    } catch (IllegalArgumentException e) {
+        System.err.println("Error loading image: " + e.getMessage());
+        imageView.setImage(new Image("default_image.png")); // Placeholder image
+        } catch (Exception e) {
+        System.err.println("Error loading image: " + e.getMessage());
+        imageView.setImage(new Image("default_image.png")); // Placeholder image
     }
     imageView.setPreserveRatio(false);
     imageView.setSmooth(true);

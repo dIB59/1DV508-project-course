@@ -14,6 +14,9 @@ import java.util.Map;
 
 import org.example.database.Identifiable;
 import org.example.features.ingredients.Ingredient;
+import javafx.scene.image.Image;
+
+import java.io.ByteArrayInputStream;
 
 /**
  * Represents a product in the system.
@@ -72,6 +75,13 @@ public class Product implements Identifiable<Integer> {
 
   public void setImageBytes(byte[] imageBytes) {
     this.imageBytes = imageBytes;
+  }
+
+  public Image getImage() {
+    if (imageBytes != null && imageBytes.length > 0) {
+      return new Image(new ByteArrayInputStream(imageBytes));
+    }
+    return null; // or you can return a default image
   }
 
   public Product(String name, String description, double price, String imageUrl, String specialLabel, boolean isASide) {
