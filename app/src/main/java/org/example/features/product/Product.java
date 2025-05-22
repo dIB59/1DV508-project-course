@@ -1,5 +1,11 @@
 package org.example.features.product;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -58,6 +64,7 @@ public class Product implements Identifiable<Integer> {
     this.tags = tags != null ? tags : new ArrayList<>();
     this.specialLabel = specialLabel;
     this.isASide = isASide;
+    this.imageBytes = readImageBytesFromFile(imageUrl);
   }
   public byte[] getImageBytes() {
     return imageBytes;
@@ -184,5 +191,17 @@ public class Product implements Identifiable<Integer> {
         "Product{id=%d, name='%s', description='%s', price=%.2f, imageUrl='%s', tags=%s, ingredients='%s'}",
         id, name, description, price, imageUrl, tags, defaultIngredients
     );
+  }
+
+  private byte[] readImageBytesFromFile(String imageUrl) {
+    if (imageUrl == null || imageUrl.isBlank()) return new byte[0];
+    try {
+      Path path = Paths.get(URI.create(imageUrl));
+      return Files.readAllBytes(path);
+    } catch (IOException | IllegalArgumentException e) {
+      System.err.println("Failed to read image file: " + imageUrl);
+      e.printStackTrace();
+      return new byte[0];
+    }
   }
 }
