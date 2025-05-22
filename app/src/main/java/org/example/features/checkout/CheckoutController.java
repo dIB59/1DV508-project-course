@@ -220,6 +220,7 @@ public class CheckoutController implements Initializable {
     container.getChildren().addAll(textContainer, spacer, buttonBox);
     return container;
   }
+
   public void applyCoupon() {
     String coupon = couponCodeField.getText();
     if (coupon == null || coupon.isEmpty()) {
