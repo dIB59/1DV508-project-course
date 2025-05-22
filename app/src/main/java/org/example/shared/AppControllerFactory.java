@@ -15,7 +15,6 @@ import org.example.features.dashboard.DashboardController;
 import org.example.features.dashboard.DashboardModel;
 import org.example.features.feedback.FeedbackController;
 import org.example.features.home.HomeController;
-import org.example.features.home.HomeModel;
 import org.example.features.ingredients.IngredientMapper;
 import org.example.features.ingredients.IngredientsRepository;
 import org.example.features.menu.MenuController;
@@ -73,7 +72,7 @@ public class AppControllerFactory implements Callback<Class<?>, Object> {
   @Override
   public Object call(Class<?> controllerClass) {
     return switch (controllerClass.getSimpleName()) {
-      case "HomeController" -> new HomeController(new HomeModel(), sceneRouter, orderService, getTranslationService());
+      case "HomeController" -> new HomeController(sceneRouter, orderService, getTranslationService());
       case "MenuController" ->
         new MenuController(getProductRepository(), sceneRouter, getTranslationService());
       case "CheckoutController" ->

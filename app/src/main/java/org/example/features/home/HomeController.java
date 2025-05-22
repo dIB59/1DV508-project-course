@@ -20,18 +20,11 @@ public class HomeController {
   private final Logger log = LoggerFactory.getLogger(HomeController.class);
   private final SceneRouter sceneRouter;
   private final OrderService orderService;
-  private final HomeModel homeModel;
   private final TranslationService translationService;
-
-  public boolean takeout = false;
-
   @FXML private Label welcomeLabel;
-  @FXML private Button eatInButton;
-  @FXML private Button takeOutButton;
   @FXML private ComboBox<Language> languageSelector;
 
-  public HomeController(HomeModel homeModel, SceneRouter sceneRouter, OrderService orderService, TranslationService translationService) {
-    this.homeModel = homeModel;
+  public HomeController(SceneRouter sceneRouter, OrderService orderService, TranslationService translationService) {
     this.sceneRouter = sceneRouter;
     this.orderService = orderService;
     this.translationService = translationService;
