@@ -101,9 +101,6 @@ public class DashboardController {
     } catch (IllegalArgumentException e) {
       System.err.println("Error loading image: " + e.getMessage());
       imageView.setImage(new Image("default_image.png")); // Placeholder image
-    } catch (Exception e) {
-      System.err.println("Error loading image: " + e.getMessage());
-      imageView.setImage(new Image("default_image.png")); // Placeholder image
     }
     imageView.setPreserveRatio(false);
     imageView.setSmooth(true);
