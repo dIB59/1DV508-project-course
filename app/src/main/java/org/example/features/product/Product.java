@@ -73,6 +73,16 @@ public class Product implements Identifiable<Integer> {
     return imageBytes;
   }
 
+  public void loadImageFromFile(File file) {
+    try {
+      this.imageBytes = Files.readAllBytes(file.toPath());
+      this.imageUrl = file.toURI().toString(); // keeps consistency with existing logic
+    } catch (IOException e) {
+      System.err.println("Failed to load image from file: " + file.getAbsolutePath());
+      e.printStackTrace();
+    }
+  }
+
   public void setImageBytes(byte[] imageBytes) {
     this.imageBytes = imageBytes;
   }
