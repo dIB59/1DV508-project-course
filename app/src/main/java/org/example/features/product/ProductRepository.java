@@ -182,17 +182,21 @@ public class ProductRepository implements CrudRepository<Product, Integer> {
     }
   }
 
-  public List<Tag> findAllTags() throws SQLException {
+  public List<Tag> findAllTags() {
     List<Tag> tags = new ArrayList<>();
     String sql = "SELECT id, name FROM Tags";
-
-    try (PreparedStatement stmt = connection.prepareStatement(sql);
-        ResultSet rs = stmt.executeQuery()) {
-      while (rs.next()) {
-        tags.add(new Tag(rs.getInt("id"), rs.getString("name")));
+    try{
+      try (PreparedStatement stmt = connection.prepareStatement(sql);
+          ResultSet rs = stmt.executeQuery()) {
+        while (rs.next()) {
+          tags.add(new Tag(rs.getInt("id"), rs.getString("name")));
+        }
       }
+      return tags;
+    } catch (SQLException e) {
+      log.severe("Error fetching tags: " + e.getMessage());
+      return new ArrayList<>();
     }
-    return tags;
   }
 
   public void addTagToProduct(int productId, int tagId) throws SQLException {
