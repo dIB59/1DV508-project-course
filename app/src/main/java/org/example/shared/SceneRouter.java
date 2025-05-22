@@ -138,6 +138,8 @@ public class SceneRouter {
     goTo(KioskPage.FEEDBACK);
   }
 
+  public void goToSmallReceiptPage(){ goTo(KioskPage.SMALLRECEIPT);}
+
   public void goToLanguagesPage() {
     goTo(KioskPage.EDIT_TRANSLATION);
   }
@@ -172,7 +174,10 @@ public class SceneRouter {
     // Feedback page
     FEEDBACK("CustomerFeedback.fxml"),
     // Edit translation page
-    EDIT_TRANSLATION("EditTranslationView.fxml");
+    EDIT_TRANSLATION("EditTranslationView.fxml"),
+
+    SMALLRECEIPT("SmallReceiptView.fxml");
+
     private final String value;
 
     KioskPage(String value) {

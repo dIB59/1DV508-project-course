@@ -25,6 +25,7 @@ public class Order implements Identifiable<Integer> {
   private int feedback;
   private boolean isMember;
   private int memberID;
+  private boolean isReceipt;
 
   private String gettype;
   private boolean isPaid = false;
@@ -39,6 +40,7 @@ public class Order implements Identifiable<Integer> {
     this.id = id;
     this.productQuantity = productQuantity;
     isMember = false;
+    isReceipt = true;
   }
 
   /** Instantiates a new Order. */
@@ -54,6 +56,14 @@ public class Order implements Identifiable<Integer> {
 
   public boolean getMember() {
     return this.isMember;
+  }
+
+  public void setReceipt() {
+    this.isReceipt = true;
+  }
+
+  public boolean getReceipt() {
+    return this.isReceipt;
   }
 
   public void setMemberID(int memberId) {

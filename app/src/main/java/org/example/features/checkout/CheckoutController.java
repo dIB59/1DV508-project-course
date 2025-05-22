@@ -39,6 +39,8 @@ import org.example.features.ingredients.Ingredient;
 import org.example.features.order.OrderService;
 import org.example.features.order.ProductQuantity;
 import org.example.shared.SceneRouter;
+import javafx.scene.control.ToggleGroup;
+
 
 /** The type Checkout controller. */
 public class CheckoutController implements Initializable {
@@ -59,6 +61,7 @@ public class CheckoutController implements Initializable {
   @FXML private RadioButton noPrint;
   @FXML private StackPane campaignCardPane;
 
+
   /**
    * Instantiates a new Checkout controller.
    *
@@ -75,22 +78,8 @@ public class CheckoutController implements Initializable {
   // Closing brace for the CheckoutController class
   
 
-  /** Goes to the payment page. */
+  /** Goes to the login page. */
   public void goToMemberLogin() {
-    if (orderService.getItems().isEmpty()) {
-      // Show an alert if the cart is empty
-      Alert alert = new Alert(Alert.AlertType.WARNING);
-      alert.setTitle("Empty Cart");
-      alert.setHeaderText(null);
-      alert.setContentText("Your cart is empty. Please add items before proceeding.");
-      alert.showAndWait();
-      return;
-    }
-    router.goToMemberLoginPage();
-  }
-
-  /** Goes to the receipt page. */
-  public void goToReceiptPage() {
     if (orderService.getItems().isEmpty()) {
       Alert alert = new Alert(Alert.AlertType.WARNING);
       alert.setTitle("Empty Cart");
@@ -101,13 +90,23 @@ public class CheckoutController implements Initializable {
     }
 
     boolean shouldPrint = yesPrint.isSelected();
-    if (shouldPrint) {
+    boolean shouldNoPrint = noPrint.isSelected();
+
+    if (shouldPrint && !shouldNoPrint) {
+      orderService.setReceipt();
       printReceipt();
-    } else {
-      System.out.println("Receipt will not be printed — user selected 'No'.");
     }
 
-    router.goToReceiptPage();
+    if (shouldNoPrint && !shouldPrint) {
+      System.out.println("Receipt will not be printed — user selected 'No'.");
+      printReceipt();
+    }
+
+    else{
+      System.out.println("Select only one option");
+    }
+
+
   }
 
 
@@ -240,6 +239,7 @@ public class CheckoutController implements Initializable {
   }
   private void printReceipt() {
     System.out.println("Printing receipt...");
+    router.goToMemberLoginPage();
   }
 
   private Alert couponNotFoundAlert() {
@@ -251,6 +251,11 @@ public class CheckoutController implements Initializable {
 
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
+    ToggleGroup printToggleGroup = new ToggleGroup();
+    yesPrint.setToggleGroup(printToggleGroup);
+    noPrint.setToggleGroup(printToggleGroup);
+
+
     int itemCount = orderService.getItems().size();
     itemCountLabel.setText("Items in cart: " + itemCount);
 

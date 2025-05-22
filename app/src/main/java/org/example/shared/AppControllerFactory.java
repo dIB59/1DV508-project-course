@@ -27,6 +27,7 @@ import org.example.features.product.ProductDetailsController;
 import org.example.features.product.ProductMapper;
 import org.example.features.product.ProductRepository;
 import org.example.features.receipt.ReceiptController;
+import org.example.features.smallreceipt.SmallReceiptController;
 import org.example.features.translation.EditTranslationController;
 import org.example.features.translation.LibreTranslateClient;
 import org.example.features.translation.TranslationRepository;
@@ -83,6 +84,8 @@ public class AppControllerFactory implements Callback<Class<?>, Object> {
         new ProductDetailsController(orderService, sceneRouter, getProductRepository());
       case "ReceiptController" ->
         new ReceiptController(orderService.saveOrderAndClear(), sceneRouter, getMemberRepository());
+      case "SmallReceiptController" ->
+        new SmallReceiptController(sceneRouter, orderService);
       case "AdminController" -> new AdminController(sceneRouter, getAdminRepository());
       case "MemberController" -> new MemberController(sceneRouter, getMemberRepository(), orderService);
       case "FeedbackController" -> new FeedbackController(sceneRouter, orderService);
