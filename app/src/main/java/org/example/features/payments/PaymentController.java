@@ -157,7 +157,13 @@ public class PaymentController {
 
       if (success) {
         orderService.setPaid();
-        sceneRouter.goToReceiptPage();
+        if(orderService.getReceipt()){
+          sceneRouter.goToReceiptPage();
+        }
+
+        else{
+          sceneRouter.goToSmallReceiptPage();
+        }
       } else {
         showAlert("Payment Failed", "There was an error processing your payment. Please try again.");
       }

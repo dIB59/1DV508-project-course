@@ -39,6 +39,8 @@ import org.example.features.ingredients.Ingredient;
 import org.example.features.order.OrderService;
 import org.example.features.order.ProductQuantity;
 import org.example.shared.SceneRouter;
+import javafx.scene.control.ToggleGroup;
+
 
 /** The type Checkout controller. */
 public class CheckoutController implements Initializable {
@@ -58,6 +60,7 @@ public class CheckoutController implements Initializable {
   @FXML private RadioButton yesPrint;
   @FXML private RadioButton noPrint;
   @FXML private StackPane campaignCardPane;
+
 
   /**
    * Instantiates a new Checkout controller.
@@ -87,14 +90,23 @@ public class CheckoutController implements Initializable {
     }
 
     boolean shouldPrint = yesPrint.isSelected();
+    boolean shouldNoPrint = noPrint.isSelected();
 
-    if (shouldPrint) {
+    if (shouldPrint && !shouldNoPrint) {
+      orderService.setReceipt();
       printReceipt();
     }
 
-    else {
+    if (shouldNoPrint && !shouldPrint) {
       System.out.println("Receipt will not be printed — user selected 'No'.");
+      printReceipt();
     }
+
+    else{
+      System.out.println("Select only one option");
+    }
+
+
   }
 
 
@@ -239,6 +251,11 @@ public class CheckoutController implements Initializable {
 
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
+    ToggleGroup printToggleGroup = new ToggleGroup();
+    yesPrint.setToggleGroup(printToggleGroup);
+    noPrint.setToggleGroup(printToggleGroup);
+
+
     int itemCount = orderService.getItems().size();
     itemCountLabel.setText("Items in cart: " + itemCount);
 

@@ -26,6 +26,8 @@ public class ReceiptController {
   private final SceneRouter sceneRouter;
   @FXML public Label orderIdLabel;
   public Label memberLabel;
+  private PauseTransition autoRedirectPause;
+
 
   @FXML private VBox itemsContainer;
   @FXML
@@ -130,13 +132,16 @@ public class ReceiptController {
   }
 
   public void goToHomePage(){
-    sceneRouter.goToHomePage();
+    if (autoRedirectPause != null) {
+      autoRedirectPause.stop();  // Stop the timer if still running
     }
+    sceneRouter.goToHomePage();
+  }
 
   private void startAutoRedirect() {
-    PauseTransition pause = new PauseTransition(Duration.seconds(7));
-    pause.setOnFinished(e -> goToHomePage());
-    pause.play();
+    autoRedirectPause= new PauseTransition(Duration.seconds(7));
+    autoRedirectPause.setOnFinished(e -> goToHomePage());
+    autoRedirectPause.play();
   }
 
 }
