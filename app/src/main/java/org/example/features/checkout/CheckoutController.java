@@ -21,6 +21,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -39,10 +40,8 @@ import org.example.features.ingredients.Ingredient;
 import org.example.features.order.OrderService;
 import org.example.features.order.ProductQuantity;
 import org.example.shared.SceneRouter;
-import javafx.scene.control.ToggleGroup;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 
 /** The type Checkout controller. */
 public class CheckoutController implements Initializable {
@@ -51,10 +50,9 @@ public class CheckoutController implements Initializable {
   private final OrderService orderService;
   private final CouponsRepository couponsRepository;
   private final CampaignRepository campaignRepository;
+  private final SceneRouter router;
   private List<Campaign> campaigns = new ArrayList<>();
   private int currentCampaignIndex = 0;
-
-  private final SceneRouter router;
   @FXML private Label itemCountLabel;
   @FXML private Label totalPriceLabel;
   @FXML private VBox itemListContainer; // Changed from ListView to VBox

@@ -3,7 +3,6 @@ package org.example.features.order;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
 import org.example.database.CrudRepository;
 import org.example.features.coupons.Discount;
 import org.example.features.ingredients.Ingredient;
@@ -18,7 +17,7 @@ public class OrderService {
 
   private final CrudRepository<Order, Integer> repository;
   private Order order;
-  private List<CustomizedProduct> customizedProducts = new ArrayList<>();
+  private final List<CustomizedProduct> customizedProducts = new ArrayList<>();
   /**
    * Instantiates a new Order service.
    *
@@ -35,7 +34,7 @@ public class OrderService {
    * @param product the item
    */
   public void addItem(Product product, Map<Ingredient, Integer> ingredientQuantities) {
-    order.addProduct(product, ingredientQuantities);;
+    order.addProduct(product, ingredientQuantities);
   }
 
   // Sets member status to true
@@ -63,14 +62,12 @@ public class OrderService {
     return this.order.getId();
   }
 
-
+  public  int getFeedback(){
+    return this.order.getFeedback();
+  }
 
   public void setFeedback(int feedback){
     this.order.setFeedback(feedback);
-  }
-
-  public  int getFeedback(){
-    return this.order.getFeedback();
   }
 
   public void setMemberID(int id){

@@ -5,10 +5,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
 import java.util.Optional;
 import org.example.database.Identifiable;
-import org.example.features.coupons.Coupons;
 import org.example.features.coupons.Discount;
 import org.example.features.ingredients.Ingredient;
 import org.example.features.product.CustomizedProduct;
@@ -20,21 +18,16 @@ import org.example.features.product.Product;
  * objects, each representing a product and its quantity.
  */
 public class Order implements Identifiable<Integer> {
-  private int id;
   private final List<ProductQuantity> productQuantity;
+  private int id;
   private Optional<Discount> discount;
   private int feedback;
 
   private Optional<Integer> memberID;
-
-  public void setReceipt(boolean receipt) {
-    isReceipt = receipt;
-  }
-
   private boolean isReceipt;
   private Type type;
   private boolean isPaid;
-  private LocalDateTime createdAt;
+  private final LocalDateTime createdAt;
   public Order(int id, List<ProductQuantity> productQuantities, Optional<Discount> discount,
                int feedback, Optional<Integer> memberID, boolean isReceipt, Type type,
                boolean isPaid, LocalDateTime createdAt) {
@@ -48,7 +41,6 @@ public class Order implements Identifiable<Integer> {
     this.isPaid = isPaid;
     this.createdAt = createdAt;
   }
-
   /** Default constructor. */
   public Order() {
     this.id = 0;
@@ -119,14 +111,6 @@ public class Order implements Identifiable<Integer> {
     return this.id;
   }
 
-  public Optional<Integer> getMemberId() {
-    return memberID;
-  }
-
-  public boolean isReceipt() {
-    return isReceipt;
-  }
-
   /**
    * Sets the ID of the order.
    *
@@ -136,13 +120,30 @@ public class Order implements Identifiable<Integer> {
     this.id = id;
   }
 
-  public void setFeedback(int feedback) {
-    this.feedback = feedback;
+  public Optional<Integer> getMemberId() {
+    return memberID;
+  }
+
+  public void setMemberId(int id) {
+    this.memberID = Optional.of(id);
+  }
+
+  public boolean isReceipt() {
+    return isReceipt;
+  }
+
+  public void setReceipt(boolean receipt) {
+    isReceipt = receipt;
   }
 
   public  int getFeedback() {
     return this.feedback;
   }
+
+  public void setFeedback(int feedback) {
+    this.feedback = feedback;
+  }
+
   /**
    * Returns the list of ProductQuantity objects in the order.
    *
@@ -164,12 +165,12 @@ public class Order implements Identifiable<Integer> {
     return sb.toString();
   }
 
-  public void setDiscount(Discount discount) {
-    this.discount = Optional.of(discount);
-  }
-
   public Optional<Discount> getDiscount() {
     return this.discount;
+  }
+
+  public void setDiscount(Discount discount) {
+    this.discount = Optional.of(discount);
   }
 
   public double getPrice() {
@@ -189,7 +190,6 @@ public class Order implements Identifiable<Integer> {
     return BigDecimal.valueOf(getPrice());
   }
 
-
   public boolean isPaid() {
     return isPaid;
   }
@@ -208,10 +208,6 @@ public class Order implements Identifiable<Integer> {
 
   public LocalDateTime getCreatedAt() {
     return createdAt;
-  }
-
-  public void setMemberId(int id) {
-    this.memberID = Optional.of(id);
   }
 
 

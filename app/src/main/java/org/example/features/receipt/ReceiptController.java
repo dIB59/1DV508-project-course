@@ -3,32 +3,29 @@ package org.example.features.receipt;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
-
+import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
-
+import javafx.util.Duration;
 import org.example.features.ingredients.Ingredient;
 import org.example.features.order.Order;
 import org.example.features.order.ProductQuantity;
 import org.example.features.product.Product;
 import org.example.members.MemberRepository;
 import org.example.shared.SceneRouter;
-import javafx.animation.PauseTransition;
-import javafx.util.Duration;
 
 public class ReceiptController {
 
   private final Order order;
   private final SceneRouter sceneRouter;
+  private final MemberRepository memberRepository;
   @FXML public Label orderIdLabel;
   public Label memberLabel;
   private PauseTransition autoRedirectPause;
-
-
   @FXML private VBox itemsContainer;
   @FXML
   private Label titleLabel,
@@ -40,8 +37,6 @@ public class ReceiptController {
       contactLabel,
       EatinEatoutlabel,
       pointsLabel;
-
-  private final MemberRepository memberRepository;
 
 
   public ReceiptController(Order order, SceneRouter sceneRouter, MemberRepository memberRepository) {

@@ -2,19 +2,19 @@ package org.example.shared;
 
 import java.io.IOException;
 import java.net.URL;
+import javafx.animation.FadeTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import javafx.util.Duration;
 import org.example.features.order.OrderService;
 import org.example.features.product.Product;
 import org.example.features.product.ProductDetailsController;
 import org.example.features.translation.TranslationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import javafx.animation.FadeTransition;
-import javafx.util.Duration;
 
 /** The type Scene router. */
 public class SceneRouter {
@@ -22,8 +22,8 @@ public class SceneRouter {
   private static final Logger log = LoggerFactory.getLogger(SceneRouter.class);
   private final Stage stage;
   private final Callback<Class<?>, Object> controllerFactory;
-  private KioskPage currentPage;
   private final TranslationService translationService;
+  private KioskPage currentPage;
 
   /**
    * Instantiates a new Scene router.

@@ -6,13 +6,11 @@ import java.util.List;
 import java.util.Map;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-
 import org.example.features.ingredients.Ingredient;
 import org.example.features.order.OrderService;
 import org.example.shared.SceneRouter;
@@ -20,12 +18,10 @@ import org.example.shared.SceneRouter;
 public class ProductDetailsController {
   private final OrderService orderService;
   private final SceneRouter sceneRouter;
-  private Product product;
   private final ProductRepository productRepository;
-
   private final Map<Product, Spinner<Integer>> sideSpinnerMap = new HashMap<>();
   private final Map<Ingredient, Spinner<Integer>> ingredientSpinnerMap = new HashMap<>();
-
+  private Product product;
   @FXML private Label productName;
 
   @FXML private Label productPrice;
@@ -41,6 +37,7 @@ public class ProductDetailsController {
   @FXML private Label  totalPriceLabel;
 
   @FXML private Button goBackButton;
+  @FXML private VBox sidesContainer;
 
   public ProductDetailsController(OrderService orderService, SceneRouter sceneRouter,ProductRepository productRepository) {
     this.orderService = orderService;
@@ -108,7 +105,6 @@ public class ProductDetailsController {
   }
 
 }
-  @FXML private VBox sidesContainer;
 
   public void displaySides() {
     try {

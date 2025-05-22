@@ -34,10 +34,8 @@ import org.example.members.MemberMapper;
 import org.example.members.MemberRepository;
 
 /**
- * AppControllerFactory is a factory class that creates instances of controllers
- * based on the
- * controller class name. It implements the Callback interface to provide a way
- * to create controller
+ * AppControllerFactory is a factory class that creates instances of controllers based on the
+ * controller class name. It implements the Callback interface to provide a way to create controller
  * instances dynamically.
  */
 public class AppControllerFactory implements Callback<Class<?>, Object> {
@@ -52,7 +50,7 @@ public class AppControllerFactory implements Callback<Class<?>, Object> {
    * Instantiates a new App controller factory.
    *
    * @param orderService the order service
-   * @param sceneRouter  the scene router
+   * @param sceneRouter the scene router
    */
   public AppControllerFactory(OrderService orderService, SceneRouter sceneRouter) {
     this.orderService = orderService;
@@ -61,8 +59,7 @@ public class AppControllerFactory implements Callback<Class<?>, Object> {
   }
 
   /**
-   * Creates a controller instance based on the provided class. If you add a new
-   * controller, you
+   * Creates a controller instance based on the provided class. If you add a new controller, you
    * need to add a case for it in this method.
    *
    * @param controllerClass The class of the controller to be created.
@@ -71,34 +68,38 @@ public class AppControllerFactory implements Callback<Class<?>, Object> {
   @Override
   public Object call(Class<?> controllerClass) {
     return switch (controllerClass.getSimpleName()) {
-      case "HomeController" -> new HomeController(sceneRouter, orderService, getTranslationService());
+      case "HomeController" ->
+          new HomeController(sceneRouter, orderService, getTranslationService());
       case "MenuController" ->
-        new MenuController(getProductRepository(), sceneRouter, getTranslationService());
+          new MenuController(getProductRepository(), sceneRouter, getTranslationService());
       case "CheckoutController" ->
-        new CheckoutController(orderService, getCouponsRepository(), sceneRouter, getCampaignRepository());
+          new CheckoutController(
+              orderService, getCouponsRepository(), sceneRouter, getCampaignRepository());
       case "ProductDetailsController" ->
-        new ProductDetailsController(orderService, sceneRouter, getProductRepository());
+          new ProductDetailsController(orderService, sceneRouter, getProductRepository());
       case "ReceiptController" ->
-        new ReceiptController(orderService.saveOrderAndClear(), sceneRouter, getMemberRepository());
-      case "SmallReceiptController" ->
-        new SmallReceiptController(sceneRouter, orderService);
+          new ReceiptController(
+              orderService.saveOrderAndClear(), sceneRouter, getMemberRepository());
+      case "SmallReceiptController" -> new SmallReceiptController(sceneRouter, orderService);
       case "AdminController" -> new AdminController(sceneRouter, getAdminRepository());
-      case "MemberController" -> new MemberController(sceneRouter, getMemberRepository(), orderService);
+      case "MemberController" ->
+          new MemberController(sceneRouter, getMemberRepository(), orderService);
       case "FeedbackController" -> new FeedbackController(sceneRouter, orderService);
-      case "DashboardController" ->
-        new DashboardController(sceneRouter, getProductRepository());
+      case "DashboardController" -> new DashboardController(sceneRouter, getProductRepository());
       case "CouponsController" -> new CouponsController(getCouponsRepository(), sceneRouter);
       case "PaymentController" -> new PaymentController(sceneRouter, orderService, new FreePay());
       case "EditTranslationController" ->
-          new EditTranslationController(sceneRouter, getTranslationRepository(), getTranslationService());
+          new EditTranslationController(
+              sceneRouter, getTranslationRepository(), getTranslationService());
       default ->
-        throw new IllegalArgumentException(
-            "No controller found for class: " + controllerClass.getSimpleName());
+          throw new IllegalArgumentException(
+              "No controller found for class: " + controllerClass.getSimpleName());
     };
   }
 
   private ProductRepository getProductRepository() {
-    IngredientsRepository ingredientsRepository = new IngredientsRepository(connection, new IngredientMapper());
+    IngredientsRepository ingredientsRepository =
+        new IngredientsRepository(connection, new IngredientMapper());
     ProductMapper productMapper = new ProductMapper(ingredientsRepository);
     return new ProductRepository(connection, productMapper);
   }

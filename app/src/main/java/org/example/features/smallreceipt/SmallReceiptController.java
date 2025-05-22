@@ -1,25 +1,15 @@
 package org.example.features.smallreceipt;
 
 import javafx.animation.PauseTransition;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.ToggleGroup;
+import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.util.Duration;
 import org.example.features.order.OrderService;
 import org.example.shared.SceneRouter;
-import java.sql.SQLException;
-import java.util.List;
-import java.util.Map;
-
-import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
 
 public class SmallReceiptController {
-  private SceneRouter sceneRouter;
-  private OrderService orderService;
+  private final SceneRouter sceneRouter;
+  private final OrderService orderService;
   private PauseTransition autoRedirectPause;
 
 

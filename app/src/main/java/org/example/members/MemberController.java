@@ -9,21 +9,19 @@ import org.example.features.order.OrderService;
 import org.example.shared.SceneRouter;
 
 public class MemberController {
-  private OrderService orderService;
   private final SceneRouter sceneRouter;
   private final MemberRepository memberRepository;
-  @FXML
-  Label MemberLoginLabel;
-  @FXML
-    private TextField personalnumber;
-
+  @FXML Label MemberLoginLabel;
+  private final OrderService orderService;
+  @FXML private TextField personalnumber;
 
   /**
    * Instantiates a new Member controller.
    *
    * @param sceneRouter the scene router
    */
-  public MemberController(SceneRouter sceneRouter, MemberRepository memberRepository, OrderService orderService) {
+  public MemberController(
+      SceneRouter sceneRouter, MemberRepository memberRepository, OrderService orderService) {
     this.sceneRouter = sceneRouter;
     this.memberRepository = memberRepository;
     this.orderService = orderService;
@@ -33,7 +31,7 @@ public class MemberController {
     sceneRouter.goToFeedbackPage();
   }
 
-  public void handleNonMemberLoginButtionAction(ActionEvent actionevent){
+  public void handleNonMemberLoginButtionAction(ActionEvent actionevent) {
     goToFeedbackPage();
   }
 
@@ -63,9 +61,6 @@ public class MemberController {
   }
 
   private boolean validateCredentials(Integer personalnumber) throws SQLException {
-    return memberRepository
-        .findById(personalnumber)
-        .isPresent();
+    return memberRepository.findById(personalnumber).isPresent();
   }
-
 }

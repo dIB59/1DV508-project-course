@@ -17,8 +17,8 @@ public class PaymentController {
 
   private final SceneRouter sceneRouter;
   private final OrderService orderService;
+  private final String displayCurrency = "SEK";
   private PayStrategy paymentService;
-
   @FXML private Button paypalButton;
   @FXML private Button freePayButton;
   @FXML private TextField cardholderNameField;
@@ -26,7 +26,6 @@ public class PaymentController {
   @FXML private TextField expirationField;
   @FXML private TextField cvvField;
   @FXML private TextField postalCodeField;
-
   @FXML private Label subtotalLabel;
   @FXML private Label subtotalValueLabel;
   @FXML private Label discountLabel;
@@ -34,9 +33,8 @@ public class PaymentController {
   @FXML private Label billedNowValueLabel;
   @FXML private Label footerNoteLabel;
 
-  private final String displayCurrency = "SEK";
-
-  public PaymentController(SceneRouter sceneRouter, OrderService orderService, PayStrategy paymentService) {
+  public PaymentController(
+      SceneRouter sceneRouter, OrderService orderService, PayStrategy paymentService) {
     this.sceneRouter = sceneRouter;
     this.orderService = orderService;
     this.paymentService = paymentService;
@@ -53,63 +51,70 @@ public class PaymentController {
   }
 
   private void limitAndSanitizeCvvField() {
-    cvvField.textProperty().addListener((obs, oldText, newText) -> {
-      String sanitized = newText.replaceAll("[^\\d]", "");
-      if (!sanitized.equals(newText)) {
-        cvvField.setText(sanitized);
-      }
-      if (sanitized.length() > 3) {
-        cvvField.setText(sanitized.substring(0, 3));
-      }
-    });
+    cvvField
+        .textProperty()
+        .addListener(
+            (obs, oldText, newText) -> {
+              String sanitized = newText.replaceAll("[^\\d]", "");
+              if (!sanitized.equals(newText)) {
+                cvvField.setText(sanitized);
+              }
+              if (sanitized.length() > 3) {
+                cvvField.setText(sanitized.substring(0, 3));
+              }
+            });
   }
 
   private void addSpacesToCardNumberField() {
-    cardNumberField.textProperty().addListener((obs, oldText, newText) -> {
-      String digits = newText.replaceAll("\\D", "");
+    cardNumberField
+        .textProperty()
+        .addListener(
+            (obs, oldText, newText) -> {
+              String digits = newText.replaceAll("\\D", "");
 
-      // Limit to 16 digits
-      if (digits.length() > 16) {
-        digits = digits.substring(0, 16);
-      }
+              // Limit to 16 digits
+              if (digits.length() > 16) {
+                digits = digits.substring(0, 16);
+              }
 
-      // Format into groups of 4 digits
-      StringBuilder formatted = new StringBuilder();
-      for (int i = 0; i < digits.length(); i++) {
-        if (i > 0 && i % 4 == 0) {
-          formatted.append(" ");
-        }
-        formatted.append(digits.charAt(i));
-      }
+              // Format into groups of 4 digits
+              StringBuilder formatted = new StringBuilder();
+              for (int i = 0; i < digits.length(); i++) {
+                if (i > 0 && i % 4 == 0) {
+                  formatted.append(" ");
+                }
+                formatted.append(digits.charAt(i));
+              }
 
-      String formattedText = formatted.toString();
+              String formattedText = formatted.toString();
 
-      // Avoid setting text if it's already formatted correctly
-      if (!formattedText.equals(newText)) {
-        int caretPos = cardNumberField.getCaretPosition();
-        cardNumberField.setText(formattedText);
-        // Adjust the caret position as best as possible
-        cardNumberField.positionCaret(Math.min(caretPos, formattedText.length()));
-      }
-    });
+              // Avoid setting text if it's already formatted correctly
+              if (!formattedText.equals(newText)) {
+                int caretPos = cardNumberField.getCaretPosition();
+                cardNumberField.setText(formattedText);
+                // Adjust the caret position as best as possible
+                cardNumberField.positionCaret(Math.min(caretPos, formattedText.length()));
+              }
+            });
   }
 
-
-
   private void addSlashToExpirationField() {
-    expirationField.textProperty().addListener((obs, oldText, newText) -> {
-      String sanitized = newText.replaceAll("[^\\d/]", "");
-      if (!sanitized.equals(newText)) {
-        expirationField.setText(sanitized);
-        return;
-      }
+    expirationField
+        .textProperty()
+        .addListener(
+            (obs, oldText, newText) -> {
+              String sanitized = newText.replaceAll("[^\\d/]", "");
+              if (!sanitized.equals(newText)) {
+                expirationField.setText(sanitized);
+                return;
+              }
 
-      if (sanitized.length() == 2 && !oldText.endsWith("/") && !sanitized.contains("/")) {
-        expirationField.setText(sanitized + "/");
-      } else if (sanitized.length() > 5) {
-        expirationField.setText(sanitized.substring(0, 5));
-      }
-    });
+              if (sanitized.length() == 2 && !oldText.endsWith("/") && !sanitized.contains("/")) {
+                expirationField.setText(sanitized + "/");
+              } else if (sanitized.length() > 5) {
+                expirationField.setText(sanitized.substring(0, 5));
+              }
+            });
   }
 
   private void populatePaymentDetails() {
@@ -120,7 +125,10 @@ public class PaymentController {
     subtotalValueLabel.setText(formatCurrency(subtotal));
     discountValueLabel.setText(formatDiscount(discount));
     billedNowValueLabel.setText(formatCurrency(total));
-    footerNoteLabel.setText(String.format("All sales are charged and processed in %s and all sales are final. You will be charged %s", displayCurrency, formatAmount(total)));
+    footerNoteLabel.setText(
+        String.format(
+            "All sales are charged and processed in %s and all sales are final. You will be charged %s",
+            displayCurrency, formatAmount(total)));
 
     if (discount <= 0) {
       discountLabel.setText("No discount applied:");
@@ -152,20 +160,20 @@ public class PaymentController {
         return;
       }
 
-      CardPaymentDetails card = new CardPaymentDetails(cardNumber, expiration, cvv, orderService.getTotal());
+      CardPaymentDetails card =
+          new CardPaymentDetails(cardNumber, expiration, cvv, orderService.getTotal());
       boolean success = strategy.payWithCard(card);
 
       if (success) {
         orderService.setPaid();
-        if(orderService.getReceipt()){
+        if (orderService.getReceipt()) {
           sceneRouter.goToReceiptPage();
-        }
-
-        else{
+        } else {
           sceneRouter.goToSmallReceiptPage();
         }
       } else {
-        showAlert("Payment Failed", "There was an error processing your payment. Please try again.");
+        showAlert(
+            "Payment Failed", "There was an error processing your payment. Please try again.");
       }
     } catch (PaymentProcessingException e) {
       logger.error("Payment processing failed: {}", e.getMessage(), e);

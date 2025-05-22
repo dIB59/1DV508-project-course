@@ -1,6 +1,5 @@
 package org.example.features.payments;
 
-
 /**
  * Interface for payment strategies.
  * This interface defines a method for processing payments with a card.

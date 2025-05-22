@@ -4,8 +4,8 @@ import org.example.database.Identifiable;
 
 public class Admin implements Identifiable<Integer> {
   private final int id;
-  private String username;
-  private String password;
+  private final String username;
+  private final String password;
 
   public Admin(String username, String password) {
     this.id = 0;

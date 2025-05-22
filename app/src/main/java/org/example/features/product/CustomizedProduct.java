@@ -1,13 +1,12 @@
 package org.example.features.product;
 
 import java.util.Map;
-
 import java.util.Objects;
 import org.example.features.ingredients.Ingredient;
 
 public class CustomizedProduct {
-  private Product product;
-  private Map<Ingredient, Integer> ingredientQuantities;
+  private final Product product;
+  private final Map<Ingredient, Integer> ingredientQuantities;
 
   public CustomizedProduct(Product product, Map<Ingredient, Integer> ingredientQuantities) {
     this.product = product;
