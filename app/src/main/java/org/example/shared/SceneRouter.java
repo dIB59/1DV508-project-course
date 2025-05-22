@@ -11,10 +11,13 @@ import org.example.features.order.OrderService;
 import org.example.features.product.Product;
 import org.example.features.product.ProductDetailsController;
 import org.example.features.translation.TranslationService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /** The type Scene router. */
 public class SceneRouter {
 
+  private static final Logger log = LoggerFactory.getLogger(SceneRouter.class);
   private final Stage stage;
   private final Callback<Class<?>, Object> controllerFactory;
   private KioskPage currentPage;
@@ -100,12 +103,12 @@ public class SceneRouter {
       FXMLLoader loader = new FXMLLoader(url);
       loader.setControllerFactory(controllerFactory);
 
-      System.out.println();
       Scene scene = new Scene(loader.load());
       ProductDetailsController controller = loader.getController();
-      System.out.println(product);
+      log.debug("Product: {}", product);
       controller.setProduct(product); // Set the product after loading the FXML
       controller.displaySides();
+      controller.displayIngredients();
       currentPage = KioskPage.PRODUCTDESCRIPTION;
       stage.setScene(scene);
       Platform.runLater(() -> {

@@ -29,6 +29,9 @@ import org.example.features.product.Product;
 import org.example.features.product.ProductRepository;
 import org.example.features.product.Tag;
 import org.example.shared.SceneRouter;
+import javafx.stage.FileChooser;
+import java.io.File;
+
 
 public class DashboardController {
 
@@ -181,7 +184,22 @@ public class DashboardController {
     TextField nameField = new TextField(product.getName());
     TextField descriptionField = new TextField(product.getDescription());
     TextField priceField = new TextField(String.valueOf(product.getPrice()));
+    HBox imageBox = new HBox(5);
     TextField imageUrlField = new TextField(product.getImageUrl());
+    Button browseButton = new Button("Browse");
+    browseButton.setOnAction(e -> {
+      FileChooser fileChooser = new FileChooser();
+      fileChooser.setTitle("Choose Image File");
+      fileChooser.getExtensionFilters().addAll(
+              new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg", "*.gif")
+      );
+      File selectedFile = fileChooser.showOpenDialog(dialog);
+      if (selectedFile != null) {
+        imageUrlField.setText(selectedFile.toURI().toString());
+      }
+    });
+    imageBox.getChildren().addAll(imageUrlField, browseButton);
+
     TextField specialLabelField = new TextField(product.getSpecialLabel());
 
     // Fetch all tags
@@ -286,7 +304,7 @@ public class DashboardController {
         new Label("Name:"), nameField,
         new Label("Description:"), descriptionField,
         new Label("Price:"), priceField,
-        new Label("Image URL:"), imageUrlField,
+        new Label("Image URL:"), imageBox,
         new Label("Special Label:"), specialLabelField,
         tagsLabelBox,
         tagsBox,
@@ -321,8 +339,23 @@ public class DashboardController {
     TextField nameField = new TextField();
     TextField descriptionField = new TextField();
     TextField priceField = new TextField();
-    TextField imageUrlField = new TextField();
     TextField specialLabelField = new TextField();
+    HBox imageBox = new HBox(5);
+    TextField imageUrlField = new TextField();
+    Button browseButton = new Button("Browse");
+    browseButton.setOnAction(e -> {
+      FileChooser fileChooser = new FileChooser();
+      fileChooser.setTitle("Choose Image File");
+      fileChooser.getExtensionFilters().addAll(
+              new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg", "*.gif")
+      );
+      File selectedFile = fileChooser.showOpenDialog(dialog);
+      if (selectedFile != null) {
+        imageUrlField.setText(selectedFile.toURI().toString());
+      }
+    });
+    imageBox.getChildren().addAll(imageUrlField, browseButton);
+
 
     // Fetch all tags
     List<Tag> allTags;
@@ -423,7 +456,7 @@ public class DashboardController {
             new Label("Name:"), nameField,
             new Label("Description:"), descriptionField,
             new Label("Price:"), priceField,
-            new Label("Image URL:"), imageUrlField,
+            new Label("Image URL:"), imageBox,
             new Label("Special Label:"), specialLabelField,
             tagsLabelBox,
             tagsBox,

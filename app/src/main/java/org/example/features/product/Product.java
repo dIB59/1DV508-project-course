@@ -1,9 +1,19 @@
 package org.example.features.product;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import org.example.database.Identifiable;
+import org.example.features.ingredients.Ingredient;
 
 /**
  * Represents a product in the system.
@@ -19,11 +29,11 @@ public class Product implements Identifiable<Integer> {
   private String description;
   private double price;
   private String imageUrl;
+  private byte[] imageBytes;
   private String specialLabel;
   private Boolean isASide;
   private List<Tag> tags;
-  private String ingredients;
-
+  private Map<Ingredient, Integer> defaultIngredients = new HashMap<>();
 
   /**
    * Instantiates a new Product.
@@ -54,6 +64,14 @@ public class Product implements Identifiable<Integer> {
     this.tags = tags != null ? tags : new ArrayList<>();
     this.specialLabel = specialLabel;
     this.isASide = isASide;
+    this.imageBytes = readImageBytesFromFile(imageUrl);
+  }
+  public byte[] getImageBytes() {
+    return imageBytes;
+  }
+
+  public void setImageBytes(byte[] imageBytes) {
+    this.imageBytes = imageBytes;
   }
 
   public Product(String name, String description, double price, String imageUrl, String specialLabel, boolean isASide) {
@@ -86,16 +104,6 @@ public class Product implements Identifiable<Integer> {
 
   public String getDescription() {
     return description;
-  }
-
-  public String getIngredients(){return ingredients; }
-
-  public void setIngredients(String ingredients) {
-    this.ingredients = ingredients;
-  }
-
-  public List<String> getIngredientsList() {
-    return Arrays.asList(this.ingredients.split(","));
   }
 
   public void setDescription(String description) {
@@ -160,11 +168,40 @@ public class Product implements Identifiable<Integer> {
     return tagIds;
   }
 
+  public void setIngredients(Map<Ingredient, Integer> ingredients) {
+    this.defaultIngredients = ingredients;
+  }
+
+  public Map<Ingredient, Integer> getIngredients() {
+        return defaultIngredients;
+  }
+
+  public void addIngredient(Ingredient ingredient, int quantity) {
+    if (defaultIngredients.containsKey(ingredient)) {
+        int currentQty = defaultIngredients.get(ingredient);
+        defaultIngredients.put(ingredient, currentQty + quantity);
+    } else {
+        defaultIngredients.put(ingredient, quantity);
+    }
+}
+
   @Override
   public String toString() {
     return String.format(
         "Product{id=%d, name='%s', description='%s', price=%.2f, imageUrl='%s', tags=%s, ingredients='%s'}",
-        id, name, description, price, imageUrl, tags, ingredients
+        id, name, description, price, imageUrl, tags, defaultIngredients
     );
+  }
+
+  private byte[] readImageBytesFromFile(String imageUrl) {
+    if (imageUrl == null || imageUrl.isBlank()) return new byte[0];
+    try {
+      Path path = Paths.get(URI.create(imageUrl));
+      return Files.readAllBytes(path);
+    } catch (IOException | IllegalArgumentException e) {
+      System.err.println("Failed to read image file: " + imageUrl);
+      e.printStackTrace();
+      return new byte[0];
+    }
   }
 }

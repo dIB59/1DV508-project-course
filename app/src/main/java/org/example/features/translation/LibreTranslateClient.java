@@ -38,7 +38,7 @@ public class LibreTranslateClient {
         .build();
 
     HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-    log.info("Response: {}", response.body());
+    log.debug("Response: {}", response);
 
     return new JSONObject(response.body()).getString("translatedText");
   }

@@ -3,8 +3,13 @@ package org.example.features.order;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import org.example.database.EntityMapper;
+import org.example.features.ingredients.Ingredient;
+import org.example.features.product.CustomizedProduct;
 import org.example.features.product.Product;
 import org.example.features.product.Tag;
 
@@ -42,8 +47,10 @@ public class OrderMapper implements EntityMapper<Order> {
               rs.getBoolean("isASide"),
               tags
           );
+        Map<Ingredient, Integer> ingredientQuantities = new HashMap<>();
+      CustomizedProduct customizedProduct = new CustomizedProduct(product, ingredientQuantities);
       int quantity = rs.getInt("quantity");
-      productQuantities.add(new ProductQuantity(product, quantity));
+      productQuantities.add(new ProductQuantity(customizedProduct, quantity));
     }
 
     if (productQuantities.isEmpty()) {

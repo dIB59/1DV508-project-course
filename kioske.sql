@@ -6,6 +6,7 @@ CREATE TABLE IF NOT EXISTS Product
     description TEXT           NOT NULL,
     price       DECIMAL(10, 2) NOT NULL CHECK (price >= 0),
     image_url   VARCHAR(500),
+    image       LONGBLOB,
     specialLabel       VARCHAR(255),
     isASide     BOOLEAN NOT NULl DEFAULT FALSE
 );
@@ -13,18 +14,23 @@ CREATE TABLE IF NOT EXISTS Product
 -- Table for Order
 CREATE TABLE IF NOT EXISTS Orders
 (
-    id INT AUTO_INCREMENT PRIMARY KEY
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    feedback INT NOT NULL
 );
 
 -- Table for ProductQuantity (associates products with orders and quantities)
-CREATE TABLE IF NOT EXISTS Order_ProductQuantity
-(
-    order_id   INT NOT NULL,
-    product_id INT NOT NULL,
-    quantity   INT NOT NULL CHECK (quantity >= 0),
-    PRIMARY KEY (order_id, product_id),
-    FOREIGN KEY (order_id) REFERENCES Orders (id) ON DELETE CASCADE,
-    FOREIGN KEY (product_id) REFERENCES Product (id)
+CREATE TABLE Order_ProductQuantity (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  order_id INT,
+  product_id INT,
+  quantity INT
+);
+
+CREATE TABLE Order_ProductQuantity_Ingredient (
+  order_product_quantity_id INT,
+  ingredient_id INT,
+  quantity INT,
+  PRIMARY KEY (order_product_quantity_id, ingredient_id)
 );
 
 INSERT INTO Product (name, description, price, image_url, specialLabel, isASide)
@@ -129,3 +135,31 @@ CREATE TABLE IF NOT EXISTS Translations (
     modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     UNIQUE (original_text_hash, source_lang, target_lang)
 );
+
+CREATE TABLE IF NOT EXISTS Ingredients (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name        VARCHAR(255)   NOT NULL,
+    price DECIMAL(10, 2) NOT NULL CHECK (price >= 0)
+);
+
+CREATE TABLE IF NOT EXISTS Product_ingredients (
+    product_id INT NOT NULL,
+    ingredients_id INT NOT NULL,
+    PRIMARY KEY (product_id, ingredients_id),
+    FOREIGN KEY (product_id) REFERENCES Product(id) ON DELETE CASCADE,
+    FOREIGN KEY (ingredients_id) REFERENCES Ingredients(id) ON DELETE CASCADE
+
+);
+
+INSERT INTO Ingredients (name, price)
+VALUES 
+
+('Lettuce', 0.50),
+('Tomato', 0.60),
+('Cheese', 0.75);
+
+INSERT INTO Product_ingredients (product_id, ingredients_id)
+VALUES
+(1, 1),
+(1, 2),  
+(1, 3);  

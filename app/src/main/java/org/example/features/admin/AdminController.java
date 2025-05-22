@@ -21,6 +21,9 @@ public class AdminController {
   private final AdminRepository adminRepository;
   @FXML private TextField usernameField;
   @FXML private PasswordField passwordField;
+  @FXML private TextField visiblePasswordField;
+  @FXML private javafx.scene.control.Button togglePasswordBtn;
+
 
   /**
    * Instantiates a new Admin controller.
@@ -31,6 +34,22 @@ public class AdminController {
     this.sceneRouter = sceneRouter;
     this.adminRepository = adminRepository;
   }
+  @FXML
+  private void initialize() {
+    visiblePasswordField.textProperty().bindBidirectional(passwordField.textProperty());
+  }
+
+  @FXML
+  private void togglePasswordVisibility() {
+    boolean isVisible = visiblePasswordField.isVisible();
+
+    visiblePasswordField.setVisible(!isVisible);
+    visiblePasswordField.setManaged(!isVisible);
+
+    passwordField.setVisible(isVisible);
+    passwordField.setManaged(isVisible);
+  }
+
 
   /** Go to admin page. */
   public void goToDashboard() {

@@ -3,7 +3,9 @@ package org.example.features.checkout;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.animation.KeyFrame;
@@ -33,6 +35,7 @@ import org.example.features.campaign.Campaign;
 import org.example.features.campaign.CampaignRepository;
 import org.example.features.coupons.Coupons;
 import org.example.features.coupons.CouponsRepository;
+import org.example.features.ingredients.Ingredient;
 import org.example.features.order.OrderService;
 import org.example.features.order.ProductQuantity;
 import org.example.shared.SceneRouter;
@@ -144,17 +147,41 @@ public class CheckoutController implements Initializable {
     container.setPrefWidth(1080);
 
     // Create the item name label (bold and navy)
-    Label nameLabel = new Label(item.getProduct().getName());
+    Label nameLabel = new Label(item.getCustomizedProduct().getProduct().getName());
     nameLabel.setFont(Font.font("Arial", javafx.scene.text.FontWeight.BOLD, 20));
     nameLabel.setTextFill(Color.valueOf("#1E1EA9"));
 
     // Create the price label (light gray and smaller)
-    Label priceLabel = new Label(String.format("$%.2f", item.getProduct().getPrice()));
+    Label priceLabel = new Label(String.format("$%.2f", item.getCustomizedProduct().getTotalPrice()));
     priceLabel.setFont(Font.font("Arial", 14));
     priceLabel.setTextFill(Color.valueOf("#777777"));
 
+    VBox ingredientDiffBox = new VBox();
+    ingredientDiffBox.setSpacing(3);
+    Map<Ingredient, Integer> ingredients = item.getCustomizedProduct().getIngredientquanities();
+    Map<Ingredient, Integer> defaultings = item.getCustomizedProduct().getProduct().getIngredients();
+    
+    for (Ingredient ingredient: defaultings.keySet() ){
+      int quantity = ingredients.getOrDefault(ingredient, 0);
+      int defaultQty = defaultings.get(ingredient);
+
+      if(quantity != defaultQty) {
+        String ingLabel;
+        if (quantity > defaultQty) {
+          ingLabel = "+" + (quantity - defaultQty) + " " + ingredient.getName();
+        }
+        else{
+          ingLabel = "-" + (defaultQty - quantity) + " " + ingredient.getName();
+        }
+
+        Label IngredientLabel = new Label(ingLabel);
+        IngredientLabel.setFont(Font.font("Arial", javafx.scene.text.FontWeight.BOLD, 12));
+        ingredientDiffBox.getChildren().add(IngredientLabel);
+      }
+
+    }
     // Create a VBox to group name and price vertically
-    VBox textContainer = new VBox(nameLabel, priceLabel);
+    VBox textContainer = new VBox(nameLabel, priceLabel, ingredientDiffBox);
     textContainer.setSpacing(5);
 
     // Create the increase and decrease buttons
@@ -171,12 +198,12 @@ public class CheckoutController implements Initializable {
     decreaseButton.setPrefSize(30, 30);
 
     increaseButton.setOnAction(event -> {
-      orderService.addItem(item.getProduct());
+      orderService.addItem(item.getCustomizedProduct().getProduct(), item.getCustomizedProduct().getIngredientquanities());
       updateCartDisplay();
     });
 
     decreaseButton.setOnAction(event -> {
-      orderService.removeItem(item.getProduct());
+      orderService.removeItem(item.getCustomizedProduct().getProduct(), new HashMap<>());
       updateCartDisplay();
     });
 
@@ -231,9 +258,9 @@ public class CheckoutController implements Initializable {
     ObservableList<String> items = FXCollections.observableArrayList();
     for (ProductQuantity item : orderService.getItems()) {
       items.add(
-          item.getProduct().getName()
+          item.getCustomizedProduct().getProduct().getName()
               + " - $"
-              + item.getProduct().getPrice()
+              + item.getCustomizedProduct().getProduct().getPrice()
               + " x "
               + item.getQuantity());
     }
