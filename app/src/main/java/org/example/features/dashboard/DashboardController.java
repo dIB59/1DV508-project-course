@@ -196,12 +196,12 @@ public class DashboardController {
     Stage dialog = createAndConfigureDialog(dialogTitle);
 
     // UI Elements
-    TextField nameField = createTextField(initialProductData.map(Product::getName).orElse(""));
-    TextField descriptionField = createTextField(initialProductData.map(Product::getDescription).orElse(""));
-    TextField priceField = createTextField(initialProductData.map(p -> String.valueOf(p.getPrice())).orElse(""));
-    TextField specialLabelField = createTextField(initialProductData.map(Product::getSpecialLabel).orElse(""));
+    TextField nameField = new TextField(initialProductData.map(Product::getName).orElse(""));
+    TextField descriptionField = new TextField(initialProductData.map(Product::getDescription).orElse(""));
+    TextField priceField = new TextField(initialProductData.map(p -> String.valueOf(p.getPrice())).orElse(""));
+    TextField specialLabelField = new TextField(initialProductData.map(Product::getSpecialLabel).orElse(""));
+    TextField imageUrlField = new TextField(initialProductData.map(Product::getImageUrl).orElse(""));
 
-    TextField imageUrlField = createTextField(initialProductData.map(Product::getImageUrl).orElse(""));
     imageUrlField.setPrefWidth(250);
 
     // Image section
@@ -245,9 +245,6 @@ public class DashboardController {
     return dialog;
   }
 
-  private TextField createTextField(String initialValue) {
-    return new TextField(initialValue);
-  }
 
   private HBox createImageSection(Stage dialog, TextField imageUrlField) {
     HBox imageBox = new HBox(5);
@@ -415,7 +412,7 @@ public class DashboardController {
     }, "Edit Product");
   }
 
-  public void createProduct(ActionEvent actionEvent) {
+  public void createProduct() {
     // Pass an empty Optional for initial product data
     showProductDialog(Optional.empty(), p -> {
       try {
