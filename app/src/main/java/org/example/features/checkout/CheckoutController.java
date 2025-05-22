@@ -40,17 +40,19 @@ import org.example.features.order.OrderService;
 import org.example.features.order.ProductQuantity;
 import org.example.shared.SceneRouter;
 import javafx.scene.control.ToggleGroup;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /** The type Checkout controller. */
 public class CheckoutController implements Initializable {
 
+  private static final Logger log = LoggerFactory.getLogger(CheckoutController.class);
   private final OrderService orderService;
   private final CouponsRepository couponsRepository;
   private final CampaignRepository campaignRepository;
   private List<Campaign> campaigns = new ArrayList<>();
   private int currentCampaignIndex = 0;
-  private Timeline campaignTimeline;
 
   private final SceneRouter router;
   @FXML private Label itemCountLabel;
@@ -288,16 +290,16 @@ public class CheckoutController implements Initializable {
     try {
         campaigns = campaignRepository.findActiveCampaigns();
     } catch (Exception e) {
-        e.printStackTrace();
-        System.err.println("Failed to load campaigns: " + e.getMessage());
+        log.debug("Failed to load campaigns: ", e);
+        log.error("Failed to load campaigns: {}", e.getMessage());
         return;
     }
     if (!campaigns.isEmpty()) {
-        showCampaignCard(campaigns.get(0));
-        campaignTimeline = new Timeline(
-            new KeyFrame(Duration.seconds(10), event -> rotateCampaignCard())
+        showCampaignCard(campaigns.getFirst());
+      Timeline campaignTimeline = new Timeline(
+          new KeyFrame(Duration.seconds(10), event -> rotateCampaignCard())
 
-        );
+      );
         campaignTimeline.setCycleCount(Timeline.INDEFINITE);
         campaignTimeline.play();
     }else {
