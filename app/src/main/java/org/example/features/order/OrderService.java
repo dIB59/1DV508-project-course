@@ -47,6 +47,24 @@ public class OrderService {
     return this.order.getMember();
   }
 
+  public void setReceipt(){
+    this.order.setReceipt();
+  }
+
+  public boolean getReceipt(){
+    return this.order.getReceipt();
+  }
+
+  public String gettype(){
+    return this.order.gettype();
+  }
+
+  public int getId(){
+    return this.order.getId();
+  }
+
+
+
   public void setFeedback(int feedback){
     this.order.setFeedback(feedback);
   }
