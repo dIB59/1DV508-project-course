@@ -26,11 +26,8 @@ import org.example.features.translation.TranslationService;
 
 public class MenuController {
 
-  private final MenuModel model;
   private final ProductRepository productRepository;
-  private final CampaignRepository campaignRepository;
   private final SceneRouter sceneRouter;
-  private final OrderService orderService;
   private final TranslationService translationService;
 
   private List<Product> allProducts; // cache loaded products
@@ -40,18 +37,12 @@ public class MenuController {
   @FXML private VBox tagButtonContainer;
 
   public MenuController(
-      MenuModel model,
       ProductRepository productRepository,
-      CampaignRepository campaignRepository,
       SceneRouter sceneRouter,
-      OrderService orderService,
       TranslationService translationService
   ) {
-    this.model = model;
     this.productRepository = productRepository;
-    this.campaignRepository = campaignRepository;
     this.sceneRouter = sceneRouter;
-    this.orderService = orderService;
     this.translationService = translationService;
   }
 

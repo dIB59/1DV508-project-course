@@ -19,7 +19,6 @@ import org.example.features.home.HomeModel;
 import org.example.features.ingredients.IngredientMapper;
 import org.example.features.ingredients.IngredientsRepository;
 import org.example.features.menu.MenuController;
-import org.example.features.menu.MenuModel;
 import org.example.features.order.OrderService;
 import org.example.features.payments.FreePay;
 import org.example.features.payments.PaymentController;
@@ -76,8 +75,7 @@ public class AppControllerFactory implements Callback<Class<?>, Object> {
     return switch (controllerClass.getSimpleName()) {
       case "HomeController" -> new HomeController(new HomeModel(), sceneRouter, orderService, getTranslationService());
       case "MenuController" ->
-        new MenuController(new MenuModel(), getProductRepository(), getCampaignRepository(), sceneRouter, orderService,
-            getTranslationService());
+        new MenuController(getProductRepository(), sceneRouter, getTranslationService());
       case "CheckoutController" ->
         new CheckoutController(orderService, getCouponsRepository(), sceneRouter, getCampaignRepository());
       case "ProductDetailsController" ->
