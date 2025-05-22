@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="org.example.features.help.HelpController"
+            prefHeight="400.0" prefWidth="600.0"
+            style="-fx-background-color: red;">
+
+    <Label text="HELP"
+           style="-fx-text-fill: white; -fx-font-size: 48px; -fx-font-weight: bold;"
+           layoutX="225" layoutY="175" />
+
+</AnchorPane>

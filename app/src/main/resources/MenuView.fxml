@@ -49,6 +49,8 @@
                         style="-fx-padding: 15 30; -fx-font-size: 16px; -fx-background-color: red; -fx-text-fill: white; -fx-background-radius: 10; -fx-cursor: hand;" />
                 <Button text="Go to Checkout" onAction="#goToCheckoutPage"
                         style="-fx-padding: 15 30; -fx-font-size: 16px; -fx-background-color: black; -fx-text-fill: white; -fx-background-radius: 10; -fx-cursor: hand;" />
+                <Button text="HELP" onAction="#goToHelpPage"
+                        style="-fx-padding: 15 30; -fx-font-size: 16px; -fx-background-color: blue; -fx-text-fill: white; -fx-background-radius: 10; -fx-cursor: hand;" />
             </HBox>
         </VBox>
     </HBox>

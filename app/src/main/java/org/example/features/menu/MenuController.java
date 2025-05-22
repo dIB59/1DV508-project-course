@@ -238,4 +238,12 @@ public class MenuController {
   public void goToHomePage() {
     sceneRouter.goToHomePage();
   }
+
+  public void goToHelpPage(){sceneRouter.goToHelpView();}
+
+
+
+  public List<Product> getMenuItems() {
+    return allProducts;
+  }
 }
