@@ -240,6 +240,7 @@ public class CheckoutController implements Initializable {
     );
     totalPriceLabel.setText(String.format("Total: $%.2f", orderService.getTotal()));
   }
+
   private void printReceipt() {
     System.out.println("Printing receipt...");
     router.goToMemberLoginPage();
