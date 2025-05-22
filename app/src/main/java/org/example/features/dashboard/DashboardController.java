@@ -15,6 +15,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
@@ -29,6 +30,8 @@ import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import org.example.features.ingredients.Ingredient;
+import org.example.features.ingredients.IngredientsRepository;
 import org.example.features.product.Product;
 import org.example.features.product.ProductRepository;
 import org.example.features.product.Tag;
@@ -38,11 +41,14 @@ public class DashboardController {
 
   private final SceneRouter sceneRouter;
   private final ProductRepository repository;
+  private final IngredientsRepository ingredientsRepository;
   @FXML private VBox productList; // The VBox inside the ScrollPane
 
-  public DashboardController(SceneRouter sceneRouter, ProductRepository repository) {
+  public DashboardController(SceneRouter sceneRouter, ProductRepository repository,
+                             IngredientsRepository ingredientsRepository) {
     this.sceneRouter = sceneRouter;
     this.repository = repository;
+    this.ingredientsRepository = ingredientsRepository;
   }
 
   public void initialize() {
@@ -204,19 +210,55 @@ public class DashboardController {
     // Image section
     HBox imageSection = createImageSection(dialog, imageUrlField);
 
-    // Tags section
+    // Tags and Ingredients
     List<Tag> allTags = repository.findAllTags();
+    List<Ingredient> allIngredients = ingredientsRepository.findAll();
+
+    // Tag checkboxes
     VBox tagsBox = new VBox(5);
     List<CheckBox> tagCheckboxes = createTagCheckboxes(allTags, initialProductData, tagsBox);
-    HBox tagsLabelAndAddButton = createTagsHeader(allTags, tagCheckboxes, tagsBox);
+    ScrollPane tagsScroll = new ScrollPane(tagsBox);
+    tagsScroll.setFitToWidth(true);
+    tagsScroll.setPrefHeight(150);
+    tagsScroll.setMaxWidth(Double.MAX_VALUE);
 
-    Button saveButton = createSaveButton();
+    // Add tag button
+    Button addTagButton = createTagButton(allTags, tagCheckboxes, tagsBox);
+
+    VBox tagsColumn = new VBox(5, styledLabel("Tags:"), tagsScroll, addTagButton);
+    HBox.setHgrow(tagsColumn, Priority.ALWAYS);
+    tagsColumn.setMaxWidth(Double.MAX_VALUE);
+
+    // Ingredient checkboxes
+    VBox ingredientsBox = new VBox(5);
+    List<CheckBox> ingredientCheckboxes = createIngredientCheckboxes(allIngredients, initialProductData, ingredientsBox);
+    ScrollPane ingredientsScroll = new ScrollPane(ingredientsBox);
+    ingredientsScroll.setFitToWidth(true);
+    ingredientsScroll.setPrefHeight(150);
+    ingredientsScroll.setMaxWidth(Double.MAX_VALUE);
+
+    // Add ingredient button
+    Button addIngredientButton = createIngredientButton(allIngredients, ingredientCheckboxes, ingredientsBox);
+
+    VBox ingredientsColumn = new VBox(5, styledLabel("Ingredients:"), ingredientsScroll, addIngredientButton);
+    HBox.setHgrow(ingredientsColumn, Priority.ALWAYS);
+    ingredientsColumn.setMaxWidth(Double.MAX_VALUE);
+
+    // Combine into side-by-side columns
+    HBox tagsAndIngredientsBox = new HBox(20, tagsColumn, ingredientsColumn);
+    tagsAndIngredientsBox.setPadding(new Insets(10, 0, 10, 0));
+    tagsAndIngredientsBox.setPrefWidth(Double.MAX_VALUE);
+    tagsAndIngredientsBox.setMaxWidth(Double.MAX_VALUE);
+
+    // Save button
+    Button saveButton = new Button("Save");
     saveButton.setOnAction(e -> handleSaveAction(
         dialog, initialProductData, saveOrUpdateAction,
         nameField, descriptionField, priceField, imageUrlField, specialLabelField,
-        allTags, tagCheckboxes
+        allTags, tagCheckboxes, allIngredients, ingredientCheckboxes
     ));
 
+    // Layout
     VBox vbox = new VBox(10);
     vbox.setPadding(new Insets(20));
     vbox.getChildren().addAll(
@@ -225,15 +267,112 @@ public class DashboardController {
         new Label("Price:"), priceField,
         new Label("Image URL:"), imageSection,
         new Label("Special Label:"), specialLabelField,
-        tagsLabelAndAddButton,
-        tagsBox,
+        tagsAndIngredientsBox,
         saveButton
     );
 
-    Scene scene = new Scene(vbox, 400, 600);
+    Scene scene = new Scene(vbox, 500, 650);
     dialog.setScene(scene);
     dialog.showAndWait();
   }
+
+  private Button createIngredientButton(List<Ingredient> allIngredients, List<CheckBox> ingredientCheckboxes, VBox ingredientsBox) {
+    Button addIngredientButton = new Button("+");
+    addIngredientButton.setStyle("-fx-background-color: black; -fx-text-fill: white; -fx-background-radius: 5;");
+    addIngredientButton.setOnAction(
+        e -> {
+          TextInputDialog inputDialog = new TextInputDialog();
+          inputDialog.setTitle("Add New Ingredient");
+          inputDialog.setHeaderText(null);
+          inputDialog.setContentText("Enter new ingredient name:");
+
+          inputDialog
+              .showAndWait()
+              .ifPresent(
+                  ingredientName -> {
+                    if (!ingredientName.trim().isEmpty()) {
+                      String name = ingredientName.trim();
+                      TextInputDialog priceDialog = new TextInputDialog();
+                      priceDialog.setTitle("Add New Ingredient");
+                      priceDialog.setHeaderText(null);
+                      priceDialog.setContentText("Enter ingredient price:");
+                      priceDialog
+                          .showAndWait()
+                          .ifPresent(
+                              priceStr -> {
+                                try {
+                                  double price = Double.parseDouble(priceStr.trim());
+                                  if (price < 0) {
+                                    throw new IllegalArgumentException("Price cannot be negative");
+                                  }
+                                  int newIngredientId;
+                                  try {
+                                    newIngredientId = ingredientsRepository.save(new Ingredient(name, price)).getId();
+                                  } catch (SQLException ex) {
+                                    showAlert("Error adding ingredient: " + ex.getMessage());
+                                    return;
+                                  }
+
+                                  Ingredient newIngredient =
+                                      new Ingredient(newIngredientId, name, price);
+                                  allIngredients.add(newIngredient);
+
+                                  CheckBox newCheckBox = new CheckBox(newIngredient.getName());
+                                  newCheckBox.setSelected(true);
+                                  ingredientCheckboxes.add(newCheckBox);
+                                  ingredientsBox.getChildren().add(newCheckBox);
+                                } catch (NumberFormatException ex) {
+                                  showAlert("Invalid price format.");
+                                }
+                              });
+                    }
+                  });
+        });
+    return addIngredientButton;
+  }
+
+  private Button createTagButton(List<Tag> allTags, List<CheckBox> tagCheckboxes, VBox tagsBox) {
+    Button addTagButton = new Button("+");
+    addTagButton.setStyle("-fx-background-color: black; -fx-text-fill: white; -fx-background-radius: 5;");
+    addTagButton.setOnAction(e -> {
+      TextInputDialog inputDialog = new TextInputDialog();
+      inputDialog.setTitle("Add New Tag");
+      inputDialog.setHeaderText(null);
+      inputDialog.setContentText("Enter new tag name:");
+
+      inputDialog.showAndWait().ifPresent(tagName -> {
+        if (!tagName.trim().isEmpty()) {
+          int newTagId;
+          try {
+            newTagId = repository.createTag(tagName.trim());
+          } catch (SQLException ex) {
+            showAlert("Error adding tag: " + ex.getMessage());
+            return;
+          }
+
+          Tag newTag = new Tag(newTagId, tagName.trim());
+          allTags.add(newTag);
+
+          CheckBox newCheckBox = new CheckBox(newTag.getName());
+          newCheckBox.setSelected(true);
+          tagCheckboxes.add(newCheckBox);
+          tagsBox.getChildren().add(newCheckBox);
+        }
+      });
+    });
+    return addTagButton;
+  }
+
+  private Label styledLabel(String text) {
+    Label label = new Label(text);
+    label.setStyle("""
+        -fx-font-size: 14px;
+        -fx-text-fill: #333;
+        -fx-font-weight: bold;
+    """);
+    return label;
+  }
+
 
   private Stage createAndConfigureDialog(String title) {
     Stage dialog = new Stage();
@@ -279,6 +418,25 @@ public class DashboardController {
       event.consume();
     });
     return dragDropArea;
+  }
+
+  private List<CheckBox> createIngredientCheckboxes(List<Ingredient> allIngredients, Optional<Product> initialProductData, VBox tagsBox) {
+    List<CheckBox> ingredientCheckboxes = new ArrayList<>();
+    for (Ingredient ingredient : allIngredients) {
+      CheckBox checkBox = new CheckBox(ingredient.getName());
+      initialProductData.ifPresent(
+          product -> {
+            System.out.println("Checking ingredient: " + ingredient.getName());
+            product.getIngredients().forEach(
+                (key, value) -> System.out.println("Product ingredient: " + key.getName() + ", value: " + value));
+            if (product.getIngredients().containsKey(ingredient)) {
+              checkBox.setSelected(true);
+            }
+          });
+      ingredientCheckboxes.add(checkBox);
+      tagsBox.getChildren().add(checkBox);
+    }
+    return ingredientCheckboxes;
   }
 
   private List<CheckBox> createTagCheckboxes(List<Tag> allTags, Optional<Product> initialProductData, VBox tagsBox) {
@@ -340,7 +498,7 @@ public class DashboardController {
       Stage dialog, Optional<Product> initialProductData, Consumer<Product> saveOrUpdateAction,
       TextField nameField, TextField descriptionField, TextField priceField,
       TextField imageUrlField, TextField specialLabelField,
-      List<Tag> allTags, List<CheckBox> tagCheckboxes) {
+      List<Tag> allTags, List<CheckBox> tagCheckboxes, List<Ingredient> allIngredients, List<CheckBox> ingredientCheckboxes) {
 
     try {
       String name = nameField.getText();
@@ -356,6 +514,13 @@ public class DashboardController {
         }
       }
 
+      List<Ingredient> selectedIngredients = new ArrayList<>();
+      for (CheckBox ingredientCheckbox : ingredientCheckboxes) {
+        if (ingredientCheckbox.isSelected()) {
+          selectedIngredients.add(allIngredients.get(ingredientCheckboxes.indexOf(ingredientCheckbox)));
+        }
+      }
+
       Product productToProcess = new Product(
           initialProductData.map(Product::getId).orElse(0),
           name,
@@ -364,7 +529,8 @@ public class DashboardController {
           imageUrl,
           specialLabel,
           true,
-          selectedTags
+          selectedTags,
+          selectedIngredients
       );
 
       saveOrUpdateAction.accept(productToProcess);

@@ -49,7 +49,7 @@ public class Product implements Identifiable<Integer> {
    * @param specialLabel The special label for the product (e.g., "Hot", "Deal").
    * @param tags the tags
    */
-  public Product(int id, String name, String description, double price, String imageUrl, String specialLabel,boolean isASide, List<Tag> tags) {
+  public Product(int id, String name, String description, double price, String imageUrl, String specialLabel,boolean isASide, List<Tag> tags, List<Ingredient> ingredients) {
     if (name == null || name.isBlank()) {
       throw new IllegalArgumentException("Name cannot be null or empty");
     }
@@ -68,13 +68,24 @@ public class Product implements Identifiable<Integer> {
     this.specialLabel = specialLabel;
     this.isASide = isASide;
     this.imageBytes = readImageBytesFromFile(imageUrl);
+    for (Ingredient ingredient : ingredients) {
+      this.defaultIngredients.put(ingredient, 1);
+    }
   }
   public Product(String name, String description, double price, String imageUrl, String specialLabel, boolean isASide) {
-    this(0, name, description, price, imageUrl, specialLabel, isASide,List.of());
+    this(0, name, description, price, imageUrl, specialLabel, isASide, List.of(), new ArrayList<>());
   }
 
   public Product(String name, String description, double price, String imageUrl, String specialLabel, boolean isASide,List<Tag> tags) {
-    this(0, name, description, price, imageUrl, specialLabel, isASide,tags);
+    this(0, name, description, price, imageUrl, specialLabel, isASide, tags, new ArrayList<>());
+  }
+
+  public Product(String name, String description, double price, String imageUrl, String specialLabel, boolean isASide, List<Tag> tags, List<Ingredient> ingredients) {
+    this(0, name, description, price, imageUrl, specialLabel, isASide, tags, ingredients);
+  }
+
+  public Product(int id, String name, String description, double price, String imageUrl, String specialLabel, Boolean aBoolean, List<Tag> tags) {
+    this(id, name, description, price, imageUrl, specialLabel, aBoolean, tags, new ArrayList<>());
   }
 
   public byte[] getImageBytes() {

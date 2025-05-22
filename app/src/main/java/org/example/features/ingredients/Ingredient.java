@@ -1,5 +1,6 @@
 package org.example.features.ingredients;
 
+import java.util.Objects;
 import org.example.database.Identifiable;
 
 public class Ingredient implements Identifiable<Integer> {
@@ -19,6 +20,10 @@ public class Ingredient implements Identifiable<Integer> {
     this.id = id;
     this.name = name;
     this.price = price;
+  }
+
+  public Ingredient(String name, double price) {
+    this(0, name, price);
   }
 
   public Integer getId() {
@@ -49,5 +54,27 @@ public class Ingredient implements Identifiable<Integer> {
       throw new IllegalArgumentException("Price cannot be negative");
     }
     this.price = price;
+  }
+
+  @Override
+  public String toString() {
+    return "Ingredient{" +
+        "id=" + id +
+        ", name='" + name + '\'' +
+        ", price=" + price +
+        '}';
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    Ingredient that = (Ingredient) o;
+    return id == that.id;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hashCode(id);
   }
 }
