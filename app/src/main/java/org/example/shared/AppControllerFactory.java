@@ -12,7 +12,6 @@ import org.example.features.checkout.CheckoutController;
 import org.example.features.coupons.CouponsController;
 import org.example.features.coupons.CouponsRepository;
 import org.example.features.dashboard.DashboardController;
-import org.example.features.dashboard.DashboardModel;
 import org.example.features.feedback.FeedbackController;
 import org.example.features.home.HomeController;
 import org.example.features.ingredients.IngredientMapper;
@@ -87,7 +86,7 @@ public class AppControllerFactory implements Callback<Class<?>, Object> {
       case "MemberController" -> new MemberController(sceneRouter, getMemberRepository(), orderService);
       case "FeedbackController" -> new FeedbackController(sceneRouter, orderService);
       case "DashboardController" ->
-        new DashboardController(new DashboardModel(), sceneRouter, getProductRepository());
+        new DashboardController(sceneRouter, getProductRepository());
       case "CouponsController" -> new CouponsController(getCouponsRepository(), sceneRouter);
       case "PaymentController" -> new PaymentController(sceneRouter, orderService, new FreePay());
       case "EditTranslationController" ->

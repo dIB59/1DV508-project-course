@@ -35,14 +35,11 @@ import java.io.File;
 
 public class DashboardController {
 
-  private final DashboardModel dashboardModel;
   private final SceneRouter sceneRouter;
   private final ProductRepository repository;
   @FXML private VBox productList; // The VBox inside the ScrollPane
 
-  public DashboardController(
-      DashboardModel dashboardModel, SceneRouter sceneRouter, ProductRepository repository) {
-    this.dashboardModel = dashboardModel;
+  public DashboardController(SceneRouter sceneRouter, ProductRepository repository) {
     this.sceneRouter = sceneRouter;
     this.repository = repository;
   }
