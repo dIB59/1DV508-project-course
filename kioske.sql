@@ -25,6 +25,7 @@ CREATE TABLE Order_ProductQuantity (
   product_id INT,
   quantity INT
 );
+ALTER TABLE Product ADD sound LONGBLOB;
 
 CREATE TABLE Order_ProductQuantity_Ingredient (
   order_product_quantity_id INT,
