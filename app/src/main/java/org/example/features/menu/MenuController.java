@@ -1,6 +1,5 @@
 package org.example.features.menu;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.stream.Collectors;
 import javafx.application.Platform;
@@ -24,7 +23,6 @@ import org.example.features.translation.TranslationService;
 import org.example.shared.SceneRouter;
 import javafx.scene.media.AudioClip;
 
-
 public class MenuController {
 
   private final ProductRepository productRepository;
@@ -40,8 +38,7 @@ public class MenuController {
   public MenuController(
       ProductRepository productRepository,
       SceneRouter sceneRouter,
-      TranslationService translationService
-  ) {
+      TranslationService translationService) {
     this.productRepository = productRepository;
     this.sceneRouter = sceneRouter;
     this.translationService = translationService;
@@ -58,11 +55,13 @@ public class MenuController {
     populateTagButtons();
     displayAndTranslate(allProducts);
 
-    Platform.runLater(() -> {
-      if (menuView.getScene() != null && AppContext.getInstance().getLanguage() != Language.ENGLISH) {
-        translationService.translate(menuView.getScene().getRoot());
-      }
-    });
+    Platform.runLater(
+        () -> {
+          if (menuView.getScene() != null
+              && AppContext.getInstance().getLanguage() != Language.ENGLISH) {
+            translationService.translate(menuView.getScene().getRoot());
+          }
+        });
   }
 
   private void populateTagButtons() {
@@ -75,10 +74,11 @@ public class MenuController {
     for (Tag tag : tags) {
       Button tagButton = new Button(tag.getName());
       styleTagButton(tagButton, false);
-      tagButton.setOnAction(e -> {
-        List<Product> filtered = filterProductsByTag(tag.getName());
-        displayAndTranslate(filtered);
-      });
+      tagButton.setOnAction(
+          e -> {
+            List<Product> filtered = filterProductsByTag(tag.getName());
+            displayAndTranslate(filtered);
+          });
       tagButtonContainer.getChildren().add(tagButton);
     }
   }
@@ -89,12 +89,9 @@ public class MenuController {
         .collect(Collectors.toList());
   }
 
-  public void goToMemberLogin() {
-    sceneRouter.goToMemberLoginPage();
-  }
-
   private void styleTagButton(Button button, boolean isPrimary) {
-    String baseStyle = """
+    String baseStyle =
+        """
             -fx-padding: 10 20;
             -fx-font-weight: bold;
             -fx-background-radius: 20;
@@ -182,7 +179,8 @@ public class MenuController {
     price.setStyle("-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #555555;");
 
     Label description = new Label(product.getDescription());
-    description.setStyle("""
+    description.setStyle(
+        """
             -fx-font-size: 14px;
             -fx-text-fill: #666666;
             """);
@@ -200,7 +198,8 @@ public class MenuController {
     productInfo.setPadding(new Insets(0, 0, 10, 0));
 
     StackPane card = new StackPane(productInfo);
-    card.setStyle("""
+    card.setStyle(
+        """
             -fx-background-color: white;
             -fx-padding: 20;
             -fx-border-radius: 10;
@@ -208,15 +207,16 @@ public class MenuController {
             -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 10, 0, 0, 0);
         """);
 
-    card.setOnMouseClicked(e -> {
-      sceneRouter.goToProductDetailsPage(product);
-      SoundUtil.playClick();
-    });
-
+    card.setOnMouseClicked(
+        e -> {
+          sceneRouter.goToProductDetailsPage(product);
+          SoundUtil.playClick();
+        });
 
     if (product.getSpecialLabel() != null && !product.getSpecialLabel().isEmpty()) {
       Label special = new Label(product.getSpecialLabel());
-      special.setStyle("""
+      special.setStyle(
+          """
                 -fx-background-color: #e74c3c;
                 -fx-text-fill: white;
                 -fx-padding: 5 10;
@@ -237,9 +237,5 @@ public class MenuController {
 
   public void goToHomePage() {
     sceneRouter.goToHomePage();
-  }
-
-  public List<Product> getMenuItems() {
-    return allProducts;
   }
 }

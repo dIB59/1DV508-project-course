@@ -13,24 +13,30 @@ import org.example.features.product.CustomizedProduct;
 import org.example.features.product.Product;
 
 /**
- * Order class represents a customer's order in the system. It contains a list
- * of ProductQuantity
+ * Order class represents a customer's order in the system. It contains a list of ProductQuantity
  * objects, each representing a product and its quantity.
  */
 public class Order implements Identifiable<Integer> {
   private final List<ProductQuantity> productQuantity;
+  private final LocalDateTime createdAt;
   private int id;
   private Optional<Discount> discount;
   private int feedback;
-
   private Optional<Integer> memberID;
   private boolean isReceipt;
   private Type type;
   private boolean isPaid;
-  private final LocalDateTime createdAt;
-  public Order(int id, List<ProductQuantity> productQuantities, Optional<Discount> discount,
-               int feedback, Optional<Integer> memberID, boolean isReceipt, Type type,
-               boolean isPaid, LocalDateTime createdAt) {
+
+  public Order(
+      int id,
+      List<ProductQuantity> productQuantities,
+      Optional<Discount> discount,
+      int feedback,
+      Optional<Integer> memberID,
+      boolean isReceipt,
+      Type type,
+      boolean isPaid,
+      LocalDateTime createdAt) {
     this.id = id;
     this.productQuantity = productQuantities;
     this.discount = discount;
@@ -41,6 +47,7 @@ public class Order implements Identifiable<Integer> {
     this.isPaid = isPaid;
     this.createdAt = createdAt;
   }
+
   /** Default constructor. */
   public Order() {
     this.id = 0;
@@ -59,8 +66,7 @@ public class Order implements Identifiable<Integer> {
   }
 
   /**
-   * Adds a product to the order. If the product already exists in the order, it
-   * increments the
+   * Adds a product to the order. If the product already exists in the order, it increments the
    * quantity by 1.
    *
    * @param product The product to be added.
@@ -77,8 +83,7 @@ public class Order implements Identifiable<Integer> {
   }
 
   /**
-   * Removes a product from the order. If the quantity of the product becomes zero
-   * or less, it
+   * Removes a product from the order. If the quantity of the product becomes zero or less, it
    * removes the product from the order.
    *
    * @param product The product to be removed.
@@ -136,7 +141,7 @@ public class Order implements Identifiable<Integer> {
     isReceipt = receipt;
   }
 
-  public  int getFeedback() {
+  public int getFeedback() {
     return this.feedback;
   }
 
@@ -181,9 +186,7 @@ public class Order implements Identifiable<Integer> {
   }
 
   public double getSubtotal() {
-    return productQuantity.stream()
-        .mapToDouble(ProductQuantity::getPrice)
-        .sum();
+    return productQuantity.stream().mapToDouble(ProductQuantity::getPrice).sum();
   }
 
   public BigDecimal getPriceBigDecimal() {
@@ -209,7 +212,6 @@ public class Order implements Identifiable<Integer> {
   public LocalDateTime getCreatedAt() {
     return createdAt;
   }
-
 
   public enum Type {
     TAKEOUT,

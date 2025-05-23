@@ -38,13 +38,12 @@ public class ReceiptController {
       EatinEatoutlabel,
       pointsLabel;
 
-
-  public ReceiptController(Order order, SceneRouter sceneRouter, MemberRepository memberRepository) {
+  public ReceiptController(
+      Order order, SceneRouter sceneRouter, MemberRepository memberRepository) {
     this.order = order;
     this.sceneRouter = sceneRouter;
     this.memberRepository = memberRepository;
   }
-
 
   @FXML
   public void initialize() {
@@ -64,28 +63,26 @@ public class ReceiptController {
       Map<Ingredient, Integer> ingredients = pq.getCustomizedProduct().getIngredientquanities();
       Map<Ingredient, Integer> defaultIngs = product.getIngredients();
 
-      for(Ingredient ingredient: defaultIngs.keySet()) {
+      for (Ingredient ingredient : defaultIngs.keySet()) {
         int ingQuantity = ingredients.getOrDefault(ingredient, 0);
         int defaultQty = defaultIngs.get(ingredient);
 
-        if(ingQuantity != defaultQty) {
-        String ingLabel;
-        if (ingQuantity > defaultQty) {
-          ingLabel = "+" + (ingQuantity - defaultQty) + " " + ingredient.getName();
-        }
-        else{
-          ingLabel = "-" + (defaultQty - ingQuantity) + " " + ingredient.getName();
-        }
+        if (ingQuantity != defaultQty) {
+          String ingLabel;
+          if (ingQuantity > defaultQty) {
+            ingLabel = "+" + (ingQuantity - defaultQty) + " " + ingredient.getName();
+          } else {
+            ingLabel = "-" + (defaultQty - ingQuantity) + " " + ingredient.getName();
+          }
 
-        Label IngredientLabel = new Label(ingLabel);
-        IngredientLabel.setFont(Font.font("Arial", javafx.scene.text.FontWeight.BOLD, 12));
-        ingredientdiff.getChildren().add(IngredientLabel);
-      }
+          Label IngredientLabel = new Label(ingLabel);
+          IngredientLabel.setFont(Font.font("Arial", javafx.scene.text.FontWeight.BOLD, 12));
+          ingredientdiff.getChildren().add(IngredientLabel);
+        }
       }
 
       VBox nameAndIngredientsBox = new VBox(nameLabel, ingredientdiff);
       nameAndIngredientsBox.setSpacing(5);
-
 
       // Right: Price
       Label priceLabel = new Label(String.format("$%.2f", itemTotal));
@@ -116,31 +113,36 @@ public class ReceiptController {
     EatinEatoutlabel.setText("Order Type: " + order.getType().name());
     orderIdLabel.setText("Order Number: " + order.getId());
     totalLabel.setText(String.format("Total: $%.2f", order.getPrice()));
-    couponsLabel.setText(String.format("Coupons: %s", order.getDiscount()
-        .map(discount -> discount.getCode() + " -$" + discount.getDiscount())
-        .orElse("No Coupons")));
+    couponsLabel.setText(
+        String.format(
+            "Coupons: %s",
+            order
+                .getDiscount()
+                .map(discount -> discount.getCode() + " -$" + discount.getDiscount())
+                .orElse("No Coupons")));
     thankYouLabel.setText("Thank you for dining with us!");
     restaurantNameLabel.setText("Restaurant Name: Gourmet Bistro");
     addressLabel.setText("Address: 123 Food St, Tasty Town");
     contactLabel.setText("Contact: (123) 456-7890");
-    memberLabel.setText("Member: " + order.getMemberId()
-        .map(String::valueOf)
-        .orElse("No Member"));
-    pointsLabel.setText("Points added: " + (int) Math.floor(order.getPrice()) * 10 + " MemberID: " + order.getMemberId().orElse(0));
+    memberLabel.setText("Member: " + order.getMemberId().map(String::valueOf).orElse("No Member"));
+    pointsLabel.setText(
+        "Points added: "
+            + (int) Math.floor(order.getPrice()) * 10
+            + " MemberID: "
+            + order.getMemberId().orElse(0));
     startAutoRedirect();
   }
 
-  public void goToHomePage(){
+  public void goToHomePage() {
     if (autoRedirectPause != null) {
-      autoRedirectPause.stop();  // Stop the timer if still running
+      autoRedirectPause.stop(); // Stop the timer if still running
     }
     sceneRouter.goToHomePage();
   }
 
   private void startAutoRedirect() {
-    autoRedirectPause= new PauseTransition(Duration.seconds(7));
+    autoRedirectPause = new PauseTransition(Duration.seconds(7));
     autoRedirectPause.setOnFinished(e -> goToHomePage());
     autoRedirectPause.play();
   }
-
 }

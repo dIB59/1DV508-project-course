@@ -67,7 +67,7 @@ public class ProductRepository implements CrudRepository<Product, Integer> {
             + "GROUP BY Product.id";
     List<Product> results = new ArrayList<>();
     try (PreparedStatement stmt = connection.prepareStatement(sql);
-         ResultSet rs = stmt.executeQuery()) {
+        ResultSet rs = stmt.executeQuery()) {
       while (rs.next()) {
         results.add(mapper.map(rs));
       }
@@ -77,8 +77,10 @@ public class ProductRepository implements CrudRepository<Product, Integer> {
 
   public Product save(Product entity) throws SQLException {
     String sql =
-        "INSERT INTO " + tableName + " (name, price, description, image_url, specialLabel, isASide, image) " +
-            "VALUES (?, ?, ?, ?, ?, ?, ?)";
+        "INSERT INTO "
+            + tableName
+            + " (name, price, description, image_url, specialLabel, isASide, image) "
+            + "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
     try (PreparedStatement stmt = connection.prepareStatement(sql)) {
       stmt.setString(1, entity.getName());
@@ -95,7 +97,7 @@ public class ProductRepository implements CrudRepository<Product, Integer> {
 
     String sql2 = "SELECT LAST_INSERT_ID()";
     try (PreparedStatement stmt = connection.prepareStatement(sql2);
-         ResultSet rs = stmt.executeQuery()) {
+        ResultSet rs = stmt.executeQuery()) {
       if (rs.next()) {
         int id = rs.getInt(1);
 
@@ -118,18 +120,18 @@ public class ProductRepository implements CrudRepository<Product, Integer> {
             entity.getSpecialLabel(),
             entity.getisASide(),
             entity.getTags(),
-            entity.getIngredients().keySet().stream().toList()
-        );
+            entity.getIngredients().keySet().stream().toList());
       }
     }
 
     throw new SQLException("Failed to save product, no ID obtained.");
   }
 
-
   public void update(Product entity) throws SQLException {
     String sql =
-        "UPDATE " + tableName + " SET name = ?, price = ?, description = ?, image_url = ?, isASide = ?, specialLabel = ?, image = ? WHERE id = ?";
+        "UPDATE "
+            + tableName
+            + " SET name = ?, price = ?, description = ?, image_url = ?, isASide = ?, specialLabel = ?, image = ? WHERE id = ?";
 
     try (PreparedStatement stmt = connection.prepareStatement(sql)) {
       stmt.setString(1, entity.getName());
@@ -144,7 +146,8 @@ public class ProductRepository implements CrudRepository<Product, Integer> {
     }
 
     // Delete old tags
-    try (PreparedStatement stmt = connection.prepareStatement("DELETE FROM Product_Tags WHERE product_id = ?")) {
+    try (PreparedStatement stmt =
+        connection.prepareStatement("DELETE FROM Product_Tags WHERE product_id = ?")) {
       stmt.setInt(1, entity.getId());
       stmt.executeUpdate();
     }
@@ -156,7 +159,9 @@ public class ProductRepository implements CrudRepository<Product, Integer> {
     }
 
     if (entity.getTags() != null && !entity.getTags().isEmpty()) {
-      try (PreparedStatement stmt = connection.prepareStatement("INSERT INTO Product_Tags (product_id, tag_id) VALUES (?, ?)")) {
+      try (PreparedStatement stmt =
+          connection.prepareStatement(
+              "INSERT INTO Product_Tags (product_id, tag_id) VALUES (?, ?)")) {
         for (Tag tag : entity.getTags()) {
           Integer tagId = tagNameToId.get(tag.getName());
           if (tagId == null) {
@@ -171,7 +176,8 @@ public class ProductRepository implements CrudRepository<Product, Integer> {
     }
 
     // ✅ Delete old ingredients
-    try (PreparedStatement stmt = connection.prepareStatement("DELETE FROM Product_ingredients WHERE product_id = ?")) {
+    try (PreparedStatement stmt =
+        connection.prepareStatement("DELETE FROM Product_ingredients WHERE product_id = ?")) {
       stmt.setInt(1, entity.getId());
       stmt.executeUpdate();
     }
@@ -181,7 +187,6 @@ public class ProductRepository implements CrudRepository<Product, Integer> {
       addIngredientsToProduct(entity.getId(), entity.getIngredients().keySet().stream().toList());
     }
   }
-
 
   private void addTagsToProduct(int productId, List<Tag> tags) throws SQLException {
     Map<String, Integer> tagNameToId = new HashMap<>();
@@ -204,7 +209,6 @@ public class ProductRepository implements CrudRepository<Product, Integer> {
     }
   }
 
-
   public void delete(Integer id) throws SQLException {
     String sql = "DELETE FROM " + tableName + " WHERE id = ?";
     try (PreparedStatement stmt = connection.prepareStatement(sql)) {
@@ -216,7 +220,7 @@ public class ProductRepository implements CrudRepository<Product, Integer> {
   public List<Tag> findAllTags() {
     List<Tag> tags = new ArrayList<>();
     String sql = "SELECT id, name FROM Tags";
-    try{
+    try {
       try (PreparedStatement stmt = connection.prepareStatement(sql);
           ResultSet rs = stmt.executeQuery()) {
         while (rs.next()) {

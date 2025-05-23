@@ -32,14 +32,15 @@ public class ProductDetailsController {
 
   @FXML private Button addToOrderButton;
 
-  @FXML private VBox   ingredientsContainer;
+  @FXML private VBox ingredientsContainer;
 
-  @FXML private Label  totalPriceLabel;
+  @FXML private Label totalPriceLabel;
 
   @FXML private Button goBackButton;
   @FXML private VBox sidesContainer;
 
-  public ProductDetailsController(OrderService orderService, SceneRouter sceneRouter,ProductRepository productRepository) {
+  public ProductDetailsController(
+      OrderService orderService, SceneRouter sceneRouter, ProductRepository productRepository) {
     this.orderService = orderService;
     this.sceneRouter = sceneRouter;
     this.productRepository = productRepository;
@@ -79,62 +80,60 @@ public class ProductDetailsController {
                 }
               });
 
-
     } else {
       System.err.println("FXML fields are not initialized. Check FXML fx:id or initialization.");
     }
-
   }
 
   public void displayIngredients() {
     if (ingredientsContainer != null) {
-        ingredientsContainer.getChildren().clear();
-        ingredientSpinnerMap.clear();
+      ingredientsContainer.getChildren().clear();
+      ingredientSpinnerMap.clear();
 
-        Map<Ingredient, Integer> ingredients = product.getIngredients();
+      Map<Ingredient, Integer> ingredients = product.getIngredients();
 
-        for(Ingredient ing : ingredients.keySet()) {
-          Label ingLabel = new Label(ing.getName() + "($" + String.format("%.2f", ing.getPrice()) + ")");
-          Spinner<Integer> ingSpinner = new Spinner<>(0,10, ingredients.get(ing));
-          ingSpinner.setPrefWidth(80);
-          ingredientSpinnerMap.put(ing, ingSpinner);
+      for (Ingredient ing : ingredients.keySet()) {
+        Label ingLabel =
+            new Label(ing.getName() + "($" + String.format("%.2f", ing.getPrice()) + ")");
+        Spinner<Integer> ingSpinner = new Spinner<>(0, 10, ingredients.get(ing));
+        ingSpinner.setPrefWidth(80);
+        ingredientSpinnerMap.put(ing, ingSpinner);
 
-          HBox ingBox = new HBox(10, ingLabel, ingSpinner);
-          ingredientsContainer.getChildren().add(ingBox);
+        HBox ingBox = new HBox(10, ingLabel, ingSpinner);
+        ingredientsContainer.getChildren().add(ingBox);
+      }
     }
   }
-
-}
 
   public void displaySides() {
     try {
       List<Product> sides = productRepository.findAll();
-        if (sidesContainer != null) {
-          sidesContainer.getChildren().clear();
-          for (Product p : sides) {
-            if (p.getisASide()) {
-              Label sideLabel = new Label(p.getName() + " ($" + String.format("%.2f", p.getPrice()) + ")");
-              Spinner<Integer> sideSpinner = new Spinner<>(0, 10, 0);
-              sideSpinner.setPrefWidth(80);
+      if (sidesContainer != null) {
+        sidesContainer.getChildren().clear();
+        for (Product p : sides) {
+          if (p.getisASide()) {
+            Label sideLabel =
+                new Label(p.getName() + " ($" + String.format("%.2f", p.getPrice()) + ")");
+            Spinner<Integer> sideSpinner = new Spinner<>(0, 10, 0);
+            sideSpinner.setPrefWidth(80);
 
-              sideSpinnerMap.put(p, sideSpinner);
+            sideSpinnerMap.put(p, sideSpinner);
 
-              HBox sideBox = new HBox(10, sideLabel, sideSpinner);
-              sidesContainer.getChildren().add(sideBox);
-            }
+            HBox sideBox = new HBox(10, sideLabel, sideSpinner);
+            sidesContainer.getChildren().add(sideBox);
           }
-        } else {
-          System.err.println("sidesContainer is not initialized. Check FXML fx:id or initialization.");
         }
+      } else {
+        System.err.println(
+            "sidesContainer is not initialized. Check FXML fx:id or initialization.");
+      }
     } catch (SQLException e) {
       System.err.println("Error fetching sides: " + e.getMessage());
     }
   }
 
-
   @FXML
   public void addToOrder() {
-
 
     Integer quantity = quantitySpinner.getValue(); // Get the current value from the Spinner
     if (quantity == null) {
@@ -175,9 +174,9 @@ public class ProductDetailsController {
     }
     sceneRouter.goToMenuPage();
   }
-    @FXML
-    private void goBack() {
-      sceneRouter.goToMenuPage(); // or goToHomePage() if you prefer
-    }
 
+  @FXML
+  private void goBack() {
+    sceneRouter.goToMenuPage(); // or goToHomePage() if you prefer
+  }
 }

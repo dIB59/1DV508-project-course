@@ -27,14 +27,14 @@ import org.slf4j.LoggerFactory;
 
 public class Product implements Identifiable<Integer> {
   private static final Logger log = LoggerFactory.getLogger(Product.class);
+  private final String specialLabel;
+  private final Boolean isASide;
   private int id;
   private String name;
   private String description;
   private double price;
   private String imageUrl;
   private byte[] imageBytes;
-  private final String specialLabel;
-  private final Boolean isASide;
   private List<Tag> tags;
   private Map<Ingredient, Integer> defaultIngredients = new HashMap<>();
 
@@ -213,7 +213,7 @@ public class Product implements Identifiable<Integer> {
     } else {
         defaultIngredients.put(ingredient, quantity);
     }
-}
+  }
 
   @Override
   public String toString() {

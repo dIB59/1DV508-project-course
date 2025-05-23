@@ -1,29 +1,21 @@
 package org.example.features.feedback;
 
-import javafx.scene.control.Button;
-import org.example.features.order.OrderService;
-import java.sql.SQLException;
 import java.util.List;
-
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import org.example.features.order.OrderService;
 import org.example.shared.SceneRouter;
 
 public class FeedbackController {
+  private final SceneRouter sceneRouter;
+  private final OrderService orderService;
   @FXML private Button star1;
   @FXML private Button star2;
   @FXML private Button star3;
   @FXML private Button star4;
   @FXML private Button star5;
-
   private List<Button> stars;
   private int selectedRating = 0;
-
-
-  private final SceneRouter sceneRouter;
-  private final OrderService orderService;
 
   public  FeedbackController(SceneRouter sceneRouter, OrderService orderService) {
     this.sceneRouter = sceneRouter;

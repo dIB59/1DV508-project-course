@@ -45,16 +45,16 @@ public class ProductMapper implements EntityMapper<Product> {
 
     int id = rs.getInt("id");
 
-    Product product = new Product(
-        id,
-        rs.getString("name"),
-        rs.getString("description"),
-        rs.getDouble("price"),
-        rs.getString("image_url"),
-        rs.getString("specialLabel"),
-        rs.getBoolean("isASide"),
-        tags
-    );
+    Product product =
+        new Product(
+            id,
+            rs.getString("name"),
+            rs.getString("description"),
+            rs.getDouble("price"),
+            rs.getString("image_url"),
+            rs.getString("specialLabel"),
+            rs.getBoolean("isASide"),
+            tags);
 
     // Set the imageBytes from the LONGBLOB column
     byte[] imageBytes = rs.getBytes("image");
@@ -65,8 +65,10 @@ public class ProductMapper implements EntityMapper<Product> {
     String ingredientsIdsString = rs.getString("ingredients_ids");
     String ingredientsPricesString = rs.getString("ingredients_price");
 
-    if (ingredientsNamesString != null && ingredientsIdsString != null &&
-        !ingredientsNamesString.isEmpty() && !ingredientsIdsString.isEmpty()) {
+    if (ingredientsNamesString != null
+        && ingredientsIdsString != null
+        && !ingredientsNamesString.isEmpty()
+        && !ingredientsIdsString.isEmpty()) {
       String[] ingredientNames = ingredientsNamesString.split(",");
       String[] ingredientIds = ingredientsIdsString.split(",");
       String[] ingredientPrices = ingredientsPricesString.split(",");
@@ -85,5 +87,4 @@ public class ProductMapper implements EntityMapper<Product> {
     }
     return product;
   }
-
 }

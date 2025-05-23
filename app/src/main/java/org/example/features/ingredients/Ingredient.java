@@ -58,11 +58,7 @@ public class Ingredient implements Identifiable<Integer> {
 
   @Override
   public String toString() {
-    return "Ingredient{" +
-        "id=" + id +
-        ", name='" + name + '\'' +
-        ", price=" + price +
-        '}';
+    return "Ingredient{" + "id=" + id + ", name='" + name + '\'' + ", price=" + price + '}';
   }
 
   @Override

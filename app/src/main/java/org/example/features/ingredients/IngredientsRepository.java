@@ -26,7 +26,8 @@ public class IngredientsRepository {
   public List<Ingredient> getIngredientsForProduct(Product product) throws SQLException {
     int productId = product.getId();
 
-    String sql = """
+    String sql =
+        """
                 SELECT i.* FROM Ingredients i
                 JOIN Product_ingredients pi on i.id = pi.ingredients_id
                 WHERE pi.product_id = ?
