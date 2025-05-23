@@ -1,0 +1,17 @@
+/* variables.css */
+:root {
+    --color-primary: #2563eb;        /* blue-600 */
+    --color-primary-hover: #1e40af;  /* blue-800 */
+    --color-secondary: #facc15;      /* yellow-400 */
+    --color-tertiary: #fde68a;       /* yellow-300 */
+    --color-destructive: #dc2626;    /* red-600 */
+    --color-constructive: #22c55e;   /* green-500 */
+
+    --color-background: #ffffff;
+    --color-foreground: #1f2937;     /* gray-800 */
+    --color-muted: #6b7280;
+    --color-border: #d1d5db;
+
+    --text-primary: var(--color-foreground);
+    --text-secondary: var(--color-muted);
+}

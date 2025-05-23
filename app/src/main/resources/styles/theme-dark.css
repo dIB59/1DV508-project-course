@@ -1,0 +1,9 @@
+/* theme-dark.css */
+@import url("variables.css");
+
+:root {
+    --color-background: #1f2937;    /* gray-800 */
+    --color-foreground: #fef3c7;    /* yellow-100 */
+    --color-muted: #facc15;          /* yellow-400 */
+    --color-border: #52525b;
+}

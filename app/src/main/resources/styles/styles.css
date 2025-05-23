@@ -1,0 +1,45 @@
+/* styles.css */
+.root {
+    -fx-background-color: var(--color-background);
+    -fx-text-fill: var(--text-primary);
+}
+
+.bg-primary {
+    -fx-background-color: var(--color-primary);
+}
+
+.bg-primary-hover:hover {
+    -fx-background-color: var(--color-primary-hover);
+}
+
+.text-primary {
+    -fx-text-fill: var(--text-primary);
+}
+
+.text-secondary {
+    -fx-text-fill: var(--text-secondary);
+}
+
+.border-muted {
+    -fx-border-color: var(--color-border);
+}
+
+.btn-primary {
+    -fx-background-color: var(--color-primary);
+    -fx-text-fill: white;
+}
+
+.btn-secondary {
+    -fx-background-color: var(--color-secondary);
+    -fx-text-fill: var(--text-primary);
+}
+
+.btn-destructive {
+    -fx-background-color: var(--color-destructive);
+    -fx-text-fill: white;
+}
+
+.btn-constructive {
+    -fx-background-color: var(--color-constructive);
+    -fx-text-fill: white;
+}
