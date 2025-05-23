@@ -11,8 +11,8 @@ import org.example.shared.SceneRouter;
 public class MemberController {
   private final SceneRouter sceneRouter;
   private final MemberRepository memberRepository;
-  @FXML Label MemberLoginLabel;
   private final OrderService orderService;
+  @FXML Label MemberLoginLabel;
   @FXML private TextField personalnumber;
 
   /**

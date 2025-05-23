@@ -31,7 +31,8 @@ public class SceneRouter {
    * @param stage the stage
    * @param orderService the order service
    */
-  public SceneRouter(Stage stage, OrderService orderService, TranslationService translationService) {
+  public SceneRouter(
+      Stage stage, OrderService orderService, TranslationService translationService) {
     this.stage = stage;
     this.controllerFactory = new AppControllerFactory(orderService, this);
     this.translationService = translationService;
@@ -44,7 +45,6 @@ public class SceneRouter {
     fadeIn.setToValue(1.0);
     fadeIn.play();
   }
-
 
   /**
    * Sets the stage for the application.
@@ -68,7 +68,6 @@ public class SceneRouter {
       e.printStackTrace();
     }
   }
-
 
   /** Refresh page. */
   public void refreshPage() {
@@ -109,7 +108,6 @@ public class SceneRouter {
     goTo(KioskPage.CHECKOUT);
   }
 
-
   public void goToProductDetailsPage(Product product) {
     try {
       URL url = getClass().getResource("/" + KioskPage.PRODUCTDESCRIPTION.getValue());
@@ -125,9 +123,10 @@ public class SceneRouter {
       currentPage = KioskPage.PRODUCTDESCRIPTION;
       stage.setScene(scene);
       applyFadeInTransition(scene);
-      Platform.runLater(() -> {
-        translationService.translate(scene.getRoot());
-      });
+      Platform.runLater(
+          () -> {
+            translationService.translate(scene.getRoot());
+          });
     } catch (IOException e) {
       System.err.println("Failed to load Product Details page: " + e.getLocalizedMessage());
       e.printStackTrace();
@@ -142,7 +141,9 @@ public class SceneRouter {
     goTo(KioskPage.ADMIN_LOGIN);
   }
 
-  public void goToMemberLoginPage(){goTo(KioskPage.MEMBER_LOGIN);}
+  public void goToMemberLoginPage() {
+    goTo(KioskPage.MEMBER_LOGIN);
+  }
 
   public void goToPaymentPage() {
     goTo(KioskPage.PAYMENT);
@@ -152,7 +153,9 @@ public class SceneRouter {
     goTo(KioskPage.FEEDBACK);
   }
 
-  public void goToSmallReceiptPage(){ goTo(KioskPage.SMALLRECEIPT);}
+  public void goToSmallReceiptPage() {
+    goTo(KioskPage.SMALLRECEIPT);
+  }
 
   public void goToLanguagesPage() {
     goTo(KioskPage.EDIT_TRANSLATION);

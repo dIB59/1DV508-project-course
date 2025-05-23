@@ -23,16 +23,16 @@ public class HomeController {
   @FXML private Label welcomeLabel;
   @FXML private ComboBox<Language> languageSelector;
 
-  public HomeController(SceneRouter sceneRouter, OrderService orderService, TranslationService translationService) {
+  public HomeController(
+      SceneRouter sceneRouter, OrderService orderService, TranslationService translationService) {
     this.sceneRouter = sceneRouter;
     this.orderService = orderService;
     this.translationService = translationService;
   }
 
-
   @FXML
   public void initialize() {
-    log.info(Arrays.toString(Language.values()));
+    log.debug(Arrays.toString(Language.values()));
     languageSelector.getItems().setAll(Language.values());
     languageSelector
         .getSelectionModel()
@@ -45,7 +45,8 @@ public class HomeController {
     Language selectedLanguage = languageSelector.getValue();
     if (selectedLanguage == Language.ENGLISH) {
       AppContext.getInstance().setLanguage(Language.ENGLISH); // Store choice globally
-      translationService.reverseTranslate(welcomeLabel.getScene().getRoot()); // Restore original tex
+      translationService.reverseTranslate(
+          welcomeLabel.getScene().getRoot()); // Restore original tex
       return;
     }
     if (selectedLanguage != null) {
@@ -56,18 +57,19 @@ public class HomeController {
 
   @FXML
   public void goToMenuPageTakeout() {
-    sceneRouter.goToMenuPage();
+    orderService.clear();
     orderService.setType(Order.Type.TAKEOUT);
+    sceneRouter.goToMenuPage();
   }
 
   @FXML
   public void goToMenuPageEatIn() {
-    sceneRouter.goToMenuPage();
+    orderService.clear();
     orderService.setType(Order.Type.EAT_IN);
+    sceneRouter.goToMenuPage();
   }
 
   public void goToAdminPage() {
     sceneRouter.goToAdminLoginPage();
   }
 }
-

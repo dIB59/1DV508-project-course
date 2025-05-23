@@ -18,10 +18,10 @@ public class OrderRepository implements CrudRepository<Order, Integer> {
 
   public Order save(Order order) throws SQLException {
     String insertOrderSql =
-        "INSERT INTO Orders (feedback, coupon_code, is_member, member_id, is_receipt, type, is_paid, created_at) " +
-            "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        "INSERT INTO Orders (feedback, coupon_code, is_member, member_id, is_receipt, type, is_paid, created_at) "
+            + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     try (PreparedStatement orderStmt =
-             connection.prepareStatement(insertOrderSql, Statement.RETURN_GENERATED_KEYS)) {
+        connection.prepareStatement(insertOrderSql, Statement.RETURN_GENERATED_KEYS)) {
       orderStmt.setInt(1, order.getFeedback());
 
       if (order.getDiscount() != null && order.getDiscount().isPresent()) {
@@ -61,10 +61,9 @@ public class OrderRepository implements CrudRepository<Order, Integer> {
         String insertIngredientSQL =
             "INSERT INTO Order_ProductQuantity_Ingredient (order_product_quantity_id, ingredient_id, quantity) VALUES (?, ?, ?)";
 
-        try (
-            PreparedStatement productStmt = connection.prepareStatement(insertProductSQL, Statement.RETURN_GENERATED_KEYS);
-            PreparedStatement ingredientStmt = connection.prepareStatement(insertIngredientSQL)
-        ) {
+        try (PreparedStatement productStmt =
+                connection.prepareStatement(insertProductSQL, Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement ingredientStmt = connection.prepareStatement(insertIngredientSQL)) {
           for (ProductQuantity pq : order.getProductQuantity()) {
             productStmt.setInt(1, orderId);
             productStmt.setInt(2, pq.getCustomizedProduct().getProduct().getId());
@@ -72,11 +71,12 @@ public class OrderRepository implements CrudRepository<Order, Integer> {
             productStmt.executeUpdate();
 
             ResultSet productKeys = productStmt.getGeneratedKeys();
-            if(productKeys.next()) {
+            if (productKeys.next()) {
               int orderProductQuantityId = productKeys.getInt(1);
 
-              Map<Ingredient, Integer> ingredients = pq.getCustomizedProduct().getIngredientquanities();
-              for (Map.Entry<Ingredient, Integer> entry: ingredients.entrySet()) {
+              Map<Ingredient, Integer> ingredients =
+                  pq.getCustomizedProduct().getIngredientquanities();
+              for (Map.Entry<Ingredient, Integer> entry : ingredients.entrySet()) {
                 ingredientStmt.setInt(1, orderProductQuantityId);
                 ingredientStmt.setInt(2, entry.getKey().getId());
                 ingredientStmt.setInt(3, entry.getValue());
@@ -95,18 +95,20 @@ public class OrderRepository implements CrudRepository<Order, Integer> {
   public Optional<Order> findById(Integer id) throws SQLException {
     // Updated to fetch all necessary fields + product info for mapping
     String sql =
-        "SELECT o.id AS order_id, o.feedback, o.coupon_code, c.discount, o.is_member, o.member_id, o.is_receipt, o.type, o.is_paid, o.created_at, " +
-            "opq.product_id, opq.quantity, p.name, p.description, p.price, p.image_url, p.specialLabel, p.isASide, " +
-            // assuming tags and tag_ids fetched by some join or aggregate function; adapt as necessary
-            "GROUP_CONCAT(t.name) AS tags, GROUP_CONCAT(t.id) AS tag_ids " +
-            "FROM Orders o " +
-            "LEFT JOIN Coupons c ON o.coupon_code = c.code " +
-            "LEFT JOIN Order_ProductQuantity opq ON o.id = opq.order_id " +
-            "LEFT JOIN Product p ON opq.product_id = p.id " +
-            "LEFT JOIN Product_Tags pt ON p.id = pt.product_id " +
-            "LEFT JOIN Tags t ON pt.tag_id = t.id " +
-            "WHERE o.id = ? " +
-            "GROUP BY o.id, opq.id";
+        "SELECT o.id AS order_id, o.feedback, o.coupon_code, c.discount, o.is_member, o.member_id, o.is_receipt, o.type, o.is_paid, o.created_at, "
+            + "opq.product_id, opq.quantity, p.name, p.description, p.price, p.image_url, p.specialLabel, p.isASide, "
+            +
+            // assuming tags and tag_ids fetched by some join or aggregate function; adapt as
+            // necessary
+            "GROUP_CONCAT(t.name) AS tags, GROUP_CONCAT(t.id) AS tag_ids "
+            + "FROM Orders o "
+            + "LEFT JOIN Coupons c ON o.coupon_code = c.code "
+            + "LEFT JOIN Order_ProductQuantity opq ON o.id = opq.order_id "
+            + "LEFT JOIN Product p ON opq.product_id = p.id "
+            + "LEFT JOIN Product_Tags pt ON p.id = pt.product_id "
+            + "LEFT JOIN Tags t ON pt.tag_id = t.id "
+            + "WHERE o.id = ? "
+            + "GROUP BY o.id, opq.id";
 
     try (PreparedStatement stmt = connection.prepareStatement(sql)) {
       stmt.setInt(1, id);
@@ -175,10 +177,9 @@ public class OrderRepository implements CrudRepository<Order, Integer> {
     String insertIngredientSql =
         "INSERT INTO Order_ProductQuantity_Ingredient (order_product_quantity_id, ingredient_id, quantity) VALUES (?, ?, ?)";
 
-    try (
-        PreparedStatement productStmt = connection.prepareStatement(insertProductSql, Statement.RETURN_GENERATED_KEYS);
-        PreparedStatement ingredientStmt = connection.prepareStatement(insertIngredientSql)
-    ) {
+    try (PreparedStatement productStmt =
+            connection.prepareStatement(insertProductSql, Statement.RETURN_GENERATED_KEYS);
+        PreparedStatement ingredientStmt = connection.prepareStatement(insertIngredientSql)) {
       for (ProductQuantity pq : order.getProductQuantity()) {
         productStmt.setInt(1, order.getId());
         productStmt.setInt(2, pq.getCustomizedProduct().getProduct().getId());
@@ -186,11 +187,11 @@ public class OrderRepository implements CrudRepository<Order, Integer> {
         productStmt.executeUpdate();
 
         ResultSet productKeys = productStmt.getGeneratedKeys();
-        if(productKeys.next()) {
+        if (productKeys.next()) {
           int orderProductQuantityId = productKeys.getInt(1);
 
           Map<Ingredient, Integer> ingredients = pq.getCustomizedProduct().getIngredientquanities();
-          for (Map.Entry<Ingredient, Integer> entry: ingredients.entrySet()) {
+          for (Map.Entry<Ingredient, Integer> entry : ingredients.entrySet()) {
             ingredientStmt.setInt(1, orderProductQuantityId);
             ingredientStmt.setInt(2, entry.getKey().getId());
             ingredientStmt.setInt(3, entry.getValue());
@@ -204,7 +205,7 @@ public class OrderRepository implements CrudRepository<Order, Integer> {
 
   public void delete(Integer id) throws SQLException {
     try (PreparedStatement stmt =
-             connection.prepareStatement("DELETE FROM Order_ProductQuantity WHERE order_id = ?")) {
+        connection.prepareStatement("DELETE FROM Order_ProductQuantity WHERE order_id = ?")) {
       stmt.setInt(1, id);
       stmt.executeUpdate();
     }

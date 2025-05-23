@@ -85,7 +85,8 @@ public class AppControllerFactory implements Callback<Class<?>, Object> {
       case "MemberController" ->
           new MemberController(sceneRouter, getMemberRepository(), orderService);
       case "FeedbackController" -> new FeedbackController(sceneRouter, orderService);
-      case "DashboardController" -> new DashboardController(sceneRouter, getProductRepository());
+      case "DashboardController" ->
+          new DashboardController(sceneRouter, getProductRepository(), getIngredientsRepository());
       case "CouponsController" -> new CouponsController(getCouponsRepository(), sceneRouter);
       case "PaymentController" -> new PaymentController(sceneRouter, orderService, new FreePay());
       case "EditTranslationController" ->
@@ -126,5 +127,9 @@ public class AppControllerFactory implements Callback<Class<?>, Object> {
 
   private TranslationRepository getTranslationRepository() {
     return new TranslationRepository(connection);
+  }
+
+  private IngredientsRepository getIngredientsRepository() {
+    return new IngredientsRepository(connection, new IngredientMapper());
   }
 }

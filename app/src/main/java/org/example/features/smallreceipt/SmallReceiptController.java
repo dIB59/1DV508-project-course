@@ -12,13 +12,9 @@ public class SmallReceiptController {
   private final OrderService orderService;
   private PauseTransition autoRedirectPause;
 
+  @FXML private Label titleLabel, orderIdLabel, EatinEatoutlabel;
 
-  @FXML
-  private Label titleLabel,
-      orderIdLabel,
-      EatinEatoutlabel;
-
-  public SmallReceiptController(SceneRouter sceneRouter,  OrderService orderService) {
+  public SmallReceiptController(SceneRouter sceneRouter, OrderService orderService) {
     this.sceneRouter = sceneRouter;
     this.orderService = orderService;
   }
@@ -30,9 +26,9 @@ public class SmallReceiptController {
     startAutoRedirect();
   }
 
-  public void goToHomePage(){
+  public void goToHomePage() {
     if (autoRedirectPause != null) {
-      autoRedirectPause.stop();  // Stop the timer if still running
+      autoRedirectPause.stop(); // Stop the timer if still running
     }
     sceneRouter.goToHomePage();
   }
@@ -42,5 +38,4 @@ public class SmallReceiptController {
     autoRedirectPause.setOnFinished(e -> goToHomePage());
     autoRedirectPause.play();
   }
-
 }

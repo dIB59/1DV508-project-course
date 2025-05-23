@@ -61,22 +61,24 @@ public class CheckoutController implements Initializable {
   @FXML private RadioButton noPrint;
   @FXML private StackPane campaignCardPane;
 
-
   /**
    * Instantiates a new Checkout controller.
    *
    * @param orderService the order service
    * @param sceneRouter the scene router
    */
-  public CheckoutController(OrderService orderService, CouponsRepository couponsRepository, SceneRouter sceneRouter, CampaignRepository campaignRepository) {
+  public CheckoutController(
+      OrderService orderService,
+      CouponsRepository couponsRepository,
+      SceneRouter sceneRouter,
+      CampaignRepository campaignRepository) {
     this.orderService = orderService;
     this.couponsRepository = couponsRepository;
     this.router = sceneRouter;
     this.campaignRepository = campaignRepository;
   }
-  
+
   // Closing brace for the CheckoutController class
-  
 
   /** Goes to the login page. */
   public void goToMemberLogin() {
@@ -100,15 +102,10 @@ public class CheckoutController implements Initializable {
     if (shouldNoPrint && !shouldPrint) {
       System.out.println("Receipt will not be printed — user selected 'No'.");
       printReceipt();
-    }
-
-    else{
+    } else {
       System.out.println("Select only one option");
     }
-
-
   }
-
 
   /** Goes to the home/menu page. */
   public void goToMenuPage() {
@@ -141,7 +138,8 @@ public class CheckoutController implements Initializable {
   private HBox createItemBox(ProductQuantity item) {
     HBox container = new HBox();
     container.setPadding(new Insets(15, 20, 15, 20));
-    container.setStyle("-fx-background-color: white; -fx-border-radius: 8; -fx-border-color: #ddd;");
+    container.setStyle(
+        "-fx-background-color: white; -fx-border-radius: 8; -fx-border-color: #ddd;");
     container.setAlignment(Pos.CENTER_LEFT);
     container.setPrefWidth(1080);
 
@@ -151,25 +149,26 @@ public class CheckoutController implements Initializable {
     nameLabel.setTextFill(Color.valueOf("#1E1EA9"));
 
     // Create the price label (light gray and smaller)
-    Label priceLabel = new Label(String.format("$%.2f", item.getCustomizedProduct().getTotalPrice()));
+    Label priceLabel =
+        new Label(String.format("$%.2f", item.getCustomizedProduct().getTotalPrice()));
     priceLabel.setFont(Font.font("Arial", 14));
     priceLabel.setTextFill(Color.valueOf("#777777"));
 
     VBox ingredientDiffBox = new VBox();
     ingredientDiffBox.setSpacing(3);
     Map<Ingredient, Integer> ingredients = item.getCustomizedProduct().getIngredientquanities();
-    Map<Ingredient, Integer> defaultIngredients = item.getCustomizedProduct().getProduct().getIngredients();
-    
-    for (Ingredient ingredient: defaultIngredients.keySet() ){
+    Map<Ingredient, Integer> defaultIngredients =
+        item.getCustomizedProduct().getProduct().getIngredients();
+
+    for (Ingredient ingredient : defaultIngredients.keySet()) {
       int quantity = ingredients.getOrDefault(ingredient, 0);
       int defaultQty = defaultIngredients.get(ingredient);
 
-      if(quantity != defaultQty) {
+      if (quantity != defaultQty) {
         String ingLabel;
         if (quantity > defaultQty) {
           ingLabel = "+" + (quantity - defaultQty) + " " + ingredient.getName();
-        }
-        else{
+        } else {
           ingLabel = "-" + (defaultQty - quantity) + " " + ingredient.getName();
         }
 
@@ -177,7 +176,6 @@ public class CheckoutController implements Initializable {
         IngredientLabel.setFont(Font.font("Arial", javafx.scene.text.FontWeight.BOLD, 12));
         ingredientDiffBox.getChildren().add(IngredientLabel);
       }
-
     }
     // Create a VBox to group name and price vertically
     VBox textContainer = new VBox(nameLabel, priceLabel, ingredientDiffBox);
@@ -188,23 +186,28 @@ public class CheckoutController implements Initializable {
     Button decreaseButton = new Button("-");
 
     // Style the buttons
-    String buttonStyle = "-fx-background-color:#1E1EA9; -fx-text-fill: white; -fx-background-radius: 6; " +
-        "-fx-cursor: hand; -fx-font-size: 14px; -fx-font-weight: bold;";
+    String buttonStyle =
+        "-fx-background-color:#1E1EA9; -fx-text-fill: white; -fx-background-radius: 6; "
+            + "-fx-cursor: hand; -fx-font-size: 14px; -fx-font-weight: bold;";
     increaseButton.setStyle(buttonStyle);
     decreaseButton.setStyle(buttonStyle);
 
     increaseButton.setPrefSize(30, 30);
     decreaseButton.setPrefSize(30, 30);
 
-    increaseButton.setOnAction(event -> {
-      orderService.addItem(item.getCustomizedProduct().getProduct(), item.getCustomizedProduct().getIngredientquanities());
-      updateCartDisplay();
-    });
+    increaseButton.setOnAction(
+        event -> {
+          orderService.addItem(
+              item.getCustomizedProduct().getProduct(),
+              item.getCustomizedProduct().getIngredientquanities());
+          updateCartDisplay();
+        });
 
-    decreaseButton.setOnAction(event -> {
-      orderService.removeItem(item.getCustomizedProduct().getProduct(), new HashMap<>());
-      updateCartDisplay();
-    });
+    decreaseButton.setOnAction(
+        event -> {
+          orderService.removeItem(item.getCustomizedProduct().getProduct(), new HashMap<>());
+          updateCartDisplay();
+        });
 
     // Right-aligned buttons
     HBox buttonBox = new HBox(5, decreaseButton, increaseButton);
@@ -226,16 +229,12 @@ public class CheckoutController implements Initializable {
     }
     Optional<Coupons> disc;
 
-    try{
+    try {
       disc = couponsRepository.findById(coupon);
-    } catch (SQLException e)
-    {
+    } catch (SQLException e) {
       throw new RuntimeException("Failed to get coupon from database");
     }
-    disc.ifPresentOrElse(
-        orderService::setDiscount,
-        () -> couponNotFoundAlert().showAndWait()
-    );
+    disc.ifPresentOrElse(orderService::setDiscount, () -> couponNotFoundAlert().showAndWait());
     totalPriceLabel.setText(String.format("Total: $%.2f", orderService.getTotal()));
   }
 
@@ -257,7 +256,6 @@ public class CheckoutController implements Initializable {
     yesPrint.setToggleGroup(printToggleGroup);
     noPrint.setToggleGroup(printToggleGroup);
     yesPrint.setSelected(true);
-
 
     int itemCount = orderService.getItems().size();
     itemCountLabel.setText("Items in cart: " + itemCount);
@@ -288,36 +286,35 @@ public class CheckoutController implements Initializable {
 
   private void loadCampaignsAndStartRotation() {
     try {
-        campaigns = campaignRepository.findActiveCampaigns();
+      campaigns = campaignRepository.findActiveCampaigns();
     } catch (Exception e) {
-        log.debug("Failed to load campaigns: ", e);
-        log.error("Failed to load campaigns: {}", e.getMessage());
-        return;
+      log.debug("Failed to load campaigns: ", e);
+      log.error("Failed to load campaigns: {}", e.getMessage());
+      return;
     }
     if (!campaigns.isEmpty()) {
-        showCampaignCard(campaigns.getFirst());
-      Timeline campaignTimeline = new Timeline(
-          new KeyFrame(Duration.seconds(10), event -> rotateCampaignCard())
+      showCampaignCard(campaigns.getFirst());
+      Timeline campaignTimeline =
+          new Timeline(new KeyFrame(Duration.seconds(10), event -> rotateCampaignCard()));
 
-      );
-        campaignTimeline.setCycleCount(Timeline.INDEFINITE);
-        campaignTimeline.play();
-    }else {
+      campaignTimeline.setCycleCount(Timeline.INDEFINITE);
+      campaignTimeline.play();
+    } else {
       campaignCardPane.getChildren().clear();
+    }
   }
-}
 
-private void rotateCampaignCard() {
+  private void rotateCampaignCard() {
     if (campaigns.isEmpty()) return;
     currentCampaignIndex = (currentCampaignIndex + 1) % campaigns.size();
     showCampaignCard(campaigns.get(currentCampaignIndex));
-}
+  }
 
-private void showCampaignCard(Campaign campaign) {
-  campaignCardPane.getChildren().clear();
-  String imageUrl = campaign.getImageUrl();
-  if (imageUrl != null && !imageUrl.isEmpty()) {
-    try {
+  private void showCampaignCard(Campaign campaign) {
+    campaignCardPane.getChildren().clear();
+    String imageUrl = campaign.getImageUrl();
+    if (imageUrl != null && !imageUrl.isEmpty()) {
+      try {
         ImageView img = new ImageView(new Image(imageUrl, 800, 320, false, false));
         img.setPreserveRatio(false);
         img.setSmooth(true);
@@ -325,7 +322,9 @@ private void showCampaignCard(Campaign campaign) {
         campaignCardPane.setPrefHeight(340);
         img.setStyle("-fx-effect: dropshadow(gaussian, #1E1EA9, 10, 0.5, 0, 0);");
         campaignCardPane.getChildren().add(img);
-      } catch (Exception ignored) {}
-  }
+      } catch (Exception e) {
+        log.error("Failed to load campaign image: {}", e.getMessage());
+      }
+    }
   }
 }

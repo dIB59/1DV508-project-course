@@ -35,9 +35,9 @@ public class CustomizedProduct {
       int extraQty = quantity - defaultQty;
 
       if (extraQty > 0) {
-          ingprice += ingredient.getPrice() * extraQty;
-        }
-      /* 
+        ingprice += ingredient.getPrice() * extraQty;
+      }
+      /*
       if (extraQty <= 0) {
         ingprice += ingredient.getPrice() * (quantity - defaultQty); }*/
     }
@@ -47,12 +47,10 @@ public class CustomizedProduct {
 
   @Override
   public boolean equals(Object object) {
-    if (this == object)
-      return true;
-    if (!(object instanceof CustomizedProduct other))
-      return false;
+    if (this == object) return true;
+    if (!(object instanceof CustomizedProduct other)) return false;
 
-    return Objects.equals(product.getId(), other.product.getId()) && product.getIngredients().equals(other.product.getIngredients());
+    return Objects.equals(product.getId(), other.product.getId())
+        && product.getIngredients().equals(other.product.getIngredients());
   }
-
 }

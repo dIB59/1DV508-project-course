@@ -79,9 +79,9 @@ public class OrderMapper implements EntityMapper<Order> {
               rs.getString("image_url"),
               rs.getString("specialLabel"),
               rs.getBoolean("isASide"),
-              tags
-          );
-        Map<Ingredient, Integer> ingredientQuantities = new HashMap<>();
+              tags,
+              new ArrayList<>());
+      Map<Ingredient, Integer> ingredientQuantities = new HashMap<>();
       CustomizedProduct customizedProduct = new CustomizedProduct(product, ingredientQuantities);
       int quantity = rs.getInt("quantity");
       productQuantities.add(new ProductQuantity(customizedProduct, quantity));
@@ -100,8 +100,6 @@ public class OrderMapper implements EntityMapper<Order> {
         isReceipt,
         type,
         isPaid,
-        createdAt
-    );
-
+        createdAt);
   }
 }

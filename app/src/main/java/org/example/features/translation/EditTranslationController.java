@@ -24,7 +24,8 @@ public class EditTranslationController {
   private final TranslationService translationService;
   private final SceneRouter sceneRouter;
   private final ObservableList<Translation> allTranslations = FXCollections.observableArrayList();
-  private final ObservableList<Translation> filteredTranslations = FXCollections.observableArrayList();
+  private final ObservableList<Translation> filteredTranslations =
+      FXCollections.observableArrayList();
   private Translation currentTranslation;
   @FXML private TextField searchField;
   @FXML private ComboBox<Language> languageComboBox;
@@ -36,9 +37,10 @@ public class EditTranslationController {
   @FXML private TextField translatedTextField;
   @FXML private ProgressBar cacheProgressBar;
 
-  public EditTranslationController(SceneRouter sceneRouter,
-                                   TranslationRepository translationRepository,
-                                   TranslationService translationService) {
+  public EditTranslationController(
+      SceneRouter sceneRouter,
+      TranslationRepository translationRepository,
+      TranslationService translationService) {
     this.sceneRouter = sceneRouter;
     this.translationRepository = translationRepository;
     this.translationService = translationService;
@@ -51,23 +53,27 @@ public class EditTranslationController {
     languageComboBox.setValue(Language.ENGLISH); // default
 
     // Set up table and listeners (same as before)
-    originalColumn.setCellValueFactory(cellData ->
-        new javafx.beans.property.SimpleStringProperty(cellData.getValue().getOrignalText())
-    );
-    translatedColumn.setCellValueFactory(cellData ->
-        new javafx.beans.property.SimpleStringProperty(cellData.getValue().getTranslatedText())
-    );
+    originalColumn.setCellValueFactory(
+        cellData ->
+            new javafx.beans.property.SimpleStringProperty(cellData.getValue().getOrignalText()));
+    translatedColumn.setCellValueFactory(
+        cellData ->
+            new javafx.beans.property.SimpleStringProperty(
+                cellData.getValue().getTranslatedText()));
 
     translationTable.setItems(filteredTranslations);
 
-    translationTable.getSelectionModel().selectedItemProperty().addListener(
-        (obs, oldSel, newSel) -> {
-          if (newSel != null) {
-            currentTranslation = newSel;
-            originalTextField.setText(newSel.getOrignalText());
-            translatedTextField.setText(newSel.getTranslatedText());
-          }
-        });
+    translationTable
+        .getSelectionModel()
+        .selectedItemProperty()
+        .addListener(
+            (obs, oldSel, newSel) -> {
+              if (newSel != null) {
+                currentTranslation = newSel;
+                originalTextField.setText(newSel.getOrignalText());
+                translatedTextField.setText(newSel.getTranslatedText());
+              }
+            });
 
     // Initial load
     loadTranslations();
@@ -91,22 +97,23 @@ public class EditTranslationController {
     String lowerCaseQuery = query.toLowerCase();
     filteredTranslations.setAll(
         allTranslations.stream()
-            .filter(t -> t.getOrignalText().toLowerCase().contains(lowerCaseQuery)
-                || t.getTranslatedText().toLowerCase().contains(lowerCaseQuery))
-            .toList()
-    );
+            .filter(
+                t ->
+                    t.getOrignalText().toLowerCase().contains(lowerCaseQuery)
+                        || t.getTranslatedText().toLowerCase().contains(lowerCaseQuery))
+            .toList());
   }
 
   @FXML
   private void handleSave() {
     if (currentTranslation != null) {
-      Translation updated = new Translation(
-          currentTranslation.getId(),
-          originalTextField.getText(),
-          currentTranslation.getSourceLang(),
-          currentTranslation.getTargetLang(),
-          translatedTextField.getText()
-      );
+      Translation updated =
+          new Translation(
+              currentTranslation.getId(),
+              originalTextField.getText(),
+              currentTranslation.getSourceLang(),
+              currentTranslation.getTargetLang(),
+              translatedTextField.getText());
       translationRepository.update(updated);
 
       // Refresh table
@@ -133,27 +140,34 @@ public class EditTranslationController {
         .cacheTranslationsAsync(
             Language.ENGLISH.toString(),
             targetLanguage.toString(),
-            progress -> Platform.runLater(() -> cacheProgressBar.setProgress(progress))
-        )
-        .thenAccept(successCount -> Platform.runLater(() -> {
-          cacheButton.setDisable(false);
-          cacheButton.setText(originalText);
-          cacheProgressBar.setVisible(false);
-          showAlert("Successfully cached " + successCount + " translations for " + targetLanguage);
-          loadTranslations();
-        }))
-        .exceptionally(ex -> {
-          Platform.runLater(() -> {
-            cacheButton.setDisable(false);
-            cacheButton.setText(originalText);
-            cacheProgressBar.setVisible(false);
-            logger.error("Error caching translations", ex);
-            showAlert("Failed to cache translations: " + ex.getMessage());
-          });
-          return null;
-        });
+            progress -> Platform.runLater(() -> cacheProgressBar.setProgress(progress)))
+        .thenAccept(
+            successCount ->
+                Platform.runLater(
+                    () -> {
+                      cacheButton.setDisable(false);
+                      cacheButton.setText(originalText);
+                      cacheProgressBar.setVisible(false);
+                      showAlert(
+                          "Successfully cached "
+                              + successCount
+                              + " translations for "
+                              + targetLanguage);
+                      loadTranslations();
+                    }))
+        .exceptionally(
+            ex -> {
+              Platform.runLater(
+                  () -> {
+                    cacheButton.setDisable(false);
+                    cacheButton.setText(originalText);
+                    cacheProgressBar.setVisible(false);
+                    logger.error("Error caching translations", ex);
+                    showAlert("Failed to cache translations: " + ex.getMessage());
+                  });
+              return null;
+            });
   }
-
 
   private void showAlert(String message) {
     Alert alert = new Alert(AlertType.INFORMATION);

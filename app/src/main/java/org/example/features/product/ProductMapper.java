@@ -19,11 +19,13 @@ public class ProductMapper implements EntityMapper<Product> {
 
   @Override
   public Product map(ResultSet rs) throws SQLException {
+    // Parse tags
     String tagsString = rs.getString("tags");
     List<String> tagsName = new ArrayList<>();
     if (tagsString != null && !tagsString.isEmpty()) {
       tagsName.addAll(Arrays.asList(tagsString.split(",")));
     }
+
     String tagIdsString = rs.getString("tags_ids");
     List<Integer> tagIds = new ArrayList<>();
     if (tagIdsString != null && !tagIdsString.isEmpty()) {
@@ -31,13 +33,13 @@ public class ProductMapper implements EntityMapper<Product> {
         try {
           tagIds.add(Integer.parseInt(tagId));
         } catch (NumberFormatException e) {
-          throw new RuntimeException("Shit went wrong");
+          throw new RuntimeException("Failed to parse tag ID: " + tagId, e);
         }
       }
     }
 
     List<Tag> tags = new ArrayList<>();
-    for (int i = 0; i < tagsName.size(); i++) {
+    for (int i = 0; i < Math.min(tagsName.size(), tagIds.size()); i++) {
       tags.add(new Tag(tagIds.get(i), tagsName.get(i)));
     }
 
@@ -53,15 +55,36 @@ public class ProductMapper implements EntityMapper<Product> {
             rs.getString("specialLabel"),
             rs.getBoolean("isASide"),
             tags);
+
     // Set the imageBytes from the LONGBLOB column
     byte[] imageBytes = rs.getBytes("image");
     product.setImageBytes(imageBytes);
 
-    List<Ingredient> ingredients = ingredientRepository.getIngredientsForProduct(product);
-    for (Ingredient ingredient : ingredients) {
-      product.addIngredient(ingredient, 1);
-    }
+    // Parse ingredients
+    String ingredientsNamesString = rs.getString("ingredients_name");
+    String ingredientsIdsString = rs.getString("ingredients_ids");
+    String ingredientsPricesString = rs.getString("ingredients_price");
 
+    if (ingredientsNamesString != null
+        && ingredientsIdsString != null
+        && !ingredientsNamesString.isEmpty()
+        && !ingredientsIdsString.isEmpty()) {
+      String[] ingredientNames = ingredientsNamesString.split(",");
+      String[] ingredientIds = ingredientsIdsString.split(",");
+      String[] ingredientPrices = ingredientsPricesString.split(",");
+
+      for (int i = 0; i < Math.min(ingredientNames.length, ingredientIds.length); i++) {
+        try {
+          int ingredientId = Integer.parseInt(ingredientIds[i]);
+          String ingredientName = ingredientNames[i];
+          double ingredientPrice = Double.parseDouble(ingredientPrices[i]);
+          Ingredient ingredient = new Ingredient(ingredientId, ingredientName, ingredientPrice);
+          product.addIngredient(ingredient, 1);
+        } catch (NumberFormatException e) {
+          throw new RuntimeException("Failed to parse ingredient ID: " + ingredientIds[i], e);
+        }
+      }
+    }
     return product;
   }
 }
