@@ -25,6 +25,15 @@ CREATE TABLE Order_ProductQuantity (
   product_id INT,
   quantity INT
 );
+
+CREATE TABLE Order_ProductQuantity_Ingredient (
+  order_product_quantity_id INT,
+  ingredient_id INT,
+  quantity INT,
+  PRIMARY KEY (order_product_quantity_id, ingredient_id)
+);
+
+
 ALTER TABLE Product ADD sound LONGBLOB;
 
 INSERT INTO Product (name, description, price, image, image_url, sound, specialLabel, isASide)
