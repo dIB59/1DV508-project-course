@@ -492,13 +492,6 @@ public class DashboardController {
       CheckBox checkBox = new CheckBox(ingredient.getName());
       initialProductData.ifPresent(
           product -> {
-            System.out.println("Checking ingredient: " + ingredient.getName());
-            product
-                .getIngredients()
-                .forEach(
-                    (key, value) ->
-                        System.out.println(
-                            "Product ingredient: " + key.getName() + ", value: " + value));
             if (product.getIngredients().containsKey(ingredient)) {
               checkBox.setSelected(true);
             }
