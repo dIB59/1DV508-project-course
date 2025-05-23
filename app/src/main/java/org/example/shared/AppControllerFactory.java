@@ -89,7 +89,7 @@ public class AppControllerFactory implements Callback<Class<?>, Object> {
       case "DashboardController" ->
           new DashboardController(sceneRouter, getProductRepository(), getIngredientsRepository());
       case "CouponsController" -> new CouponsController(getCouponsRepository(), sceneRouter);
-      case "HelpController" -> new HelpController();
+      case "HelpController" -> new HelpController(sceneRouter);
         case "PaymentController" -> new PaymentController(sceneRouter, orderService, new FreePay());
       case "EditTranslationController" ->
           new EditTranslationController(

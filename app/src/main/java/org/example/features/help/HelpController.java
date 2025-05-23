@@ -7,13 +7,25 @@ import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.util.Duration;
+import javafx.animation.PauseTransition;
+import org.example.shared.SceneRouter;
+
 
 public class HelpController {
+
+  private PauseTransition pauseTransition;
+  private SceneRouter sceneRouter;
+
+  public HelpController(SceneRouter sceneRouter) {
+    this.sceneRouter = sceneRouter;
+  }
+
   @FXML
   private Label helpLabel;
 
   public void initialize(){
     makeTextBlink(helpLabel);
+    StartTimer();
   }
 
   public static void makeTextBlink(Label helpLabel) {
@@ -34,5 +46,18 @@ public class HelpController {
     );
     timeline.setCycleCount(Timeline.INDEFINITE);
     timeline.play();
+  }
+
+  public void goToHomePage(){
+    if (pauseTransition != null) {
+      pauseTransition.stop(); // Stop the timer if still running
+    }
+    sceneRouter.goToHomePage();
+  }
+
+  private void StartTimer(){
+    pauseTransition = new PauseTransition(Duration.seconds(30));
+    pauseTransition.setOnFinished(e -> {goToHomePage();});
+    pauseTransition.play();
   }
 }
