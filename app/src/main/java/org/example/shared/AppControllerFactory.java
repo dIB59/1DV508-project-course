@@ -92,9 +92,10 @@ public class AppControllerFactory implements Callback<Class<?>, Object> {
       case "EditTranslationController" ->
           new EditTranslationController(
               sceneRouter, getTranslationRepository(), getTranslationService());
+      case "BaseLayoutController" -> new BaseLayoutController();
       default ->
           throw new IllegalArgumentException(
-              "No controller found for class: " + controllerClass.getSimpleName());
+              "No constructor found for class: " + controllerClass.getSimpleName());
     };
   }
 
