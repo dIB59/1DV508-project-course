@@ -265,7 +265,7 @@ public class DashboardController {
     tagsAndIngredientsBox.setMaxWidth(Double.MAX_VALUE);
 
     // Save button
-    Button saveButton = new Button("Save");
+    Button saveButton = createSaveButton();
     saveButton.setOnAction(
         e ->
             handleSaveAction(
