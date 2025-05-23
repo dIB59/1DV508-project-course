@@ -2,9 +2,11 @@ package org.example.shared;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Objects;
 import javafx.animation.FadeTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.util.Callback;
@@ -53,21 +55,33 @@ public class SceneRouter {
    */
   public void goTo(KioskPage page) {
     try {
-      URL url = getClass().getResource("/" + page.getValue());
-      FXMLLoader loader = new FXMLLoader(url);
-      loader.setControllerFactory(controllerFactory);
-      currentPage = page;
-      Scene scene = new Scene(loader.load());
+      // Load the main layout
+      URL mainLayoutUrl = getClass().getResource("/BaseLayout.fxml");
+      FXMLLoader mainLoader = new FXMLLoader(mainLayoutUrl);
+      mainLoader.setControllerFactory(controllerFactory);
+      Scene scene = new Scene(mainLoader.load());
+      BaseLayoutController mainLayoutController = mainLoader.getController();
 
+      // Load the page content
+      URL pageUrl = getClass().getResource("/" + page.getValue());
+      FXMLLoader pageLoader = new FXMLLoader(pageUrl);
+      pageLoader.setControllerFactory(controllerFactory);
+      Node pageContent = pageLoader.load();
+
+      // Inject content into layout
+      mainLayoutController.setContent(pageContent);
+      currentPage = page;
+
+      // Set the scene
       stage.setScene(scene);
       applyFadeInTransition(scene);
-
       translationService.translate(scene.getRoot());
+
     } catch (IOException e) {
-      System.err.println("Failed to load scene: " + e.getLocalizedMessage());
-      e.printStackTrace();
+      log.error("Failed to load scene for page {}: {}", page, e.getMessage(), e);
     }
   }
+
 
   /** Refresh page. */
   public void refreshPage() {
@@ -116,20 +130,24 @@ public class SceneRouter {
 
       Scene scene = new Scene(loader.load());
       ProductDetailsController controller = loader.getController();
+      controller.setProduct(product);
+
+      // Apply theme and utility styles
+      scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/styles/theme-light.css")).toExternalForm());
+      scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/styles/styles.css")).toExternalForm());
+
       log.debug("Product: {}", product);
-      controller.setProduct(product); // Set the product after loading the FXML
       controller.displaySides();
       controller.displayIngredients();
+
       currentPage = KioskPage.PRODUCTDESCRIPTION;
       stage.setScene(scene);
       applyFadeInTransition(scene);
-      Platform.runLater(
-          () -> {
-            translationService.translate(scene.getRoot());
-          });
+
+      Platform.runLater(() -> translationService.translate(scene.getRoot()));
+
     } catch (IOException e) {
-      System.err.println("Failed to load Product Details page: " + e.getLocalizedMessage());
-      e.printStackTrace();
+      log.error("Failed to load scene for page {}: {}", KioskPage.PRODUCTDESCRIPTION, e.getMessage(), e);
     }
   }
 
