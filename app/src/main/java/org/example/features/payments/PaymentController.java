@@ -167,8 +167,11 @@ public class PaymentController {
       if (success) {
         orderService.setPaid();
         if (orderService.getReceipt()) {
+          System.out.println("Get receipt status: " + orderService.getReceipt());
           sceneRouter.goToReceiptPage();
-        } else {
+        }
+
+        else {
           sceneRouter.goToSmallReceiptPage();
         }
       } else {

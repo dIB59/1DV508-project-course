@@ -55,7 +55,6 @@ public class Order implements Identifiable<Integer> {
     this.discount = Optional.empty(); // Or Optional.of(new Coupons("No Discount", 0)) if needed
     this.feedback = 0;
     this.memberID = Optional.empty();
-    this.isReceipt = true;
     this.type = Type.EAT_IN;
     this.isPaid = false;
     this.createdAt = LocalDateTime.now();
@@ -137,8 +136,8 @@ public class Order implements Identifiable<Integer> {
     return isReceipt;
   }
 
-  public void setReceipt(boolean receipt) {
-    isReceipt = receipt;
+  public void setReceipt() {
+    isReceipt = true;
   }
 
   public int getFeedback() {

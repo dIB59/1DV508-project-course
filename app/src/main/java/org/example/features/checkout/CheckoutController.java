@@ -94,12 +94,12 @@ public class CheckoutController implements Initializable {
     boolean shouldPrint = yesPrint.isSelected();
     boolean shouldNoPrint = noPrint.isSelected();
 
-    if (shouldPrint && !shouldNoPrint) {
+    if (shouldPrint) {
       orderService.setReceipt();
       printReceipt();
     }
 
-    if (shouldNoPrint && !shouldPrint) {
+    if (!shouldPrint) {
       System.out.println("Receipt will not be printed — user selected 'No'.");
       printReceipt();
     } else {
