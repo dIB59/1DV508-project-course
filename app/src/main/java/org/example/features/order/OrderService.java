@@ -51,7 +51,7 @@ public class OrderService {
   }
 
   public void setReceipt() {
-    this.order.setReceipt(true);
+    this.order.setReceipt();
   }
 
   public boolean getReceipt() {

@@ -65,6 +65,9 @@ public class DashboardController {
     sceneRouter.goToCouponsPage();
   }
 
+  public void goToSettingsPage() {
+    sceneRouter.goToSettingsPage();
+  }
   private boolean isImageFile(File file) {
     String fileName = file.getName().toLowerCase();
     return fileName.endsWith(".png")
