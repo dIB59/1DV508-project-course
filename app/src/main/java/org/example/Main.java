@@ -26,5 +26,5 @@ public class Main {
  * -recipt does not scroll
  * -recipt does not have syling
  * -pressing yes/no/no input still prints recipt
- *
+ *- make animation faster
  */

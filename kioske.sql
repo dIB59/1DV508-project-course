@@ -34,9 +34,6 @@ CREATE TABLE Order_ProductQuantity_Ingredient (
   PRIMARY KEY (order_product_quantity_id, ingredient_id)
 );
 
-
-ALTER TABLE Product ADD sound LONGBLOB;
-
 INSERT INTO Product (name, description, price, image, image_url, sound, specialLabel, isASide)
 VALUES
     ('TRALALERO TRALALA', 'Sings arias that summon thunder ⚡🎤 Mamma mia, he *vibrato*-slaps!', 5.99,
@@ -273,3 +270,15 @@ ALTER TABLE Orders
     ADD COLUMN is_paid BOOLEAN NOT NULL DEFAULT FALSE,
     ADD COLUMN created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     ADD FOREIGN KEY (coupon_code) REFERENCES Coupons(code);
+
+
+CREATE TABLE IF NOT EXISTS restaurant_settings (
+  id INT PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  address TEXT,
+  contact TEXT,
+  logo LONGBLOB
+);
+
+INSERT INTO restaurant_settings (id, name, address, contact, logo)
+VALUES (1, 'My Restaurant', 'Welcome to our place!', '6942069420',LOAD_FILE('/var/lib/mysql-files/assets/tralalero-tralala.jpg'));

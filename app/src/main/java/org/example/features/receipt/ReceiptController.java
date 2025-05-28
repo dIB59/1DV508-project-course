@@ -11,6 +11,9 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
+
+import org.example.features.dashboard.RestaurantSettings;
+import org.example.features.dashboard.RestaurantSettingsRepository;
 import org.example.features.ingredients.Ingredient;
 import org.example.features.order.Order;
 import org.example.features.order.ProductQuantity;
@@ -23,6 +26,7 @@ public class ReceiptController {
   private final Order order;
   private final SceneRouter sceneRouter;
   private final MemberRepository memberRepository;
+  private final RestaurantSettingsRepository repo;
   @FXML public Label orderIdLabel;
   public Label memberLabel;
   private PauseTransition autoRedirectPause;
@@ -39,10 +43,11 @@ public class ReceiptController {
       pointsLabel;
 
   public ReceiptController(
-      Order order, SceneRouter sceneRouter, MemberRepository memberRepository) {
+      Order order, SceneRouter sceneRouter, MemberRepository memberRepository, RestaurantSettingsRepository repo) {
     this.order = order;
     this.sceneRouter = sceneRouter;
     this.memberRepository = memberRepository;
+    this.repo = repo;
   }
 
   @FXML
@@ -121,9 +126,12 @@ public class ReceiptController {
                 .map(discount -> discount.getCode() + " -$" + discount.getDiscount())
                 .orElse("No Coupons")));
     thankYouLabel.setText("Thank you for dining with us!");
-    restaurantNameLabel.setText("Restaurant Name: Gourmet Bistro");
-    addressLabel.setText("Address: 123 Food St, Tasty Town");
-    contactLabel.setText("Contact: (123) 456-7890");
+
+    RestaurantSettings setting = repo.loadSettings();
+
+    restaurantNameLabel.setText("name: " + setting.getName());
+    addressLabel.setText("Address: " + setting.getAddress());
+    contactLabel.setText("Contact: " + setting.getContact());
     memberLabel.setText("Member: " + order.getMemberId().map(String::valueOf).orElse("No Member"));
     pointsLabel.setText(
         "Points added: "
