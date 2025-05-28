@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="org.example.features.dashboard.SettingsController"
+            prefWidth="600.0" prefHeight="500.0">
+
+    <VBox alignment="TOP_LEFT" spacing="15.0" AnchorPane.topAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0">
+        <Label text="Restaurant Settings" style="-fx-font-size: 20px; -fx-font-weight: bold;" />
+
+        <Label text="Restaurant Name:" />
+        <TextField fx:id="nameField" promptText="Enter name..." />
+
+        <Label text="Address:" />
+        <TextArea fx:id="addressField" promptText="Enter address..." prefRowCount="4" wrapText="true" />
+
+        <Label text = "Contact:"/>
+        <TextArea fx:id = "contactField" promptText = "Enter Contact...." prefRowCount="4" wrapText = "true" />
+
+        <Label text="Logo Preview:" />
+        <ImageView fx:id="logoPreview" fitHeight="150" fitWidth="150" preserveRatio="true" />
+
+        <Button text="Change Logo" onAction="#onChangeLogo" />
+
+        <Button text="Save Changes"
+                onAction="#onSaveChanges"
+                style="-fx-background-color: #000; -fx-text-fill: white;"
+                maxWidth="150" />
+    </VBox>
+</AnchorPane>

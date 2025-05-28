@@ -40,7 +40,7 @@ public class SceneRouter {
 
   // Fade in animation
   private void applyFadeInTransition(Scene scene) {
-    FadeTransition fadeIn = new FadeTransition(Duration.millis(1500), scene.getRoot());
+    FadeTransition fadeIn = new FadeTransition(Duration.millis(500), scene.getRoot());
     fadeIn.setFromValue(0.0);
     fadeIn.setToValue(1.0);
     fadeIn.play();
@@ -163,6 +163,9 @@ public class SceneRouter {
 
   public void goToHelpView(){goTo(KioskPage.HELP);}
 
+  public void goToSettingsPage() {
+    goTo(KioskPage.SETTING);
+  }
   /**
    * Enum representing the different pages in the kiosk application. Each enum constant corresponds
    * to a specific FXML file.
@@ -196,6 +199,8 @@ public class SceneRouter {
     EDIT_TRANSLATION("EditTranslationView.fxml"),
 
     SMALLRECEIPT("SmallReceiptView.fxml"),
+
+    SETTING("SettingsView.fxml"),
 
     HELP("HelpView.fxml");
 

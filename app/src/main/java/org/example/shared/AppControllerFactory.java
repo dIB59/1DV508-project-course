@@ -12,6 +12,8 @@ import org.example.features.checkout.CheckoutController;
 import org.example.features.coupons.CouponsController;
 import org.example.features.coupons.CouponsRepository;
 import org.example.features.dashboard.DashboardController;
+import org.example.features.dashboard.RestaurantSettingsRepository;
+import org.example.features.dashboard.SettingsController;
 import org.example.features.feedback.FeedbackController;
 import org.example.features.help.HelpController;
 import org.example.features.home.HomeController;
@@ -80,7 +82,7 @@ public class AppControllerFactory implements Callback<Class<?>, Object> {
           new ProductDetailsController(orderService, sceneRouter, getProductRepository());
       case "ReceiptController" ->
           new ReceiptController(
-              orderService.saveOrderAndClear(), sceneRouter, getMemberRepository());
+              orderService.saveOrderAndClear(), sceneRouter, getMemberRepository(), getRestaurantSettingsRepository() );
       case "SmallReceiptController" -> new SmallReceiptController(sceneRouter, orderService);
       case "AdminController" -> new AdminController(sceneRouter, getAdminRepository());
       case "MemberController" ->
@@ -94,10 +96,15 @@ public class AppControllerFactory implements Callback<Class<?>, Object> {
       case "EditTranslationController" ->
           new EditTranslationController(
               sceneRouter, getTranslationRepository(), getTranslationService());
+      case "SettingsController" -> new SettingsController(connection, sceneRouter);
       default ->
           throw new IllegalArgumentException(
               "No controller found for class: " + controllerClass.getSimpleName());
     };
+  }
+
+  private RestaurantSettingsRepository getRestaurantSettingsRepository() {
+    return new RestaurantSettingsRepository(connection);
   }
 
   private ProductRepository getProductRepository() {

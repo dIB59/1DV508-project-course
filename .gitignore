@@ -72,3 +72,4 @@ app/.settings
 /.settings
 
 .env
+.vscode/settings.json

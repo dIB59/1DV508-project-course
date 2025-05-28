@@ -38,6 +38,7 @@
 
                 <Button text="Settings"
                         style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14px; -fx-cursor: hand;"
+                        onAction="#goToSettingsPage"
                         prefWidth="120.0"/>
 
                 <Button text="Go Home"
