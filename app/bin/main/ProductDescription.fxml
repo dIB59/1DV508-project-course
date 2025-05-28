@@ -4,26 +4,134 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Spinner?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<AnchorPane xmlns:fx="http://javafx.com/fxml"
-            xmlns="http://javafx.com/javafx"
-            fx:controller="org.example.features.product.ProductDetailsController"
-            prefHeight="600.0" prefWidth="600.0">
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.Region?>
 
-    <VBox alignment="CENTER" spacing="10.0" layoutX="20.0" layoutY="20.0" prefWidth="560.0">
-        <Label fx:id="productName" style="-fx-font-size: 18px;" text="Product Name"/>
+<AnchorPane xmlns="http://javafx.com/javafx/23.0.1"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="org.example.features.product.ProductDetailsController"
+            style="-fx-background-color: #ffffff;">
+
+    <VBox spacing="0"
+          alignment="TOP_CENTER"
+          AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0"
+          AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0"
+          prefWidth="1280" prefHeight="800"
+          style="-fx-padding: 40; -fx-background-color: #ffffff;">
+
+        <!-- Product Name -->
+        <Label fx:id="productName"
+               text="Product Name"
+               style="-fx-font-size: 30px; -fx-font-weight: bold; -fx-text-fill: #073c71;" />
+
+        <Region prefHeight="60"/>
 
         <!-- Product Price -->
-        <Label fx:id="productPrice" style="-fx-font-size: 16px;" text="Product Price"/>
+        <Label fx:id="productPrice"
+               text="Product Price"
+               style="-fx-font-size: 20px; -fx-text-fill: #053d77;" />
+
+        <Region prefHeight="50"/>
 
         <!-- Product Description -->
-        <Label fx:id="productDescription" style="-fx-font-size: 16px;" text="Product Description"/>
+        <HBox alignment="CENTER">
+            <Label fx:id="productDescription"
+                   wrapText="true"
+                   maxWidth="1000"
+                   textAlignment="CENTER"
+                   style="-fx-font-size: 25px; -fx-text-fill: #003366;" />
+        </HBox>
+
+        <Region prefHeight="60"/>
 
         <!-- Quantity Spinner -->
-        <Spinner fx:id="quantitySpinner" prefWidth="150.0"/>
+        <HBox spacing="10" alignment="CENTER">
+            <Label text="Quantity:"
+                   style="-fx-font-size: 16px; -fx-text-fill: #003366;" />
+            <Spinner fx:id="quantitySpinner"
+                     prefWidth="120"
+                     style="-fx-font-size: 16px;" />
+        </HBox>
+
+        <Region prefHeight="50"/>
 
         <!-- Add to Order Button -->
-        <Button fx:id="addToOrderButton" text="Add to Order" onAction="#addToOrder"/>
-    </VBox>
+        <Button fx:id="addToOrderButton"
+                text="Add to Order"
+                onAction="#addToOrder"
+                style="-fx-background-color: #FFD700;
+                       -fx-text-fill: #003366;
+                       -fx-font-size: 16px;
+                       -fx-padding: 15 20;
+                       -fx-background-radius: 8;
+                       -fx-font-weight: 25;
+                       -fx-cursor: hand;" />
 
+        <Region prefHeight="50"/>
+
+    <VBox alignment="CENTER" spacing="40">
+
+        <HBox alignment="CENTER" spacing="30">
+
+            <!-- Sides Section -->
+            <VBox fx:id="sidesContainer"
+                  spacing="15"
+                  alignment="TOP_CENTER"
+                  prefWidth="300"
+                  style="-fx-padding: 20;
+                     -fx-background-color: #e6eeff;
+                     -fx-background-radius: 15;
+                     -fx-border-color: white;
+                     -fx-border-width: 2;
+                     -fx-border-radius: 10;">
+                <Label text="Sides available"
+                       style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #003366;" />
+
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Label text="Soda ($1.99)" />
+                    <Spinner fx:id="sodaSpinner" />
+                </HBox>
+
+                <!-- Add more side items here -->
+            </VBox>
+
+            <!-- Ingredients Section -->
+            <VBox fx:id="ingredientsContainer"
+                  spacing="15"
+                  alignment="TOP_CENTER"
+                  prefWidth="300"
+                  style="-fx-padding: 20;
+                     -fx-background-color: #e6eeff;
+                     -fx-background-radius: 15;
+                     -fx-border-color: white;
+                     -fx-border-width: 2;
+                     -fx-border-radius: 10;">
+                <Label text="Ingredients"
+                       style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #003366;" />
+
+                <!-- Add ingredients content here -->
+            </VBox>
+
+        </HBox>
+
+    </VBox>
+    </VBox>
+    <Button fx:id="goBackButton"
+            text="Go Back"
+            onAction="#goBack"
+            AnchorPane.bottomAnchor="30"
+            AnchorPane.rightAnchor="30"
+            style="-fx-background-color: #ffcc00;
+               -fx-text-fill: #003366;
+               -fx-font-size: 16px;
+               -fx-padding: 15 20;
+               -fx-background-radius: 10;
+               -fx-font-weight: 20;
+               -fx-cursor: hand;" />
 </AnchorPane>
+
+

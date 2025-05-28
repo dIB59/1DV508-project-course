@@ -220,14 +220,7 @@ public class CheckoutController implements Initializable {
     // Right-aligned buttons
     HBox buttonBox = new HBox(5, decreaseButton, increaseButton);
     buttonBox.setAlignment(Pos.CENTER_RIGHT);
-
-    // Add spacing between the text and buttons
-    Region spacer = new Region();
-    HBox.setHgrow(spacer, Priority.ALWAYS);
-
-    // Combine the text and buttons in the main HBox
-    container.getChildren().addAll(textContainer, spacer, buttonBox, quantityLabel);
-    return container;
+    return buttonBox;
   }
 
   public void applyCoupon() {

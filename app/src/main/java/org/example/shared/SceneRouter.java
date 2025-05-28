@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Objects;
 import javafx.animation.FadeTransition;
+import javafx.animation.Transition;
+import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -48,6 +50,11 @@ public class SceneRouter {
     fadeIn.play();
   }
 
+  private void coolTransition(Scene scene) {
+    Transition transition = new TranslateTransition(Duration.millis(1000), scene.getRoot());
+    transition.play();
+  }
+
   /**
    * Sets the stage for the application.
    *
@@ -60,6 +67,9 @@ public class SceneRouter {
       FXMLLoader mainLoader = new FXMLLoader(mainLayoutUrl);
       mainLoader.setControllerFactory(controllerFactory);
       Scene scene = new Scene(mainLoader.load());
+      scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/styles/styles.css")).toExternalForm());
+      scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/styles/theme-dark.css")).toExternalForm());
+
       BaseLayoutController mainLayoutController = mainLoader.getController();
 
       // Load the page content
@@ -74,18 +84,12 @@ public class SceneRouter {
 
       // Set the scene
       stage.setScene(scene);
-      applyFadeInTransition(scene);
       translationService.translate(scene.getRoot());
+      coolTransition(scene);
 
     } catch (IOException e) {
       log.error("Failed to load scene for page {}: {}", page, e.getMessage(), e);
     }
-  }
-
-
-  /** Refresh page. */
-  public void refreshPage() {
-    goTo(currentPage);
   }
 
   /**
@@ -133,7 +137,7 @@ public class SceneRouter {
       controller.setProduct(product);
 
       // Apply theme and utility styles
-      scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/styles/theme-light.css")).toExternalForm());
+      scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/styles/theme-dark.css")).toExternalForm());
       scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/styles/styles.css")).toExternalForm());
 
       log.debug("Product: {}", product);
@@ -142,8 +146,6 @@ public class SceneRouter {
 
       currentPage = KioskPage.PRODUCTDESCRIPTION;
       stage.setScene(scene);
-      applyFadeInTransition(scene);
-
       Platform.runLater(() -> translationService.translate(scene.getRoot()));
 
     } catch (IOException e) {
@@ -177,6 +179,14 @@ public class SceneRouter {
 
   public void goToLanguagesPage() {
     goTo(KioskPage.EDIT_TRANSLATION);
+  }
+
+  public void refreshPage() {
+    if (currentPage != null) {
+      goTo(currentPage);
+    } else {
+      log.warn("Current page is null, cannot refresh.");
+    }
   }
 
   /**

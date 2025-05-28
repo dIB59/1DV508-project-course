@@ -34,9 +34,6 @@ CREATE TABLE Order_ProductQuantity_Ingredient (
   PRIMARY KEY (order_product_quantity_id, ingredient_id)
 );
 
-
-ALTER TABLE Product ADD sound LONGBLOB;
-
 INSERT INTO Product (name, description, price, image, image_url, sound, specialLabel, isASide)
 VALUES
     ('TRALALERO TRALALA', 'Sings arias that summon thunder ⚡🎤 Mamma mia, he *vibrato*-slaps!', 5.99,

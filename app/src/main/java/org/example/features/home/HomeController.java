@@ -37,7 +37,8 @@ public class HomeController {
     languageSelector
         .getSelectionModel()
         .select(AppContext.getInstance().getLanguage()); // Default selection
-    languageSelector.getStyleClass().add("language-combo");
+    languageSelector.getStyleClass()
+        .addAll("text-primary", "border-muted", "bg-background", "round-md", "px-2");
   }
 
   @FXML
@@ -58,7 +59,7 @@ public class HomeController {
   @FXML
   public void goToMenuPageTakeout() {
     orderService.clear();
-    orderService.setType(Order.Type.TAKEOUT);
+    orderService.setType(Order.Type.TAKEAWAY);
     sceneRouter.goToMenuPage();
   }
 

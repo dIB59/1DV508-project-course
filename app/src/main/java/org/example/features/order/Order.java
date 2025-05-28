@@ -214,7 +214,7 @@ public class Order implements Identifiable<Integer> {
   }
 
   public enum Type {
-    TAKEOUT,
+    TAKEAWAY,
     EAT_IN
   }
 }
