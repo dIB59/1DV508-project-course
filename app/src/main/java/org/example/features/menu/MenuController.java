@@ -21,7 +21,6 @@ import org.example.features.product.Tag;
 import org.example.features.translation.Language;
 import org.example.features.translation.TranslationService;
 import org.example.shared.SceneRouter;
-import javafx.scene.media.AudioClip;
 
 public class MenuController {
 
@@ -98,9 +97,9 @@ public class MenuController {
             -fx-cursor: hand;
         """;
     if (isPrimary) {
-      button.setStyle(baseStyle + "-fx-background-color: #2c3e50; -fx-text-fill: white;");
+      button.setStyle(baseStyle + "-fx-background-color: -fx-color-muted; -fx-text-fill: -fx-color-background;");
     } else {
-      button.setStyle(baseStyle + "-fx-background-color: #bdc3c7; -fx-text-fill: #2c3e50;");
+      button.setStyle(baseStyle + "-fx-background-color: -fx-color-border; -fx-text-fill: -fx-text-primary;");
     }
     button.setMaxWidth(Double.MAX_VALUE);
   }
@@ -170,20 +169,21 @@ public class MenuController {
     imageView.setFitHeight(350);
 
     Label name = new Label(product.getName());
-    name.setStyle("-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;");
+    name.setStyle("-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: -fx-text-primary;");
     name.setWrapText(true);
     name.setPadding(new Insets(0, 0, 0, 10));
     HBox.setHgrow(name, Priority.ALWAYS);
 
     Label price = new Label(String.format("$%.2f", product.getPrice()));
-    price.setStyle("-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #555555;");
+    price.setStyle("-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: -fx-color-muted;");
 
     Label description = new Label(product.getDescription());
     description.setStyle(
-        """
-            -fx-font-size: 14px;
-            -fx-text-fill: #666666;
-            """);
+    """
+    -fx-font-size: 14px;
+    -fx-text-fill: -fx-color-border;
+    """);
+
     description.setWrapText(true);
     description.setMaxWidth(280);
 
@@ -198,14 +198,14 @@ public class MenuController {
     productInfo.setPadding(new Insets(0, 0, 10, 0));
 
     StackPane card = new StackPane(productInfo);
-    card.setStyle(
-        """
-            -fx-background-color: white;
-            -fx-padding: 20;
-            -fx-border-radius: 10;
-            -fx-background-radius: 10;
-            -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 10, 0, 0, 0);
-        """);
+    card.setStyle("""
+    -fx-background-color: -fx-color-background;
+    -fx-padding: 20;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0, 0, 0);
+    """);
+
 
     card.setOnMouseClicked(
         e -> {
@@ -215,15 +215,15 @@ public class MenuController {
 
     if (product.getSpecialLabel() != null && !product.getSpecialLabel().isEmpty()) {
       Label special = new Label(product.getSpecialLabel());
-      special.setStyle(
-          """
-                -fx-background-color: #e74c3c;
-                -fx-text-fill: white;
-                -fx-padding: 5 10;
-                -fx-background-radius: 5;
-                -fx-font-size: 14px;
-                -fx-font-weight: bold;
-            """);
+      special.setStyle("""
+        -fx-background-color: -fx-color-muted;
+        -fx-text-fill: -fx-color-background;
+        -fx-padding: 5 10;
+        -fx-background-radius: 5;
+        -fx-font-size: 14px;
+        -fx-font-weight: bold;
+        """);
+
       StackPane.setAlignment(special, Pos.TOP_RIGHT);
       card.getChildren().add(special);
     }

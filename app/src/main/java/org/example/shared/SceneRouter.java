@@ -186,6 +186,11 @@ public class SceneRouter {
   public void goToSettingsPage() {
     goTo(KioskPage.SETTING);
   }
+
+  public void refreshPage() {
+    goTo(currentPage);
+  }
+
   /**
    * Enum representing the different pages in the kiosk application. Each enum constant corresponds
    * to a specific FXML file.
