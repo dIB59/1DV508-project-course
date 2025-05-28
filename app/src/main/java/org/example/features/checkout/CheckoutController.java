@@ -144,7 +144,7 @@ public class CheckoutController implements Initializable {
     container.setPrefWidth(1080);
 
     // Create the item name label (bold and navy)
-    Label nameLabel = new Label(item.getCustomizedProduct().getProduct().getName());
+    Label nameLabel = new Label(item.getCustomizedProduct().getProduct().getName() + " x" + item.getQuantity());
     nameLabel.setFont(Font.font("Arial", javafx.scene.text.FontWeight.BOLD, 20));
     nameLabel.setTextFill(Color.valueOf("#1E1EA9"));
 
