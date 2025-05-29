@@ -68,8 +68,9 @@ public class SceneRouter {
       FXMLLoader mainLoader = new FXMLLoader(mainLayoutUrl);
       mainLoader.setControllerFactory(controllerFactory);
       Scene scene = new Scene(mainLoader.load());
-      scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/styles/styles.css")).toExternalForm());
-      scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/styles/theme-dark.css")).toExternalForm());
+      scene.getStylesheets().clear();
+      scene.getStylesheets().add(AppContext.getInstance().getCurrentTheme());
+      scene.getStylesheets().add(AppContext.getInstance().BASE_THEME);
 
       BaseLayoutController mainLayoutController = mainLoader.getController();
 
@@ -144,9 +145,9 @@ public class SceneRouter {
       ProductDetailsController controller = loader.getController();
       controller.setProduct(product);
 
-      // Apply theme and utility styles
-      scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/styles/theme-dark.css")).toExternalForm());
-      scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/styles/styles.css")).toExternalForm());
+      scene.getStylesheets().clear();
+      scene.getStylesheets().add(AppContext.getInstance().getCurrentTheme());
+      scene.getStylesheets().add(AppContext.getInstance().BASE_THEME);
 
       log.debug("Product: {}", product);
       controller.displaySides();
@@ -193,10 +194,6 @@ public class SceneRouter {
 
   public void goToSettingsPage() {
     goTo(KioskPage.SETTING);
-  }
-
-  public void refreshPage() {
-    goTo(currentPage);
   }
 
   /**

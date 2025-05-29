@@ -1,6 +1,7 @@
 package org.example.features.home;
 
 import java.util.Arrays;
+import java.util.Objects;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -22,10 +23,6 @@ public class HomeController {
   private final SceneRouter sceneRouter;
   private final OrderService orderService;
   private final TranslationService translationService;
-  private final String LIGHT_THEME = getClass().getResource("/css/light-theme.css").toExternalForm();
-  private final String DARK_THEME = getClass().getResource("/css/dark-theme.css").toExternalForm();
-
-
   public boolean takeout = false;
 
   @FXML private Label welcomeLabel;
@@ -83,14 +80,9 @@ public class HomeController {
   public void toggleDarkMode() {
     Scene scene = darkModeToggle.getScene();
     AppContext.getInstance().setDarkMode(darkModeToggle.isSelected());
-
-    if (darkModeToggle.isSelected()) {
-      scene.getStylesheets().remove(LIGHT_THEME);
-      scene.getStylesheets().add(DARK_THEME);
-    } else {
-      scene.getStylesheets().remove(DARK_THEME);
-      scene.getStylesheets().add(LIGHT_THEME);
-    }
+    scene.getStylesheets().clear();
+    scene.getStylesheets().add(AppContext.getInstance().getCurrentTheme());
+    scene.getStylesheets().add(AppContext.getInstance().BASE_THEME);
   }
 
 

@@ -7,7 +7,7 @@
 <AnchorPane xmlns:fx="http://javafx.com/fxml"
             xmlns="http://javafx.com/javafx"
             fx:controller="org.example.features.home.HomeController"
-            prefWidth="1280.0" prefHeight="800.0">
+            >
 
     <!-- Central VBox -->
     <VBox spacing="30" alignment="CENTER"
@@ -54,9 +54,8 @@
               promptText="Select Language"
               prefWidth="240"
               onAction="#translatePage"
-              styleClass="btn-primary"
-    </ComboBox>
->>>>>>> app/src/main/resources/HomeView.fxml
+              styleClass="btn-primary"/>
+
 
     <!-- Admin Button -->
     <Button text="Admin"
