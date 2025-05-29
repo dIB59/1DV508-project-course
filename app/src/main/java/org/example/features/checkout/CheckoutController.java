@@ -154,12 +154,6 @@ public class CheckoutController implements Initializable {
     priceLabel.setFont(Font.font("Arial", 14));
     priceLabel.setTextFill(Color.valueOf("#777777"));
 
-    Label quantityLabel = new Label(String.valueOf(item.getQuantity()));
-    quantityLabel.setFont(Font.font("Arial", javafx.scene.text.FontWeight.BOLD, 14));
-    quantityLabel.setTextFill(Color.valueOf("#333"));
-    quantityLabel.setMinWidth(30);
-    quantityLabel.setAlignment(Pos.CENTER);
-
     VBox ingredientDiffBox = new VBox();
     ingredientDiffBox.setSpacing(3);
     Map<Ingredient, Integer> ingredients = item.getCustomizedProduct().getIngredientquanities();
@@ -211,16 +205,21 @@ public class CheckoutController implements Initializable {
 
     decreaseButton.setOnAction(
         event -> {
-          orderService.removeItem(
-              item.getCustomizedProduct().getProduct(),
-              item.getCustomizedProduct().getIngredientquanities());
+          orderService.removeItem(item.getCustomizedProduct().getProduct(), new HashMap<>());
           updateCartDisplay();
         });
 
     // Right-aligned buttons
     HBox buttonBox = new HBox(5, decreaseButton, increaseButton);
     buttonBox.setAlignment(Pos.CENTER_RIGHT);
-    return buttonBox;
+
+    // Add spacing between the text and buttons
+    Region spacer = new Region();
+    HBox.setHgrow(spacer, Priority.ALWAYS);
+
+    // Combine the text and buttons in the main HBox
+    container.getChildren().addAll(textContainer, spacer, buttonBox);
+    return container;
   }
 
   public void applyCoupon() {
