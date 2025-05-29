@@ -40,7 +40,7 @@ public class SceneRouter {
 
   // Fade in animation
   private void applyFadeInTransition(Scene scene) {
-    FadeTransition fadeIn = new FadeTransition(Duration.millis(500), scene.getRoot());
+    FadeTransition fadeIn = new FadeTransition(Duration.millis(1250), scene.getRoot());
     fadeIn.setFromValue(0.0);
     fadeIn.setToValue(1.0);
     fadeIn.play();
