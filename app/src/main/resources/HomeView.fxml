@@ -49,14 +49,14 @@
         </VBox>
     </VBox>
 
-    <!-- Language Selector -->
+    <!-- Language Selector (Bottom Left, above Admin) --><!-- Language Selector (Bottom Left, above Admin) -->
     <ComboBox fx:id="languageSelector"
-              prefWidth="150"
+              promptText="Select Language"
+              prefWidth="240"
               onAction="#translatePage"
-              AnchorPane.bottomAnchor="20" AnchorPane.leftAnchor="20"
               styleClass="btn-primary"
-              style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-background-radius: 12;"
-    />
+    </ComboBox>
+>>>>>>> app/src/main/resources/HomeView.fxml
 
     <!-- Admin Button -->
     <Button text="Admin"
@@ -65,5 +65,14 @@
             AnchorPane.bottomAnchor="30"
             AnchorPane.rightAnchor="30"
             styleClass="btn-secondary"
-            style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-background-radius: 10; -fx-padding: 10 25;" />
+            style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-background-radius: 10; -fx-padding: 10 25;"
+    />
+
+    <ToggleButton fx:id="darkModeToggle"
+                  text="Dark Mode"
+                  onAction="#toggleDarkMode"
+                  AnchorPane.topAnchor="20"
+                  AnchorPane.rightAnchor="30"
+                  layoutX="30" layoutY="30"
+                  style="-fx-background-color: #444; -fx-text-fill: white;" />
 </AnchorPane>

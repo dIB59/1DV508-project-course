@@ -19,6 +19,7 @@ import org.example.features.product.ProductDetailsController;
 import org.example.features.translation.TranslationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.example.AppContext;
 
 /** The type Scene router. */
 public class SceneRouter {
@@ -90,6 +91,13 @@ public class SceneRouter {
     } catch (IOException e) {
       log.error("Failed to load scene for page {}: {}", page, e.getMessage(), e);
     }
+  }
+
+
+
+  /** Refresh page. */
+  public void refreshPage() {
+    goTo(currentPage);
   }
 
   /**

@@ -7,6 +7,9 @@ public class AppContext {
 
   private Language language;
 
+  // 🔹 Added: Track dark mode status
+  private boolean darkMode = false;
+
   private AppContext() {
     this.language = Language.ENGLISH; // Default language
   }
@@ -24,5 +27,13 @@ public class AppContext {
 
   public void setLanguage(Language language) {
     this.language = language;
+  }
+  
+  public boolean isDarkMode() {
+    return darkMode;
+  }
+
+  public void setDarkMode(boolean darkMode) {
+    this.darkMode = darkMode;
   }
 }

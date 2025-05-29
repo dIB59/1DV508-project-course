@@ -1,0 +1,11 @@
+* {
+    -fx-background-color: #1e1e1e;
+    -fx-text-fill: #ffffff;
+}
+.label {
+    -fx-text-fill: #ffffff;
+}
+.button {
+    -fx-background-color: #444;
+    -fx-text-fill: #ffffff;
+}
