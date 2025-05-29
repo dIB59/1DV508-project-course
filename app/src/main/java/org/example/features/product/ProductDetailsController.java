@@ -6,13 +6,11 @@ import java.util.List;
 import java.util.Map;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-
 import org.example.features.ingredients.Ingredient;
 import org.example.features.order.OrderService;
 import org.example.shared.SceneRouter;
@@ -20,12 +18,10 @@ import org.example.shared.SceneRouter;
 public class ProductDetailsController {
   private final OrderService orderService;
   private final SceneRouter sceneRouter;
-  private Product product;
   private final ProductRepository productRepository;
-
   private final Map<Product, Spinner<Integer>> sideSpinnerMap = new HashMap<>();
   private final Map<Ingredient, Spinner<Integer>> ingredientSpinnerMap = new HashMap<>();
-
+  private Product product;
   @FXML private Label productName;
 
   @FXML private Label productPrice;
@@ -36,13 +32,15 @@ public class ProductDetailsController {
 
   @FXML private Button addToOrderButton;
 
-  @FXML private VBox   ingredientsContainer;
+  @FXML private VBox ingredientsContainer;
 
-  @FXML private Label  totalPriceLabel;
+  @FXML private Label totalPriceLabel;
 
   @FXML private Button goBackButton;
+  @FXML private VBox sidesContainer;
 
-  public ProductDetailsController(OrderService orderService, SceneRouter sceneRouter,ProductRepository productRepository) {
+  public ProductDetailsController(
+      OrderService orderService, SceneRouter sceneRouter, ProductRepository productRepository) {
     this.orderService = orderService;
     this.sceneRouter = sceneRouter;
     this.productRepository = productRepository;
@@ -82,63 +80,60 @@ public class ProductDetailsController {
                 }
               });
 
-
     } else {
       System.err.println("FXML fields are not initialized. Check FXML fx:id or initialization.");
     }
-
   }
 
   public void displayIngredients() {
     if (ingredientsContainer != null) {
-        ingredientsContainer.getChildren().clear();
-        ingredientSpinnerMap.clear();
+      ingredientsContainer.getChildren().clear();
+      ingredientSpinnerMap.clear();
 
-        Map<Ingredient, Integer> ingredients = product.getIngredients();
+      Map<Ingredient, Integer> ingredients = product.getIngredients();
 
-        for(Ingredient ing : ingredients.keySet()) {
-          Label ingLabel = new Label(ing.getName() + "($" + String.format("%.2f", ing.getPrice()) + ")");
-          Spinner<Integer> ingSpinner = new Spinner<>(0,10, ingredients.get(ing));
-          ingSpinner.setPrefWidth(80);
-          ingredientSpinnerMap.put(ing, ingSpinner);
+      for (Ingredient ing : ingredients.keySet()) {
+        Label ingLabel =
+            new Label(ing.getName() + "($" + String.format("%.2f", ing.getPrice()) + ")");
+        Spinner<Integer> ingSpinner = new Spinner<>(0, 10, ingredients.get(ing));
+        ingSpinner.setPrefWidth(80);
+        ingredientSpinnerMap.put(ing, ingSpinner);
 
-          HBox ingBox = new HBox(10, ingLabel, ingSpinner);
-          ingredientsContainer.getChildren().add(ingBox);
+        HBox ingBox = new HBox(10, ingLabel, ingSpinner);
+        ingredientsContainer.getChildren().add(ingBox);
+      }
     }
   }
-
-}
-  @FXML private VBox sidesContainer;
 
   public void displaySides() {
     try {
       List<Product> sides = productRepository.findAll();
-        if (sidesContainer != null) {
-          sidesContainer.getChildren().clear();
-          for (Product p : sides) {
-            if (p.getisASide()) {
-              Label sideLabel = new Label(p.getName() + " ($" + String.format("%.2f", p.getPrice()) + ")");
-              Spinner<Integer> sideSpinner = new Spinner<>(0, 10, 0);
-              sideSpinner.setPrefWidth(80);
+      if (sidesContainer != null) {
+        sidesContainer.getChildren().clear();
+        for (Product p : sides) {
+          if (p.getisASide()) {
+            Label sideLabel =
+                new Label(p.getName() + " ($" + String.format("%.2f", p.getPrice()) + ")");
+            Spinner<Integer> sideSpinner = new Spinner<>(0, 10, 0);
+            sideSpinner.setPrefWidth(80);
 
-              sideSpinnerMap.put(p, sideSpinner);
+            sideSpinnerMap.put(p, sideSpinner);
 
-              HBox sideBox = new HBox(10, sideLabel, sideSpinner);
-              sidesContainer.getChildren().add(sideBox);
-            }
+            HBox sideBox = new HBox(10, sideLabel, sideSpinner);
+            sidesContainer.getChildren().add(sideBox);
           }
-        } else {
-          System.err.println("sidesContainer is not initialized. Check FXML fx:id or initialization.");
         }
+      } else {
+        System.err.println(
+            "sidesContainer is not initialized. Check FXML fx:id or initialization.");
+      }
     } catch (SQLException e) {
       System.err.println("Error fetching sides: " + e.getMessage());
     }
   }
 
-
   @FXML
   public void addToOrder() {
-
 
     Integer quantity = quantitySpinner.getValue(); // Get the current value from the Spinner
     if (quantity == null) {
@@ -179,9 +174,9 @@ public class ProductDetailsController {
     }
     sceneRouter.goToMenuPage();
   }
-    @FXML
-    private void goBack() {
-      sceneRouter.goToMenuPage(); // or goToHomePage() if you prefer
-    }
 
+  @FXML
+  private void goBack() {
+    sceneRouter.goToMenuPage(); // or goToHomePage() if you prefer
+  }
 }

@@ -1,5 +1,6 @@
 package org.example.features.product;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
@@ -7,13 +8,14 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+import javafx.scene.image.Image;
 import org.example.database.Identifiable;
 import org.example.features.ingredients.Ingredient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Represents a product in the system.
@@ -24,14 +26,15 @@ import org.example.features.ingredients.Ingredient;
  */
 
 public class Product implements Identifiable<Integer> {
+  private static final Logger log = LoggerFactory.getLogger(Product.class);
+  private final String specialLabel;
+  private final Boolean isASide;
   private int id;
   private String name;
   private String description;
   private double price;
   private String imageUrl;
   private byte[] imageBytes;
-  private String specialLabel;
-  private Boolean isASide;
   private List<Tag> tags;
   private Map<Ingredient, Integer> defaultIngredients = new HashMap<>();
 
@@ -46,7 +49,7 @@ public class Product implements Identifiable<Integer> {
    * @param specialLabel The special label for the product (e.g., "Hot", "Deal").
    * @param tags the tags
    */
-  public Product(int id, String name, String description, double price, String imageUrl, String specialLabel,boolean isASide, List<Tag> tags) {
+  public Product(int id, String name, String description, double price, String imageUrl, String specialLabel,boolean isASide, List<Tag> tags, List<Ingredient> ingredients) {
     if (name == null || name.isBlank()) {
       throw new IllegalArgumentException("Name cannot be null or empty");
     }
@@ -65,7 +68,26 @@ public class Product implements Identifiable<Integer> {
     this.specialLabel = specialLabel;
     this.isASide = isASide;
     this.imageBytes = readImageBytesFromFile(imageUrl);
+    for (Ingredient ingredient : ingredients) {
+      this.defaultIngredients.put(ingredient, 1);
+    }
   }
+  public Product(String name, String description, double price, String imageUrl, String specialLabel, boolean isASide) {
+    this(0, name, description, price, imageUrl, specialLabel, isASide, List.of(), new ArrayList<>());
+  }
+
+  public Product(String name, String description, double price, String imageUrl, String specialLabel, boolean isASide,List<Tag> tags) {
+    this(0, name, description, price, imageUrl, specialLabel, isASide, tags, new ArrayList<>());
+  }
+
+  public Product(String name, String description, double price, String imageUrl, String specialLabel, boolean isASide, List<Tag> tags, List<Ingredient> ingredients) {
+    this(0, name, description, price, imageUrl, specialLabel, isASide, tags, ingredients);
+  }
+
+  public Product(int id, String name, String description, double price, String imageUrl, String specialLabel, Boolean aBoolean, List<Tag> tags) {
+    this(id, name, description, price, imageUrl, specialLabel, aBoolean, tags, new ArrayList<>());
+  }
+
   public byte[] getImageBytes() {
     return imageBytes;
   }
@@ -74,12 +96,21 @@ public class Product implements Identifiable<Integer> {
     this.imageBytes = imageBytes;
   }
 
-  public Product(String name, String description, double price, String imageUrl, String specialLabel, boolean isASide) {
-    this(0, name, description, price, imageUrl, specialLabel, isASide,List.of());
+  public void loadImageFromFile(File file) {
+    try {
+      this.imageBytes = Files.readAllBytes(file.toPath());
+      this.imageUrl = file.toURI().toString(); // keeps consistency with existing logic
+    } catch (IOException e) {
+      System.err.println("Failed to load image from file: " + file.getAbsolutePath());
+      e.printStackTrace();
+    }
   }
 
-  public Product(String name, String description, double price, String imageUrl, String specialLabel, boolean isASide,List<Tag> tags) {
-    this(0, name, description, price, imageUrl, specialLabel, isASide,tags);
+  public Image getImage() {
+    if (imageBytes != null && imageBytes.length > 0) {
+      return new Image(new ByteArrayInputStream(imageBytes));
+    }
+    return null; // or you can return a default image
   }
 
   public Integer getId() {
@@ -128,6 +159,15 @@ public class Product implements Identifiable<Integer> {
     return imageUrl;
   }
 
+  /**
+   * Gets tags.
+   *
+   * @return the tags
+   */
+
+  public void setImageUrl(String imageUrl) {
+    this.imageUrl = imageUrl;
+  }
 
    /**
    * Gets the special label
@@ -140,16 +180,6 @@ public class Product implements Identifiable<Integer> {
 
   public Boolean getisASide(){
     return isASide;
-  }
-
-  /**
-   * Gets tags.
-   *
-   * @return the tags
-   */
-
-  public void setImageUrl(String imageUrl) {
-    this.imageUrl = imageUrl;
   }
 
   public List<Tag> getTags() {
@@ -168,12 +198,12 @@ public class Product implements Identifiable<Integer> {
     return tagIds;
   }
 
-  public void setIngredients(Map<Ingredient, Integer> ingredients) {
-    this.defaultIngredients = ingredients;
-  }
-
   public Map<Ingredient, Integer> getIngredients() {
         return defaultIngredients;
+  }
+
+  public void setIngredients(Map<Ingredient, Integer> ingredients) {
+    this.defaultIngredients = ingredients;
   }
 
   public void addIngredient(Ingredient ingredient, int quantity) {
@@ -183,7 +213,7 @@ public class Product implements Identifiable<Integer> {
     } else {
         defaultIngredients.put(ingredient, quantity);
     }
-}
+  }
 
   @Override
   public String toString() {
@@ -199,8 +229,8 @@ public class Product implements Identifiable<Integer> {
       Path path = Paths.get(URI.create(imageUrl));
       return Files.readAllBytes(path);
     } catch (IOException | IllegalArgumentException e) {
-      System.err.println("Failed to read image file: " + imageUrl);
-      e.printStackTrace();
+      log.error("Error reading image file: {}", e.getMessage());
+      log.error("Image URL: {}", imageUrl);
       return new byte[0];
     }
   }

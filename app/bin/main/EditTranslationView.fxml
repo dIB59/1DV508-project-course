@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="org.example.features.translation.EditTranslationController"
+            prefHeight="1080.0" prefWidth="1920.0">
+
+    <VBox spacing="20" alignment="TOP_CENTER" prefWidth="800" layoutX="560" layoutY="100"
+          style="-fx-background-color: #f4f4f4; -fx-padding: 30; -fx-border-radius: 10; -fx-background-radius: 10;">
+
+        <!-- Title -->
+        <Label text="Translation Editor" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+
+        <HBox spacing="10" alignment="CENTER_LEFT">
+            <Label text="Target Language:"/>
+            <ComboBox fx:id="languageComboBox" prefWidth="200" onAction="#handleLanguageChange"/>
+
+            <Label text="Search:"/>
+            <TextField fx:id="searchField" promptText="Search translations..." onKeyReleased="#handleSearch"/>
+
+            <!-- Cache Button -->
+            <Button text="Cache All Translations"
+                    fx:id="cacheButton"
+                    onAction="#handleCacheTranslations"
+                    style="-fx-background-color: #10b981; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 10 20; -fx-background-radius: 5;"/>
+
+            <ProgressBar fx:id="cacheProgressBar" prefWidth="200" visible="false"/>
+
+        </HBox>
+
+        <!-- Translation List -->
+        <TableView fx:id="translationTable" prefHeight="300" prefWidth="760">
+            <columns>
+                <TableColumn fx:id="originalColumn" text="Original" prefWidth="380"/>
+                <TableColumn fx:id="translatedColumn" text="Translated" prefWidth="380"/>
+            </columns>
+        </TableView>
+
+        <!-- Form Fields -->
+        <GridPane hgap="15" vgap="15">
+            <columnConstraints>
+                <ColumnConstraints halignment="RIGHT" minWidth="100"/>
+                <ColumnConstraints minWidth="400"/>
+            </columnConstraints>
+
+            <rowConstraints>
+                <RowConstraints minHeight="40"/>
+                <RowConstraints minHeight="40"/>
+            </rowConstraints>
+
+            <Label text="Original Text:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+            <TextField fx:id="originalTextField" GridPane.rowIndex="0" GridPane.columnIndex="1" editable="false"/>
+
+            <Label text="Translated Text:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+            <TextField fx:id="translatedTextField" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+        </GridPane>
+
+        <!-- Save Button -->
+        <Button text="💾 Save Translation"
+                onAction="#handleSave"
+                style="-fx-background-color: #3b82f6; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 10 20; -fx-background-radius: 5;"/>
+    </VBox>
+
+    <Button text="Back to Dashboard"
+            layoutX="20" layoutY="20"
+            onAction="#handleBackToDashboard"
+            style="-fx-background-color: #3b82f6; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 10 20; -fx-background-radius: 5;"/>
+</AnchorPane>

@@ -16,9 +16,9 @@ import org.slf4j.LoggerFactory;
 public class TranslationService {
   public static final String DO_NOT_TRANSLATE = "doNotTranslate";
   public static final String ORIGINAL_TEXT = "originalText";
+  private static final Logger logger = LoggerFactory.getLogger(TranslationService.class);
   private final TranslationRepository repo;
   private final LibreTranslateClient client;
-  private static final Logger logger = LoggerFactory.getLogger(TranslationService.class);
 
   public TranslationService(TranslationRepository repo, LibreTranslateClient client) {
     this.repo = repo;
@@ -38,45 +38,47 @@ public class TranslationService {
 
   /**
    * Asynchronously caches translations for all texts from source language to target language
+   *
    * @param sourceLang Source language code
    * @param targetLang Target language code
    * @return CompletableFuture with the count of successfully cached translations
    */
-
   public CompletableFuture<Integer> cacheTranslationsAsync(
-      String sourceLang,
-      String targetLang,
-      Consumer<Double> progressCallback
-  ) {
+      String sourceLang, String targetLang, Consumer<Double> progressCallback) {
     LocalDateTime now = LocalDateTime.now();
     logger.info("Caching translations from {} to {} at {}", sourceLang, targetLang, now);
-    return CompletableFuture.supplyAsync(() -> {
-      List<String> textsToTranslate = repo.findUntranslatedTexts(sourceLang, targetLang);
-      int total = textsToTranslate.size();
-      int successCount = 0;
+    return CompletableFuture.supplyAsync(
+        () -> {
+          List<String> textsToTranslate = repo.findUntranslatedTexts(sourceLang, targetLang);
+          int total = textsToTranslate.size();
+          int successCount = 0;
 
-      logger.info("Found {} texts to translate from {} to {}", total, sourceLang, targetLang);
+          logger.info("Found {} texts to translate from {} to {}", total, sourceLang, targetLang);
 
-      for (int i = 0; i < total; i++) {
-        String text = textsToTranslate.get(i);
-        try {
-          String translated = client.translate(text, targetLang, sourceLang);
-          repo.save(text, sourceLang, targetLang, translated);
-          successCount++;
-        } catch (Exception e) {
-          logger.error("Failed to cache translation for: {}", text, e);
-        }
+          for (int i = 0; i < total; i++) {
+            String text = textsToTranslate.get(i);
+            try {
+              String translated = client.translate(text, targetLang, sourceLang);
+              repo.save(text, sourceLang, targetLang, translated);
+              successCount++;
+            } catch (Exception e) {
+              logger.error("Failed to cache translation for: {}", text, e);
+            }
 
-        // Update progress after each item
-        double progress = (i + 1) / (double) total;
-        progressCallback.accept(progress);
-      }
+            // Update progress after each item
+            double progress = (i + 1) / (double) total;
+            progressCallback.accept(progress);
+          }
 
-      logger.info("Successfully cached {} translations from {} to {} at {}", successCount, sourceLang, targetLang, now);
-      return successCount;
-    });
+          logger.info(
+              "Successfully cached {} translations from {} to {} at {}",
+              successCount,
+              sourceLang,
+              targetLang,
+              now);
+          return successCount;
+        });
   }
-
 
   public void translate(Node root) {
     Language targetLang = AppContext.getInstance().getLanguage();

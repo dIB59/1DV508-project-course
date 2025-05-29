@@ -1,8 +1,11 @@
 package org.example.features.dashboard;
 
+import java.io.File;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional; // Import Optional
+import java.util.function.Consumer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
@@ -12,6 +15,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
@@ -23,28 +27,30 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import org.example.features.ingredients.Ingredient;
+import org.example.features.ingredients.IngredientsRepository;
 import org.example.features.product.Product;
 import org.example.features.product.ProductRepository;
 import org.example.features.product.Tag;
 import org.example.shared.SceneRouter;
-import javafx.stage.FileChooser;
-import java.io.File;
-
 
 public class DashboardController {
 
-  private final DashboardModel dashboardModel;
   private final SceneRouter sceneRouter;
   private final ProductRepository repository;
+  private final IngredientsRepository ingredientsRepository;
   @FXML private VBox productList; // The VBox inside the ScrollPane
 
   public DashboardController(
-      DashboardModel dashboardModel, SceneRouter sceneRouter, ProductRepository repository) {
-    this.dashboardModel = dashboardModel;
+      SceneRouter sceneRouter,
+      ProductRepository repository,
+      IngredientsRepository ingredientsRepository) {
     this.sceneRouter = sceneRouter;
     this.repository = repository;
+    this.ingredientsRepository = ingredientsRepository;
   }
 
   public void initialize() {
@@ -59,8 +65,18 @@ public class DashboardController {
     sceneRouter.goToCouponsPage();
   }
 
-  private void loadProducts() {
+  public void goToSettingsPage() {
+    sceneRouter.goToSettingsPage();
+  }
+  private boolean isImageFile(File file) {
+    String fileName = file.getName().toLowerCase();
+    return fileName.endsWith(".png")
+        || fileName.endsWith(".jpg")
+        || fileName.endsWith(".jpeg")
+        || fileName.endsWith(".gif");
+  }
 
+  private void loadProducts() {
     List<Product> products;
     try {
       products = repository.findAll();
@@ -91,11 +107,13 @@ public class DashboardController {
     // Image setup
     ImageView imageView = new ImageView();
     try {
-      if (product.getImageUrl() != null && !product.getImageUrl().isBlank()) {
-        imageView.setImage(new Image(product.getImageUrl(), true));
+      Image image = product.getImage();
+      if (image != null) {
+        imageView.setImage(image);
       }
-    } catch (Exception e) {
-      System.out.println("Could not load product image: " + e.getMessage());
+    } catch (IllegalArgumentException e) {
+      System.err.println("Error loading image: " + e.getMessage());
+      imageView.setImage(new Image("default_image.png")); // Placeholder image
     }
     imageView.setPreserveRatio(false);
     imageView.setSmooth(true);
@@ -137,6 +155,7 @@ public class DashboardController {
     editButton.setMinHeight(70);
     editButton.setMaxHeight(70);
     editButton.setMaxWidth(Double.MAX_VALUE);
+    // Call the specific editProduct method
     editButton.setOnAction(e -> editProduct(product));
 
     // Delete Button (bottom half) with bin icon
@@ -152,14 +171,15 @@ public class DashboardController {
     deleteButton.setMinHeight(70);
     deleteButton.setMaxHeight(70);
     deleteButton.setMaxWidth(Double.MAX_VALUE);
-    deleteButton.setOnAction(e -> {
-      try {
-        repository.delete(product.getId());
-        loadProducts();
-      } catch (SQLException ex) {
-        showAlert("Error deleting product: " + ex.getMessage());
-      }
-    });
+    deleteButton.setOnAction(
+        e -> {
+          try {
+            repository.delete(product.getId());
+            loadProducts();
+          } catch (SQLException ex) {
+            showAlert("Error deleting product: " + ex.getMessage());
+          }
+        });
 
     // Combine edit and delete into a VBox
     VBox actionBox = new VBox();
@@ -172,150 +192,493 @@ public class DashboardController {
     return card;
   }
 
+  /**
+   * Displays a dialog for creating or editing a product. This method is now truly generic and does
+   * not contain logic to decide between create or update.
+   *
+   * @param initialProductData The product data to pre-fill the fields with. Can be null for empty
+   *     fields.
+   * @param saveOrUpdateAction The action to perform when the save button is clicked. This Consumer
+   *     takes the final Product object constructed from dialog inputs.
+   * @param dialogTitle The title of the dialog window.
+   */
+  private void showProductDialog(
+      Optional<Product> initialProductData,
+      Consumer<Product> saveOrUpdateAction,
+      String dialogTitle) {
+    Stage dialog = createAndConfigureDialog(dialogTitle);
 
-  private void editProduct(Product product) {
-    Stage dialog = new Stage();
-    dialog.initModality(Modality.APPLICATION_MODAL);
-    dialog.setTitle("Edit Product");
+    // UI Elements
+    TextField nameField = new TextField(initialProductData.map(Product::getName).orElse(""));
+    TextField descriptionField =
+        new TextField(initialProductData.map(Product::getDescription).orElse(""));
+    TextField priceField =
+        new TextField(initialProductData.map(p -> String.valueOf(p.getPrice())).orElse(""));
+    TextField specialLabelField =
+        new TextField(initialProductData.map(Product::getSpecialLabel).orElse(""));
+    TextField imageUrlField =
+        new TextField(initialProductData.map(Product::getImageUrl).orElse(""));
 
+    imageUrlField.setPrefWidth(250);
+
+    // Image section
+    HBox imageSection = createImageSection(dialog, imageUrlField);
+
+    // Tags and Ingredients
+    List<Tag> allTags = repository.findAllTags();
+    List<Ingredient> allIngredients = ingredientsRepository.findAll();
+
+    // Tag checkboxes
+    VBox tagsBox = new VBox(5);
+    List<CheckBox> tagCheckboxes = createTagCheckboxes(allTags, initialProductData, tagsBox);
+    ScrollPane tagsScroll = new ScrollPane(tagsBox);
+    tagsScroll.setFitToWidth(true);
+    tagsScroll.setPrefHeight(150);
+    tagsScroll.setMaxWidth(Double.MAX_VALUE);
+
+    // Add tag button
+    Button addTagButton = createTagButton(allTags, tagCheckboxes, tagsBox);
+
+    VBox tagsColumn = new VBox(5, styledLabel("Tags:"), tagsScroll, addTagButton);
+    HBox.setHgrow(tagsColumn, Priority.ALWAYS);
+    tagsColumn.setMaxWidth(Double.MAX_VALUE);
+
+    // Ingredient checkboxes
+    VBox ingredientsBox = new VBox(5);
+    List<CheckBox> ingredientCheckboxes =
+        createIngredientCheckboxes(allIngredients, initialProductData, ingredientsBox);
+    ScrollPane ingredientsScroll = new ScrollPane(ingredientsBox);
+    ingredientsScroll.setFitToWidth(true);
+    ingredientsScroll.setPrefHeight(150);
+    ingredientsScroll.setMaxWidth(Double.MAX_VALUE);
+
+    // Add ingredient button
+    Button addIngredientButton =
+        createIngredientButton(allIngredients, ingredientCheckboxes, ingredientsBox);
+
+    VBox ingredientsColumn =
+        new VBox(5, styledLabel("Ingredients:"), ingredientsScroll, addIngredientButton);
+    HBox.setHgrow(ingredientsColumn, Priority.ALWAYS);
+    ingredientsColumn.setMaxWidth(Double.MAX_VALUE);
+
+    // Combine into side-by-side columns
+    HBox tagsAndIngredientsBox = new HBox(20, tagsColumn, ingredientsColumn);
+    tagsAndIngredientsBox.setPadding(new Insets(10, 0, 10, 0));
+    tagsAndIngredientsBox.setPrefWidth(Double.MAX_VALUE);
+    tagsAndIngredientsBox.setMaxWidth(Double.MAX_VALUE);
+
+    // Save button
+    Button saveButton = createSaveButton();
+    saveButton.setOnAction(
+        e ->
+            handleSaveAction(
+                dialog,
+                initialProductData,
+                saveOrUpdateAction,
+                nameField,
+                descriptionField,
+                priceField,
+                imageUrlField,
+                specialLabelField,
+                allTags,
+                tagCheckboxes,
+                allIngredients,
+                ingredientCheckboxes));
+
+    // Layout
     VBox vbox = new VBox(10);
     vbox.setPadding(new Insets(20));
+    vbox.getChildren()
+        .addAll(
+            new Label("Name:"),
+            nameField,
+            new Label("Description:"),
+            descriptionField,
+            new Label("Price:"),
+            priceField,
+            new Label("Image URL:"),
+            imageSection,
+            new Label("Special Label:"),
+            specialLabelField,
+            tagsAndIngredientsBox,
+            saveButton);
 
-    TextField nameField = new TextField(product.getName());
-    TextField descriptionField = new TextField(product.getDescription());
-    TextField priceField = new TextField(String.valueOf(product.getPrice()));
-    HBox imageBox = new HBox(5);
-    TextField imageUrlField = new TextField(product.getImageUrl());
-    Button browseButton = new Button("Browse");
-    browseButton.setOnAction(e -> {
-      FileChooser fileChooser = new FileChooser();
-      fileChooser.setTitle("Choose Image File");
-      fileChooser.getExtensionFilters().addAll(
-              new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg", "*.gif")
-      );
-      File selectedFile = fileChooser.showOpenDialog(dialog);
-      if (selectedFile != null) {
-        imageUrlField.setText(selectedFile.toURI().toString());
-      }
-    });
-    imageBox.getChildren().addAll(imageUrlField, browseButton);
-
-    TextField specialLabelField = new TextField(product.getSpecialLabel());
-
-    // Fetch all tags
-    List<Tag> allTags;
-    try {
-      allTags = repository.findAllTags();
-    } catch (SQLException e) {
-      showAlert("Error fetching tags: " + e.getMessage());
-      return;
-    }
-
-    VBox tagsBox = new VBox(5);
-    List<CheckBox> tagCheckboxes = new ArrayList<>();
-
-    for (Tag tag : allTags) {
-      CheckBox checkBox = new CheckBox(tag.getName());
-      if (product.tagIds().contains(tag.getId())) {
-        checkBox.setSelected(true);
-      }
-      tagCheckboxes.add(checkBox);
-      tagsBox.getChildren().add(checkBox);
-    }
-
-    // HBox for Tags Label + Add Button
-    HBox tagsLabelBox = new HBox(5);
-    Label tagsLabel = new Label("Tags:");
-    Button addTagButton = new Button("+");
-    addTagButton.setStyle("-fx-background-color: black; -fx-text-fill: white; -fx-background-radius: 5;");
-    tagsLabelBox.getChildren().addAll(tagsLabel, addTagButton);
-
-    addTagButton.setOnAction(e -> {
-      TextInputDialog inputDialog = new TextInputDialog();
-      inputDialog.setTitle("Add New Tag");
-      inputDialog.setHeaderText(null);
-      inputDialog.setContentText("Enter new tag name:");
-
-      inputDialog.showAndWait().ifPresent(tagName -> {
-        if (!tagName.trim().isEmpty()) {
-          int newTagId;
-          try {
-            newTagId = repository.createTag(tagName.trim());
-          } catch (SQLException ex) {
-            showAlert("Error adding tag: " + ex.getMessage());
-            return;
-          }
-
-          Tag newTag = new Tag(newTagId, tagName.trim());
-          allTags.add(newTag);
-
-          CheckBox newCheckBox = new CheckBox(newTag.getName());
-          newCheckBox.setSelected(true);
-          tagCheckboxes.add(newCheckBox);
-          tagsBox.getChildren().add(newCheckBox);
-        }
-      });
-    });
-
-    Button saveButton = new Button("Save");
-    saveButton.setStyle("-fx-background-color: black; -fx-text-fill: white; -fx-background-radius: 5;");
-
-    saveButton.setOnAction(e -> {
-      try {
-        String newName = nameField.getText();
-        String newDescription = descriptionField.getText();
-        double newPrice = Double.parseDouble(priceField.getText());
-        String newImageUrl = imageUrlField.getText();
-        String specialLabel = specialLabelField.getText();
-
-        List<Integer> selectedTagIds = new ArrayList<>();
-        List<String> selectedTagNames = new ArrayList<>();
-        for (int i = 0; i < tagCheckboxes.size(); i++) {
-          CheckBox checkBox = tagCheckboxes.get(i);
-          if (checkBox.isSelected()) {
-            selectedTagIds.add(allTags.get(i).getId());
-            selectedTagNames.add(allTags.get(i).getName());
-          }
-        }
-
-        List<Tag> selectedTags = new ArrayList<>();
-        for (int i = 0; i < selectedTagIds.size(); i++) {
-          selectedTags.add(new Tag(selectedTagIds.get(i), selectedTagNames.get(i)));
-        }
-
-        Product updatedProduct = new Product(
-            product.getId(), newName, newDescription, newPrice, newImageUrl, specialLabel, true, selectedTags
-        );
-
-        repository.update(updatedProduct);
-        loadProducts(); // refresh
-        dialog.close();
-
-      } catch (NumberFormatException ex) {
-        showAlert("Invalid price format.");
-      } catch (IllegalArgumentException ex) {
-        showAlert(ex.getMessage());
-      } catch (SQLException ex) {
-        showAlert("Error updating product: " + ex.getMessage());
-      }
-    });
-
-    vbox.getChildren().addAll(
-        new Label("Name:"), nameField,
-        new Label("Description:"), descriptionField,
-        new Label("Price:"), priceField,
-        new Label("Image URL:"), imageBox,
-        new Label("Special Label:"), specialLabelField,
-        tagsLabelBox,
-        tagsBox,
-        saveButton
-    );
-
-    Scene scene = new Scene(vbox, 400, 600);
+    Scene scene = new Scene(vbox, 500, 650);
     dialog.setScene(scene);
     dialog.showAndWait();
   }
 
+  private Button createIngredientButton(
+      List<Ingredient> allIngredients, List<CheckBox> ingredientCheckboxes, VBox ingredientsBox) {
+    Button addButton = new Button("+");
+    addButton.setStyle(
+        "-fx-background-color: black; -fx-text-fill: white; -fx-background-radius: 5;");
+    addButton.setOnAction(
+        e -> showAddIngredientPopup(allIngredients, ingredientCheckboxes, ingredientsBox));
+    return addButton;
+  }
+
+  private void showAddIngredientPopup(
+      List<Ingredient> allIngredients, List<CheckBox> ingredientCheckboxes, VBox ingredientsBox) {
+    Stage popup = new Stage();
+    popup.initModality(Modality.APPLICATION_MODAL);
+    popup.setTitle("Add Ingredient");
+    popup.setResizable(false);
+
+    // Fields
+    Label titleLabel = new Label("Add New Ingredient");
+    titleLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
+
+    TextField nameField = new TextField();
+    nameField.setPromptText("Ingredient name");
+    nameField.setMaxWidth(Double.MAX_VALUE);
+
+    TextField priceField = new TextField();
+    priceField.setPromptText("Price (e.g., 3.50)");
+    priceField.setMaxWidth(Double.MAX_VALUE);
+
+    Button saveButton = new Button("Add");
+    saveButton.setStyle(
+        "-fx-background-color: #007BFF; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 5;");
+    saveButton.setMaxWidth(Double.MAX_VALUE);
+
+    saveButton.setOnAction(
+        e -> {
+          String name = nameField.getText().trim();
+          String priceStr = priceField.getText().trim();
+
+          if (name.isEmpty() || priceStr.isEmpty()) {
+            showAlert("Please enter both name and price.");
+            return;
+          }
+
+          try {
+            double price = Double.parseDouble(priceStr);
+            if (price < 0) {
+              showAlert("Price must be non-negative.");
+              return;
+            }
+
+            int newIngredientId;
+            try {
+              newIngredientId = ingredientsRepository.save(new Ingredient(name, price)).getId();
+            } catch (SQLException ex) {
+              showAlert("Error saving ingredient: " + ex.getMessage());
+              return;
+            }
+
+            Ingredient newIngredient = new Ingredient(newIngredientId, name, price);
+            allIngredients.add(newIngredient);
+
+            CheckBox newCheckBox = new CheckBox(newIngredient.getName());
+            newCheckBox.setSelected(true);
+            ingredientCheckboxes.add(newCheckBox);
+            ingredientsBox.getChildren().add(newCheckBox);
+
+            popup.close();
+          } catch (NumberFormatException ex) {
+            showAlert("Invalid price format.");
+          }
+        });
+
+    VBox layout = new VBox(15, titleLabel, nameField, priceField, saveButton);
+    layout.setPadding(new Insets(25));
+    layout.setAlignment(Pos.CENTER);
+    layout.setStyle(
+        "-fx-background-color: #f9f9f9; -fx-border-radius: 10; -fx-background-radius: 10; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 10, 0.3, 0, 4);");
+
+    Scene scene = new Scene(layout, 320, 250);
+    popup.setScene(scene);
+    popup.showAndWait();
+  }
+
+  private Button createTagButton(List<Tag> allTags, List<CheckBox> tagCheckboxes, VBox tagsBox) {
+    Button addTagButton = new Button("+");
+    addTagButton.setStyle(
+        "-fx-background-color: black; -fx-text-fill: white; -fx-background-radius: 5;");
+    addTagButton.setOnAction(
+        e -> {
+          TextInputDialog inputDialog = new TextInputDialog();
+          inputDialog.setTitle("Add New Tag");
+          inputDialog.setHeaderText(null);
+          inputDialog.setContentText("Enter new tag name:");
+
+          inputDialog
+              .showAndWait()
+              .ifPresent(
+                  tagName -> {
+                    if (!tagName.trim().isEmpty()) {
+                      int newTagId;
+                      try {
+                        newTagId = repository.createTag(tagName.trim());
+                      } catch (SQLException ex) {
+                        showAlert("Error adding tag: " + ex.getMessage());
+                        return;
+                      }
+
+                      Tag newTag = new Tag(newTagId, tagName.trim());
+                      allTags.add(newTag);
+
+                      CheckBox newCheckBox = new CheckBox(newTag.getName());
+                      newCheckBox.setSelected(true);
+                      tagCheckboxes.add(newCheckBox);
+                      tagsBox.getChildren().add(newCheckBox);
+                    }
+                  });
+        });
+    return addTagButton;
+  }
+
+  private Label styledLabel(String text) {
+    Label label = new Label(text);
+    label.setStyle(
+        """
+        -fx-font-size: 14px;
+        -fx-text-fill: #333;
+        -fx-font-weight: bold;
+    """);
+    return label;
+  }
+
+  private Stage createAndConfigureDialog(String title) {
+    Stage dialog = new Stage();
+    dialog.initModality(Modality.APPLICATION_MODAL);
+    dialog.setTitle(title);
+    return dialog;
+  }
+
+  private HBox createImageSection(Stage dialog, TextField imageUrlField) {
+    HBox imageBox = new HBox(5);
+    Button browseButton = getFileBrowseButton(dialog, imageUrlField); // Assuming this method exists
+    StackPane dragDropArea = createDragDropArea(imageUrlField);
+    imageBox.getChildren().addAll(imageUrlField, browseButton, dragDropArea);
+    return imageBox;
+  }
+
+  private StackPane createDragDropArea(TextField imageUrlField) {
+    StackPane dragDropArea = new StackPane();
+    dragDropArea.setPrefSize(200, 100);
+    dragDropArea.setStyle(
+        "-fx-border-color: gray; -fx-border-style: dashed; -fx-border-width: 2; -fx-background-color: #f0f0f0;");
+    Label dragDropLabel = new Label("Drag & Drop Image Here");
+    dragDropArea.getChildren().add(dragDropLabel);
+
+    dragDropArea.setOnDragOver(
+        event -> {
+          if (event.getGestureSource() != dragDropArea && event.getDragboard().hasFiles()) {
+            event.acceptTransferModes(javafx.scene.input.TransferMode.COPY_OR_MOVE);
+          }
+          event.consume();
+        });
+
+    dragDropArea.setOnDragDropped(
+        event -> {
+          var db = event.getDragboard();
+          boolean success = false;
+          if (db.hasFiles()) {
+            File file = db.getFiles().getFirst();
+            if (file != null && isImageFile(file)) { // Assuming isImageFile method exists
+              imageUrlField.setText(file.toURI().toString());
+              success = true;
+            }
+          }
+          event.setDropCompleted(success);
+          event.consume();
+        });
+    return dragDropArea;
+  }
+
+  private List<CheckBox> createIngredientCheckboxes(
+      List<Ingredient> allIngredients, Optional<Product> initialProductData, VBox tagsBox) {
+    List<CheckBox> ingredientCheckboxes = new ArrayList<>();
+    for (Ingredient ingredient : allIngredients) {
+      CheckBox checkBox = new CheckBox(ingredient.getName());
+      initialProductData.ifPresent(
+          product -> {
+            if (product.getIngredients().containsKey(ingredient)) {
+              checkBox.setSelected(true);
+            }
+          });
+      ingredientCheckboxes.add(checkBox);
+      tagsBox.getChildren().add(checkBox);
+    }
+    return ingredientCheckboxes;
+  }
+
+  private List<CheckBox> createTagCheckboxes(
+      List<Tag> allTags, Optional<Product> initialProductData, VBox tagsBox) {
+    List<CheckBox> tagCheckboxes = new ArrayList<>();
+    for (Tag tag : allTags) {
+      CheckBox checkBox = new CheckBox(tag.getName());
+      initialProductData.ifPresent(
+          product -> {
+            if (product.tagIds().contains(tag.getId())) {
+              checkBox.setSelected(true);
+            }
+          });
+      tagCheckboxes.add(checkBox);
+      tagsBox.getChildren().add(checkBox);
+    }
+    return tagCheckboxes;
+  }
+
+  private HBox createTagsHeader(List<Tag> allTags, List<CheckBox> tagCheckboxes, VBox tagsBox) {
+    HBox tagsLabelBox = new HBox(5);
+    Label tagsLabel = new Label("Tags:");
+    Button addTagButton = new Button("+");
+    addTagButton.setStyle(
+        "-fx-background-color: black; -fx-text-fill: white; -fx-background-radius: 5;");
+    addTagButton.setOnAction(e -> handleAddTagAction(allTags, tagCheckboxes, tagsBox));
+    tagsLabelBox.getChildren().addAll(tagsLabel, addTagButton);
+    return tagsLabelBox;
+  }
+
+  private void handleAddTagAction(List<Tag> allTags, List<CheckBox> tagCheckboxes, VBox tagsBox) {
+    TextInputDialog inputDialog = new TextInputDialog();
+    inputDialog.setTitle("Add New Tag");
+    inputDialog.setHeaderText(null);
+    inputDialog.setContentText("Enter new tag name:");
+
+    inputDialog
+        .showAndWait()
+        .ifPresent(
+            tagName -> {
+              if (!tagName.trim().isEmpty()) {
+                try {
+                  int newTagId =
+                      repository.createTag(tagName.trim()); // Assuming 'repository' is accessible
+                  Tag newTag = new Tag(newTagId, tagName.trim());
+                  allTags.add(newTag);
+
+                  CheckBox newCheckBox = new CheckBox(newTag.getName());
+                  newCheckBox.setSelected(true);
+                  tagCheckboxes.add(newCheckBox);
+                  tagsBox.getChildren().add(newCheckBox);
+                } catch (SQLException ex) {
+                  showAlert(
+                      "Error adding tag: " + ex.getMessage()); // Assuming showAlert method exists
+                }
+              }
+            });
+  }
+
+  private Button createSaveButton() {
+    Button saveButton = new Button("Save");
+    saveButton.setStyle(
+        "-fx-background-color: black; -fx-text-fill: white; -fx-background-radius: 5;");
+    return saveButton;
+  }
+
+  private void handleSaveAction(
+      Stage dialog,
+      Optional<Product> initialProductData,
+      Consumer<Product> saveOrUpdateAction,
+      TextField nameField,
+      TextField descriptionField,
+      TextField priceField,
+      TextField imageUrlField,
+      TextField specialLabelField,
+      List<Tag> allTags,
+      List<CheckBox> tagCheckboxes,
+      List<Ingredient> allIngredients,
+      List<CheckBox> ingredientCheckboxes) {
+
+    try {
+      String name = nameField.getText();
+      String description = descriptionField.getText();
+      double price = Double.parseDouble(priceField.getText());
+      String imageUrl = imageUrlField.getText();
+      String specialLabel = specialLabelField.getText();
+
+      List<Tag> selectedTags = new ArrayList<>();
+      for (int i = 0; i < tagCheckboxes.size(); i++) {
+        if (tagCheckboxes.get(i).isSelected()) {
+          selectedTags.add(allTags.get(i));
+        }
+      }
+
+      List<Ingredient> selectedIngredients = new ArrayList<>();
+      for (CheckBox ingredientCheckbox : ingredientCheckboxes) {
+        if (ingredientCheckbox.isSelected()) {
+          selectedIngredients.add(
+              allIngredients.get(ingredientCheckboxes.indexOf(ingredientCheckbox)));
+        }
+      }
+
+      Product productToProcess =
+          new Product(
+              initialProductData.map(Product::getId).orElse(0),
+              name,
+              description,
+              price,
+              imageUrl,
+              specialLabel,
+              true,
+              selectedTags,
+              selectedIngredients);
+
+      saveOrUpdateAction.accept(productToProcess);
+
+      loadProducts(); // Assuming loadProducts method exists
+      dialog.close();
+
+    } catch (NumberFormatException ex) {
+      showAlert("Invalid price format.");
+    } catch (IllegalArgumentException ex) {
+      showAlert(ex.getMessage());
+    }
+  }
+
+  private Button getFileBrowseButton(Stage dialog, TextField imageUrlField) {
+    Button browseButton = new Button("Browse");
+    browseButton.setOnAction(
+        e -> {
+          FileChooser fileChooser = new FileChooser();
+          fileChooser.setTitle("Choose Image File");
+          fileChooser
+              .getExtensionFilters()
+              .addAll(
+                  new FileChooser.ExtensionFilter(
+                      "Image Files", "*.png", "*.jpg", "*.jpeg", "*.gif"));
+          File selectedFile = fileChooser.showOpenDialog(dialog);
+          if (selectedFile != null) {
+            imageUrlField.setText(selectedFile.toURI().toString());
+          }
+        });
+    return browseButton;
+  }
+
+  // --- Specific functions for Create and Edit ---
+
+  private void editProduct(Product product) {
+    // Pass the existing product data wrapped in Optional
+    showProductDialog(
+        Optional.of(product),
+        p -> {
+          try {
+            repository.update(p);
+          } catch (SQLException e) {
+            // Wrap checked exception in a RuntimeException to satisfy Consumer interface
+            throw new RuntimeException("Failed to update product: " + e.getMessage(), e);
+          }
+        },
+        "Edit Product");
+  }
+
+  public void createProduct() {
+    // Pass an empty Optional for initial product data
+    showProductDialog(
+        Optional.empty(),
+        p -> {
+          try {
+            repository.save(p);
+          } catch (SQLException e) {
+            // Wrap checked exception in a RuntimeException to satisfy Consumer interface
+            throw new RuntimeException("Failed to save product: " + e.getMessage(), e);
+          }
+        },
+        "Create Product");
+  }
 
   private void showAlert(String message) {
     Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -325,147 +688,6 @@ public class DashboardController {
     System.err.println("Error: " + message);
     alert.setContentText(message);
     alert.showAndWait();
-  }
-
-  public void createProduct(ActionEvent actionEvent) {
-    Stage dialog = new Stage();
-    dialog.initModality(Modality.APPLICATION_MODAL);
-    dialog.setTitle("Create Product");
-
-    VBox vbox = new VBox(10);
-    vbox.setPadding(new Insets(20));
-
-    // Empty fields for new product
-    TextField nameField = new TextField();
-    TextField descriptionField = new TextField();
-    TextField priceField = new TextField();
-    TextField specialLabelField = new TextField();
-    HBox imageBox = new HBox(5);
-    TextField imageUrlField = new TextField();
-    Button browseButton = new Button("Browse");
-    browseButton.setOnAction(e -> {
-      FileChooser fileChooser = new FileChooser();
-      fileChooser.setTitle("Choose Image File");
-      fileChooser.getExtensionFilters().addAll(
-              new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg", "*.gif")
-      );
-      File selectedFile = fileChooser.showOpenDialog(dialog);
-      if (selectedFile != null) {
-        imageUrlField.setText(selectedFile.toURI().toString());
-      }
-    });
-    imageBox.getChildren().addAll(imageUrlField, browseButton);
-
-
-    // Fetch all tags
-    List<Tag> allTags;
-    try {
-      allTags = repository.findAllTags();
-    } catch (SQLException e) {
-      showAlert("Error fetching tags: " + e.getMessage());
-      return;
-    }
-
-    VBox tagsBox = new VBox(5);
-    List<CheckBox> tagCheckboxes = new ArrayList<>();
-
-    for (Tag tag : allTags) {
-      CheckBox checkBox = new CheckBox(tag.getName());
-      tagCheckboxes.add(checkBox);
-      tagsBox.getChildren().add(checkBox);
-    }
-
-    // HBox for Tags Label + Add Button
-    HBox tagsLabelBox = new HBox(5);
-    Label tagsLabel = new Label("Tags:");
-    Button addTagButton = new Button("+");
-    addTagButton.setStyle("-fx-background-color: black; -fx-text-fill: white; -fx-background-radius: 5;");
-    tagsLabelBox.getChildren().addAll(tagsLabel, addTagButton);
-
-    addTagButton.setOnAction(e -> {
-      TextInputDialog inputDialog = new TextInputDialog();
-      inputDialog.setTitle("Add New Tag");
-      inputDialog.setHeaderText(null);
-      inputDialog.setContentText("Enter new tag name:");
-
-      inputDialog.showAndWait().ifPresent(tagName -> {
-        if (!tagName.trim().isEmpty()) {
-          int newTagId;
-          try {
-            newTagId = repository.createTag(tagName.trim());
-          } catch (SQLException ex) {
-            showAlert("Error adding tag: " + ex.getMessage());
-            return;
-          }
-
-          Tag newTag = new Tag(newTagId, tagName.trim());
-          allTags.add(newTag);
-
-          CheckBox newCheckBox = new CheckBox(newTag.getName());
-          newCheckBox.setSelected(true);
-          tagCheckboxes.add(newCheckBox);
-          tagsBox.getChildren().add(newCheckBox);
-        }
-      });
-    });
-
-    Button saveButton = new Button("Save");
-    saveButton.setStyle("-fx-background-color: black; -fx-text-fill: white; -fx-background-radius: 5;");
-
-    saveButton.setOnAction(e -> {
-      try {
-        String name = nameField.getText();
-        String description = descriptionField.getText();
-        double price = Double.parseDouble(priceField.getText());
-        String imageUrl = imageUrlField.getText();
-        String specialLabel = specialLabelField.getText();
-
-        List<Tag> selectedTags = new ArrayList<>();
-        for (int i = 0; i < tagCheckboxes.size(); i++) {
-          if (tagCheckboxes.get(i).isSelected()) {
-            selectedTags.add(allTags.get(i));
-          }
-        }
-
-        Product newProduct = new Product(
-                0, // or null, depending on how IDs are generated
-                name,
-                description,
-                price,
-                imageUrl,
-                specialLabel,
-                true,
-                selectedTags
-
-        );
-
-        repository.save(newProduct); // make sure you have this method
-        loadProducts(); // refresh list
-        dialog.close();
-
-      } catch (NumberFormatException ex) {
-        showAlert("Invalid price format.");
-      } catch (IllegalArgumentException ex) {
-        showAlert(ex.getMessage());
-      } catch (SQLException ex) {
-        showAlert("Error saving product: " + ex.getMessage());
-      }
-    });
-
-    vbox.getChildren().addAll(
-            new Label("Name:"), nameField,
-            new Label("Description:"), descriptionField,
-            new Label("Price:"), priceField,
-            new Label("Image URL:"), imageBox,
-            new Label("Special Label:"), specialLabelField,
-            tagsLabelBox,
-            tagsBox,
-            saveButton
-    );
-
-    Scene scene = new Scene(vbox, 400, 600);
-    dialog.setScene(scene);
-    dialog.showAndWait();
   }
 
   public void goToLanguagesPage(ActionEvent actionEvent) {

@@ -9,14 +9,17 @@ public class Translation implements Identifiable<Integer> {
   private String targetLang;
   private String translatedText;
 
-  public Translation(String orignalText, String sourceLang, String targetLang, String translatedText) {
+  public Translation(
+      String orignalText, String sourceLang, String targetLang, String translatedText) {
     this.id = 0;
     this.orignalText = orignalText;
     this.sourceLang = sourceLang;
     this.targetLang = targetLang;
     this.translatedText = translatedText;
-    }
-  public Translation(Integer id, String orignalText, String sourceLang, String targetLang, String translatedText) {
+  }
+
+  public Translation(
+      Integer id, String orignalText, String sourceLang, String targetLang, String translatedText) {
     this.id = id;
     this.orignalText = orignalText;
     this.sourceLang = sourceLang;

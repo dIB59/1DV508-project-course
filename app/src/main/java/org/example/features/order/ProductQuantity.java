@@ -1,16 +1,12 @@
 package org.example.features.order;
 
 import org.example.features.product.CustomizedProduct;
-import org.example.features.product.Product;
 
 /**
- * ProductQuantity class represents a product and its quantity in an order. It
- * contains methods to
+ * ProductQuantity class represents a product and its quantity in an order. It contains methods to
  * add or subtract the quantity of the product.
  *
- * <p>
- * The reason is that product is stored within the database, and the quantity is
- * not
+ * <p>The reason is that product is stored within the database, and the quantity is not
  */
 public class ProductQuantity {
 
@@ -20,7 +16,7 @@ public class ProductQuantity {
   /**
    * Instantiates a new Product quantity.
    *
-   * @param product  the product
+   * @param customizedProduct the product
    * @param quantity the quantity
    */
   public ProductQuantity(CustomizedProduct customizedProduct, int quantity) {
@@ -82,9 +78,13 @@ public class ProductQuantity {
    *
    * @return the product
    */
-
   @Override
   public String toString() {
-    return "ProductQuantity{" + "product=" + customizedProduct.getProduct().getName() + ", quantity=" + quantity + '}';
+    return "ProductQuantity{"
+        + "product="
+        + customizedProduct.getProduct().getName()
+        + ", quantity="
+        + quantity
+        + '}';
   }
 }

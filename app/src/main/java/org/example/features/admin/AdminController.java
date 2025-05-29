@@ -24,7 +24,6 @@ public class AdminController {
   @FXML private TextField visiblePasswordField;
   @FXML private javafx.scene.control.Button togglePasswordBtn;
 
-
   /**
    * Instantiates a new Admin controller.
    *
@@ -34,6 +33,7 @@ public class AdminController {
     this.sceneRouter = sceneRouter;
     this.adminRepository = adminRepository;
   }
+
   @FXML
   private void initialize() {
     visiblePasswordField.textProperty().bindBidirectional(passwordField.textProperty());
@@ -49,7 +49,6 @@ public class AdminController {
     passwordField.setVisible(isVisible);
     passwordField.setManaged(isVisible);
   }
-
 
   /** Go to admin page. */
   public void goToDashboard() {
@@ -87,13 +86,15 @@ public class AdminController {
     popupStage.initModality(Modality.APPLICATION_MODAL);
 
     Label message = new Label("Sucks to be you");
-    message.setStyle("-fx-background-color: black; -fx-text-fill: white; -fx-font-size: 24px; "
-        + "-fx-padding: 30px; -fx-background-radius: 10;");
+    message.setStyle(
+        "-fx-background-color: black; -fx-text-fill: white; -fx-font-size: 24px; "
+            + "-fx-padding: 30px; -fx-background-radius: 10;");
 
     StackPane root = new StackPane(message);
-    root.setStyle("-fx-background-color: rgba(0, 0, 0, 1); -fx-padding: 40px; -fx-background-radius: 15;");
+    root.setStyle(
+        "-fx-background-color: rgba(0, 0, 0, 1); -fx-padding: 40px; -fx-background-radius: 15;");
 
-    Scene scene = new Scene(root, 400, 200);  // Set preferred width and height
+    Scene scene = new Scene(root, 400, 200); // Set preferred width and height
     popupStage.setScene(scene);
     popupStage.setWidth(420);
     popupStage.setHeight(220);
@@ -101,12 +102,11 @@ public class AdminController {
     popupStage.show();
 
     PauseTransition pause = new PauseTransition(Duration.seconds(1));
-    pause.setOnFinished(event -> {
-      popupStage.close();
-      sceneRouter.goToHomePage();
-    });
+    pause.setOnFinished(
+        event -> {
+          popupStage.close();
+          sceneRouter.goToHomePage();
+        });
     pause.play();
   }
-
-
 }

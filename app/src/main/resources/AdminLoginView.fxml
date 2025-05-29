@@ -34,15 +34,11 @@
         <AnchorPane maxWidth="250">
             <PasswordField fx:id="passwordField"
                            promptText="Password"
-                           layoutX="0"
-                           layoutY="0"
                            prefWidth="250"
                            style="-fx-background-radius: 10; -fx-padding: 10; -fx-text-fill: black;" />
 
             <TextField fx:id="visiblePasswordField"
                        promptText="Password"
-                       layoutX="0"
-                       layoutY="0"
                        prefWidth="250"
                        style="-fx-background-radius: 10; -fx-padding: 10; -fx-text-fill: black;"
                        visible="false"
@@ -51,7 +47,6 @@
             <Button fx:id="togglePasswordBtn"
                     text="👁"
                     layoutX="220"
-                    layoutY="0"
                     prefWidth="30"
                     style="-fx-background-color: transparent;"
                     onAction="#togglePasswordVisibility" />

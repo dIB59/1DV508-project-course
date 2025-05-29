@@ -5,47 +5,60 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.control.Separator?>
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1"
             xmlns="http://javafx.com/javafx/8.0.171"
             fx:controller="org.example.features.receipt.ReceiptController"
             stylesheets="@styles/receipt.css"
-            prefWidth="380" prefHeight="600">
+            prefWidth="600" prefHeight="800"
+            style="-fx-background-color: white;">
 
-    <VBox spacing="12"
-          AnchorPane.topAnchor="0.0"
-          AnchorPane.leftAnchor="0.0"
-          AnchorPane.rightAnchor="0.0"
-          AnchorPane.bottomAnchor="0.0">
+    <!-- Center the VBox like a real receipt -->
+    <StackPane AnchorPane.topAnchor="0.0"
+               AnchorPane.leftAnchor="0.0"
+               AnchorPane.rightAnchor="0.0"
+               AnchorPane.bottomAnchor="0.0">
 
-        <padding>
-            <Insets top="20" left="24" right="24" bottom="20"/>
-        </padding>
+        <VBox spacing="10"
+              alignment="TOP_CENTER"
+              maxWidth="320"
+              prefWidth="320"
+              style="-fx-background-color: white; -fx-padding: 20;">
 
-        <!-- Receipt Title -->
-        <Label fx:id="titleLabel" text="Receipt" styleClass="title"/>
+            <!-- Receipt Title -->
+            <Label fx:id="titleLabel" text="RECEIPT" styleClass="title"/>
 
-        <!-- Order ID -->
-        <Label fx:id="orderIdLabel" styleClass="order-id"/>
+            <!-- Order ID -->
+            <Label fx:id="orderIdLabel" styleClass="order-id"/>
+            <Label fx:id="EatinEatoutlabel" styleClass="meta"/>
 
-        <!-- Items Container -->
-        <VBox fx:id="itemsContainer" spacing="8"/>
+            <!-- Divider -->
+            <Separator maxWidth="280"/>
 
-        <!-- Total -->
-        <Label fx:id="totalLabel" styleClass="total"/>
+            <!-- Items Container -->
+            <VBox fx:id="itemsContainer" spacing="8"/>
 
-        <!-- Thank You -->
-        <Label fx:id="thankYouLabel" styleClass="thank-you"/>
+            <Separator maxWidth="280"/>
 
-        <!-- Restaurant Info -->
-        <Label fx:id="restaurantNameLabel" styleClass="info"/>
-        <Label fx:id="addressLabel" styleClass="info"/>
-        <Label fx:id="contactLabel" styleClass="info"/>
+            <!-- Totals -->
+            <Label fx:id="totalLabel" styleClass="total"/>
+            <Label fx:id="couponsLabel" styleClass="total"/>
 
-    </VBox>
+            <Separator maxWidth="280"/>
 
-    <!-- Add go to home button -->
-    <Button text="Go to Home"
-            onAction="#goToHomePage"
-            AnchorPane.bottomAnchor="10" AnchorPane.rightAnchor="10"/>
+            <!-- Thank You -->
+            <Label fx:id="thankYouLabel" styleClass="thank-you" text="Thank you!"/>
 
+            <!-- Restaurant Info -->
+            <Label fx:id="restaurantNameLabel" styleClass="info"/>
+            <Label fx:id="addressLabel" styleClass="info"/>
+            <Label fx:id="contactLabel" styleClass="info"/>
+            <Label fx:id="memberLabel" text="Member?" styleClass="meta"/>
+            <Label fx:id="pointsLabel" text="" styleClass="meta"/>
+
+        </VBox>
+    </StackPane>
+
+    <!-- Home Button -->
 </AnchorPane>

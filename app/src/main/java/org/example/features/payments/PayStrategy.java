@@ -1,6 +1,5 @@
 package org.example.features.payments;
 
-
 /**
  * Interface for payment strategies.
  * This interface defines a method for processing payments with a card.
@@ -13,9 +12,9 @@ package org.example.features.payments;
  *   new CardPaymentDetails("1234567890123456", "12/25", "123", 100.00);
  *   boolean success = payStrategy.payWithCard(cardPaymentDetails);
  *   if (success) {
- *   System.out.println("Payment successful");
+ *   log.info("Payment successful");
  *   } else {
- *   System.out.println("Payment failed");
+ *   log.info("Payment failed");
  *   }
  */
 public interface PayStrategy {

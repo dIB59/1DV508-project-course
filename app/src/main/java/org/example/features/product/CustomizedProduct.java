@@ -1,13 +1,12 @@
 package org.example.features.product;
 
 import java.util.Map;
-
 import java.util.Objects;
 import org.example.features.ingredients.Ingredient;
 
 public class CustomizedProduct {
-  private Product product;
-  private Map<Ingredient, Integer> ingredientQuantities;
+  private final Product product;
+  private final Map<Ingredient, Integer> ingredientQuantities;
 
   public CustomizedProduct(Product product, Map<Ingredient, Integer> ingredientQuantities) {
     this.product = product;
@@ -36,24 +35,19 @@ public class CustomizedProduct {
       int extraQty = quantity - defaultQty;
 
       if (extraQty > 0) {
-          ingprice += ingredient.getPrice() * extraQty;
-        }
-      /* 
-      if (extraQty <= 0) {
-        ingprice += ingredient.getPrice() * (quantity - defaultQty); }*/
+        ingprice += ingredient.getPrice() * extraQty;
+      }
     }
 
     return basePrice + ingprice;
   }
 
   @Override
-  public boolean equals(Object object) {
-    if (this == object)
-      return true;
-    if (!(object instanceof CustomizedProduct other))
-      return false;
-
-    return Objects.equals(product.getId(), other.product.getId()) && product.getIngredients().equals(other.product.getIngredients());
+  public boolean equals(Object obj) {
+    if (this == obj) return true;
+    if (obj == null || getClass() != obj.getClass()) return false;
+    CustomizedProduct other = (CustomizedProduct) obj;
+    return Objects.equals(product.getId(), other.product.getId()) &&
+        Objects.equals(ingredientQuantities, other.ingredientQuantities);
   }
-
 }

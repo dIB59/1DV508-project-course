@@ -1,39 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Priority?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml"
+<ScrollPane xmlns:fx="http://javafx.com/fxml"
             xmlns="http://javafx.com/javafx"
             fx:controller="org.example.features.checkout.CheckoutController"
-            prefHeight="600.0" prefWidth="800.0"
-            style="-fx-background-color: #f5f5f5;">
+            fitToWidth="true"
+            hbarPolicy="NEVER"
+            vbarPolicy="AS_NEEDED"
+            style="-fx-background: #f5f5f5;"
+            prefWidth="900" prefHeight="1000">
 
-    <VBox spacing="25" AnchorPane.topAnchor="40.0" AnchorPane.bottomAnchor="40.0"
-          AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0"
-          style="-fx-background-color: white; -fx-background-radius: 15; -fx-padding: 30;"
-          alignment="TOP_CENTER">
+    <VBox spacing="30" alignment="TOP_CENTER"
+          style="-fx-background-color: white; -fx-background-radius: 20; -fx-padding: 40;">
 
-        <!-- Title: "Your Shopping Cart" -->
-        <Label text="Your Shopping Cart"
-               style="-fx-font-size: 36px; -fx-font-weight: 600; -fx-text-fill: #2c3e50; -fx-margin-bottom: 20;"/>
+        <Label text="Checkout"
+               style="-fx-font-size: 36px; -fx-font-weight: bold; -fx-text-fill: #1E1EA9;"/>
 
-        <!-- Item Count -->
+        <!-- Rotating Campaign Card -->
+        <StackPane fx:id="campaignCardPane"
+                   prefHeight="340"
+                   maxWidth="820"
+                   alignment="CENTER"
+                   style="-fx-padding: 10;"/>
+
         <Label fx:id="itemCountLabel"
-               text="Items in cart: 0"
-               style="-fx-font-size: 18px; -fx-text-fill: #7f8c8d; -fx-margin-bottom: 20;"/>
+               text="Items: 0"
+               style="-fx-font-size: 16px; -fx-text-fill: #555;"/>
 
-        <!-- List of items (dynamically populated) -->
-        <VBox fx:id="itemListContainer" spacing="20" style="-fx-background-color: #ecf0f1; -fx-background-radius: 10; -fx-padding: 15;">
-            <!-- Items will be dynamically added here -->
+        <VBox fx:id="itemListContainer" spacing="20" alignment="TOP_LEFT" prefWidth="1080">
+            <!-- Dynamically populated items -->
         </VBox>
 
-        <!-- Spacer VBox to grow -->
         <VBox VBox.vgrow="ALWAYS"/>
 
         <!-- Total Price -->
@@ -41,15 +46,34 @@
                text="Total Price: $0.00"
                style="-fx-font-size: 24px; -fx-font-weight: 600; -fx-text-fill: #131519; -fx-margin-bottom: 30;"/>
 
+        <HBox spacing="20" alignment="CENTER">
+            <Label text="Print Receipt?" style="-fx-font-size: 16px;"/>
+
+            <RadioButton fx:id="yesPrint" text="Yes"/>
+            <RadioButton fx:id="noPrint" text="No"/>
+        </HBox>
+
+
         <!-- Buttons -->
         <HBox spacing="30" alignment="CENTER">
             <Button text="Continue Shopping"
-                    style="-fx-padding: 15 40; -fx-font-size: 18px; -fx-background-color: #34495e; -fx-text-fill: white; -fx-background-radius: 8; -fx-cursor: hand;"
+                    style="-fx-padding: 15 40; -fx-font-size: 18px; -fx-background-color:#FFD54F ; -fx-text-fill: #1E1EA9; -fx-background-radius: 8; -fx-cursor: hand;"
                     onAction="#goToMenuPage"/>
-            <Button text="Pay and Get Receipt"
-                    style="-fx-padding: 15 40; -fx-font-size: 18px; -fx-background-color: #1a1a2a; -fx-text-fill: white; -fx-background-radius: 8; -fx-cursor: hand;"
-                    onAction="#goToReceiptPage"/>
+            <Button text="Pay"
+                    style="-fx-padding: 15 40; -fx-font-size: 18px; -fx-background-color: #FFD54F; -fx-text-fill: #1E1EA9; -fx-background-radius: 8; -fx-cursor: hand;"
+                    onAction="#goToMemberLogin"/>
         </HBox>
 
+        <VBox spacing="10" alignment="CENTER">
+            <TextField fx:id="couponCodeField"
+                       promptText="Enter Coupon Code"
+                       prefWidth="200"
+                       style="-fx-font-size: 14px;"/>
+
+            <Button text="Apply Coupon"
+                    onAction="#applyCoupon"
+                    style="-fx-background-color:#FFD54F ; -fx-text-fill:#1E1EA9; -fx-font-size: 14px; -fx-cursor: hand;"/>
+        </VBox>
+
     </VBox>
-</AnchorPane>
+</ScrollPane>

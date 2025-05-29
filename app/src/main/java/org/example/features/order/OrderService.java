@@ -3,12 +3,13 @@ package org.example.features.order;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
 import org.example.database.CrudRepository;
 import org.example.features.coupons.Discount;
 import org.example.features.ingredients.Ingredient;
 import org.example.features.product.CustomizedProduct;
 import org.example.features.product.Product;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * OrderService class is responsible for managing the order. It provides methods to add, remove, and
@@ -16,9 +17,11 @@ import org.example.features.product.Product;
  */
 public class OrderService {
 
+  private static final Logger log = LoggerFactory.getLogger(OrderService.class);
   private final CrudRepository<Order, Integer> repository;
+  private final List<CustomizedProduct> customizedProducts = new ArrayList<>();
   private Order order;
-  private List<CustomizedProduct> customizedProducts = new ArrayList<>();
+
   /**
    * Instantiates a new Order service.
    *
@@ -32,56 +35,49 @@ public class OrderService {
   /**
    * Add item.
    *
-   * @param item the item
+   * @param product the item
    */
   public void addItem(Product product, Map<Ingredient, Integer> ingredientQuantities) {
-    order.addProduct(product, ingredientQuantities);;
+    order.addProduct(product, ingredientQuantities);
   }
 
   // Sets member status to true
-  public void setMember(){
-    this.order.setMember();
+  public void setMember() {
+    this.order.setMemberId(12345);
   }
 
-  public boolean getMember(){
-    return this.order.getMember();
+  public boolean getMember() {
+    return this.order.isMember();
   }
 
-  public void setReceipt(){
+  public void setReceipt() {
     this.order.setReceipt();
   }
 
-  public boolean getReceipt(){
-    return this.order.getReceipt();
+  public boolean getReceipt() {
+    return this.order.isReceipt();
   }
 
-  public String gettype(){
-    return this.order.gettype();
+  public Order.Type gettype() {
+    return this.order.getType();
   }
 
-  public int getId(){
+  public int getId() {
     return this.order.getId();
   }
 
-
-
-  public void setFeedback(int feedback){
-    this.order.setFeedback(feedback);
-  }
-
-  public  int getFeedback(){
+  public int getFeedback() {
     return this.order.getFeedback();
   }
 
-  public void setMemberDB(boolean getMember){
-    if (getMember){
-      this.order.setMember();
-    }
+  public void setFeedback(int feedback) {
+    this.order.setFeedback(feedback);
   }
 
-  public void setMemberID(int id){
-    this.order.setMemberID(id);
+  public void setMemberID(int id) {
+    this.order.setMemberId(id);
   }
+
   /**
    * Remove item.
    *
@@ -111,15 +107,11 @@ public class OrderService {
   public Order saveOrderAndClear() {
     try {
       var s = this.repository.save(order);
-      s.setDiscount(order.getDiscount());
-      s.setMemberDB(order.getMember());
-      s.settype(order.gettype());
-      s.setMemberID(order.getMemberID());
-      s.setFeedback(order.getFeedback());
       this.clear();
       return s;
     } catch (Exception e) {
-      System.err.println("Error saving order: " + e.getLocalizedMessage());
+      log.error("Failed to save order: {}", e.getMessage());
+      e.printStackTrace();
       throw new RuntimeException("Failed to save order");
     }
   }
@@ -140,8 +132,8 @@ public class OrderService {
     return customizedProducts;
   }
 
-  public void settype(String ordertype) {
-    order.settype(ordertype);
+  public void setType(Order.Type ordertype) {
+    order.setType(ordertype);
   }
 
   public void setPaid() {

@@ -1,0 +1,9 @@
+/* theme-light.css */
+@import url("variables.css");
+
+* {
+    --color-background: #ffffff;
+    --color-foreground: #1f2937;
+    --color-muted: #6b7280;
+    --color-border: #d1d5db;
+}

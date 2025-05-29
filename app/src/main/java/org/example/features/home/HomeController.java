@@ -2,10 +2,10 @@ package org.example.features.home;
 
 import java.util.Arrays;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import org.example.AppContext;
+import org.example.features.order.Order;
 import org.example.features.order.OrderService;
 import org.example.features.translation.Language;
 import org.example.features.translation.TranslationService;
@@ -21,7 +21,6 @@ public class HomeController {
   private final Logger log = LoggerFactory.getLogger(HomeController.class);
   private final SceneRouter sceneRouter;
   private final OrderService orderService;
-  private final HomeModel homeModel;
   private final TranslationService translationService;
   private final String LIGHT_THEME = getClass().getResource("/css/light-theme.css").toExternalForm();
   private final String DARK_THEME = getClass().getResource("/css/dark-theme.css").toExternalForm();
@@ -30,35 +29,35 @@ public class HomeController {
   public boolean takeout = false;
 
   @FXML private Label welcomeLabel;
-  @FXML private Button eatInButton;
-  @FXML private Button takeOutButton;
   @FXML private ComboBox<Language> languageSelector;
   @FXML private ToggleButton darkModeToggle;
 
 
-  public HomeController(HomeModel homeModel, SceneRouter sceneRouter, OrderService orderService, TranslationService translationService) {
-    this.homeModel = homeModel;
+  public HomeController(
+      SceneRouter sceneRouter, OrderService orderService, TranslationService translationService) {
     this.sceneRouter = sceneRouter;
     this.orderService = orderService;
     this.translationService = translationService;
   }
 
-
   @FXML
   public void initialize() {
-    log.info(Arrays.toString(Language.values()));
+    log.debug(Arrays.toString(Language.values()));
     languageSelector.getItems().setAll(Language.values());
     languageSelector
         .getSelectionModel()
         .select(AppContext.getInstance().getLanguage()); // Default selection
-    languageSelector.getStyleClass().add("language-combo");
+    languageSelector.getStyleClass()
+        .addAll("text-primary", "border-muted", "bg-background", "round-md", "px-2");
   }
 
   @FXML
   public void translatePage() {
     Language selectedLanguage = languageSelector.getValue();
     if (selectedLanguage == Language.ENGLISH) {
-      translationService.reverseTranslate(welcomeLabel.getScene().getRoot()); // Restore original tex
+      AppContext.getInstance().setLanguage(Language.ENGLISH); // Store choice globally
+      translationService.reverseTranslate(
+          welcomeLabel.getScene().getRoot()); // Restore original tex
       return;
     }
     if (selectedLanguage != null) {
@@ -69,16 +68,16 @@ public class HomeController {
 
   @FXML
   public void goToMenuPageTakeout() {
+    orderService.clear();
+    orderService.setType(Order.Type.TAKEAWAY);
     sceneRouter.goToMenuPage();
-    orderService.settype("Your order is for Take out");
-    takeout = true;
   }
 
   @FXML
   public void goToMenuPageEatIn() {
+    orderService.clear();
+    orderService.setType(Order.Type.EAT_IN);
     sceneRouter.goToMenuPage();
-    orderService.settype("Your order is for Eat in ");
-    takeout = false;
   }
   @FXML
   public void toggleDarkMode() {

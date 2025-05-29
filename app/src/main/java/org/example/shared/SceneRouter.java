@@ -2,11 +2,17 @@ package org.example.shared;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Objects;
+import javafx.animation.FadeTransition;
+import javafx.animation.Transition;
+import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import javafx.util.Duration;
 import org.example.features.order.OrderService;
 import org.example.features.product.Product;
 import org.example.features.product.ProductDetailsController;
@@ -21,8 +27,8 @@ public class SceneRouter {
   private static final Logger log = LoggerFactory.getLogger(SceneRouter.class);
   private final Stage stage;
   private final Callback<Class<?>, Object> controllerFactory;
-  private KioskPage currentPage;
   private final TranslationService translationService;
+  private KioskPage currentPage;
 
   /**
    * Instantiates a new Scene router.
@@ -30,10 +36,24 @@ public class SceneRouter {
    * @param stage the stage
    * @param orderService the order service
    */
-  public SceneRouter(Stage stage, OrderService orderService, TranslationService translationService) {
+  public SceneRouter(
+      Stage stage, OrderService orderService, TranslationService translationService) {
     this.stage = stage;
     this.controllerFactory = new AppControllerFactory(orderService, this);
     this.translationService = translationService;
+  }
+
+  // Fade in animation
+  private void applyFadeInTransition(Scene scene) {
+    FadeTransition fadeIn = new FadeTransition(Duration.millis(500), scene.getRoot());
+    fadeIn.setFromValue(0.0);
+    fadeIn.setToValue(1.0);
+    fadeIn.play();
+  }
+
+  private void coolTransition(Scene scene) {
+    Transition transition = new TranslateTransition(Duration.millis(1000), scene.getRoot());
+    transition.play();
   }
 
   /**
@@ -43,24 +63,33 @@ public class SceneRouter {
    */
   public void goTo(KioskPage page) {
     try {
-      URL url = getClass().getResource("/" + page.getValue());
-      FXMLLoader loader = new FXMLLoader(url);
-      loader.setControllerFactory(controllerFactory);
+      // Load the main layout
+      URL mainLayoutUrl = getClass().getResource("/BaseLayout.fxml");
+      FXMLLoader mainLoader = new FXMLLoader(mainLayoutUrl);
+      mainLoader.setControllerFactory(controllerFactory);
+      Scene scene = new Scene(mainLoader.load());
+      scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/styles/styles.css")).toExternalForm());
+      scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/styles/theme-dark.css")).toExternalForm());
+
+      BaseLayoutController mainLayoutController = mainLoader.getController();
+
+      // Load the page content
+      URL pageUrl = getClass().getResource("/" + page.getValue());
+      FXMLLoader pageLoader = new FXMLLoader(pageUrl);
+      pageLoader.setControllerFactory(controllerFactory);
+      Node pageContent = pageLoader.load();
+
+      // Inject content into layout
+      mainLayoutController.setContent(pageContent);
       currentPage = page;
-      Scene scene = new Scene(loader.load());
 
-      // Apply theme
-      if (AppContext.getInstance().isDarkMode()) {
-        scene.getStylesheets().add(getClass().getResource("/css/dark-theme.css").toExternalForm());
-      } else {
-        scene.getStylesheets().add(getClass().getResource("/css/light-theme.css").toExternalForm());
-      }
-
+      // Set the scene
       stage.setScene(scene);
       translationService.translate(scene.getRoot());
+      coolTransition(scene);
+
     } catch (IOException e) {
-      System.err.println("Failed to load scene: " + e.getLocalizedMessage());
-      e.printStackTrace();
+      log.error("Failed to load scene for page {}: {}", page, e.getMessage(), e);
     }
   }
 
@@ -105,7 +134,6 @@ public class SceneRouter {
     goTo(KioskPage.CHECKOUT);
   }
 
-
   public void goToProductDetailsPage(Product product) {
     try {
       URL url = getClass().getResource("/" + KioskPage.PRODUCTDESCRIPTION.getValue());
@@ -114,18 +142,22 @@ public class SceneRouter {
 
       Scene scene = new Scene(loader.load());
       ProductDetailsController controller = loader.getController();
+      controller.setProduct(product);
+
+      // Apply theme and utility styles
+      scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/styles/theme-dark.css")).toExternalForm());
+      scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/styles/styles.css")).toExternalForm());
+
       log.debug("Product: {}", product);
-      controller.setProduct(product); // Set the product after loading the FXML
       controller.displaySides();
       controller.displayIngredients();
+
       currentPage = KioskPage.PRODUCTDESCRIPTION;
       stage.setScene(scene);
-      Platform.runLater(() -> {
-        translationService.translate(scene.getRoot());
-      });
+      Platform.runLater(() -> translationService.translate(scene.getRoot()));
+
     } catch (IOException e) {
-      System.err.println("Failed to load Product Details page: " + e.getLocalizedMessage());
-      e.printStackTrace();
+      log.error("Failed to load scene for page {}: {}", KioskPage.PRODUCTDESCRIPTION, e.getMessage(), e);
     }
   }
 
@@ -137,7 +169,9 @@ public class SceneRouter {
     goTo(KioskPage.ADMIN_LOGIN);
   }
 
-  public void goToMemberLoginPage(){goTo(KioskPage.MEMBER_LOGIN);}
+  public void goToMemberLoginPage() {
+    goTo(KioskPage.MEMBER_LOGIN);
+  }
 
   public void goToPaymentPage() {
     goTo(KioskPage.PAYMENT);
@@ -147,10 +181,22 @@ public class SceneRouter {
     goTo(KioskPage.FEEDBACK);
   }
 
-  public void goToSmallReceiptPage(){ goTo(KioskPage.SMALLRECEIPT);}
+  public void goToSmallReceiptPage() {
+    goTo(KioskPage.SMALLRECEIPT);
+  }
 
   public void goToLanguagesPage() {
     goTo(KioskPage.EDIT_TRANSLATION);
+  }
+
+  public void goToHelpView(){goTo(KioskPage.HELP);}
+
+  public void goToSettingsPage() {
+    goTo(KioskPage.SETTING);
+  }
+
+  public void refreshPage() {
+    goTo(currentPage);
   }
 
   /**
@@ -185,7 +231,11 @@ public class SceneRouter {
     // Edit translation page
     EDIT_TRANSLATION("EditTranslationView.fxml"),
 
-    SMALLRECEIPT("SmallReceiptView.fxml");
+    SMALLRECEIPT("SmallReceiptView.fxml"),
+
+    SETTING("SettingsView.fxml"),
+
+    HELP("HelpView.fxml");
 
     private final String value;
 

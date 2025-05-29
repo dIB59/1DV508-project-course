@@ -1,89 +1,71 @@
 package org.example.features.order;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
+import java.util.Optional;
 import org.example.database.Identifiable;
-import org.example.features.coupons.Coupons;
 import org.example.features.coupons.Discount;
 import org.example.features.ingredients.Ingredient;
 import org.example.features.product.CustomizedProduct;
 import org.example.features.product.Product;
 
 /**
- * Order class represents a customer's order in the system. It contains a list
- * of ProductQuantity
+ * Order class represents a customer's order in the system. It contains a list of ProductQuantity
  * objects, each representing a product and its quantity.
  */
 public class Order implements Identifiable<Integer> {
-
   private final List<ProductQuantity> productQuantity;
-  private Discount discount = new Coupons("No Discount", 0);
+  private final LocalDateTime createdAt;
   private int id;
+  private Optional<Discount> discount;
   private int feedback;
-  private boolean isMember;
-  private int memberID;
+  private Optional<Integer> memberID;
   private boolean isReceipt;
+  private Type type;
+  private boolean isPaid;
 
-  private String gettype;
-  private boolean isPaid = false;
-
-  /**
-   * Instantiates a new Order.
-   *
-   * @param id              the id
-   * @param productQuantity the product quantity
-   */
-  public Order(int id, List<ProductQuantity> productQuantity) {
+  public Order(
+      int id,
+      List<ProductQuantity> productQuantities,
+      Optional<Discount> discount,
+      int feedback,
+      Optional<Integer> memberID,
+      boolean isReceipt,
+      Type type,
+      boolean isPaid,
+      LocalDateTime createdAt) {
     this.id = id;
-    this.productQuantity = productQuantity;
-    isMember = false;
-    isReceipt = true;
+    this.productQuantity = productQuantities;
+    this.discount = discount;
+    this.feedback = feedback;
+    this.memberID = memberID;
+    this.isReceipt = isReceipt;
+    this.type = type;
+    this.isPaid = isPaid;
+    this.createdAt = createdAt;
   }
 
-  /** Instantiates a new Order. */
+  /** Default constructor. */
   public Order() {
     this.id = 0;
     this.productQuantity = new ArrayList<>();
-    isMember = false;
+    this.discount = Optional.empty(); // Or Optional.of(new Coupons("No Discount", 0)) if needed
+    this.feedback = 0;
+    this.memberID = Optional.empty();
+    this.type = Type.EAT_IN;
+    this.isPaid = false;
+    this.createdAt = LocalDateTime.now();
   }
 
-  public void setMember() {
-    this.isMember = true;
-  }
-
-  public boolean getMember() {
-    return this.isMember;
-  }
-
-  public void setReceipt() {
-    this.isReceipt = true;
-  }
-
-  public boolean getReceipt() {
-    return this.isReceipt;
-  }
-
-  public void setMemberID(int memberId) {
-    this.memberID = memberId;
-    this.isMember = true;
-  }
-
-  public int getMemberID() {
-    return this.memberID;
-  }
-
-  public void setMemberDB(boolean getMember) {
-    if (getMember) {
-      this.setMember();
-    }
+  public boolean isMember() {
+    return memberID.isPresent();
   }
 
   /**
-   * Adds a product to the order. If the product already exists in the order, it
-   * increments the
+   * Adds a product to the order. If the product already exists in the order, it increments the
    * quantity by 1.
    *
    * @param product The product to be added.
@@ -100,8 +82,7 @@ public class Order implements Identifiable<Integer> {
   }
 
   /**
-   * Removes a product from the order. If the quantity of the product becomes zero
-   * or less, it
+   * Removes a product from the order. If the quantity of the product becomes zero or less, it
    * removes the product from the order.
    *
    * @param product The product to be removed.
@@ -143,13 +124,30 @@ public class Order implements Identifiable<Integer> {
     this.id = id;
   }
 
+  public Optional<Integer> getMemberId() {
+    return memberID;
+  }
+
+  public void setMemberId(int id) {
+    this.memberID = Optional.of(id);
+  }
+
+  public boolean isReceipt() {
+    return isReceipt;
+  }
+
+  public void setReceipt() {
+    isReceipt = true;
+  }
+
+  public int getFeedback() {
+    return this.feedback;
+  }
+
   public void setFeedback(int feedback) {
     this.feedback = feedback;
   }
 
-  public  int getFeedback() {
-    return this.feedback;
-  }
   /**
    * Returns the list of ProductQuantity objects in the order.
    *
@@ -162,7 +160,7 @@ public class Order implements Identifiable<Integer> {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append(discount.getCode());
+    sb.append(discount.map(Discount::getCode).orElse("No Discount"));
     sb.append("\n");
     sb.append("Order ID: ").append(id).append("\n");
     for (ProductQuantity pq : productQuantity) {
@@ -171,37 +169,27 @@ public class Order implements Identifiable<Integer> {
     return sb.toString();
   }
 
-  public void setDiscount(Discount discount) {
-    this.discount = discount;
+  public Optional<Discount> getDiscount() {
+    return this.discount;
   }
 
-  public Discount getDiscount() {
-    return this.discount;
+  public void setDiscount(Discount discount) {
+    this.discount = Optional.of(discount);
   }
 
   public double getPrice() {
     return productQuantity.stream()
         .mapToDouble(ProductQuantity::getPrice)
-        .map(discount::applyDiscount)
+        .map(price -> discount.map(d -> d.applyDiscount(price)).orElse(price))
         .sum();
   }
 
   public double getSubtotal() {
-    return productQuantity.stream()
-        .mapToDouble(ProductQuantity::getPrice)
-        .sum();
+    return productQuantity.stream().mapToDouble(ProductQuantity::getPrice).sum();
   }
 
   public BigDecimal getPriceBigDecimal() {
     return BigDecimal.valueOf(getPrice());
-  }
-
-  public String gettype() {
-    return gettype;
-  }
-
-  public void settype(String ordertype) {
-    this.gettype = ordertype;
   }
 
   public boolean isPaid() {
@@ -210,5 +198,22 @@ public class Order implements Identifiable<Integer> {
 
   public void setPaid() {
     this.isPaid = true;
+  }
+
+  public Type getType() {
+    return type;
+  }
+
+  public void setType(Type type) {
+    this.type = type;
+  }
+
+  public LocalDateTime getCreatedAt() {
+    return createdAt;
+  }
+
+  public enum Type {
+    TAKEAWAY,
+    EAT_IN
   }
 }
