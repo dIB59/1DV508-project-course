@@ -18,7 +18,7 @@ services:
       retries: 3
 
   libretranslate:
-    image: libretranslate/libretranslate
+    image: libretranslate/libretranslate:v1.6.0
     container_name: libretranslate
     ports:
       - "8081:5000"
@@ -27,6 +27,5 @@ services:
       interval: 30s
       timeout: 10s
       retries: 5
-
 volumes:
   mysql_data:
