@@ -12,6 +12,8 @@ import org.example.features.translation.TranslationService;
 import org.example.shared.SceneRouter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.Scene;
 
 /** The type Home controller. */
 public class HomeController {
@@ -21,6 +23,9 @@ public class HomeController {
   private final OrderService orderService;
   private final HomeModel homeModel;
   private final TranslationService translationService;
+  private final String LIGHT_THEME = getClass().getResource("/css/light-theme.css").toExternalForm();
+  private final String DARK_THEME = getClass().getResource("/css/dark-theme.css").toExternalForm();
+
 
   public boolean takeout = false;
 
@@ -28,6 +33,8 @@ public class HomeController {
   @FXML private Button eatInButton;
   @FXML private Button takeOutButton;
   @FXML private ComboBox<Language> languageSelector;
+  @FXML private ToggleButton darkModeToggle;
+
 
   public HomeController(HomeModel homeModel, SceneRouter sceneRouter, OrderService orderService, TranslationService translationService) {
     this.homeModel = homeModel;
@@ -73,9 +80,24 @@ public class HomeController {
     orderService.settype("Your order is for Eat in ");
     takeout = false;
   }
+  @FXML
+  public void toggleDarkMode() {
+    Scene scene = darkModeToggle.getScene();
+    AppContext.getInstance().setDarkMode(darkModeToggle.isSelected());
+
+    if (darkModeToggle.isSelected()) {
+      scene.getStylesheets().remove(LIGHT_THEME);
+      scene.getStylesheets().add(DARK_THEME);
+    } else {
+      scene.getStylesheets().remove(DARK_THEME);
+      scene.getStylesheets().add(LIGHT_THEME);
+    }
+  }
+
 
   public void goToAdminPage() {
     sceneRouter.goToAdminLoginPage();
   }
 }
+
 

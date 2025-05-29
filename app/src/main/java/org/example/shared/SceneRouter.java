@@ -13,6 +13,7 @@ import org.example.features.product.ProductDetailsController;
 import org.example.features.translation.TranslationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.example.AppContext;
 
 /** The type Scene router. */
 public class SceneRouter {
@@ -48,6 +49,13 @@ public class SceneRouter {
       currentPage = page;
       Scene scene = new Scene(loader.load());
 
+      // Apply theme
+      if (AppContext.getInstance().isDarkMode()) {
+        scene.getStylesheets().add(getClass().getResource("/css/dark-theme.css").toExternalForm());
+      } else {
+        scene.getStylesheets().add(getClass().getResource("/css/light-theme.css").toExternalForm());
+      }
+
       stage.setScene(scene);
       translationService.translate(scene.getRoot());
     } catch (IOException e) {
@@ -55,6 +63,7 @@ public class SceneRouter {
       e.printStackTrace();
     }
   }
+
 
 
   /** Refresh page. */
