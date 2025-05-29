@@ -11,6 +11,5 @@ public class SoundUtil {
 
   public static void playClick() {
     System.out.println(clickSound.getSource());
-    clickSound.play();
   }
 }

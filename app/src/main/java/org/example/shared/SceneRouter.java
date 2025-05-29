@@ -2,9 +2,13 @@ package org.example.shared;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Objects;
 import javafx.animation.FadeTransition;
+import javafx.animation.Transition;
+import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.util.Callback;
@@ -15,6 +19,7 @@ import org.example.features.product.ProductDetailsController;
 import org.example.features.translation.TranslationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.example.AppContext;
 
 /** The type Scene router. */
 public class SceneRouter {
@@ -46,6 +51,11 @@ public class SceneRouter {
     fadeIn.play();
   }
 
+  private void coolTransition(Scene scene) {
+    Transition transition = new TranslateTransition(Duration.millis(1000), scene.getRoot());
+    transition.play();
+  }
+
   /**
    * Sets the stage for the application.
    *
@@ -53,21 +63,38 @@ public class SceneRouter {
    */
   public void goTo(KioskPage page) {
     try {
-      URL url = getClass().getResource("/" + page.getValue());
-      FXMLLoader loader = new FXMLLoader(url);
-      loader.setControllerFactory(controllerFactory);
+      // Load the main layout
+      URL mainLayoutUrl = getClass().getResource("/BaseLayout.fxml");
+      FXMLLoader mainLoader = new FXMLLoader(mainLayoutUrl);
+      mainLoader.setControllerFactory(controllerFactory);
+      Scene scene = new Scene(mainLoader.load());
+      scene.getStylesheets().clear();
+      scene.getStylesheets().add(AppContext.getInstance().getCurrentTheme());
+      scene.getStylesheets().add(AppContext.getInstance().BASE_THEME);
+
+      BaseLayoutController mainLayoutController = mainLoader.getController();
+
+      // Load the page content
+      URL pageUrl = getClass().getResource("/" + page.getValue());
+      FXMLLoader pageLoader = new FXMLLoader(pageUrl);
+      pageLoader.setControllerFactory(controllerFactory);
+      Node pageContent = pageLoader.load();
+
+      // Inject content into layout
+      mainLayoutController.setContent(pageContent);
       currentPage = page;
-      Scene scene = new Scene(loader.load());
 
+      // Set the scene
       stage.setScene(scene);
-      applyFadeInTransition(scene);
-
       translationService.translate(scene.getRoot());
+      coolTransition(scene);
+
     } catch (IOException e) {
-      System.err.println("Failed to load scene: " + e.getLocalizedMessage());
-      e.printStackTrace();
+      log.error("Failed to load scene for page {}: {}", page, e.getMessage(), e);
     }
   }
+
+
 
   /** Refresh page. */
   public void refreshPage() {
@@ -116,20 +143,22 @@ public class SceneRouter {
 
       Scene scene = new Scene(loader.load());
       ProductDetailsController controller = loader.getController();
+      controller.setProduct(product);
+
+      scene.getStylesheets().clear();
+      scene.getStylesheets().add(AppContext.getInstance().getCurrentTheme());
+      scene.getStylesheets().add(AppContext.getInstance().BASE_THEME);
+
       log.debug("Product: {}", product);
-      controller.setProduct(product); // Set the product after loading the FXML
       controller.displaySides();
       controller.displayIngredients();
+
       currentPage = KioskPage.PRODUCTDESCRIPTION;
       stage.setScene(scene);
-      applyFadeInTransition(scene);
-      Platform.runLater(
-          () -> {
-            translationService.translate(scene.getRoot());
-          });
+      Platform.runLater(() -> translationService.translate(scene.getRoot()));
+
     } catch (IOException e) {
-      System.err.println("Failed to load Product Details page: " + e.getLocalizedMessage());
-      e.printStackTrace();
+      log.error("Failed to load scene for page {}: {}", KioskPage.PRODUCTDESCRIPTION, e.getMessage(), e);
     }
   }
 
@@ -166,6 +195,7 @@ public class SceneRouter {
   public void goToSettingsPage() {
     goTo(KioskPage.SETTING);
   }
+
   /**
    * Enum representing the different pages in the kiosk application. Each enum constant corresponds
    * to a specific FXML file.

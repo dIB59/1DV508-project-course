@@ -7,8 +7,7 @@
 <AnchorPane xmlns:fx="http://javafx.com/fxml"
             xmlns="http://javafx.com/javafx"
             fx:controller="org.example.features.home.HomeController"
-            prefWidth="1280.0" prefHeight="800.0"
-            style="-fx-background-color: white;">
+            >
 
     <!-- Central VBox -->
     <VBox spacing="30" alignment="CENTER"
@@ -19,13 +18,15 @@
         <!-- Welcome Title -->
         <Label text="Welcome to our Kiosk!"
                fx:id="welcomeLabel"
-               style="-fx-font-size: 44px; -fx-font-weight: bold; -fx-text-fill: #021588;" />
+               styleClass="text-primary"
+               style="-fx-font-size: 44px; -fx-font-weight: bold;" />
 
         <Region prefHeight="50"/>
 
         <!-- Subtitle -->
         <Label text="Please choose one of the options below:"
-               style="-fx-font-size: 20px; -fx-text-fill: #021588;" />
+               styleClass="text-primary"
+               style="-fx-font-size: 20px;" />
 
         <!-- Spacer between subtitle and buttons -->
         <Region prefHeight="20"/>
@@ -36,29 +37,25 @@
                     fx:id="eatInButton"
                     onAction="#goToMenuPageEatIn"
                     prefWidth="200" prefHeight="55"
-                    style="-fx-background-color: #ffc430;
-                   -fx-text-fill: #021588;
-                   -fx-font-size: 20px;
-                   -fx-font-weight: bold;
-                   -fx-background-radius: 12;" />
+                    styleClass="btn-primary"
+                    style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-background-radius: 12;" />
 
             <Button text="🛍  Takeout"
                     fx:id="takeOutButton"
                     onAction="#goToMenuPageTakeout"
                     prefWidth="200" prefHeight="55"
-                    style="-fx-background-color: #ffc400;
-                   -fx-text-fill: #021588;
-                   -fx-font-size: 20px;
-                   -fx-font-weight: bold;
-                   -fx-background-radius: 12;" />
+                    styleClass="btn-primary"
+                    style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-background-radius: 12;" />
         </VBox>
     </VBox>
-    <!-- Language Selector (Bottom Left, above Admin) -->
+
+    <!-- Language Selector (Bottom Left, above Admin) --><!-- Language Selector (Bottom Left, above Admin) -->
     <ComboBox fx:id="languageSelector"
-              prefWidth="150"
+              promptText="Select Language"
+              prefWidth="240"
               onAction="#translatePage"
-              AnchorPane.bottomAnchor="20" AnchorPane.leftAnchor="20">
-    </ComboBox>
+              styleClass="btn-primary"/>
+
 
     <!-- Admin Button -->
     <Button text="Admin"
@@ -66,10 +63,15 @@
             onAction="#goToAdminPage"
             AnchorPane.bottomAnchor="30"
             AnchorPane.rightAnchor="30"
-            style="-fx-background-color:#021588 ;
-                   -fx-text-fill: yellow;
-                   -fx-font-size: 16px;
-                   -fx-font-weight: bold;
-                   -fx-background-radius: 10;
-                   -fx-padding: 10 25;" />
+            styleClass="btn-secondary"
+            style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-background-radius: 10; -fx-padding: 10 25;"
+    />
+
+    <ToggleButton fx:id="darkModeToggle"
+                  text="Dark Mode"
+                  onAction="#toggleDarkMode"
+                  AnchorPane.topAnchor="20"
+                  AnchorPane.rightAnchor="30"
+                  layoutX="30" layoutY="30"
+                  style="-fx-background-color: #444; -fx-text-fill: white;" />
 </AnchorPane>
