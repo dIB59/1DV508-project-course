@@ -1,9 +1,11 @@
 package org.example.features.dashboard;
 
+import java.io.ByteArrayInputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import javafx.scene.image.Image;
 
 public class RestaurantSettingsRepository {
     
@@ -31,6 +33,25 @@ public class RestaurantSettingsRepository {
       e.printStackTrace();
     }
     return new RestaurantSettings();
+  }
+
+  public Image getLogo() {
+    try (PreparedStatement stmt = connection.prepareStatement(
+        "SELECT logo FROM restaurant_settings WHERE id = 1")) {
+
+      ResultSet rs = stmt.executeQuery();
+      if (rs.next()) {
+        byte[] imgBytes = rs.getBytes("logo");
+        if (imgBytes != null) {
+          ByteArrayInputStream bis = new ByteArrayInputStream(imgBytes);
+          Image logoImage = new Image(bis);
+          return logoImage;
+        }
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    throw new RuntimeException("No logo found");
   }
 
   public void saveSettings(RestaurantSettings settings) {
