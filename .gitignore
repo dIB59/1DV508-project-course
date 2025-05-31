@@ -71,5 +71,5 @@ app/.project
 app/.settings
 /.settings
 
-.env
+app/.env
 .vscode/settings.json

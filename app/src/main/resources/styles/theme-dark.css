@@ -2,9 +2,9 @@
 @import url("variables.css");
 
 * {
-    -fx-color-background: #1f2937;
+    -fx-color-background: #101827;
     -fx-color-foreground: #fef3c7;
     -fx-color-muted: #facc15;
     -fx-color-border: #52525b;
-    -fx-text-primary: #ffffff;
+    -fx-text-primary: #efeaea;
 }

@@ -12,6 +12,9 @@
             minHeight="720.0"
             minWidth="1240.0">
 
+    <top>
+        <HBox fx:id="header" alignment="CENTER_LEFT"/>
+    </top>
     <center>
         <StackPane fx:id="contentPane"/>
     </center>

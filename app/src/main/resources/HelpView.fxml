@@ -2,6 +2,7 @@
 
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
 
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
@@ -9,9 +10,12 @@
             prefHeight="400.0" prefWidth="600.0"
             style="-fx-background-color: red;">
 
-    <Label fx:id="helpLabel"
-            text="HELP"
-           style="-fx-text-fill: white; -fx-font-size: 50px; -fx-font-weight: bold;"
-           layoutX="225" layoutY="175" />
+    <StackPane prefWidth="600.0" prefHeight="400.0"
+               AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0"
+               AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
+        <Label fx:id="helpLabel"
+               text="HELP"
+               style="-fx-text-fill: white; -fx-font-size: 50px; -fx-font-weight: bold;" />
+    </StackPane>
 
 </AnchorPane>

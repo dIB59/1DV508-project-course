@@ -11,5 +11,9 @@ public class SoundUtil {
 
   public static void playClick() {
     System.out.println(clickSound.getSource());
+    if (clickSound.isPlaying()) {
+      clickSound.stop();
+    }
+    clickSound.play();
   }
 }
