@@ -32,8 +32,11 @@
                style="-fx-font-size: 16px;
                       -fx-text-fill: -fx-text-secondary;"/>
 
-        <VBox fx:id="itemListContainer" spacing="20" alignment="TOP_LEFT" prefWidth="1080" />
-
+        <VBox fx:id="itemListContainer"
+              spacing="20"
+              alignment="TOP_LEFT"
+              prefWidth="1080"
+              style="-fx-background-color: -fx-color-primary-hover;" />
         <VBox VBox.vgrow="ALWAYS"/>
 
         <!-- Total Price -->
