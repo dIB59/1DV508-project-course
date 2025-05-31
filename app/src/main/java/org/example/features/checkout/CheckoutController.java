@@ -139,7 +139,7 @@ public class CheckoutController implements Initializable {
     HBox container = new HBox();
     container.setPadding(new Insets(15, 20, 15, 20));
     container.setStyle(
-        "-fx-background-color: white; -fx-border-radius: 8; -fx-border-color: #ddd;");
+        "-fx-background-color: -fx-color-background; -fx-border-radius: 8; -fx-border-color: #ddd;");
     container.setAlignment(Pos.CENTER_LEFT);
     container.setPrefWidth(1080);
 
@@ -187,7 +187,7 @@ public class CheckoutController implements Initializable {
 
     // Style the buttons
     String buttonStyle =
-        "-fx-background-color:#1E1EA9; -fx-text-fill: white; -fx-background-radius: 6; "
+        "-fx-background-color:#1E1EA9; -fx-text-fill: -fx-color-background; -fx-background-radius: 6; "
             + "-fx-cursor: hand; -fx-font-size: 14px; -fx-font-weight: bold;";
     increaseButton.setStyle(buttonStyle);
     decreaseButton.setStyle(buttonStyle);
