@@ -126,7 +126,7 @@ public class CheckoutController implements Initializable {
       itemListContainer.getChildren().add(itemBox);
     }
 
-    totalPriceLabel.setText(String.format("Total: $%.2f", orderService.getTotal()));
+    totalPriceLabel.setText(String.format("Total: SEK%.2f", orderService.getTotal()));
   }
 
   /**
@@ -150,7 +150,7 @@ public class CheckoutController implements Initializable {
 
     // Create the price label (light gray and smaller)
     Label priceLabel =
-        new Label(String.format("$%.2f", item.getCustomizedProduct().getTotalPrice()));
+        new Label(String.format("SEK%.2f", item.getCustomizedProduct().getTotalPrice()));
     priceLabel.setFont(Font.font("Arial", 14));
     priceLabel.setTextFill(Color.valueOf("#777777"));
 
@@ -235,7 +235,7 @@ public class CheckoutController implements Initializable {
       throw new RuntimeException("Failed to get coupon from database");
     }
     disc.ifPresentOrElse(orderService::setDiscount, () -> couponNotFoundAlert().showAndWait());
-    totalPriceLabel.setText(String.format("Total: $%.2f", orderService.getTotal()));
+    totalPriceLabel.setText(String.format("Total: SEK%.2f", orderService.getTotal()));
   }
 
   private void printReceipt() {
@@ -265,14 +265,14 @@ public class CheckoutController implements Initializable {
     for (ProductQuantity item : orderService.getItems()) {
       items.add(
           item.getCustomizedProduct().getProduct().getName()
-              + " - $"
+              + " - SEK"
               + item.getCustomizedProduct().getProduct().getPrice()
               + " x "
               + item.getQuantity());
     }
     double totalPrice =
         orderService.getItems().stream().mapToDouble(ProductQuantity::getPrice).sum();
-    totalPriceLabel.setText("Total Price: $" + String.format("%.2f", totalPrice));
+    totalPriceLabel.setText("Total Price: SEK" + String.format("%.2f", totalPrice));
     totalPriceLabel.setFont(Font.font("Arial", 20));
     totalPriceLabel.setTextFill(Color.valueOf("#16a085"));
     // display items in the VBox

@@ -92,7 +92,7 @@ public class ReceiptController {
       nameAndIngredientsBox.setSpacing(5);
 
       // Right: Price
-      Label priceLabel = new Label(String.format("$%.2f", itemTotal));
+      Label priceLabel = new Label(String.format("SEK%.2f", itemTotal));
       priceLabel.getStyleClass().add("item-price");
       priceLabel.setMaxWidth(Double.MAX_VALUE);
       HBox.setHgrow(priceLabel, Priority.ALWAYS);
@@ -119,13 +119,13 @@ public class ReceiptController {
 
     EatinEatoutlabel.setText("Order Type: " + order.getType().name());
     orderIdLabel.setText("Order Number: " + order.getId());
-    totalLabel.setText(String.format("Total: $%.2f", order.getPrice()));
+    totalLabel.setText(String.format("Total: SEK%.2f", order.getPrice()));
     couponsLabel.setText(
         String.format(
             "Coupons: %s",
             order
                 .getDiscount()
-                .map(discount -> discount.getCode() + " -$" + discount.getDiscount())
+                .map(discount -> discount.getCode() + " -SEK" + discount.getDiscount())
                 .orElse("No Coupons")));
     thankYouLabel.setText("Thank you for dining with us!");
 

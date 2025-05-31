@@ -83,7 +83,7 @@
                            style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: -fx-text-primary;" />
 
                     <HBox spacing="10" alignment="CENTER_LEFT">
-                        <Label text="Soda ($1.99)" style="-fx-text-fill: -fx-text-primary;" />
+                        <Label text="Soda (SEK 1.99)" style="-fx-text-fill: -fx-text-primary;" />
                         <Spinner fx:id="sodaSpinner" />
                     </HBox>
 
