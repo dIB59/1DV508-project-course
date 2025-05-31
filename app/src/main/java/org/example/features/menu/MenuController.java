@@ -169,7 +169,7 @@ public class MenuController {
     imageView.setFitHeight(350);
 
     Label name = new Label(product.getName());
-    name.setStyle("-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: -fx-text-primary;");
+    name.setStyle("-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: -fx-color-muted;");
     name.setWrapText(true);
     name.setPadding(new Insets(0, 0, 0, 10));
     HBox.setHgrow(name, Priority.ALWAYS);
@@ -181,7 +181,7 @@ public class MenuController {
     description.setStyle(
     """
     -fx-font-size: 14px;
-    -fx-text-fill: -fx-color-border;
+    -fx-text-fill: -fx-color-muted;
     """);
 
     description.setWrapText(true);

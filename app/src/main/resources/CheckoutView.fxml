@@ -13,9 +13,7 @@
             prefWidth="900" prefHeight="1000">
 
     <VBox spacing="30" alignment="TOP_CENTER"
-          style="-fx-background-color: -fx-color-background;
-                 -fx-background-radius: 20;
-                 -fx-padding: 40;">
+          style="-fx-background-color: -fx-color-background; -fx-background-radius: 20; -fx-padding: 40;">
 
         <Label text="Checkout"
                style="-fx-font-size: 36px;
@@ -41,16 +39,13 @@
         <!-- Total Price -->
         <Label fx:id="totalPriceLabel"
                text="Total Price: $0.00"
-               style="-fx-font-size: 24px;
-                      -fx-font-weight: bold;
-                      -fx-text-fill: -fx-text-primary;"/>
+               style="-fx-font-size: 24px; -fx-font-weight: 600; -fx-text-fill: -fx-text-primary; -fx-margin-bottom: 30;"/>
 
         <HBox spacing="20" alignment="CENTER">
-            <Label text="Print Receipt?"
-                   style="-fx-font-size: 16px;
-                          -fx-text-fill: -fx-text-primary;"/>
-            <RadioButton fx:id="yesPrint" text="Yes"/>
-            <RadioButton fx:id="noPrint" text="No"/>
+            <Label text="Print Receipt?" style="-fx-font-size: 16px; -fx-text-fill: -fx-text-primary;"/>
+
+            <RadioButton fx:id="yesPrint" text="Yes" style="-fx-text-fill: -fx-text-primary;"/>
+            <RadioButton fx:id="noPrint" text="No" style="-fx-text-fill: -fx-text-primary;"/>
         </HBox>
 
         <!-- Buttons -->
