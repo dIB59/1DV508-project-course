@@ -19,6 +19,7 @@ import org.example.features.ingredients.Ingredient;
 import org.example.features.order.Order;
 import org.example.features.order.ProductQuantity;
 import org.example.features.product.Product;
+import org.example.features.translation.TranslationService;
 import org.example.members.MemberRepository;
 import org.example.shared.SceneRouter;
 
@@ -93,6 +94,8 @@ public class ReceiptController {
 
       // Right: Price
       Label priceLabel = new Label(String.format("SEK%.2f", itemTotal));
+      priceLabel.getProperties().put(TranslationService.DO_NOT_TRANSLATE, true);
+
       priceLabel.getStyleClass().add("item-price");
       priceLabel.setMaxWidth(Double.MAX_VALUE);
       HBox.setHgrow(priceLabel, Priority.ALWAYS);
@@ -120,6 +123,8 @@ public class ReceiptController {
     EatinEatoutlabel.setText("Order Type: " + order.getType().name());
     orderIdLabel.setText("Order Number: " + order.getId());
     totalLabel.setText(String.format("Total: SEK%.2f", order.getPrice()));
+    totalLabel.getProperties().put(TranslationService.DO_NOT_TRANSLATE, true);
+
     couponsLabel.setText(
         String.format(
             "Coupons: %s",

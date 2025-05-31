@@ -39,6 +39,7 @@ import org.example.features.coupons.CouponsRepository;
 import org.example.features.ingredients.Ingredient;
 import org.example.features.order.OrderService;
 import org.example.features.order.ProductQuantity;
+import org.example.features.translation.TranslationService;
 import org.example.shared.SceneRouter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -127,6 +128,8 @@ public class CheckoutController implements Initializable {
     }
 
     totalPriceLabel.setText(String.format("Total: SEK%.2f", orderService.getTotal()));
+    totalPriceLabel.getProperties().put(TranslationService.DO_NOT_TRANSLATE, true);
+
   }
 
   /**
@@ -151,6 +154,8 @@ public class CheckoutController implements Initializable {
     // Create the price label (light gray and smaller)
     Label priceLabel =
         new Label(String.format("SEK%.2f", item.getCustomizedProduct().getTotalPrice()));
+    priceLabel.getProperties().put(TranslationService.DO_NOT_TRANSLATE, true);
+
     priceLabel.setFont(Font.font("Arial", 14));
     priceLabel.setTextFill(Color.valueOf("#777777"));
 
@@ -236,6 +241,8 @@ public class CheckoutController implements Initializable {
     }
     disc.ifPresentOrElse(orderService::setDiscount, () -> couponNotFoundAlert().showAndWait());
     totalPriceLabel.setText(String.format("Total: SEK%.2f", orderService.getTotal()));
+    totalPriceLabel.getProperties().put(TranslationService.DO_NOT_TRANSLATE, true);
+
   }
 
   private void printReceipt() {
@@ -273,6 +280,8 @@ public class CheckoutController implements Initializable {
     double totalPrice =
         orderService.getItems().stream().mapToDouble(ProductQuantity::getPrice).sum();
     totalPriceLabel.setText("Total Price: SEK" + String.format("%.2f", totalPrice));
+    totalPriceLabel.getProperties().put(TranslationService.DO_NOT_TRANSLATE, true);
+
     totalPriceLabel.setFont(Font.font("Arial", 20));
     totalPriceLabel.setTextFill(Color.valueOf("#16a085"));
     // display items in the VBox

@@ -175,6 +175,8 @@ public class MenuController {
     HBox.setHgrow(name, Priority.ALWAYS);
 
     Label price = new Label(String.format("SEK%.2f", product.getPrice()));
+    price.getProperties().put(TranslationService.DO_NOT_TRANSLATE, true);
+
     price.setStyle("-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: -fx-color-muted;");
 
     Label description = new Label(product.getDescription());
