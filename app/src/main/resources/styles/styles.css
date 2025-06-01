@@ -39,6 +39,10 @@
     -fx-text-fill: white;
 }
 
+.button:hover {
+    -fx-background-color: derive(-fx-color-muted, 20%);
+}
+
 .btn-constructive {
     -fx-background-color: -fx-color-constructive;
     -fx-text-fill: white;
