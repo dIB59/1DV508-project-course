@@ -19,7 +19,7 @@ public class Database {
 
   private static Database instance;
   private final String URL =
-      "jdbc:mysql://localhost:3307/kioske?useSSL=false&allowPublicKeyRetrieval=true";
+      "jdbc:mysql://localhost:3306/kioske?useSSL=false&allowPublicKeyRetrieval=true";
   private final String USER = "root";
   private final String PASSWORD = "root";
 

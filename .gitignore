@@ -70,6 +70,7 @@ app/.classpath
 app/.project
 app/.settings
 /.settings
+app/bin
 
 app/.env
 .vscode/settings.json
