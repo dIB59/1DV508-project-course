@@ -72,7 +72,7 @@ public class AppControllerFactory implements Callback<Class<?>, Object> {
   public Object call(Class<?> controllerClass) {
     return switch (controllerClass.getSimpleName()) {
       case "HomeController" ->
-          new HomeController(sceneRouter, orderService, getTranslationService());
+          new HomeController(sceneRouter, orderService, getTranslationService(), getRestaurantSettingsRepository());
       case "MenuController" ->
           new MenuController(getProductRepository(), sceneRouter, getTranslationService());
       case "CheckoutController" ->
@@ -97,7 +97,7 @@ public class AppControllerFactory implements Callback<Class<?>, Object> {
           new EditTranslationController(
               sceneRouter, getTranslationRepository(), getTranslationService());
       case "SettingsController" -> new SettingsController(connection, sceneRouter);
-      case "BaseLayoutController" -> new BaseLayoutController(getRestaurantSettingsRepository(), sceneRouter);
+      case "BaseLayoutController" -> new BaseLayoutController();
       default ->
           throw new IllegalArgumentException(
               "No constructor found for class: " + controllerClass.getSimpleName());

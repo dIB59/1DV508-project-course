@@ -6,10 +6,15 @@ import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import org.example.AppContext;
+import org.example.features.dashboard.RestaurantSettingsRepository;
 import org.example.features.order.Order;
 import org.example.features.order.OrderService;
 import org.example.features.translation.Language;
@@ -27,21 +32,27 @@ public class HomeController {
   private final SceneRouter sceneRouter;
   private final OrderService orderService;
   private final TranslationService translationService;
+  private final RestaurantSettingsRepository repository;
+
   @FXML private Label welcomeLabel;
   @FXML private ComboBox<Language> languageSelector;
   @FXML private ToggleButton darkModeToggle;
+  @FXML private HBox header;
 
 
   public HomeController(
-      SceneRouter sceneRouter, OrderService orderService, TranslationService translationService) {
+      SceneRouter sceneRouter, OrderService orderService, TranslationService translationService,
+      RestaurantSettingsRepository repository) {
     this.sceneRouter = sceneRouter;
     this.orderService = orderService;
     this.translationService = translationService;
+    this.repository = repository;
   }
 
   @FXML
   public void initialize() {
     log.debug(Arrays.toString(Language.values()));
+    addLogo();
     languageSelector.getItems().setAll(Language.values());
     languageSelector
         .getSelectionModel()
@@ -55,6 +66,18 @@ public class HomeController {
       }
     });
   }
+
+
+  private void addLogo() {
+    var logo = repository.getLogo();
+    ImageView logoView = new ImageView(logo);
+    logoView.setFitHeight(70);
+    logoView.setPreserveRatio(true);
+    Region spacer = new Region();
+    HBox.setHgrow(spacer, Priority.ALWAYS);
+    header.getChildren().addAll(logoView, spacer);
+  }
+
 
   private void addAdminShortcut(Scene scene) {
     KeyCombination adminShortcut = new KeyCodeCombination(
