@@ -44,9 +44,20 @@
     -fx-text-fill: white;
 }
 
-/* Combox box*/
-.bg-primary.combo-box {
-    -fx-background-color: -fx-color-background;
+.combo-box {
+    -fx-background-color: -fx-color-muted;
     -fx-text-fill: -fx-text-primary;
-    -fx-border-color: -fx-color-border;
+}
+
+.combo-box .text {
+    -fx-fill: -fx-text-primary;
+}
+
+.combo-box .list-cell {
+    -fx-text-fill: -fx-text-primary;
+    -fx-background-color: -fx-color-muted;
+}
+
+.combo-box .list-view {
+    -fx-control-inner-background: -fx-color-muted;
 }

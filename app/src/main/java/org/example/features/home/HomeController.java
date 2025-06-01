@@ -57,8 +57,6 @@ public class HomeController {
     languageSelector
         .getSelectionModel()
         .select(AppContext.getInstance().getLanguage()); // Default selection
-    languageSelector.getStyleClass()
-        .addAll("text-primary", "border-muted", "bg-background", "round-md", "px-2");
     // Setup keyboard shortcut after scene is ready
     welcomeLabel.sceneProperty().addListener((obs, oldScene, newScene) -> {
       if (newScene != null) {
@@ -121,15 +119,14 @@ public class HomeController {
     orderService.setType(Order.Type.EAT_IN);
     sceneRouter.goToMenuPage();
   }
+
   @FXML
   public void toggleDarkMode() {
     Scene scene = darkModeToggle.getScene();
+    scene.getStylesheets().remove(AppContext.getInstance().getCurrentTheme());
     AppContext.getInstance().setDarkMode(darkModeToggle.isSelected());
-    scene.getStylesheets().clear();
     scene.getStylesheets().add(AppContext.getInstance().getCurrentTheme());
-    scene.getStylesheets().add(AppContext.getInstance().BASE_THEME);
   }
-
 
   public void goToAdminPage() {
     log.debug("Navigating to admin login page...");

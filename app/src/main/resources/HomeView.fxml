@@ -54,7 +54,9 @@
               promptText="Select Language"
               prefWidth="240"
               onAction="#translatePage"
-              styleClass="btn-primary"/>
+              AnchorPane.bottomAnchor="0"
+              AnchorPane.leftAnchor="0"
+              styleClass="combo-box"/>
 
 
     <!-- Admin Button -->
