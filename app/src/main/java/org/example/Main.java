@@ -16,10 +16,8 @@ public class Main {
 }
 
 /*
- * bugs that need to be fixed:
- * -menu page images are slightly misaligned
- * -change menu page images to be proper size
- * -remove the go back buttons for a back arrow with the previous pages name next to it
- * -recipt does not scroll
- * -recipt does not have syling
+ * border on the checkout page 
+ * text on member login, member stars
+ * admin page login
+ * 
  */
