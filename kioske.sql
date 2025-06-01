@@ -42,7 +42,7 @@ VALUES
 
     ('Roasted Porg Delight', 'Chargrilled Porg, Chewie-style, as seen on Ahch-To.', 8.99,
      LOAD_FILE('/var/lib/mysql-files/assets/disney-galaxys-edge-porg-on-a-stick.jpg'), 'assets/disney-galaxys-edge-porg-on-a-stick.jpg',
-     LOAD_FILE('/var/lib/mysql-files/assets/Brr_brr_patapim.mp3'), '🔥 HOT HOT HOT', FALSE),
+     LOAD_FILE('/var/lib/mysql-files/assets/Brr_brr_patapim.mp3'), '🔥 Yodas fav', FALSE),
 
     ('Crispy Nuna Legs', 'Deep-fried Nuna bird drumsticks – a Coruscant street favorite.', 4.99,
      LOAD_FILE('/var/lib/mysql-files/assets/Roast_nuna-ezgif.com-webp-to-jpg-converter.jpg'), 'assets/Roast_nuna-ezgif.com-webp-to-jpg-converter.jpg',
@@ -54,7 +54,7 @@ VALUES
 
     ('Chewie’s Yobacca Noodles', 'Savory, chewy noodles inspired by the mighty Wookiee.', 2.99,
      LOAD_FILE('/var/lib/mysql-files/assets/QEAPO1jv3cTCP4qDlNa3Tt0KkjtJw7dt-yW0xMgPzNo-ezgif.com-webp-to-jpg-converter.jpg'), 'assets/QEAPO1jv3cTCP4qDlNa3Tt0KkjtJw7dt-yW0xMgPzNo-ezgif.com-webp-to-jpg-converter.jpg',
-     LOAD_FILE('/var/lib/mysql-files/assets/cocosino-rhino.mp3'), NULL, FALSE),
+     LOAD_FILE('/var/lib/mysql-files/assets/cocosino-rhino.mp3'), 'Chewbacca recommends', FALSE),
 
     ('Meiloorun Medley', 'Juicy fruit platter featuring Hera’s favorite – the Meiloorun.', 3.99,
      LOAD_FILE('/var/lib/mysql-files/assets/images (1).jpeg'), 'assets/images (1).jpeg',
