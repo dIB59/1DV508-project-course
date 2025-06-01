@@ -8,7 +8,6 @@
             xmlns="http://javafx.com/javafx"
             fx:controller="org.example.features.home.HomeController"
             >
-
     <!-- Central VBox -->
     <VBox spacing="30" alignment="CENTER"
           AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0"
@@ -21,12 +20,16 @@
                styleClass="text-primary"
                style="-fx-font-size: 44px; -fx-font-weight: bold;" />
 
+        <ImageView fx:id="logo"
+                   fitWidth="120"
+                   fitHeight="120"/>
+
         <Region prefHeight="50"/>
 
         <!-- Subtitle -->
         <Label text="Please choose one of the options below:"
                styleClass="text-primary"
-               style="-fx-font-size: 20px;" />
+               style="-fx-font-size: 20px; -fx-text-fill: -fx-color-muted" />
 
         <!-- Spacer between subtitle and buttons -->
         <Region prefHeight="20"/>
@@ -54,18 +57,9 @@
               promptText="Select Language"
               prefWidth="240"
               onAction="#translatePage"
-              styleClass="btn-primary"/>
-
-
-    <!-- Admin Button -->
-    <Button text="Admin"
-            fx:id="adminButton"
-            onAction="#goToAdminPage"
-            AnchorPane.bottomAnchor="30"
-            AnchorPane.rightAnchor="30"
-            styleClass="btn-secondary"
-            style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-background-radius: 10; -fx-padding: 10 25;"
-    />
+              AnchorPane.bottomAnchor="0"
+              AnchorPane.leftAnchor="0"
+              styleClass="combo-box"/>
 
     <ToggleButton fx:id="darkModeToggle"
                   text="Dark Mode"

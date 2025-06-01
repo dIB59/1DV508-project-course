@@ -2,9 +2,18 @@
 @import url("variables.css");
 
 * {
-    -fx-color-background: #ffffff;
-    -fx-color-foreground: #1f2937;
-    -fx-color-muted: #43484c;
-    -fx-color-border: #d1d5db;
-    -fx-text-primary: #100f0f;
+    -fx-color-background: #f9fafb;        /* Soft light gray background */
+    -fx-color-foreground: #6b87ce;        /* Deep neutral for text/icons */
+    -fx-color-muted: #3b82f6;             /* Vibrant but clean blue accent */
+    -fx-color-muted-hover: #60a5fa;       /* Lighter blue for hover states */
+    -fx-color-border: #e5e7eb;            /* Subtle gray border */
+    -fx-text-primary: #1f2937;            /* Darker readable text */
+    -fx-text-secondary: #6b7280;          /* Softer secondary text */
+
+    /* Semantic colors */
+    -fx-color-destructive: #ab1b29;    /* Bootstrap-like red */
+    -fx-color-destructive-hover: #64171f;  /* Darker red for hover */
+
+    -fx-color-constructive: #1b7530;   /* Bootstrap-like green */
+    -fx-color-constructive-hover: #134b20; /* Darker green for hover */
 }

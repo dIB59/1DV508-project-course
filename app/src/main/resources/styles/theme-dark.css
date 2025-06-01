@@ -3,8 +3,16 @@
 
 * {
     -fx-color-background: #101827;
-    -fx-color-foreground: #fef3c7;
+    -fx-color-foreground: #4b5667;
     -fx-color-muted: #306caf;
     -fx-color-border: #52525b;
-    -fx-text-primary: #efeaea;
+    -fx-text-primary: #ffffff;
+    -fx-text-secondary: #b7d8f0;
+
+    /* Semantic colors */
+    -fx-color-destructive: #c21414;    /* Softer red for dark bg */
+    -fx-color-destructive-hover: #480707; /* Darker on hover */
+
+    -fx-color-constructive: #085f08;   /* Softer green for dark */
+    -fx-color-constructive-hover: #054005; /* Darker on hover */
 }

@@ -28,27 +28,42 @@ public class CouponsController {
   public void initialize() {
     for (Coupons coupons : getCouponsList()) {
       Button deleteButton = new Button("Delete coupon");
+      deleteButton.setStyle(
+          "-fx-background-color: -fx-color-destructive; " +
+              "-fx-text-fill: white; " +
+              "-fx-background-radius: 6; " +
+              "-fx-padding: 6 14; " +
+              "-fx-font-size: 13px;"
+      );
 
       Label code = new Label(coupons.getCode());
       code.getProperties().put(TranslationService.DO_NOT_TRANSLATE, true);
-      Label discount = new Label(String.format("%.0f", coupons.getDiscount() * 100));
-      // add property to label top doNotTranslate
-      VBox coupon = new VBox(code, discount, deleteButton);
-      coupon.setSpacing(5);
-      coupon.setStyle("-fx-padding: 10; -fx-border-color: #ccc; -fx-border-radius: 5;");
+      code.setStyle("-fx-text-fill: -fx-text-primary; -fx-font-size: 16px; -fx-font-weight: bold;");
 
-      deleteButton.setOnAction(
-          event -> {
-            try {
-              couponsRepository.delete(coupons.getCode());
-            } catch (SQLException e) {
-              throw new RuntimeException(e);
-            }
-            couponsList.getChildren().remove(coupon);
-          });
+      Label discount = new Label(String.format("%.0f%%", coupons.getDiscount() * 100));
+      discount.setStyle("-fx-text-fill: -fx-text-secondary; -fx-font-size: 14px;");
+
+      VBox coupon = new VBox(code, discount, deleteButton);
+      coupon.setSpacing(8);
+      coupon.setStyle(
+          "-fx-padding: 14; " +
+              "-fx-background-color: rgba(255,255,255,0.04); " +  // light contrast background for dark mode
+              "-fx-background-radius: 8;"
+      );
+
+      deleteButton.setOnAction(event -> {
+        try {
+          couponsRepository.delete(coupons.getCode());
+        } catch (SQLException e) {
+          throw new RuntimeException(e);
+        }
+        couponsList.getChildren().remove(coupon);
+      });
+
       couponsList.getChildren().add(coupon);
     }
   }
+
 
   /**
    * Go to dashboard page.
@@ -108,5 +123,22 @@ public class CouponsController {
     alert.setHeaderText(null);
     alert.setContentText("Your cart is empty. Please add items before proceeding.");
     alert.showAndWait();
+  }
+
+  public void goToProductsPage(ActionEvent actionEvent) {
+    sceneRouter.goToDashboardPage();
+  }
+
+  public void goToLanguagesPage(ActionEvent actionEvent) {
+    sceneRouter.goToLanguagesPage();
+  }
+
+
+  public void goToSettingsPage(ActionEvent actionEvent) {
+    sceneRouter.goToSettingsPage();
+  }
+
+  public void goToHomePage(ActionEvent actionEvent) {
+    sceneRouter.goToHomePage();
   }
 }

@@ -100,9 +100,9 @@ public class DashboardController {
     card.setSpacing(0);
     card.setPrefHeight(140);
     card.setStyle(
-        "-fx-background-color: #f9f9f9;"
+        "-fx-background-color: -fx-color-background;"
             + " -fx-background-radius: 12;"
-            + " -fx-border-color: #cccccc;"
+            + " -fx-border-color: -fx-color-border;"
             + " -fx-border-radius: 0 20 20 0;");
 
     // Image setup
@@ -133,40 +133,41 @@ public class DashboardController {
     infoBox.setPadding(new Insets(10));
 
     Label nameLabel = new Label(product.getName());
-    nameLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: black;");
+    nameLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: -fx-text-primary;");
 
     Label priceLabel = new Label(String.format("SEK%.2f", product.getPrice()));
-    priceLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: #777777;");
+    priceLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: -fx-text-secondary;");
 
     infoBox.getChildren().addAll(nameLabel, priceLabel);
 
     HBox spacer = new HBox();
     HBox.setHgrow(spacer, Priority.ALWAYS);
 
-    // Edit Button (top half)
+    // Edit Button (constructive style)
     Button editButton = new Button();
     Text editIcon = new Text("✎");
     editIcon.setFont(Font.font(20));
     editIcon.setFill(Color.WHITE);
     editButton.setGraphic(editIcon);
     editButton.setStyle(
-        "-fx-background-color: black; -fx-text-fill: white;"
+        "-fx-background-color: -fx-color-constructive;"
+            + " -fx-text-fill: white;"
             + " -fx-background-radius: 0 10 0 0;"
             + " -fx-cursor: hand;");
     editButton.setMinHeight(70);
     editButton.setMaxHeight(70);
     editButton.setMaxWidth(Double.MAX_VALUE);
-    // Call the specific editProduct method
     editButton.setOnAction(e -> editProduct(product));
 
-    // Delete Button (bottom half) with bin icon
+    // Delete Button (destructive style)
     Button deleteButton = new Button();
     Text binIcon = new Text("X");
     binIcon.setFont(Font.font(18));
     binIcon.setFill(Color.WHITE);
     deleteButton.setGraphic(binIcon);
     deleteButton.setStyle(
-        "-fx-background-color: #6f1515; -fx-text-fill: white;"
+        "-fx-background-color: -fx-color-destructive;"
+            + " -fx-text-fill: white;"
             + " -fx-background-radius: 0 0 10 0;"
             + " -fx-cursor: hand;");
     deleteButton.setMinHeight(70);
@@ -182,16 +183,17 @@ public class DashboardController {
           }
         });
 
-    // Combine edit and delete into a VBox
+    // Combine edit and delete buttons into a VBox
     VBox actionBox = new VBox();
     actionBox.setPrefHeight(140);
-    actionBox.setPrefWidth(50); // or adjust as needed
+    actionBox.setPrefWidth(50); // Adjust if needed
     actionBox.getChildren().addAll(editButton, deleteButton);
 
     // Assemble full card
     card.getChildren().addAll(imageContainer, infoBox, spacer, actionBox);
     return card;
   }
+
 
   /**
    * Displays a dialog for creating or editing a product. This method is now truly generic and does

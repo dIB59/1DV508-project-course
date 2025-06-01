@@ -7,8 +7,11 @@ import javafx.fxml.FXML;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -64,23 +67,54 @@ public class MenuController {
   }
 
   private void populateTagButtons() {
-    Button allButton = new Button("All");
+    tagButtonContainer.getChildren().clear();
+
+    ToggleGroup tagToggleGroup = new ToggleGroup();
+    double buttonWidth = 120; // Set desired fixed width
+
+    ToggleButton allButton = new ToggleButton("All");
+    allButton.setToggleGroup(tagToggleGroup);
+    allButton.setPrefWidth(buttonWidth);
     styleTagButton(allButton, true);
     allButton.setOnAction(e -> displayAndTranslate(allProducts));
     tagButtonContainer.getChildren().add(allButton);
 
     List<Tag> tags = productRepository.findAllTags();
     for (Tag tag : tags) {
-      Button tagButton = new Button(tag.getName());
+      ToggleButton tagButton = new ToggleButton(tag.getName());
+      tagButton.setToggleGroup(tagToggleGroup);
+      tagButton.setPrefWidth(buttonWidth);
       styleTagButton(tagButton, false);
-      tagButton.setOnAction(
-          e -> {
-            List<Product> filtered = filterProductsByTag(tag.getName());
-            displayAndTranslate(filtered);
-          });
+
+      tagButton.setOnAction(e -> {
+        List<Product> filtered = filterProductsByTag(tag.getName());
+        displayAndTranslate(filtered);
+      });
+
       tagButtonContainer.getChildren().add(tagButton);
     }
+
+    tagToggleGroup.selectedToggleProperty().addListener((obs, oldToggle, newToggle) -> {
+      for (javafx.scene.Node node : tagButtonContainer.getChildren()) {
+        if (node instanceof ToggleButton) {
+          styleTagButton((ToggleButton) node, node == newToggle);
+        }
+      }
+    });
+
+    allButton.setSelected(true);
   }
+
+  private void styleTagButton(ToggleButton button, boolean active) {
+    if (active) {
+      button.setStyle("-fx-background-color: #3b82f6; -fx-text-fill: white;");
+    } else {
+      button.setStyle("-fx-background-color: transparent; -fx-text-fill: #3b82f6; -fx-border-color: #3b82f6; -fx-border-radius: 5; -fx-padding: 5 15;");
+    }
+    button.setCursor(Cursor.HAND);
+  }
+
+
 
   private List<Product> filterProductsByTag(String tagName) {
     return allProducts.stream()

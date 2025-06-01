@@ -2,6 +2,7 @@ package org.example.features.dashboard;
 
 import java.sql.Connection;
 
+import javafx.event.ActionEvent;
 import org.example.shared.SceneRouter;
 
 import javafx.fxml.FXML;
@@ -86,5 +87,19 @@ public class SettingsController {
     }
 
 
-    
-}   
+    public void goToProductsPage(ActionEvent actionEvent) {
+        sceneRouter.goToDashboardPage();
+    }
+
+    public void goToLanguagesPage(ActionEvent actionEvent) {
+        sceneRouter.goToLanguagesPage();
+    }
+
+    public void goToHomePage(ActionEvent actionEvent) {
+        sceneRouter.goToHomePage();
+    }
+
+    public void goToCouponsPage(ActionEvent actionEvent) {
+        sceneRouter.goToCouponsPage();
+    }
+}

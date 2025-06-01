@@ -1,8 +1,11 @@
 package org.example;
 
 import javafx.scene.media.AudioClip;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class SoundUtil {
+  private static final Logger log = LoggerFactory.getLogger(SoundUtil.class);
   private static final AudioClip clickSound =
       new AudioClip(
           SoundUtil.class
@@ -10,7 +13,7 @@ public class SoundUtil {
               .toExternalForm());
 
   public static void playClick() {
-    System.out.println(clickSound.getSource());
+    log.debug(clickSound.getSource());
     if (clickSound.isPlaying()) {
       clickSound.stop();
     }

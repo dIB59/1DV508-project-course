@@ -3,6 +3,7 @@ package org.example.features.product;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -207,12 +208,7 @@ public class Product implements Identifiable<Integer> {
   }
 
   public void addIngredient(Ingredient ingredient, int quantity) {
-    if (defaultIngredients.containsKey(ingredient)) {
-        int currentQty = defaultIngredients.get(ingredient);
-        defaultIngredients.put(ingredient, currentQty + quantity);
-    } else {
-        defaultIngredients.put(ingredient, quantity);
-    }
+    defaultIngredients.merge(ingredient, quantity, Integer::sum);
   }
 
   @Override
@@ -225,13 +221,16 @@ public class Product implements Identifiable<Integer> {
 
   private byte[] readImageBytesFromFile(String imageUrl) {
     if (imageUrl == null || imageUrl.isBlank()) return new byte[0];
-    try {
-      Path path = Paths.get(URI.create(imageUrl));
-      return Files.readAllBytes(path);
-    } catch (IOException | IllegalArgumentException e) {
-      log.error("Error reading image file: {}", e.getMessage());
-      log.error("Image URL: {}", imageUrl);
+    try (InputStream is = getClass().getClassLoader().getResourceAsStream(imageUrl)) {
+      if (is == null) {
+        log.error("Image not found in resources: {}", imageUrl);
+        return new byte[0];
+      }
+      return is.readAllBytes();
+    } catch (IOException e) {
+      log.error("Error reading image file from resources: {}, Image URL {}", e.getMessage(), imageUrl);
       return new byte[0];
     }
   }
+
 }
