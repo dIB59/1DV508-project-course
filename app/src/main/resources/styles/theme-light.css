@@ -9,4 +9,11 @@
     -fx-color-border: #e5e7eb;            /* Subtle gray border */
     -fx-text-primary: #1f2937;            /* Darker readable text */
     -fx-text-secondary: #6b7280;          /* Softer secondary text */
+
+    /* Semantic colors */
+    -fx-color-destructive: #ab1b29;    /* Bootstrap-like red */
+    -fx-color-destructive-hover: #64171f;  /* Darker red for hover */
+
+    -fx-color-constructive: #1b7530;   /* Bootstrap-like green */
+    -fx-color-constructive-hover: #134b20; /* Darker green for hover */
 }

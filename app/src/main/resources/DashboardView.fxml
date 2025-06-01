@@ -80,12 +80,20 @@
                                -fx-font-size: 14px;
                                -fx-cursor: hand;" />
 
-                <ScrollPane fitToWidth="true" fitToHeight="true"
-                            maxHeight="Infinity" maxWidth="Infinity">
-                    <VBox fx:id="productList"
+                <ScrollPane fitToWidth="true" fitToHeight="true" maxHeight="Infinity" maxWidth="Infinity"
+                            style="
+                -fx-background-color: transparent;
+                -fx-background-insets: 0;
+                -fx-border-width: 0;
+                -fx-padding: 0;
+                -fx-hbar-policy: never;
+                -fx-vbar-policy: never;
+                ">
+
+                <VBox fx:id="productList"
                           spacing="20"
                           alignment="TOP_CENTER"
-                          style="-fx-padding: 20;" />
+                          style="-fx-padding: 20; -fx-background-color: -fx-color-background;" />
                 </ScrollPane>
             </VBox>
         </center>
