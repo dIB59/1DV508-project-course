@@ -35,6 +35,7 @@ import org.example.features.ingredients.IngredientsRepository;
 import org.example.features.product.Product;
 import org.example.features.product.ProductRepository;
 import org.example.features.product.Tag;
+import org.example.features.translation.TranslationService;
 import org.example.shared.SceneRouter;
 
 public class DashboardController {
@@ -134,7 +135,7 @@ public class DashboardController {
     Label nameLabel = new Label(product.getName());
     nameLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: black;");
 
-    Label priceLabel = new Label(String.format("$%.2f", product.getPrice()));
+    Label priceLabel = new Label(String.format("SEK%.2f", product.getPrice()));
     priceLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: #777777;");
 
     infoBox.getChildren().addAll(nameLabel, priceLabel);
