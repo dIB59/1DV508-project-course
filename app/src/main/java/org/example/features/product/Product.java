@@ -208,12 +208,7 @@ public class Product implements Identifiable<Integer> {
   }
 
   public void addIngredient(Ingredient ingredient, int quantity) {
-    if (defaultIngredients.containsKey(ingredient)) {
-        int currentQty = defaultIngredients.get(ingredient);
-        defaultIngredients.put(ingredient, currentQty + quantity);
-    } else {
-        defaultIngredients.put(ingredient, quantity);
-    }
+    defaultIngredients.merge(ingredient, quantity, Integer::sum);
   }
 
   @Override
