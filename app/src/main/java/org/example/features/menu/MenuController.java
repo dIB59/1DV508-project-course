@@ -242,11 +242,9 @@ public class MenuController {
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0, 0, 0);
     """);
 
-
     card.setOnMouseClicked(
         e -> {
           sceneRouter.goToProductDetailsPage(product);
-          SoundUtil.playClick();
         });
 
     if (product.getSpecialLabel() != null && !product.getSpecialLabel().isEmpty()) {

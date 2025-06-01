@@ -10,9 +10,13 @@ import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.ButtonBase;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import javafx.util.Duration;
+import org.example.SoundUtil;
 import org.example.features.order.OrderService;
 import org.example.features.product.Product;
 import org.example.features.product.ProductDetailsController;
@@ -42,6 +46,28 @@ public class SceneRouter {
     this.controllerFactory = new AppControllerFactory(orderService, this);
     this.translationService = translationService;
   }
+
+  private void injectClickSound(Scene scene) {
+    scene.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
+      Node node = event.getTarget() instanceof Node ? (Node) event.getTarget() : null;
+
+      // Walk up until we find a parent that is a ButtonBase or an ImageView
+      while (node != null &&
+              !(node instanceof ButtonBase) &&
+              !(node instanceof ImageView)) {
+        node = node.getParent();
+      }
+
+      switch (node) {
+        case ButtonBase b -> SoundUtil.playClick();
+        case ImageView img -> SoundUtil.playClick(); // If ImageView is clickable
+          case null -> {}
+          default -> {}
+      }
+    });
+  }
+
+
 
   // Fade in animation
   private void applyFadeInTransition(Scene scene) {
@@ -83,6 +109,7 @@ public class SceneRouter {
       // Inject content into layout
       mainLayoutController.setContent(pageContent);
       currentPage = page;
+      injectClickSound(scene);
 
       // Set the scene
       stage.setScene(scene);
@@ -149,7 +176,7 @@ public class SceneRouter {
       scene.getStylesheets().clear();
       scene.getStylesheets().add(AppContext.getInstance().getCurrentTheme());
       scene.getStylesheets().add(AppContext.getInstance().BASE_THEME);
-
+      injectClickSound(scene);
       log.debug("Product: {}", product);
       controller.displaySides();
       controller.displayIngredients();

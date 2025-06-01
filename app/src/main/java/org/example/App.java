@@ -39,6 +39,7 @@ public class App extends Application {
 
     SceneRouter router = new SceneRouter(primaryStage, orderService, getTranslationService());
 
+
     primaryStage.setTitle("JavaFX with MySQL");
     router.goTo(SceneRouter.KioskPage.HOME);
     primaryStage.setMaximized(true);
