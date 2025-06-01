@@ -51,7 +51,7 @@ public class RestaurantSettingsRepository {
     } catch (SQLException e) {
       e.printStackTrace();
     }
-    throw new RuntimeException("No logo found");
+    return new Image(getClass().getResourceAsStream("/assets/artworks-000039862546-2f71w1-t500x500.jpg"));
   }
 
   public void saveSettings(RestaurantSettings settings) {

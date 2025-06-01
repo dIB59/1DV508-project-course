@@ -74,7 +74,7 @@
                       alignment="TOP_CENTER"
                       prefWidth="300"
                       style="-fx-padding: 20;
-                             -fx-background-color: -fx-color-foreground;
+                             -fx-background-color: -fx-color-border;
                              -fx-background-radius: 15;
                              -fx-border-color: -fx-color-border;
                              -fx-border-width: 2;
@@ -96,7 +96,7 @@
                       alignment="TOP_CENTER"
                       prefWidth="300"
                       style="-fx-padding: 20;
-                             -fx-background-color: -fx-color-foreground;
+                             -fx-background-color: -fx-color-border;
                              -fx-background-radius: 15;
                              -fx-border-color: -fx-color-border;
                              -fx-border-width: 2;

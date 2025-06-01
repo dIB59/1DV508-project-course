@@ -142,20 +142,18 @@ public class CheckoutController implements Initializable {
     HBox container = new HBox();
     container.setPadding(new Insets(15, 20, 15, 20));
     container.setStyle(
-        "-fx-background-color: white; -fx-border-radius: 8; -fx-border-color: #ddd;");
+        "-fx-background-color: -fx-color-background; -fx-border-radius: 8; -fx-border-color: #ddd;");
     container.setAlignment(Pos.CENTER_LEFT);
     container.setPrefWidth(1080);
 
-    // Create the item name label (bold and navy)
+    // Create the item name label
     Label nameLabel = new Label(item.getCustomizedProduct().getProduct().getName() + " x" + item.getQuantity());
     nameLabel.setFont(Font.font("Arial", javafx.scene.text.FontWeight.BOLD, 20));
-    nameLabel.setTextFill(Color.valueOf("#1E1EA9"));
-
+    nameLabel.setStyle("-fx-text-fill: -fx-text-primary;");
     // Create the price label (light gray and smaller)
     Label priceLabel =
-        new Label(String.format("SEK%.2f", item.getCustomizedProduct().getTotalPrice()));
-    priceLabel.getProperties().put(TranslationService.DO_NOT_TRANSLATE, true);
-
+        new Label(String.format("$%.2f", item.getCustomizedProduct().getTotalPrice()));
+    priceLabel.setStyle("-fx-text-fill:-fx-text-secondary;");
     priceLabel.setFont(Font.font("Arial", 14));
     priceLabel.setTextFill(Color.valueOf("#777777"));
 
@@ -178,6 +176,7 @@ public class CheckoutController implements Initializable {
         }
 
         Label IngredientLabel = new Label(ingLabel);
+        IngredientLabel.setStyle("-fx-text-fill: -fx-text-primary;");
         IngredientLabel.setFont(Font.font("Arial", javafx.scene.text.FontWeight.BOLD, 12));
         ingredientDiffBox.getChildren().add(IngredientLabel);
       }
@@ -190,9 +189,10 @@ public class CheckoutController implements Initializable {
     Button increaseButton = new Button("+");
     Button decreaseButton = new Button("-");
 
+
     // Style the buttons
     String buttonStyle =
-        "-fx-background-color:#1E1EA9; -fx-text-fill: white; -fx-background-radius: 6; "
+        "-fx-background-color: -fx-color-primary-hover; -fx-text-fill: -fx-color-border; -fx-background-radius: 6; "
             + "-fx-cursor: hand; -fx-font-size: 14px; -fx-font-weight: bold;";
     increaseButton.setStyle(buttonStyle);
     decreaseButton.setStyle(buttonStyle);

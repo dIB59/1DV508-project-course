@@ -133,6 +133,7 @@ public class SceneRouter {
   /** Go to checkout page. */
   public void goToCheckoutPage() {
     goTo(KioskPage.CHECKOUT);
+
   }
 
   public void goToProductDetailsPage(Product product) {
