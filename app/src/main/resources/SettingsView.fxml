@@ -1,39 +1,101 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextArea?>
-<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
+<AnchorPane xmlns:fx="http://javafx.com/fxml"
+            xmlns="http://javafx.com/javafx"
             fx:controller="org.example.features.dashboard.SettingsController"
-            prefWidth="600.0" prefHeight="500.0">
+            style="-fx-background-color: -fx-color-background;
+                   -fx-min-width: 1920px;
+                   -fx-min-height: 1080px;">
 
-    <VBox alignment="TOP_LEFT" spacing="15.0" AnchorPane.topAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0">
-        <Label text="Restaurant Settings" style="-fx-font-size: 20px; -fx-font-weight: bold;" />
+    <BorderPane AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"
+                AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
 
-        <Label text="Restaurant Name:" />
-        <TextField fx:id="nameField" promptText="Enter name..." />
+        <!-- Sidebar Navigation -->
+        <left>
+            <VBox spacing="10.0" alignment="TOP_CENTER" prefWidth="140.0"
+                  style="-fx-background-color: -fx-color-foreground; -fx-padding: 20;">
+                <Label text="Kiosk"
+                       style="-fx-text-fill: -fx-text-primary;
+                              -fx-font-size: 22px;
+                              -fx-font-weight: bold;" />
 
-        <Label text="Address:" />
-        <TextArea fx:id="addressField" promptText="Enter address..." prefRowCount="4" wrapText="true" />
+                <Button text="Products"
+                        onAction="#goToProductsPage"
+                        prefWidth="120.0"
+                        style="-fx-background-color: transparent;
+                               -fx-text-fill: -fx-text-primary;
+                               -fx-font-size: 14px;
+                               -fx-cursor: hand;" />
 
-        <Label text = "Contact:"/>
-        <TextArea fx:id = "contactField" promptText = "Enter Contact...." prefRowCount="4" wrapText = "true" />
+                <Button text="Coupons"
+                        onAction="#goToCouponsPage"
+                        prefWidth="120.0"
+                        style="-fx-background-color: transparent;
+                               -fx-text-fill: -fx-text-primary;
+                               -fx-font-size: 14px;
+                               -fx-cursor: hand;" />
 
-        <Label text="Logo Preview:" />
-        <ImageView fx:id="logoPreview" fitHeight="150" fitWidth="150" preserveRatio="true" />
+                <Button text="Languages"
+                        onAction="#goToLanguagesPage"
+                        prefWidth="120.0"
+                        style="-fx-background-color: transparent;
+                               -fx-text-fill: -fx-text-primary;
+                               -fx-font-size: 14px;
+                               -fx-cursor: hand;" />
 
-        <Button text="Change Logo" onAction="#onChangeLogo" />
+                <Button text="Settings"
+                        prefWidth="120.0"
+                        style="-fx-background-color: transparent;
+                               -fx-text-fill: -fx-text-primary;
+                               -fx-font-size: 14px;
+                               -fx-cursor: hand;
+                               -fx-font-weight: bold;" />
 
-        <Button text="Save Changes"
-                onAction="#onSaveChanges"
-                style="-fx-background-color: #000; -fx-text-fill: white;"
-                maxWidth="150" />
-    </VBox>
+                <Button text="Go Home"
+                        onAction="#goToHomePage"
+                        prefWidth="120.0"
+                        style="-fx-background-color: transparent;
+                               -fx-text-fill: -fx-text-primary;
+                               -fx-font-size: 14px;
+                               -fx-cursor: hand;" />
+            </VBox>
+        </left>
+
+        <!-- Main Content -->
+        <center>
+            <VBox alignment="TOP_LEFT" spacing="15.0" style="-fx-padding: 40;">
+                <Label text="Restaurant Settings"
+                       style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: -fx-text-primary;" />
+
+                <Label text="Restaurant Name:" style="-fx-text-fill: -fx-text-primary;" />
+                <TextField fx:id="nameField" promptText="Enter name..." />
+
+                <Label text="Address:" style="-fx-text-fill: -fx-text-primary;" />
+                <TextArea fx:id="addressField" promptText="Enter address..." prefRowCount="4" wrapText="true" />
+
+                <Label text="Contact:" style="-fx-text-fill: -fx-text-primary;" />
+                <TextArea fx:id="contactField" promptText="Enter contact..." prefRowCount="4" wrapText="true" />
+
+                <Label text="Logo Preview:" style="-fx-text-fill: -fx-text-primary;" />
+                <ImageView fx:id="logoPreview" fitHeight="150" fitWidth="150" preserveRatio="true" />
+
+                <HBox spacing="10">
+                    <Button text="Change Logo"
+                            onAction="#onChangeLogo"
+                            style="-fx-background-color: -fx-color-muted;
+                                   -fx-text-fill: -fx-text-primary;
+                                   -fx-font-size: 14px;" />
+
+                    <Button text="Save Changes"
+                            onAction="#onSaveChanges"
+                            style="-fx-background-color: #000000; -fx-text-fill: white; -fx-font-size: 14px;"
+                            maxWidth="150" />
+                </HBox>
+            </VBox>
+        </center>
+    </BorderPane>
 </AnchorPane>

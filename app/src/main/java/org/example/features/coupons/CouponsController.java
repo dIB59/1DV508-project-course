@@ -109,4 +109,21 @@ public class CouponsController {
     alert.setContentText("Your cart is empty. Please add items before proceeding.");
     alert.showAndWait();
   }
+
+  public void goToProductsPage(ActionEvent actionEvent) {
+    sceneRouter.goToDashboardPage();
+  }
+
+  public void goToLanguagesPage(ActionEvent actionEvent) {
+    sceneRouter.goToLanguagesPage();
+  }
+
+
+  public void goToSettingsPage(ActionEvent actionEvent) {
+    sceneRouter.goToSettingsPage();
+  }
+
+  public void goToHomePage(ActionEvent actionEvent) {
+    sceneRouter.goToHomePage();
+  }
 }

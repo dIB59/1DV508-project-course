@@ -189,4 +189,24 @@ public class EditTranslationController {
   public void handleBackToDashboard(ActionEvent actionEvent) {
     sceneRouter.goToDashboardPage();
   }
+
+  public void goToProductsPage(ActionEvent actionEvent) {
+    sceneRouter.goToDashboardPage();
+  }
+
+  public void goToLanguagesPage(ActionEvent actionEvent) {
+    sceneRouter.goToLanguagesPage();
+  }
+
+  public void goToHomePage(ActionEvent actionEvent) {
+    sceneRouter.goToHomePage();
+  }
+
+  public void goToCouponsPage(ActionEvent actionEvent) {
+    sceneRouter.goToCouponsPage();
+  }
+
+  public void goToSettingsPage(ActionEvent actionEvent) {
+    sceneRouter.goToSettingsPage();
+  }
 }
