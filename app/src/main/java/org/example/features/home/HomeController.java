@@ -6,13 +6,14 @@ import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
+import javafx.scene.shape.Rectangle;
 import org.example.AppContext;
 import org.example.features.dashboard.RestaurantSettingsRepository;
 import org.example.features.order.Order;
@@ -37,7 +38,7 @@ public class HomeController {
   @FXML private Label welcomeLabel;
   @FXML private ComboBox<Language> languageSelector;
   @FXML private ToggleButton darkModeToggle;
-  @FXML private HBox header;
+  @FXML private ImageView logo;
 
 
   public HomeController(
@@ -52,30 +53,27 @@ public class HomeController {
   @FXML
   public void initialize() {
     log.debug(Arrays.toString(Language.values()));
-    addLogo();
     languageSelector.getItems().setAll(Language.values());
     languageSelector
         .getSelectionModel()
         .select(AppContext.getInstance().getLanguage()); // Default selection
     // Setup keyboard shortcut after scene is ready
+    logo.setImage(repository.getLogo());
+    logo.setFitWidth(120);
+    logo.setFitHeight(120);
+    logo.setPreserveRatio(false); // or true, if you want to maintain aspect
+
+    Rectangle clip = new Rectangle(120, 120);
+    clip.setArcWidth(20);
+    clip.setArcHeight(20);
+    logo.setClip(clip);
+    welcomeLabel.setStyle("-fx-text-fill: -fx-color-muted; -fx-font-weight: bold; -fx-font-size: 100px");
     welcomeLabel.sceneProperty().addListener((obs, oldScene, newScene) -> {
       if (newScene != null) {
         addAdminShortcut(newScene);
       }
     });
   }
-
-
-  private void addLogo() {
-    var logo = repository.getLogo();
-    ImageView logoView = new ImageView(logo);
-    logoView.setFitHeight(70);
-    logoView.setPreserveRatio(true);
-    Region spacer = new Region();
-    HBox.setHgrow(spacer, Priority.ALWAYS);
-    header.getChildren().addAll(logoView, spacer);
-  }
-
 
   private void addAdminShortcut(Scene scene) {
     KeyCombination adminShortcut = new KeyCodeCombination(
@@ -132,4 +130,5 @@ public class HomeController {
     log.debug("Navigating to admin login page...");
     sceneRouter.goToAdminLoginPage();
   }
+
 }
