@@ -18,7 +18,7 @@
         <Label text="Checkout"
                style="-fx-font-size: 36px;
                       -fx-font-weight: bold;
-                      -fx-text-fill: -fx-color-primary;"/>
+                      -fx-text-fill: -fx-text-primary;"/>
 
         <!-- Rotating Campaign Card -->
         <StackPane fx:id="campaignCardPane"
@@ -30,13 +30,12 @@
         <Label fx:id="itemCountLabel"
                text="Items: 0"
                style="-fx-font-size: 16px;
-                      -fx-text-fill: -fx-text-secondary;"/>
+                      -fx-text-fill: -fx-text-primary;"/>
 
         <VBox fx:id="itemListContainer"
               spacing="20"
-              alignment="TOP_LEFT"
               prefWidth="1080"
-              style="-fx-background-color: -fx-color-primary-hover;" />
+              style="-fx-background-color: -fx-color-background;" />
         <VBox VBox.vgrow="ALWAYS"/>
 
         <!-- Total Price -->

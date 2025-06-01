@@ -66,23 +66,24 @@
         <Region prefHeight="50"/>
 
         <VBox alignment="CENTER" spacing="40">
-            <HBox alignment="CENTER" spacing="30">
+            <HBox alignment="CENTER" spacing="60" style="-fx-padding: 40;">
 
                 <!-- Sides Section -->
                 <VBox fx:id="sidesContainer"
-                      spacing="15"
+                      spacing="20"
                       alignment="TOP_CENTER"
-                      prefWidth="300"
-                      style="-fx-padding: 20;
-                             -fx-background-color: -fx-color-border;
-                             -fx-background-radius: 15;
-                             -fx-border-color: -fx-color-border;
-                             -fx-border-width: 2;
-                             -fx-border-radius: 10;">
+                      prefWidth="400"
+                      style="-fx-padding: 30;
+                 -fx-background-color: -fx-color-background;
+                 -fx-background-radius: 15;
+                 -fx-text-fill: -fx-text-primary;
+                 -fx-border-color: -fx-color-border;
+                 -fx-border-width: 2;
+                 -fx-border-radius: 10;">
                     <Label text="Sides available"
                            style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: -fx-text-primary;" />
 
-                    <HBox spacing="10" alignment="CENTER_LEFT">
+                    <HBox spacing="15" alignment="CENTER_LEFT">
                         <Label text="Soda (SEK 1.99)" style="-fx-text-fill: -fx-text-primary;" />
                         <Spinner fx:id="sodaSpinner" />
                     </HBox>
@@ -92,21 +93,23 @@
 
                 <!-- Ingredients Section -->
                 <VBox fx:id="ingredientsContainer"
-                      spacing="15"
+                      spacing="20"
                       alignment="TOP_CENTER"
-                      prefWidth="300"
-                      style="-fx-padding: 20;
-                             -fx-background-color: -fx-color-border;
-                             -fx-background-radius: 15;
-                             -fx-border-color: -fx-color-border;
-                             -fx-border-width: 2;
-                             -fx-border-radius: 10;">
+                      prefWidth="400"
+                      style="-fx-padding: 30;
+                 -fx-background-color: -fx-color-background;
+                 -fx-background-radius: 15;
+                 -fx-text-fill: -fx-text-primary;
+                 -fx-border-color: -fx-color-border;
+                 -fx-border-width: 2;
+                 -fx-border-radius: 10;">
                     <Label text="Ingredients"
-                           style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: -fx-text-primary;" />
+                           style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: -fx-text-secondary;" />
 
                     <!-- Add ingredients content here -->
                 </VBox>
             </HBox>
+
         </VBox>
     </VBox>
     <Button fx:id="goBackButton"
