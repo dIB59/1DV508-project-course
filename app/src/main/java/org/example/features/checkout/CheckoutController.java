@@ -143,14 +143,14 @@ public class CheckoutController implements Initializable {
     container.setAlignment(Pos.CENTER_LEFT);
     container.setPrefWidth(1080);
 
-    // Create the item name label (bold and navy)
+    // Create the item name label
     Label nameLabel = new Label(item.getCustomizedProduct().getProduct().getName() + " x" + item.getQuantity());
     nameLabel.setFont(Font.font("Arial", javafx.scene.text.FontWeight.BOLD, 20));
     nameLabel.setStyle("-fx-text-fill: -fx-text-primary;");
     // Create the price label (light gray and smaller)
     Label priceLabel =
         new Label(String.format("$%.2f", item.getCustomizedProduct().getTotalPrice()));
-    priceLabel.setStyle("-fx-text-fill: -fx-text-primary;");
+    priceLabel.setStyle("-fx-text-fill:-fx-text-secondary;");
     priceLabel.setFont(Font.font("Arial", 14));
     priceLabel.setTextFill(Color.valueOf("#777777"));
 
@@ -189,7 +189,7 @@ public class CheckoutController implements Initializable {
 
     // Style the buttons
     String buttonStyle =
-        "-fx-background-color: -fx-color-foreground; -fx-text-fill: -fx-text-primary; -fx-background-radius: 6; "
+        "-fx-background-color: -fx-color-primary-hover; -fx-text-fill: -fx-color-border; -fx-background-radius: 6; "
             + "-fx-cursor: hand; -fx-font-size: 14px; -fx-font-weight: bold;";
     increaseButton.setStyle(buttonStyle);
     decreaseButton.setStyle(buttonStyle);
