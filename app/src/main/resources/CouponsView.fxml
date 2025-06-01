@@ -15,119 +15,99 @@
 
         <!-- Sidebar Navbar -->
         <left>
-            <VBox spacing="10.0" alignment="TOP_CENTER" prefWidth="140.0"
-                  style="-fx-background-color: -fx-color-foreground; -fx-padding: 20;">
+            <VBox spacing="12.0" alignment="TOP_CENTER" prefWidth="160.0"
+                  style="-fx-background-color: -fx-color-foreground; -fx-padding: 30 20;">
                 <Label text="Kiosk"
                        style="-fx-text-fill: -fx-text-primary;
-                              -fx-font-size: 22px;
+                              -fx-font-size: 24px;
                               -fx-font-weight: bold;" />
 
-                <Button text="Products"
-                        prefWidth="120.0"
-                        onAction="#goToProductsPage"
-                        style="-fx-background-color: transparent;
-                               -fx-text-fill: -fx-text-primary;
-                               -fx-font-size: 14px;
-                               -fx-cursor: hand;" />
+                <Separator style="-fx-background-color: -fx-color-border;" prefWidth="100"/>
 
-                <Button text="Coupons"
-                        prefWidth="120.0"
-                        style="-fx-background-color: transparent;
-                               -fx-text-fill: -fx-text-primary;
-                               -fx-font-size: 20px;
-                               -fx-font-weight: bold;
-                               -fx-cursor: hand;" />
-
-                <Button text="Languages"
-                        onAction="#goToLanguagesPage"
-                        prefWidth="120.0"
-                        style="-fx-background-color: transparent;
-                               -fx-text-fill: -fx-text-primary;
-                               -fx-font-size: 14px;
-                               -fx-cursor: hand;" />
-
-                <Button text="Settings"
-                        onAction="#goToSettingsPage"
-                        prefWidth="120.0"
-                        style="-fx-background-color: transparent;
-                               -fx-text-fill: -fx-text-primary;
-                               -fx-font-size: 14px;
-                               -fx-cursor: hand;" />
-
-                <Button text="Go Home"
-                        onAction="#goToHomePage"
-                        prefWidth="120.0"
-                        style="-fx-background-color: transparent;
-                               -fx-text-fill: -fx-text-primary;
-                               -fx-font-size: 14px;
-                               -fx-cursor: hand;" />
+                <VBox spacing="10">
+                    <Button text="Products" onAction="#goToProductsPage" prefWidth="120.0"
+                            style="-fx-background-color: transparent; -fx-text-fill: -fx-text-primary; -fx-font-size: 14px; -fx-cursor: hand;" />
+                    <Button text="Coupons" prefWidth="120.0"
+                            style="-fx-background-color: transparent; -fx-text-fill: -fx-text-primary; -fx-font-size: 18px; -fx-font-weight: bold; -fx-cursor: hand;" />
+                    <Button text="Languages" onAction="#goToLanguagesPage" prefWidth="120.0"
+                            style="-fx-background-color: transparent; -fx-text-fill: -fx-text-primary; -fx-font-size: 14px; -fx-cursor: hand;" />
+                    <Button text="Settings" onAction="#goToSettingsPage" prefWidth="120.0"
+                            style="-fx-background-color: transparent; -fx-text-fill: -fx-text-primary; -fx-font-size: 14px; -fx-cursor: hand;" />
+                    <Button text="Go Home" onAction="#goToHomePage" prefWidth="120.0"
+                            style="-fx-background-color: transparent; -fx-text-fill: -fx-text-primary; -fx-font-size: 14px; -fx-cursor: hand;" />
+                </VBox>
             </VBox>
         </left>
 
         <!-- Main Content Area -->
         <center>
-            <VBox spacing="30.0" alignment="TOP_CENTER"
-                  style="-fx-padding: 60;">
+            <VBox spacing="40.0" alignment="TOP_CENTER" style="-fx-padding: 60 40;">
                 <Label text="Coupons"
                        style="-fx-text-fill: -fx-text-primary;
-                              -fx-font-size: 32px;
+                              -fx-font-size: 36px;
                               -fx-font-weight: bold;" />
 
-                <HBox spacing="30" alignment="CENTER_LEFT">
-                    <VBox spacing="8">
+                <!-- Coupon Form -->
+                <VBox spacing="20" maxWidth="720"
+                      style="-fx-background-color: rgba(255,255,255,0.03);
+                             -fx-padding: 30;
+                             -fx-background-radius: 12;">
+                    <GridPane hgap="30" vgap="20">
+                        <columnConstraints>
+                            <ColumnConstraints halignment="RIGHT" minWidth="100"/>
+                            <ColumnConstraints hgrow="ALWAYS"/>
+                        </columnConstraints>
+
                         <Label text="Code:"
+                               GridPane.rowIndex="0" GridPane.columnIndex="0"
                                style="-fx-font-size: 16px; -fx-text-fill: -fx-text-primary; -fx-font-weight: bold;" />
                         <TextField fx:id="codeField"
                                    promptText="Enter coupon code"
+                                   GridPane.rowIndex="0" GridPane.columnIndex="1"
                                    style="-fx-background-radius: 8;
                                           -fx-border-radius: 8;
                                           -fx-border-color: -fx-color-border;
                                           -fx-background-color: rgba(255,255,255,0.05);
                                           -fx-text-fill: -fx-text-primary;
                                           -fx-padding: 8 12;" />
-                    </VBox>
 
-                    <VBox spacing="8">
                         <Label text="Discount:"
+                               GridPane.rowIndex="1" GridPane.columnIndex="0"
                                style="-fx-font-size: 16px; -fx-text-fill: -fx-text-primary; -fx-font-weight: bold;" />
                         <TextField fx:id="discountField"
                                    promptText="Enter discount amount"
+                                   GridPane.rowIndex="1" GridPane.columnIndex="1"
                                    style="-fx-background-radius: 8;
                                           -fx-border-radius: 8;
                                           -fx-border-color: -fx-color-border;
                                           -fx-background-color: rgba(255,255,255,0.05);
                                           -fx-text-fill: -fx-text-primary;
                                           -fx-padding: 8 12;" />
-                    </VBox>
+                    </GridPane>
 
-                    <Button text="Apply Coupon"
-                            fx:id="addCouponButton"
-                            onAction="#handleAddCouponButtonAction"
-                            style="-fx-background-color: #4CAF50;
-                                   -fx-text-fill: white;
-                                   -fx-background-radius: 8;
-                                   -fx-padding: 10 24;
-                                   -fx-font-size: 15px;
-                                   -fx-font-weight: bold;" />
-                </HBox>
+                    <!-- Button centered below the form -->
+                    <HBox alignment="CENTER">
+                        <Button text="Create New Coupon"
+                                fx:id="addCouponButton"
+                                onAction="#handleAddCouponButtonAction"
+                                maxWidth="200"
+                                style="-fx-background-color: #4CAF50;
+                                       -fx-text-fill: white;
+                                       -fx-background-radius: 8;
+                                       -fx-padding: 12 24;
+                                       -fx-font-size: 15px;
+                                       -fx-font-weight: bold;" />
+                    </HBox>
+                </VBox>
 
-                <ScrollPane fitToWidth="true" maxHeight="320"
+                <!-- Coupon List -->
+                <ScrollPane fitToWidth="true" fitToHeight="true"
                             style="-fx-background-color: transparent; -fx-border-color: transparent;">
                     <VBox fx:id="couponsList"
-                          spacing="16"
+                          spacing="18"
                           alignment="TOP_CENTER"
-                          style="-fx-padding: 20; -fx-background-color: -fx-color-background;" />
+                          style="-fx-padding: 30 0; -fx-background-color: -fx-color-background;" />
                 </ScrollPane>
-
-                <Button text="Go Back to Menu"
-                        onAction="#goToDashboardPage"
-                        maxWidth="260"
-                        style="-fx-background-color: #4CAF50;
-                               -fx-text-fill: white;
-                               -fx-background-radius: 8;
-                               -fx-padding: 10 24;
-                               -fx-font-size: 15px;
-                               -fx-font-weight: bold;" />
             </VBox>
         </center>
 
