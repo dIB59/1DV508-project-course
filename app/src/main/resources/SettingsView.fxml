@@ -120,10 +120,9 @@
 
                         <Button text="Save Changes"
                                 onAction="#onSaveChanges"
-                                style="-fx-background-color: -fx-color-accent;
-                               -fx-text-fill: white;
+                                style="-fx-background-color: -fx-color-muted;
+                               -fx-text-fill: -fx-text-primary;
                                -fx-font-size: 14px;
-                               -fx-font-weight: bold;
                                -fx-background-radius: 8;
                                -fx-padding: 10 24;" />
                     </HBox>
