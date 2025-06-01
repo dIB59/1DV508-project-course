@@ -65,3 +65,121 @@
 .combo-box .list-view {
     -fx-control-inner-background: -fx-color-muted;
 }
+
+/* --- TableView Modern Styling --- */
+
+/* Base TableView style */
+.modern-table {
+    -fx-background-color: -fx-color-background; /* Use overall background for table */
+    -fx-border-color: -fx-color-border;
+    -fx-border-width: 1px;
+    -fx-border-radius: 8px; /* Slightly rounded corners for the table */
+    -fx-background-radius: 8px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 10, 0, 0, 5); /* Subtle shadow for depth */
+}
+
+/* TableView Scroll Pane (important for background of the scrollable area) */
+.modern-table .scroll-pane {
+    -fx-background-color: transparent; /* Make scroll pane background transparent to show table background */
+}
+
+/* TableView Scroll Bar styling */
+.modern-table .scroll-bar:vertical .track-background,
+.modern-table .scroll-bar:horizontal .track-background {
+    -fx-background-color: transparent;
+}
+
+.modern-table .scroll-bar .thumb {
+    -fx-background-color: -fx-color-muted; /* Use accent color for scrollbar thumb */
+    -fx-background-radius: 5px;
+}
+
+.modern-table .scroll-bar .increment-button,
+.modern-table .scroll-bar .decrement-button {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+}
+
+.modern-table .scroll-bar .increment-arrow,
+.modern-table .scroll-bar .decrement-arrow {
+    -fx-background-color: -fx-text-secondary;
+}
+
+/* Table Header (column headers) */
+.modern-table .column-header-background {
+    -fx-background-color: -fx-color-foreground; /* Use foreground color for header background */
+    -fx-border-radius: 8px 8px 0 0; /* Match table border radius for top corners */
+    -fx-background-radius: 8px 8px 0 0;
+}
+
+.modern-table .column-header {
+    -fx-background-color: transparent; /* Make individual column header transparent */
+    -fx-border-color: -fx-color-border;
+    -fx-border-width: 0 1px 0 0; /* Right border for separation */
+}
+
+/* Last column header has no right border */
+.modern-table .column-header:last-visible-column {
+    -fx-border-width: 0;
+}
+
+.modern-table .column-header .label {
+    -fx-text-fill: white; /* White text for header labels */
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 10px; /* Add padding to header text */
+}
+
+/* Table Rows */
+.modern-table .table-row-cell {
+    -fx-background-color: -fx-color-background; /* Default row background */
+    -fx-cell-size: 40px; /* Adjust row height */
+    -fx-border-color: -fx-color-border; /* Subtle bottom border for rows */
+    -fx-border-width: 0 0 1px 0;
+}
+
+.modern-table .table-row-cell:last-child {
+    -fx-border-width: 0; /* No bottom border for the last row */
+}
+
+.modern-table .table-row-cell:odd {
+    -fx-background-color: derive(-fx-color-background, -2%); /* Slightly darker for odd rows (subtle zebra) */
+}
+
+.modern-table .table-row-cell:selected {
+    -fx-background-color: -fx-color-muted-hover; /* Highlight selected row with hover color */
+    -fx-text-fill: white; /* Ensure text is readable on selection */
+}
+
+.modern-table .table-row-cell:hover {
+    -fx-background-color: derive(-fx-color-muted-hover, 10%); /* Lighter hover effect */
+    -fx-cursor: hand;
+}
+
+/* Table Cells */
+.modern-table .table-cell {
+    -fx-alignment: CENTER_LEFT; /* Align content to the left */
+    -fx-padding: 10px; /* Padding inside cells */
+    -fx-text-fill: -fx-text-primary; /* Primary text color for cell content */
+    -fx-font-size: 13px;
+    -fx-border-color: -fx-color-border; /* Right border for cell separation */
+    -fx-border-width: 0 1px 0 0;
+}
+
+.modern-table .table-cell:last-visible-column {
+    -fx-border-width: 0; /* No right border for the last cell in a row */
+}
+
+/* Editable cells (TextField within cells) */
+.modern-table .table-cell > .text-field {
+    -fx-background-color: -fx-color-background;
+    -fx-border-color: -fx-color-border;
+    -fx-border-radius: 4px;
+    -fx-padding: 5px;
+    -fx-text-fill: -fx-text-primary;
+}
+
+.modern-table .table-cell > .text-field:focused {
+    -fx-border-color: -fx-color-muted;
+    -fx-background-color: white;
+}
