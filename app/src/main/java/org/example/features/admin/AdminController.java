@@ -56,9 +56,7 @@ public class AdminController {
   }
 
   public void handleLoginButtonAction(ActionEvent actionEvent) {
-    goToDashboard();
-
-    /*String username = usernameField.getText();
+    String username = usernameField.getText();
     String password = passwordField.getText();
     if (username.isEmpty() || password.isEmpty()) {
       usernameField.setText("Username or Password cannot be empty");
@@ -70,7 +68,7 @@ public class AdminController {
     } else {
       usernameField.setText("Invalid credentials");
       passwordField.setText("");
-    }*/
+    }
 
   }
 
