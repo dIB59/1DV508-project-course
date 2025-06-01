@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 
 public class PaymentController {
 
-  private static final Logger logger = LoggerFactory.getLogger(PaymentController.class);
+  private static final Logger log = LoggerFactory.getLogger(PaymentController.class);
 
   private final SceneRouter sceneRouter;
   private final OrderService orderService;
@@ -167,7 +167,7 @@ public class PaymentController {
       if (success) {
         orderService.setPaid();
         if (orderService.getReceipt()) {
-          System.out.println("Get receipt status: " + orderService.getReceipt());
+          log.debug("Get receipt status: {}", orderService.getReceipt());
           sceneRouter.goToReceiptPage();
         }
 
@@ -179,10 +179,10 @@ public class PaymentController {
             "Payment Failed", "There was an error processing your payment. Please try again.");
       }
     } catch (PaymentProcessingException e) {
-      logger.error("Payment processing failed: {}", e.getMessage(), e);
+      log.error("Payment processing failed: {}", e.getMessage(), e);
       showAlert("Payment Failed", "There was an error processing your payment: " + e.getMessage());
     } catch (Exception e) {
-      logger.error("An unexpected error occurred during payment: {}", e.getMessage(), e);
+      log.error("An unexpected error occurred during payment: {}", e.getMessage(), e);
       showAlert("Unexpected Error", "An unexpected error occurred. Please try again.");
     }
   }
