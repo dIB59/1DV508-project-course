@@ -52,9 +52,7 @@ public class SceneRouter {
       Node node = event.getTarget() instanceof Node ? (Node) event.getTarget() : null;
 
       // Walk up until we find a parent that is a ButtonBase or an ImageView
-      while (node != null &&
-              !(node instanceof ButtonBase) &&
-              !(node instanceof ImageView)) {
+      while (node != null && !(node instanceof ButtonBase) && !(node instanceof ImageView)) {
         node = node.getParent();
       }
 

@@ -36,47 +36,47 @@ CREATE TABLE Order_ProductQuantity_Ingredient (
 
 INSERT INTO Product (name, description, price, image, image_url, sound, specialLabel, isASide)
 VALUES
-    ('TRALALERO TRALALA', 'Sings arias that summon thunder ⚡🎤 Mamma mia, he *vibrato*-slaps!', 5.99,
+    ('Rey’s Portion Stew', 'Self-rising bread and stew from Rey’s survival kit on Jakku.', 5.99,
      LOAD_FILE('/var/lib/mysql-files/assets/tralalero-tralala.jpg'), 'assets/tralalero-tralala.jpg',
      LOAD_FILE('/var/lib/mysql-files/assets/Voicy_Tralalero_Tralala_Italian_Brainrot.mp3'), NULL, FALSE),
 
-    ('BRR BRR PATAPIM', 'He enters. He toots. Reality shakes 🧀💥 *PATAPIM BRRR!!*', 8.99,
+    ('Roasted Porg Delight', 'Chargrilled Porg, Chewie-style, as seen on Ahch-To.', 8.99,
      LOAD_FILE('/var/lib/mysql-files/assets/Brr_brr_patapim.jpg'), 'assets/Brr_brr_patapim.jpg',
      LOAD_FILE('/var/lib/mysql-files/assets/Brr_brr_patapim.mp3'), '🔥 HOT HOT HOT', FALSE),
 
-    ('TUNG TUNG TUNG TUNG SHAUR', 'Tung-powered tank from the dunes 💨 *TUNG* x4 = obliteration.', 4.99,
+    ('Crispy Nuna Legs', 'Deep-fried Nuna bird drumsticks – a Coruscant street favorite.', 4.99,
      LOAD_FILE('/var/lib/mysql-files/assets/artworks-Ugyi6VK6utMMpLzA-iOuDVA-t500x500.jpeg'), 'assets/artworks-Ugyi6VK6utMMpLzA-iOuDVA-t500x500.jpeg',
      LOAD_FILE('/var/lib/mysql-files/assets/tung-tung-shaur.mp3'), NULL, FALSE),
 
-    ('BOMBARDILO CROCODILO', 'Explodes into battle with toothy chaos 🐊💣 *BOOMbar-dilo!*', 1.99,
+    ('Endorian Tip-Yip Platter', 'Tender poultry served Endor-style with root mash.', 1.99,
      LOAD_FILE('/var/lib/mysql-files/assets/img_4257.jpg'), 'assets/img_4257.jpg',
      LOAD_FILE('/var/lib/mysql-files/assets/bombardilo-crocodilo.mp3'), NULL, TRUE),
 
-    ('COCOSINO RHINO', 'Charges with coconut-powered rage 🌴💢 — BONK goes the rival!', 2.99,
+    ('Chewie’s Yobacca Noodles', 'Savory, chewy noodles inspired by the mighty Wookiee.', 2.99,
      LOAD_FILE('/var/lib/mysql-files/assets/GTA5-2025-05-07-17-55-51_269-e1746625550739.png'), 'assets/GTA5-2025-05-07-17-55-51_269-e1746625550739.png',
      LOAD_FILE('/var/lib/mysql-files/assets/cocosino-rhino.mp3'), NULL, FALSE),
 
-    ('BONECA AMVALABU', 'Skeleton doll with chaotic energy 😵‍💫💀 – it giggles in Morse code.', 3.99,
+    ('Meiloorun Medley', 'Juicy fruit platter featuring Hera’s favorite – the Meiloorun.', 3.99,
      LOAD_FILE('/var/lib/mysql-files/assets/boneca-ambalabu-ezgif.com-webp-to-jpg-converter.jpg'), 'assets/boneca-ambalabu-ezgif.com-webp-to-jpg-converter.jpg',
      LOAD_FILE('/var/lib/mysql-files/assets/boneca-amvalabu.mp3'), NULL, FALSE),
 
-    ('ANANITTO GIRAFFINI', 'Neck-a so long it pierces the *cheese stratosphere* 🧀🦒', 7.99,
+    ('Nerf Nuggets Supreme', 'Crispy golden nuggets from the finest nerf herds.', 7.99,
      LOAD_FILE('/var/lib/mysql-files/assets/Images_-_2025-05-18T114613.167.jpg'), 'assets/Images_-_2025-05-18T114613.167.jpg',
      LOAD_FILE('/var/lib/mysql-files/assets/ananitto-giraffini.mp3'), '🤑 DEAL OF DESTINY', FALSE),
 
-    ('PANINO DEL DESTINO', 'Still a panino, but destiny awaits inside... probably Tob Tobi.', 4.49,
+    ('Dagobah Rootleaf Stew', 'Slow-simmered swampy stew just like Yoda makes.', 4.49,
      LOAD_FILE('/var/lib/mysql-files/assets/sandwich.jpg'), 'assets/sandwich.jpg',
      LOAD_FILE('/var/lib/mysql-files/assets/panino-destino.mp3'), NULL, FALSE),
 
-    ('CAPUCCINO ASASHINO', 'Caffeinated shinobi ☕🥷 Disappears between sips. *Zoom!*', 2.49,
+    ('Jedi Roast Espresso', 'Bold and swift – a shinobi’s caffeine fix from the Outer Rim.', 2.49,
      LOAD_FILE('/var/lib/mysql-files/assets/images.jpeg'), 'assets/images.jpeg',
      LOAD_FILE('/var/lib/mysql-files/assets/capuccino-asashino.mp3'), NULL, FALSE),
 
-    ('TOB TOBI TOB TOB TOBI TOB', 'Too many Tobis. Echoes of barks in the void 🐾🌀 *BARK²*.', 1.49,
+    ('Tob-Tobi Galactic Bites', 'Echoed across systems – the Tob Tobi crunch lives on.', 1.49,
      LOAD_FILE('/var/lib/mysql-files/assets/Tob_Tobi_Tob_Camel-ezgif.com-webp-to-jpg-converter.jpg'), 'assets/Tob_Tobi_Tob_Camel-ezgif.com-webp-to-jpg-converter.jpg',
      LOAD_FILE('/var/lib/mysql-files/assets/tob-tobi.mp3'), NULL, FALSE),
 
-    ('TRIPY TROPHY', 'Won ALL the imaginary Olympics 🏆🦓 – even the sideways ones.', 3.49,
+    ('Tripi-Tropi Medallion Cake', 'A dessert fit for a rebel champion – sideways wins included.', 3.49,
      LOAD_FILE('/var/lib/mysql-files/assets/lets-settle-the-debate-who-is-tripi-tropi-v0-t4elw6moq0ue1.jpg'), 'assets/lets-settle-the-debate-who-is-tripi-tropi-v0-t4elw6moq0ue1.jpg',
      LOAD_FILE('/var/lib/mysql-files/assets/tripy-trophy.mp3'), NULL, FALSE);
 
@@ -187,78 +187,78 @@ CREATE TABLE IF NOT EXISTS Product_ingredients (
 );
 
 INSERT INTO Ingredients (name, price) VALUES
-                                          ('Formaggio Esplosivo', 0.99),
-                                          ('Pomodoro Urlante', 0.89),
-                                          ('Foglie del Caos', 0.79),
-                                          ('Beef-a del Supremo', 1.49),
-                                          ('Crocchetta dell\'Antico Imperio', 0.69),
-                                          ('Bolla Frizzantina', 0.59),
-                                          ('Ghiaccio del Vulcano', 0.39),
-                                          ('Melone Mistico', 0.99),
-                                          ('Pasta Drammatica', 1.29),
-                                          ('Caffè della Nonna', 0.89),
-                                          ('Tè della Pace Interna', 0.69),
-                                          ('Dolcezza di Coccoboom', 1.09),
-                                          ('Pane della Destinazione', 0.89),
-                                          ('Mozzarella Patapim', 0.99),
-                                          ('Zucchero dell’Amore', 0.59),
-                                          ('Shaur Spice Mix', 0.79),
-                                          ('Salsa Tralalala', 0.89),
-                                          ('Croco Boom Crunch', 1.19);
+                                          ('Explosive Bantha Cheese', 0.99),
+                                          ('Screaming Tatooine Tomato', 0.89),
+                                          ('Dagobah Chaos Leaves', 0.79),
+                                          ('Supreme Nerf Beef', 1.49),
+                                          ('Ancient Empire Croquette', 0.69),
+                                          ('Fizzbubble Orb', 0.59),
+                                          ('Lava Crystal Ice', 0.39),
+                                          ('Mystic Meiloorun Chunk', 0.99),
+                                          ('Dramatic Mustafar Pasta', 1.29),
+                                          ('Grandma Jedi Brew', 0.89),
+                                          ('Peaceful Monastery Tea', 0.69),
+                                          ('CocoBoom Sweet Essence', 1.09),
+                                          ('Bread of Destiny', 0.89),
+                                          ('Mozzarella of the Porgs', 0.99),
+                                          ('Sugar of Galactic Love', 0.59),
+                                          ('Shaurian Spice Mix', 0.79),
+                                          ('Tralalala Sauce of Fate', 0.89),
+                                          ('Crocoboom Crunch Flakes', 1.19);
 
--- Tralalero Tralala
+-- Rey’s Portion Stew
 INSERT INTO Product_ingredients VALUES
-                                    (1, 17), -- Salsa Tralalala
-                                    (1, 4);  -- Beef-a del Supremo
+                                    (1, 17), -- Tralalala Sauce of Fate
+                                    (1, 4);  -- Supreme Nerf Beef
 
--- Brr Brr Patapim
+-- Roasted Porg Delight
 INSERT INTO Product_ingredients VALUES
-                                    (2, 14), -- Mozzarella Patapim
-                                    (2, 1),  -- Formaggio Esplosivo
-                                    (2, 2);  -- Pomodoro Urlante
+                                    (2, 14), -- Mozzarella of the Porgs
+                                    (2, 1),  -- Explosive Bantha Cheese
+                                    (2, 2);  -- Screaming Tatooine Tomato
 
--- Tung Tung Tung Tung Shaur
+-- Crispy Nuna Legs
 INSERT INTO Product_ingredients VALUES
-                                    (3, 16), -- Shaur Spice Mix
-                                    (3, 3);  -- Foglie del Caos
+                                    (3, 16), -- Shaurian Spice Mix
+                                    (3, 3);  -- Dagobah Chaos Leaves
 
--- Bombardilo Crocodilo
+-- Endorian Tip-Yip Platter
 INSERT INTO Product_ingredients VALUES
-                                    (4, 18), -- Croco Boom Crunch
-                                    (4, 6);  -- Bolla Frizzantina
+                                    (4, 18), -- Crocoboom Crunch Flakes
+                                    (4, 6);  -- Fizzbubble Orb
 
--- Cocosino Rhino
+-- Chewie’s Yobacca Noodles
 INSERT INTO Product_ingredients VALUES
-                                    (5, 4),  -- Beef-a del Supremo
-                                    (5, 5);  -- Crocchetta dell'Antico Imperio
+                                    (5, 4),  -- Supreme Nerf Beef
+                                    (5, 5);  -- Ancient Empire Croquette
 
--- Boneca Amvalabu
+-- Meiloorun Medley
 INSERT INTO Product_ingredients VALUES
-                                    (6, 15), -- Zucchero dell’Amore
-                                    (6, 12); -- Dolcezza di Coccoboom
+                                    (6, 15), -- Sugar of Galactic Love
+                                    (6, 12); -- CocoBoom Sweet Essence
 
--- Ananitto Giraffini
+-- Nerf Nuggets Supreme
 INSERT INTO Product_ingredients VALUES
-                                    (7, 8),  -- Melone Mistico
-                                    (7, 9);  -- Pasta Drammatica
+                                    (7, 8),  -- Mystic Meiloorun Chunk
+                                    (7, 9);  -- Dramatic Mustafar Pasta
 
--- Panino del Destino
+-- Dagobah Rootleaf Stew
 INSERT INTO Product_ingredients VALUES
-                                    (8, 13), -- Pane della Destinazione
-                                    (8, 4);  -- Beef-a del Supremo
+                                    (8, 13), -- Bread of Destiny
+                                    (8, 4);  -- Supreme Nerf Beef
 
--- Capuccino Asashino
+-- Jedi Roast Espresso
 INSERT INTO Product_ingredients VALUES
-    (9, 10); -- Caffè della Nonna
+    (9, 10); -- Grandma Jedi Brew
 
--- Tob Tobi Tob Tob Tobi Tob
+-- Tob-Tobi Galactic Bites
 INSERT INTO Product_ingredients VALUES
-    (10, 11); -- Tè della Pace Interna
+    (10, 11); -- Peaceful Monastery Tea
 
--- Tripy Trophy
+-- Tripi-Tropi Medallion Cake
 INSERT INTO Product_ingredients VALUES
-                                    (11, 1),  -- Formaggio Esplosivo
-                                    (11, 8);  -- Melone Mistico
+                                    (11, 1),  -- Explosive Bantha Cheese
+                                    (11, 8);  -- Mystic Meiloorun Chunk
 
 
 ALTER TABLE Orders
