@@ -37,35 +37,35 @@ CREATE TABLE Order_ProductQuantity_Ingredient (
 INSERT INTO Product (name, description, price, image, image_url, sound, specialLabel, isASide)
 VALUES
     ('Rey’s Portion Stew', 'Self-rising bread and stew from Rey’s survival kit on Jakku.', 5.99,
-     LOAD_FILE('/var/lib/mysql-files/assets/tralalero-tralala.jpg'), 'assets/tralalero-tralala.jpg',
+     LOAD_FILE('/var/lib/mysql-files/assets/PolystarchBread-ezgif.com-webp-to-jpg-converter.jpg'), 'assets/PolystarchBread-ezgif.com-webp-to-jpg-converter.jpg',
      LOAD_FILE('/var/lib/mysql-files/assets/Voicy_Tralalero_Tralala_Italian_Brainrot.mp3'), NULL, FALSE),
 
     ('Roasted Porg Delight', 'Chargrilled Porg, Chewie-style, as seen on Ahch-To.', 8.99,
-     LOAD_FILE('/var/lib/mysql-files/assets/Brr_brr_patapim.jpg'), 'assets/Brr_brr_patapim.jpg',
+     LOAD_FILE('/var/lib/mysql-files/assets/disney-galaxys-edge-porg-on-a-stick.jpg'), 'assets/disney-galaxys-edge-porg-on-a-stick.jpg',
      LOAD_FILE('/var/lib/mysql-files/assets/Brr_brr_patapim.mp3'), '🔥 HOT HOT HOT', FALSE),
 
     ('Crispy Nuna Legs', 'Deep-fried Nuna bird drumsticks – a Coruscant street favorite.', 4.99,
-     LOAD_FILE('/var/lib/mysql-files/assets/artworks-Ugyi6VK6utMMpLzA-iOuDVA-t500x500.jpeg'), 'assets/artworks-Ugyi6VK6utMMpLzA-iOuDVA-t500x500.jpeg',
+     LOAD_FILE('/var/lib/mysql-files/assets/Roast_nuna-ezgif.com-webp-to-jpg-converter.jpg'), 'assets/Roast_nuna-ezgif.com-webp-to-jpg-converter.jpg',
      LOAD_FILE('/var/lib/mysql-files/assets/tung-tung-shaur.mp3'), NULL, FALSE),
 
     ('Endorian Tip-Yip Platter', 'Tender poultry served Endor-style with root mash.', 1.99,
-     LOAD_FILE('/var/lib/mysql-files/assets/img_4257.jpg'), 'assets/img_4257.jpg',
+     LOAD_FILE('/var/lib/mysql-files/Fried_Endorian_Tip-Yip-SWGE-ezgif.com-webp-to-jpg-converter.jpg'), 'assets/Fried_Endorian_Tip-Yip-SWGE-ezgif.com-webp-to-jpg-converter.jpg',
      LOAD_FILE('/var/lib/mysql-files/assets/bombardilo-crocodilo.mp3'), NULL, TRUE),
 
     ('Chewie’s Yobacca Noodles', 'Savory, chewy noodles inspired by the mighty Wookiee.', 2.99,
-     LOAD_FILE('/var/lib/mysql-files/assets/GTA5-2025-05-07-17-55-51_269-e1746625550739.png'), 'assets/GTA5-2025-05-07-17-55-51_269-e1746625550739.png',
+     LOAD_FILE('/var/lib/mysql-files/assets/QEAPO1jv3cTCP4qDlNa3Tt0KkjtJw7dt-yW0xMgPzNo-ezgif.com-webp-to-jpg-converter.jpg'), 'assets/QEAPO1jv3cTCP4qDlNa3Tt0KkjtJw7dt-yW0xMgPzNo-ezgif.com-webp-to-jpg-converter.jpg',
      LOAD_FILE('/var/lib/mysql-files/assets/cocosino-rhino.mp3'), NULL, FALSE),
 
     ('Meiloorun Medley', 'Juicy fruit platter featuring Hera’s favorite – the Meiloorun.', 3.99,
-     LOAD_FILE('/var/lib/mysql-files/assets/boneca-ambalabu-ezgif.com-webp-to-jpg-converter.jpg'), 'assets/boneca-ambalabu-ezgif.com-webp-to-jpg-converter.jpg',
+     LOAD_FILE('/var/lib/mysql-files/assets/images (1).jpeg'), 'assets/images (1).jpeg',
      LOAD_FILE('/var/lib/mysql-files/assets/boneca-amvalabu.mp3'), NULL, FALSE),
 
     ('Nerf Nuggets Supreme', 'Crispy golden nuggets from the finest nerf herds.', 7.99,
-     LOAD_FILE('/var/lib/mysql-files/assets/Images_-_2025-05-18T114613.167.jpg'), 'assets/Images_-_2025-05-18T114613.167.jpg',
+     LOAD_FILE('/var/lib/mysql-files/assets/images (2).jpeg'), 'assets/Images_-_2025-05-18T114613.167.jpg',
      LOAD_FILE('/var/lib/mysql-files/assets/ananitto-giraffini.mp3'), '🤑 DEAL OF DESTINY', FALSE),
 
     ('Dagobah Rootleaf Stew', 'Slow-simmered swampy stew just like Yoda makes.', 4.49,
-     LOAD_FILE('/var/lib/mysql-files/assets/sandwich.jpg'), 'assets/sandwich.jpg',
+     LOAD_FILE('/var/lib/mysql-files/assets/image_a11fbf10.jpeg'), 'assets/image_a11fbf10.jpeg',
      LOAD_FILE('/var/lib/mysql-files/assets/panino-destino.mp3'), NULL, FALSE),
 
     ('Jedi Roast Espresso', 'Bold and swift – a shinobi’s caffeine fix from the Outer Rim.', 2.49,
