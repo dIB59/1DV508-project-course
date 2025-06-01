@@ -13,6 +13,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.example.features.ingredients.Ingredient;
 import org.example.features.order.OrderService;
+import org.example.features.translation.TranslationService;
 import org.example.shared.SceneRouter;
 
 public class ProductDetailsController {
@@ -51,7 +52,8 @@ public class ProductDetailsController {
     if (productName != null && productPrice != null && quantitySpinner != null) {
       // Update product details
       productName.setText(product.getName());
-      productPrice.setText(String.format("$%.2f", product.getPrice()));
+      productPrice.setText(String.format("SEK%.2f", product.getPrice()));
+      productPrice.getProperties().put(TranslationService.DO_NOT_TRANSLATE, true);
       productDescription.setText(product.getDescription());
 
       // Set a SpinnerValueFactory to manage the Spinner's value
@@ -93,13 +95,17 @@ public class ProductDetailsController {
       Map<Ingredient, Integer> ingredients = product.getIngredients();
 
       for (Ingredient ing : ingredients.keySet()) {
-        Label ingLabel =
-            new Label(ing.getName() + "($" + String.format("%.2f", ing.getPrice()) + ")");
+        Label nameLabel = new Label(ing.getName());
+        Label priceLabel = new Label( "(SEK" + String.format("%.2f", ing.getPrice()) + ")");
+        priceLabel.getProperties().put(TranslationService.DO_NOT_TRANSLATE, true);
+
+        HBox namePriceBox = new HBox(5, nameLabel, priceLabel);
+
         Spinner<Integer> ingSpinner = new Spinner<>(0, 10, ingredients.get(ing));
         ingSpinner.setPrefWidth(80);
         ingredientSpinnerMap.put(ing, ingSpinner);
 
-        HBox ingBox = new HBox(10, ingLabel, ingSpinner);
+        HBox ingBox = new HBox(10, namePriceBox, ingSpinner);
         ingredientsContainer.getChildren().add(ingBox);
       }
     }
@@ -112,14 +118,18 @@ public class ProductDetailsController {
         sidesContainer.getChildren().clear();
         for (Product p : sides) {
           if (p.getisASide()) {
-            Label sideLabel =
-                new Label(p.getName() + " ($" + String.format("%.2f", p.getPrice()) + ")");
+            Label nameLabel = new Label(p.getName());
+            Label priceLabel = new Label(" (SEK" + String.format("%.2f", p.getPrice()) + ")");
+            priceLabel.getProperties().put(TranslationService.DO_NOT_TRANSLATE, true);
+
+            HBox namePriceBox = new HBox(5, nameLabel, priceLabel);
+
             Spinner<Integer> sideSpinner = new Spinner<>(0, 10, 0);
             sideSpinner.setPrefWidth(80);
 
             sideSpinnerMap.put(p, sideSpinner);
 
-            HBox sideBox = new HBox(10, sideLabel, sideSpinner);
+            HBox sideBox = new HBox(10, namePriceBox, sideSpinner);
             sidesContainer.getChildren().add(sideBox);
           }
         }
