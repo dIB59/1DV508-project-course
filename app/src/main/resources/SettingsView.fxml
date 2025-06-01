@@ -51,9 +51,10 @@
                         prefWidth="120.0"
                         style="-fx-background-color: transparent;
                                -fx-text-fill: -fx-text-primary;
-                               -fx-font-size: 14px;
+                               -fx-font-size: 20px;
+                               -fx-font-weight: bold;
                                -fx-cursor: hand;
-                               -fx-font-weight: bold;" />
+                               " />
 
                 <Button text="Go Home"
                         onAction="#goToHomePage"
