@@ -38,14 +38,14 @@
                     onAction="#goToMenuPageEatIn"
                     prefWidth="200" prefHeight="55"
                     styleClass="btn-primary"
-                    style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-background-radius: 12;" />
+                    style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-background-radius: 12; -fx-background-color: -fx-color-muted" />
 
             <Button text="🛍  Takeout"
                     fx:id="takeOutButton"
                     onAction="#goToMenuPageTakeout"
                     prefWidth="200" prefHeight="55"
                     styleClass="btn-primary"
-                    style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-background-radius: 12;" />
+                    style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-background-radius: 12; -fx-background-color: -fx-color-muted" />
         </VBox>
     </VBox>
 

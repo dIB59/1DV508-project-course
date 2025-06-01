@@ -192,7 +192,7 @@ public class CheckoutController implements Initializable {
 
     // Style the buttons
     String buttonStyle =
-        "-fx-background-color: -fx-color-primary-hover; -fx-text-fill: -fx-color-border; -fx-background-radius: 6; "
+        "-fx-background-color: -fx-color-muted;; -fx-text-fill: -fx-text-primary; -fx-background-radius: 6; "
             + "-fx-cursor: hand; -fx-font-size: 14px; -fx-font-weight: bold;";
     increaseButton.setStyle(buttonStyle);
     decreaseButton.setStyle(buttonStyle);
