@@ -13,7 +13,6 @@
     <BorderPane AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"
                 AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
 
-        <!-- Sidebar -->
         <left>
             <VBox spacing="12.0" alignment="TOP_CENTER" prefWidth="160.0"
                   style="-fx-background-color: -fx-color-foreground; -fx-padding: 30 20;">
@@ -39,64 +38,58 @@
             </VBox>
         </left>
 
-        <!-- Main Content -->
         <center>
             <VBox spacing="20" alignment="TOP_CENTER"
-                  style="-fx-padding: 40;">
-                <!-- Title -->
+                  style="-fx-padding: 40 80;">
+
                 <Label text="Translation Editor"
-                       style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: -fx-text-primary;" />
+                       style="-fx-font-size: 32px; -fx-font-weight: bold; -fx-text-fill: -fx-text-primary; -fx-padding: 0 0 20 0;" />
 
-                <!-- Language, Search, Cache -->
-                <HBox spacing="10" alignment="CENTER_LEFT">
-                    <Label text="Target Language:" style="-fx-text-fill: -fx-text-primary;" />
-                    <ComboBox fx:id="languageComboBox" prefWidth="200" onAction="#handleLanguageChange"/>
+                <HBox spacing="15" alignment="CENTER_LEFT" style="-fx-padding: 0 0 15 0;">
+                    <Label text="Target Language:" style="-fx-text-fill: -fx-text-primary; -fx-font-size: 14px;" />
+                    <ComboBox fx:id="languageComboBox" prefWidth="250" onAction="#handleLanguageChange" style="-fx-font-size: 14px;"/>
 
-                    <Label text="Search:" style="-fx-text-fill: -fx-text-primary;" />
-                    <TextField fx:id="searchField" promptText="Search translations..." onKeyReleased="#handleSearch"/>
+                    <Region HBox.hgrow="ALWAYS"/>
+
+                    <Label text="Search:" style="-fx-text-fill: -fx-text-primary; -fx-font-size: 14px;" />
+                    <TextField fx:id="searchField" promptText="Search translations..." onKeyReleased="#handleSearch" prefWidth="300" style="-fx-font-size: 14px;"/>
 
                     <Button text="Cache All Translations"
                             fx:id="cacheButton"
                             onAction="#handleCacheTranslations"
-                            style="-fx-background-color: #10b981; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 8 16; -fx-background-radius: 5;" />
+                            style="-fx-background-color: -fx-color-constructive; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 10 20; -fx-background-radius: 5; -fx-cursor: hand;" />
 
                     <ProgressBar fx:id="cacheProgressBar" prefWidth="200" visible="false"/>
                 </HBox>
 
-                <!-- Translation Table -->
-                <TableView fx:id="translationTable" prefHeight="300" prefWidth="760">
-                    <columns>
-                        <TableColumn fx:id="originalColumn" text="Original" prefWidth="380"/>
-                        <TableColumn fx:id="translatedColumn" text="Translated" prefWidth="380"/>
-                    </columns>
+                <TableView fx:id="translationTable" VBox.vgrow="ALWAYS" editable="true" styleClass="modern-table"> <columns>
+                    <TableColumn fx:id="originalColumn" text="Original" prefWidth="0"/>
+                    <TableColumn fx:id="translatedColumn" text="Translated" prefWidth="0"/>
+                </columns>
+                    <columnResizePolicy><TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/></columnResizePolicy>
                 </TableView>
 
-                <!-- Edit Form -->
-                <GridPane hgap="15" vgap="15" style="-fx-padding: 20;">
+                <GridPane hgap="20" vgap="20" style="-fx-padding: 30; -fx-background-color: -fx-color-background; -fx-background-radius: 8;">
                     <columnConstraints>
-                        <ColumnConstraints halignment="RIGHT" minWidth="100"/>
-                        <ColumnConstraints minWidth="400"/>
+                        <ColumnConstraints halignment="RIGHT" minWidth="120" percentWidth="20"/>
+                        <ColumnConstraints minWidth="400" percentWidth="80"/>
                     </columnConstraints>
 
-                    <rowConstraints>
-                        <RowConstraints minHeight="40"/>
-                        <RowConstraints minHeight="40"/>
-                    </rowConstraints>
-
                     <Label text="Original Text:" GridPane.rowIndex="0" GridPane.columnIndex="0"
-                           style="-fx-text-fill: -fx-text-primary;" />
-                    <TextField fx:id="originalTextField" editable="false" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                           style="-fx-text-fill: -fx-text-primary; -fx-font-size: 15px;" />
+                    <TextField fx:id="originalTextField" editable="false" GridPane.rowIndex="0" GridPane.columnIndex="1"
+                               style="-fx-font-size: 14px; -fx-background-color: -fx-color-background; -fx-text-fill: -fx-text-secondary;" />
 
                     <Label text="Translated Text:" GridPane.rowIndex="1" GridPane.columnIndex="0"
-                           style="-fx-text-fill: -fx-text-primary;" />
-                    <TextField fx:id="translatedTextField" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                           style="-fx-text-fill: -fx-text-primary; -fx-font-size: 15px; -fx-background-color: -fx-color-background;" />
+                    <TextField fx:id="translatedTextField" GridPane.rowIndex="1" GridPane.columnIndex="1"
+                               style="-fx-font-size: 14px;" />
                 </GridPane>
 
-                <!-- Save Button -->
-                <Button text="💾 Save Translation"
+                <Button text="Save Translation"
                         onAction="#handleSave"
-                        style="-fx-background-color: #3b82f6; -fx-text-fill: white;
-                               -fx-font-size: 14px; -fx-padding: 10 20; -fx-background-radius: 5;" />
+                        style="-fx-background-color: -fx-color-muted; -fx-text-fill: white;
+                               -fx-font-size: 16px; -fx-padding: 12 25; -fx-background-radius: 8; -fx-cursor: hand; -fx-font-weight: bold;" />
             </VBox>
         </center>
 
