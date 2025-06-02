@@ -78,7 +78,66 @@ VALUES
 
     ('Tripi-Tropi Medallion Cake', 'A dessert fit for a rebel champion – sideways wins included.', 3.49,
      LOAD_FILE('/var/lib/mysql-files/assets/lets-settle-the-debate-who-is-tripi-tropi-v0-t4elw6moq0ue1.jpg'), 'assets/lets-settle-the-debate-who-is-tripi-tropi-v0-t4elw6moq0ue1.jpg',
-     LOAD_FILE('/var/lib/mysql-files/assets/tripy-trophy.mp3'), NULL, FALSE);
+     LOAD_FILE('/var/lib/mysql-files/assets/tripy-trophy.mp3'), NULL, FALSE),
+
+    ('Blue Milk', 'Iconic frothy drink from Banthas on Tatooine. Refreshing and mysterious.', 2.99,
+    LOAD_FILE('/var/lib/mysql-files/assets/Shot+07-Blue+Milk+Shake-sq.jpg'), 'assets/Shot+07-Blue+Milk+Shake-sq.jpg',
+    LOAD_FILE('/var/lib/mysql-files/assets/blue-milk.mp3'), '🥶 ICE-COLD', FALSE),
+
+    ('Green Thala-Siren Milk', 'Exotic and energizing, straight from Ahch-To’s cliffs.', 3.29,
+    LOAD_FILE('/var/lib/mysql-files/assets/5a550a97cec2c5000116aeca-image_12504d2e.jpeg'), 'assets/5a550a97cec2c5000116aeca-image_12504d2e.jpeg',
+    LOAD_FILE('/var/lib/mysql-files/assets/green-milk.mp3'), NULL, FALSE),
+
+    ('Tatooine Sunset Punch', 'Fruity mocktail with twin-sunset hues. Served chilled.', 3.49,
+    LOAD_FILE('/var/lib/mysql-files/assets/4f6e5f9e2cf8a8608f6b99a8f9da4a7b.jpg'), 'assets/4f6e5f9e2cf8a8608f6b99a8f9da4a7b.jpg',
+    LOAD_FILE('/var/lib/mysql-files/assets/sunset-punch.mp3'), '🌅 LIMITED', FALSE),
+
+    ('Wookiee Cookie', 'Giant chewy cookie topped with chocolate and sass.', 2.59,
+     LOAD_FILE('/var/lib/mysql-files/assets/BFV5306GingerbreadWookieCookies_ThumbA.jpg'), 'assets/BFV5306GingerbreadWookieCookies_ThumbA.jpg',
+     LOAD_FILE('/var/lib/mysql-files/assets/wookiee-roar.mp3'), '🍪 CLASSIC', FALSE),
+
+    ('Carbonite Crunch', 'Frozen delight with popping candy. Han-approved.', 3.79,
+     LOAD_FILE('/var/lib/mysql-files/assets/Fo8mw2vX0AEKk0z.jpg'), 'assets/Fo8mw2vX0AEKk0z.jpg',
+     LOAD_FILE('/var/lib/mysql-files/assets/freeze-sound.mp3'), NULL, FALSE),
+
+    ('Bespin Cloud Puff', 'Cottony pastry filled with sweet vapor cream.', 2.89,
+     LOAD_FILE('/var/lib/mysql-files/assets/images (3).jpeg'), 'assets/images (3).jpeg',
+     LOAD_FILE('/var/lib/mysql-files/assets/cloudcity.mp3'), NULL, FALSE),
+    ('Rancor Rib Rack', 'Massive ribs roasted in spicy Hutt marinade.', 9.99,
+     LOAD_FILE('/var/lib/mysql-files/assets/images (4).jpeg'), 'assets/images (4).jpeg',
+     LOAD_FILE('/var/lib/mysql-files/assets/rancor-growl.mp3'), '🔥 SPICY', FALSE),
+
+    ('Hoth Ice Beast Burger', 'Chilled patty with hot sauce – an ironic bite.', 6.99,
+     LOAD_FILE('/var/lib/mysql-files/assets/images (5).jpeg'), 'assets/images (5).jpeg',
+     LOAD_FILE('/var/lib/mysql-files/assets/wampa.mp3'), NULL, FALSE),
+
+    ('Alderaanian Veggie Dome', 'Peacefully assembled vegan dish from Alderaan roots.', 5.49,
+     LOAD_FILE('/var/lib/mysql-files/assets/images (6).jpeg'), 'assets/images (6).jpeg',
+     LOAD_FILE('/var/lib/mysql-files/assets/peace-sound.mp3'), '🌱 VEGAN', FALSE),
+
+    ('Jawa Poppers', 'Mini thermal detonator look-alikes – but cheesy inside.', 3.29,
+     LOAD_FILE('/var/lib/mysql-files/assets/images (7).jpeg'), 'assets/images (7).jpeg',
+     LOAD_FILE('/var/lib/mysql-files/assets/jawa-utinni.mp3'), NULL, TRUE),
+
+    ('Sarlacc Bites', 'Tentacle-shaped crisps served with spicy pit sauce.', 2.99,
+     LOAD_FILE('/var/lib/mysql-files/assets/807c40ecb058c4865bd91e18b23069d9.jpg'), 'assets/807c40ecb058c4865bd91e18b23069d9.jpg',
+     LOAD_FILE('/var/lib/mysql-files/assets/sarlacc-burp.mp3'), NULL, TRUE),
+
+    ('Twin Suns Hummus Platter', 'Golden roasted hummus served with Tatooine flatbread.', 4.29,
+     LOAD_FILE('/var/lib/mysql-files/assets/hummus-platter-2.jpg'), 'assets/hummus-platter-2.jpg',
+     LOAD_FILE('/var/lib/mysql-files/assets/sunrise.mp3'), '☀️☀️ DOUBLE DIP', TRUE),
+
+    ('Bantha Fries', 'Salty, crispy, and made from mystery off-world tubers.', 1.99,
+     LOAD_FILE('/var/lib/mysql-files/assets/how_to_make_loaded_fries_new_header.jpg'), 'assets/how_to_make_loaded_fries_new_header.jpg',
+     LOAD_FILE('/var/lib/mysql-files/assets/crunch.mp3'), NULL, TRUE),
+
+    ('Gungan Puffs', 'Air-puffed snacks that bounce in your mouth.', 2.29,
+     LOAD_FILE('/var/lib/mysql-files/assets/crab-puffs-1984_audit2201_beauty-144-62a586057145495da680c70b87a0c59a.jpg'), 'assets/crab-puffs-1984_audit2201_beauty-144-62a586057145495da680c70b87a0c59a.jpg',
+     LOAD_FILE('/var/lib/mysql-files/assets/jarjar.mp3'), '💨 LIGHT SNACK', TRUE),
+
+    ('Droid Oil Chips', 'Crunchy chips with a drizzle of black garlic aioli.', 2.49,
+     LOAD_FILE('/var/lib/mysql-files/assets/images (8).jpeg'), 'assets/images (8).jpeg',
+     LOAD_FILE('/var/lib/mysql-files/assets/droid-beep.mp3'), NULL, TRUE);
 
 
 CREATE TABLE IF NOT EXISTS Admin
@@ -129,7 +188,23 @@ INSERT INTO Product_Tags (product_id, tag_id) VALUES
 (8, 1),
 (9, 5),
 (10, 3),
-(11, 2);
+(11, 2),
+(12,4),
+(13, 4),
+(14, 4),
+(15, 5),
+(16, 1),
+(17, 2),
+(18, 3),
+(19, 4),
+(20, 5),
+(21, 1),
+(22, 2),
+(23, 3),
+(24, 4),
+(25, 5),
+(26, 1);
+
 
 
 CREATE TABLE IF NOT EXISTS Coupons
