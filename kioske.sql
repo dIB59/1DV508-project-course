@@ -80,6 +80,7 @@ VALUES
      LOAD_FILE('/var/lib/mysql-files/assets/lets-settle-the-debate-who-is-tripi-tropi-v0-t4elw6moq0ue1.jpg'), 'assets/lets-settle-the-debate-who-is-tripi-tropi-v0-t4elw6moq0ue1.jpg',
      LOAD_FILE('/var/lib/mysql-files/assets/tripy-trophy.mp3'), NULL, FALSE);
 
+
 CREATE TABLE IF NOT EXISTS Admin
 (
     id       INT AUTO_INCREMENT PRIMARY KEY,
@@ -118,8 +119,18 @@ INSERT INTO Tags (name) VALUES
 ('Snacks');
 
 INSERT INTO Product_Tags (product_id, tag_id) VALUES
-(1, 1), -- Burger
-(2, 2); -- Pizza
+(1, 1),
+(2, 2),
+(3,5),
+(4, 1),
+(5, 2),
+(6, 3),
+(7, 4),
+(8, 1),
+(9, 5),
+(10, 3),
+(11, 2);
+
 
 CREATE TABLE IF NOT EXISTS Coupons
 (
