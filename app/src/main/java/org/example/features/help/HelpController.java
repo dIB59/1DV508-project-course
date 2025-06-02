@@ -56,7 +56,7 @@ public class HelpController {
   }
 
   private void StartTimer(){
-    pauseTransition = new PauseTransition(Duration.seconds(30));
+    pauseTransition = new PauseTransition(Duration.seconds(10));
     pauseTransition.setOnFinished(e -> {goToHomePage();});
     pauseTransition.play();
   }
