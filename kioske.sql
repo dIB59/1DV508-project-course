@@ -293,3 +293,38 @@ CREATE TABLE IF NOT EXISTS restaurant_settings (
 
 INSERT INTO restaurant_settings (id, name, address, contact, logo)
 VALUES (1, 'My Restaurant', 'Welcome to our place!', '6942069420',LOAD_FILE('/var/lib/mysql-files/assets/tralalero-tralala.jpg'));
+
+-- Blue Milk
+INSERT INTO Product (name, description, price, image, image_url, sound, specialLabel, isASide)
+VALUES ('Blue Milk', 'A refreshing dairy drink from Tatooine made from Bantha milk.', 3.50,
+        LOAD_FILE('/var/lib/mysql-files/assets/blue_milk.jpg'), 'assets/blue_milk.jpg',
+        NULL, NULL, FALSE);
+INSERT INTO Product_Tags (product_id, tag_id) VALUES (LAST_INSERT_ID(), 4);
+
+-- Spotchka
+INSERT INTO Product (name, description, price, image, image_url, sound, specialLabel, isASide)
+VALUES ('Spotchka', 'A glowing blue alcoholic beverage made from alien creatures.', 4.75,
+        LOAD_FILE('/var/lib/mysql-files/assets/spotchka.jpg'), 'assets/spotchka.jpg',
+        NULL, NULL, FALSE);
+INSERT INTO Product_Tags (product_id, tag_id) VALUES (LAST_INSERT_ID(), 4);
+
+-- Jawa Juice
+INSERT INTO Product (name, description, price, image, image_url, sound, specialLabel, isASide)
+VALUES ('Jawa Juice', 'Popular diner drink made from fermented bantha hides.', 2.99,
+        LOAD_FILE('/var/lib/mysql-files/assets/jawa_juice.jpg'), 'assets/jawa_juice.jpg',
+        NULL, NULL, FALSE);
+INSERT INTO Product_Tags (product_id, tag_id) VALUES (LAST_INSERT_ID(), 4);
+
+-- Meiloorun Juice
+INSERT INTO Product (name, description, price, image, image_url, sound, specialLabel, isASide)
+VALUES ('Meiloorun Juice', 'A sweet and tangy juice made from rare Meiloorun fruits.', 4.25,
+        LOAD_FILE('/var/lib/mysql-files/assets/meiloorun_juice.jpg'), 'assets/meiloorun_juice.jpg',
+        NULL, NULL, FALSE);
+INSERT INTO Product_Tags (product_id, tag_id) VALUES (LAST_INSERT_ID(), 4);
+
+-- Tatooine Sunset
+INSERT INTO Product (name, description, price, image, image_url, sound, specialLabel, isASide)
+VALUES ('Tatooine Sunset', 'A citrusy mocktail evoking the twin suns of Tatooine.', 3.75,
+        LOAD_FILE('/var/lib/mysql-files/assets/tatooine_sunset.jpg'), 'assets/tatooine_sunset.jpg',
+        NULL, NULL, FALSE);
+INSERT INTO Product_Tags (product_id, tag_id) VALUES (LAST_INSERT_ID(), 4);
